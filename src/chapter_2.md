@@ -1,96 +1,91 @@
 # 第二章: 计算与表示
 
-* Distinguish between _specification_ and _implementation_, or equivalently between   _mathematical functions_ and _algorithms/programs_.
-* Representing an object as a string (often of zeroes and ones).
-* Examples of representations for common objects such as numbers, vectors, lists, and graphs.
-* Prefix-free representations.
-* Cantor's Theorem: The real numbers cannot be represented exactly as finite strings.
+* 区分规约与实现, 亦即区分数学函数与算法/程序.
+* 将对象表示为字符串(通常由 0 和 1 构成).
+* 常见对象(如自然数、向量、列表与图)的表示实例.
+* 前缀无歧义编码.
+* Cantor定理：实数无法被有限长字符串精确表示.
 
-> _"The alphabet (sic) was a great invention, which enabled men (sic) to store and to learn with little effort what others had learned the hard way -- that is, to learn from books rather than from direct, possibly painful, contact with the real world."_, B.F. Skinner 
+> _"字母表是一项伟大的发明, 使人们能够轻松地储存并学习他人经过艰难努力才获得的知识 —— 也就是说, 可以通过书本学习, 而非通过与真实世界直接且可能痛苦的接触来学习. "_ B.F. Skinner 
 
-> _"The name of the song is called `HADDOCK'S EYES.'"_ [said the Knight]
+> _"这首歌的名字叫作 'HADDOCK'S EYES'."_ 骑士说道.
 >
-> _"Oh, that's the name of the song, is it?"_ Alice said, trying to feel interested.
+> _"哦, 这就是歌的名字吗？"_ 爱丽丝如此问, 努力装作有兴趣. 
 >
-> _"No, you don't understand,"_ the Knight said, looking a little vexed. _"That's what the name is CALLED. The name really is `THE AGED AGED MAN.' "_
+> _"不, 你没明白, "_ 骑士有些恼火. _"这首歌只是名字被叫作这个. 这首歌的名字其实是 'THE AGED AGED MAN'. "_  
 >
-> _"Then I ought to have said `That's what the SONG is called'?"_ Alice corrected herself.
+> _"那我应该说, '这首歌被叫做这个'？"_ 爱丽丝认真想了想.   
 >
-> _"No, you oughtn't: that's quite another thing! The SONG is called `WAYS AND MEANS': but that's only what it's CALLED, you know!"_
+> _"不, 你不该那么说: 那完全是另一回事! 这首歌 **被叫作** 'WAYS AND MEANS', 但你知道, 那只是它被叫作这个而已! "_  
 >
-> _"Well, what IS the song, then?"_ said Alice, who was by this time completely bewildered.
+> _"那么, 这首歌究竟 **是什么** 呢？"_ 爱丽丝问道, 此时她已经完全被搞糊涂了.   
 >
-> _"I was coming to that,"_ the Knight said. _"The song really IS `A-SITTING ON A GATE': and the tune's my own invention."_
+> _"我正要说到这点, "_ 骑士回答道. _"这首歌其实 **是** `A-SITTING ON A GATE', 而曲调是我自创的. "_  
 >
-> Lewis Carroll, _Through the Looking-Glass_
+> Lewis Carroll, _爱丽丝镜中奇遇_  
 
-To a first approximation, _computation_ is a process that maps an _input_ to an _output_.
+从初步的角度看, _计算_ 是一个将 _输入_ 映射为 _输出_ 的过程.
 
-![Our basic notion of computation is some process that maps an input to an output](../figure/input_output.png){#computationinputtooutputfig .margin  }
+![我们对计算最基本的理解，是把它看作一种将输入转化为输出的过程。](../figure/input_output.png){#computationinputtooutputfig .margin  }
 
-When discussing computation, it is essential to separate the question of __what__ is the task we need to perform (i.e., the _specification_) from the question of __how__ we achieve this task (i.e., the _implementation_).
-For example, as we've seen, there is more than one way to achieve the computational task of computing the product of two integers.
+在谈论计算时, 一个关键点是要区分两个问题: __需要完成的任务是什么__(即规约), 以及 __如何去实现这一任务__(即实现方式).
+例如, 正如我们已经看到的, 计算两个整数的乘积这一任务, 并不只有唯一的一种实现方式.
 
-In this chapter we focus on the **what** part, namely defining computational tasks.
-For starters, we need to define the inputs and outputs.
-Capturing all the potential inputs and outputs that we might ever want to compute seems challenging, since computation today is applied to a wide variety of objects.
-We do not compute merely on numbers, but also on texts, images, videos, connection graphs of social networks, MRI scans, gene data, and even other programs.
-We will represent all these objects as __strings of zeroes and ones__, that is objects such as $0011101$ or $1011$ or any other finite list of $1$'s and $0$'s. (This choice is for convenience: there  is nothing "holy" about zeroes and ones, and we could have used any other finite collection of symbols.)
+在本章中, 我们将聚焦于 "**what**" 部分, 即如何定义计算任务. 而这首先要求我们明确定义 _输入与输出_.
+要囊括所有可能的输入和输出似乎颇具挑战性, 因为如今计算已经被应用在各种各样的对象上, 不仅是数字, 还可以是文本, 图像, 视频, 例如社交网络的连接图, MRI 扫描结果, 基因组数据, 甚至是其它程序.
 
-![We represent numbers, texts, images, networks and many other objects using strings of zeroes and ones. Writing the zeroes and ones themselves in green font over a black background is optional.](../figure/zeroes-ones.jpg){#zerosandonesgreenfig .margin  }
+我们将尝试把所有这些对象表示为**由 0 和 1 组成的字符串**, 也就是诸如 $0011101$, $1011$, 或任意有限个 $0$ 与 $1$ 组成的序列. (当然, 这样的选择只是出于方便, 0 和 1 并非 "神圣" 而不可替代: 我们完全可以用任何其他有限集合的符号来表示.)
 
-Today, we are so used to the notion of digital representation that we are not surprised by the existence of such an encoding.
-But it is actually a deep insight with significant implications.
-Many animals can convey a particular fear or desire, but what is unique about humans is _language_:  we use a finite collection of basic symbols to describe a potentially unlimited range of experiences.
-Language allows transmission of information over both time and space and enables societies that span a great many people and accumulate a body of shared knowledge over time.
+![我们用由 0 和 1 组成的字符串来表示数字, 文本, 图像, 网络以及许多其他对象. 当然, 将这些 0 和 1 本身以绿色字体写在黑色背景上也是可选的.](../figure/zeroes-ones.jpg){#zerosandonesgreenfig .margin  }
 
-Over the last several decades, we have seen a revolution in what we can represent and convey in digital form.
-We can capture experiences with almost perfect fidelity, and disseminate it essentially instantaneously to an unlimited audience.
-Moreover, once information is in digital form, we can _compute_ over it, and gain insights from data that were not accessible in prior times.
-At the heart of this revolution is the simple but profound observation that we can represent an unbounded variety of objects using a finite set of symbols (and in fact using only the two symbols `0` and `1`).
+如今, 我们已经对数字化的表示习以为常, 因而并不会对这种编码的存在感到惊讶, 但这实际上是一个深刻的结果, 并带来了许多重要的影响.
+许多动物也能够表达某种恐惧或欲望, 但人类独特之处在于 _语言_: 我们使用有限的一组基本符号来描述潜在无限范围的体验.
+语言使得信息能够跨越时间与空间进行传递, 并让社会能够涵盖大量的人群, 随时间积累出共享的知识体系.
 
-In later chapters, we will typically take such representations for granted, and hence use expressions such as "program $P$ takes $x$ as input" when $x$ might be a number, a vector, a graph, or any other object,  when we really mean that $P$ takes as input the _representation_ of $x$ as a binary string.
-However, in this chapter we will dwell a bit more on how we can construct such representations.
+在过去的几十年里, 我们见证了一场关于数字化表示与传递的革命: 我们现在几乎可以完美地捕捉视觉与听觉的体验, 并几乎瞬间将其传播给无限的受众. 更重要的是, 一旦信息以数字形式存在, 我们便能够对其进行 _计算_, 并从中获取以往无法触及的数据洞见. 这场革命的核心, 是一个简单却深刻的观察: 我们能够用有限的一组符号 (事实上仅需两个符号 0 和 1) 来表示无穷多样的对象.
+
+在后续的章节中, 我们通常会默认这种表示方法的存在, 因此会使用诸如 "程序 $P$ 以 $x$ 为输入" 这样的表述, 即便 $x$ 可能是一个数字、向量、图, 或者其他任意对象. 不过我们真正的意思是, $P$ 的输入实际上是 $x$ 的 _二进制字符串表示_.
+在本章中, 我们会更深入地探讨如何构造这样的表示方法.
 
 ::: {.nonmath}
 
-The main takeaways from this chapter are:
+本章的主要要点如下:
 
-* We can represent all kinds of objects we want to use as inputs and outputs using _binary strings_. For example, we can use the _binary basis_ to represent integers and rational numbers as binary strings (see [naturalnumsec](){.ref} and [morerepressec](){.ref}).
-* We can _compose_ the representations of simple objects to represent more complex objects. In this way, we can represent lists of integers or rational numbers, and use that to represent objects such as matrices, images, and graphs. _Prefix-free encoding_ is one way to achieve such a composition (see [prefixfreesec](){.ref}).
-* A _computational task_ specifies a map from an input to an output--- a _function_. It is crucially important to distinguish between the "what" and the "how", or the _specification_ and _implementation_ (see [secimplvsspec](){.ref}). A _function_  simply defines which output corresponds to which input. It does not specify _how_ to compute the output from the input, and as we've seen in the context of multiplication, there can be more than one way to compute the same function.
-* While the set of all possible binary strings is infinite, it still cannot represent _everything_. In particular, there is no representation of the _real numbers_ (with absolute accuracy) as binary strings. This result is also known as "Cantor's Theorem" (see [cantorsec](){.ref}) and is typically referred to as the result that the "reals are uncountable." It is also implied that there are _different levels_ of infinity though we will not get into this topic in this book (see [generalizepowerset](){.ref}).
+* 我们可以使用 _二进制字符串_ 来表示所有我们想作为输入和输出的对象. 例如, 可以利用 _二进制基_ 将整数和有理数表示为二进制字符串 (参见 naturalnumsec{.ref} 和 morerepressec{.ref}).
 
-The two "big ideas" we discuss are [representtuplesidea](){.ref} - we can compose representations for simple objects to represent more complex objects and [functionprogramidea](){.ref} - it is crucial to distinguish between _functions'_ ("what") and _programs'_ ("how").
-The latter will be a theme we will come back to time and again in this book.
+* 我们可以通过 _组合_ 简单对象的表示, 来构造复杂对象的表示. 这样一来, 就可以表示整数或有理数的列表, 并进一步用来表示矩阵、图像和图等对象. _前缀无歧义编码_ (prefix-free encoding) 是实现这种组合的一种方式 (参见 prefixfreesec{.ref}).
+
+* 一个 _计算任务_ 指定了从输入到输出的映射 -- 即一个 _函数_. 区分 "what" 与 "how", 或者说 _规约_ (specification) 与 _实现_ (implementation), 至关重要 (参见 secimplvsspec{.ref}). 一个函数仅仅定义了哪个输入对应哪个输出, 而并没有规定 _如何_ 从输入计算出输出. 正如我们在乘法的例子中所看到的, 计算同一个函数可能存在多种方式.
+
+* 虽然所有可能的二进制字符串的集合是无限的, 它仍然无法表示 _一切_. 特别地, 并不存在将 _实数_ (绝对精确地) 表示为二进制字符串的方法. 这一结果也被称为 _康托定理_ (Cantor's Theorem) (参见 cantorsec{.ref}), 通常表述为 "实数是不可数的". 这也暗示了无限还存在 _不同的层次_, 不过在本书中我们不会深入讨论这一话题 (参见 generalizepowerset{.ref}).
+
+本章讨论的两个 "核心思想" 是: representtuplesidea{.ref} -- 我们可以通过组合简单对象的表示来表示更复杂的对象; 以及 functionprogramidea{.ref} -- 区分 函数 的 "what" 与 程序 的 "how" 至关重要. 后者将是本书中反复提到的一个主题.
 :::
 
-## Defining representations
+## 定义表示
 
-Every time we store numbers, images, sounds, databases, or other objects on a computer, what we actually store in the computer's memory is the _representation_ of these objects.
-Moreover, the idea of representation is not restricted to digital computers.
-When we write down text or make a drawing we are _representing_ ideas or experiences as sequences of symbols (which might as well be strings of zeroes and ones).
-Even our brain does not store the actual sensory inputs we experience, but rather only a _representation_ of them.
+每当我们在计算机中存储数字、图像、声音、数据库或其他对象时, 实际上存储在计算机内存中的只是这些对象的 **表示**.  
+此外, "表示" 的概念并不限于电子计算机, 当我们写下文字或画一幅图时, 我们同样是在将思想或体验 **表示** 为符号序列 (这些符号也完全可以是由 0 和 1 构成的字符串), 甚至我们的脑中也并非储存真实的感官输入, 而是仅仅存储它们的 **表示**.  
 
-To use objects such as numbers, images, graphs, or others as inputs for computation, we need to define precisely how to represent these objects as binary strings.
-A _representation scheme_ is a way to map an object $x$ to a binary string $E(x) \in \{0,1\}^*$.
-For example, a representation scheme for natural numbers is a function $E:\N \rightarrow \{0,1\}^*$.
-Of course, we cannot merely represent all numbers as the string "$0011$" (for example).
-A minimal requirement is that if two numbers $x$ and $x'$ are different then they would be represented by different strings.
-Another way to say this is that we require the encoding function $E$ to be _one to one_.
+为了在计算中使用数字、图像、图或其他对象作为输入, 我们需要精确定义如何将这些对象表示为二进制字符串.  
+一个 **表示方案** (representation scheme) 就是将对象 $x$ 映射到一个二进制字符串 $E(x) \in \{0,1\}^*$ 的方法, 例如, 自然数的一个表示方案就是一个函数 $E:\N \rightarrow \{0,1\}^*$.  
+当然, 我们不能把所有的数字都表示成相同的字符串 (比如 "$0011$"), 一个最基本的要求是, 如果两个数 $x$ 和 $x'$ 不同, 那么它们必须被表示为不同的字符串, 换句话说, 我们要求编码函数 $E$ 是 **一一对应** 的 (one-to-one).  
 
-### Representing natural numbers
+### 表示自然数
 
-We now show how we can represent natural numbers as binary strings.
-Over the years people have represented numbers in a variety of ways, including Roman numerals, tally marks, our own Hindu-Arabic decimal system, and many others.
-We can use any one of those as well as many others to represent a number as a string (see [bitmapdigitsfig](){.ref}).
-However, for the sake of concreteness,  we use the _binary basis_ as our default representation of natural numbers as strings.
-For example, we represent the number six as the string $110$ since $1\cdot 2^{2} + 1 \cdot 2^1 + 0 \cdot 2^0 = 6$, and similarly we represent the number thirty-five as the string $y = 100011$ which satisfies $\sum_{i=0}^5 y_i \cdot 2^{|y|-i-1} = 35$.
-Some more examples are given in the table below.
+现在我们来展示如何将自然数表示为二进制字符串.  
+多年来, 人们已经尝试了各种方式来表示数字, 包括绳结计数, 雅玛数字, 罗马数字, 我们熟悉的十进制, 以及许多其它方法. 我们当然可以使用其中任意一种将一个数字表示为字符串 (参见 [bitmapdigitsfig](){.ref}), 然而, 出于计算上的方便, 我们采用 **二进制基** 作为默认的自然数字符串表示法.  
+
+例如, 我们将数字 6 表示为字符串 $110$, 因为 $1\cdot 2^{2} + 1 \cdot 2^1 + 0 \cdot 2^0 = 6$.
+
+类似地, 我们将数字 35 表示为字符串 $y = 100011$, 它满足 $\sum_{i=0}^5 y_i \cdot 2^{|y|-i-1} = 35$.  
+
+更多示例见下表.  
+
 
 ![Representing each one the digits <span class=](../figure/digitsbitmap.png)0,1,2,\ldots,90,1,2,\ldots,9 as a $$ bitmap image, which can be thought of as a string in $$. Using this scheme we can represent a natural number $$ of $$ decimal digits as a string in $$. Image taken from blog post of A. C. Andersen." />{#bitmapdigitsfig .margin  }
 
-| **Number (decimal representation)** | **Number (binary representation)** |
+| **十进制表示** | **二进制表示** |
 | ----------------------------------------- | ---------------------------------------- |
 | 0                                         | 0                                        |
 | 1                                         | 1                                        |
@@ -102,11 +97,12 @@ Some more examples are given in the table below.
 | 389                                       | 110000101                                |
 | 3750                                      | 111010100110                             |
 
-Table: Representing numbers in the binary basis. The left-hand column contains representations of natural numbers in the decimal basis, while the right-hand column contains representations of the same numbers in the binary basis.
+表格: 使用二进制基表示数字. 左列包含自然数在十进制下的表示, 右列包含相同数字在二进制下的表示.  
 
-If $n$ is even, then the least significant digit of $n$'s binary representation is $0$, while if $n$ is odd then this digit equals $1$.
-Just like the number $\floor{n/10}$ corresponds to "chopping off" the least significant decimal digit (e.g., $\floor{457/10}=\floor{45.7}=45$), the number $\floor{n/2}$ corresponds to the "chopping off" the least significant _binary_ digit.
-Hence the  binary representation can be formally defined as the following function $NtS:\N \rightarrow \{0,1\}^*$ ($NtS$ stands for "natural numbers to strings"):
+如果 $n$ 是偶数, 那么 $n$ 的二进制表示的最低有效位为 $0$; 如果 $n$ 是奇数, 那么该位为 $1$.  
+就像数字 $\floor{n/10}$ 对应于"去掉"最低有效的十进制位 (例如, $\floor{457/10}=\floor{45.7}=45$), 数字 $\floor{n/2}$ 对应于"去掉"最低有效的 **二进制** 位.  
+
+因此, 二进制表示可以形式化定义为以下函数 $NtS:\N \rightarrow \{0,1\}^*$ ($NtS$ 表示 "natural numbers to strings"):  
 
 $$
 NtS(n) = \begin{cases}
@@ -116,18 +112,21 @@ NtS(n) = \begin{cases}
 \end{cases} \label{ntseq}
 $$
 
-where $parity:\N \rightarrow \{0,1\}$  is the function defined as $parity(n)=0$ if $n$ is even and $parity(n)=1$ if $n$ is odd, and as usual, for strings $x,y \in \{0,1\}^*$, $xy$ denotes the concatenation of $x$ and $y$.
-The function $NtS$ is defined _recursively_: for every $n>1$ we define $rep(n)$ in terms of the representation of the smaller number $\floor{n/2}$.
-It is also possible to define $NtS$ non-recursively, see [binaryrepex](){.ref}.
+其中, $parity:\N \rightarrow \{0,1\}$ 是函数, 定义为: 如果 $n$ 为偶数, 则 $parity(n)=0$; 如果 $n$ 为奇数, 则 $parity(n)=1$.  
+像往常一样, 对于字符串 $x,y \in \{0,1\}^*$, $xy$ 表示字符串 $x$ 与 $y$ 的连接.  
 
-Throughout most of this book, the particular choices of representation of numbers as binary strings would not matter much: we just need to know that such a representation exists.
-In fact, for many of our purposes we can even use the simpler representation of mapping a natural number $n$ to the length-$n$ all-zero string $0^n$.
+函数 $NtS$ 是 **递归定义** 的: 对于每个 $n>1$, 我们通过较小的数字 $\floor{n/2}$ 的表示来定义 $rep(n)$.  
+同样, 也可以用非递归方式定义 $NtS$, 参见 [binaryrepex](){.ref}.  
 
-::: {.remark title="Binary representation in python (optional)" #pythonbinary}
-We can implement the binary representation in _Python_ as follows:
+在本书的大部分内容中, 将数字表示为二进制字符串的具体选择并不重要: 我们只需要知道这样的表示是存在的.  
+事实上, 对于许多用途, 我们甚至可以使用更简单的表示方法, 将自然数 $n$ 映射为长度为 $n$ 的全零字符串 $0^n$.  
+
+
+::: {.remark title="二进制表示的Python实现 (选读)" #pythonbinary}
+我们可以在 _Python_ 中实现如下的二进制表示:
 
 ```python
-def NtS(n):# natural numbers to strings
+def NtS(n):# 自然数(Natural number) to 字符串(String)
     if n > 1:
         return NtS(n // 2) + str(n % 2)
     else:
@@ -140,10 +139,10 @@ print(NtS(19))
 # 10011
 ```
 
-We can also use Python to implement the inverse transformation, mapping a string back to the natural number it represents.
+我们一样可以使用 _Python_ 实现逆向的转换: 将一个字符串映射回它表示的自然数.
 
 ```python
-def StN(x):# String to number
+def StN(x):# 字符串 to 自然数
     k = len(x)-1
     return sum(int(x[i])*(2**(k-i)) for i in range(k+1))
 
@@ -157,42 +156,45 @@ print(StN(NtS(236)))
 
 :::
 
-::: {.remark title="Programming examples" #programmingrem}
-In this book, we sometimes use _code examples_ as in [pythonbinary](){.ref}.
-The point is always to emphasize that certain computations can be achieved concretely,
-rather than illustrating the features of Python or any other programming language.
-Indeed, one of the messages of this book is that all programming languages are in a certain precise sense _equivalent_ to one another, and hence we could have just as well used JavaScript, C, COBOL, Visual Basic or even [BrainF*ck](https://goo.gl/LKKNFK).
-This book is _not_ about programming, and it is absolutely OK if you are not familiar with Python or do not follow code examples such as those in [pythonbinary](){.ref}.
+::: {.remark title="编程示例" #programmingrem}
+在本书中, 我们有时会使用 **代码示例**, 如 [pythonbinary](){.ref}, 但它们的目的始终是强调某些计算可以被具体实现, 而不是为了展示 Python 或任何其他编程语言的特性.  
+实际上, 本书传达的一个信息是, 所有编程语言在某种精确定义的意义下都是 **等价的**, 因此我们完全可以使用 JavaScript、C、COBOL、Visual Basic, 甚至 [BrainF*ck](https://goo.gl/LKKNFK)具体实现计算.
+
+本书 **不是** 编程指南. 不熟悉 Python 或无法理解如 [pythonbinary](){.ref} 中的代码示例不会影响本书内容的学习.
+
 :::
 
-### Meaning of representations (discussion)
+### 表示的意义(讨论)
 
-It is natural for us to think of $236$ as the "actual" number, and of $11101100$ as "merely" its representation.
-However, for most Europeans in the middle ages `CCXXXVI` would be the "actual" number and $236$ (if they have even heard about it) would be the weird Hindu-Arabic positional representation.^[While the Babylonians already invented a positional system much earlier, the decimal positional system we use today was invented by Indian mathematicians around the third century. Arab mathematicians took it up in the 8th century. It first received significant attention in Europe with the publication of the 1202 book _"Liber Abaci"_ by Leonardo of Pisa, also known as Fibonacci, but it did not displace Roman numerals in common usage until the 15th century.]
-When our AI robot overlords materialize, they will probably think of $11101100$ as the "actual" number and of $236$ as "merely" a representation that they need to use when they give commands to humans.
+初学时, 我们自然会认为 $236$ 是"实际"的数字, 而 $11101100$ 只是它的表示.  
+然而, 对于中世纪的大多数欧洲人来说, `CCXXXVI` 才是"实际"的数字, 而 $236$(如果他们甚至听说过的话)则是奇怪的印度-阿拉伯位置记数法表示. ^[尽管巴比伦人早已发明了位置记数法, 我们今天使用的十进制位置记数法是印度数学家约在公元三世纪发明的, 再由阿拉伯数学家在八世纪采用与发展. 它在欧洲首次受到显著关注是在 1202 年 Fibonacci(又名 Leonardo of Pisa)出版的著作 _"Liber Abaci"_ 中,  但直到十五世纪, 它才在日常使用中取代罗马数字.]  
+或许未来当我们的 AI 机器人统治者出现时, 它们可能会认为 $11101100$ 才是"实际"的数字, 而 $236$ 只是它们在向人类下达命令时需要使用的表示方法.  
 
-So what is the "actual" number? This is a question that philosophers of mathematics have pondered throughout history.
-Plato argued that mathematical objects exist in some ideal sphere of existence (that to a certain extent is more "real" than the world we perceive via our senses, as this latter world is merely the shadow of this ideal sphere).
-In Plato's vision, the symbols $236$ are merely notation for some ideal object, that, in homage to the [late musician](https://goo.gl/b93h83), we can refer to as  "the number commonly represented by $236$".
+那么, 什么才是"实际"的数字呢? 这是数学哲学家们自古以来一直思考的问题.  
+柏拉图认为, 数学对象存在于某种理想的存在领域中 (在某种程度上比我们通过感官感知的世界更"真实", 因为后者不过是理想领域的影子).  
+在柏拉图的视角中, 符号 $236$ 仅仅是某个理想对象的记号, 为了向 [已故音乐家](https://goo.gl/b93h83) 致敬, 我们可以称之为 "通常由 $236$ 表示的数字".  
 
-The Austrian philosopher Ludwig Wittgenstein, on the other hand, argued that mathematical objects do not exist at all, and the only things that exist are the actual marks on paper that make up $236$, $11101100$ or `CCXXXVI`.
-In Wittgenstein's view, mathematics is merely about formal manipulation of symbols that do not have any inherent meaning.
-You can think of the "actual" number as (somewhat recursively) "that thing which is common to $236$, $11101100$  and `CCXXXVI` and all other past and future representations that are meant to capture the same object".
+而奥地利哲学家路德维希·维特根斯坦则认为, 数学对象根本不存在, 唯一存在的只有构成 $236$、$11101100$ 或 `CCXXXVI` 的实际纸上符号.  
+在维特根斯坦看来, 数学仅仅是对没有固有意义的符号进行形式操作.  
+你可以将"实际"的数字理解为(有些递归地)"$236$、$11101100$ 和 `CCXXXVI` 以及所有旨在表示同一对象的过去和未来的表示方式共同指向的那个东西".  
 
-While reading this book, you are free to choose your own philosophy of mathematics, as long as you maintain the distinction between the mathematical objects themselves and the various particular choices of representing them, whether as splotches of ink, pixels on a screen, zeroes and ones, or any other form.
+阅读本书时, 你可以自由选择自己的数学哲学, 只要你能区分数学对象本身与表示它们的各种具体方式, 无论是墨迹斑点、屏幕上的像素、零和一, 还是任何其他形式.
 
-## Representations beyond natural numbers
+## 自然数以外对象的表示
 
-We have seen that natural numbers can be represented as binary strings.
-We now show that the same is true for other types of objects, including (potentially negative) integers, rational numbers, vectors, lists, graphs and many others.
-In many instances, choosing the "right" string representation for a piece of data is highly non-trivial, and finding the "best" one (e.g., most compact, best fidelity,  most efficiently manipulable, robust to errors, most informative features, etc.) is the object of intense research.
-But for now, we focus on presenting some simple representations for various objects that we would like to use as inputs and outputs for computation.
+我们已经看到, 自然数可以表示为二进制字符串. 而现在我们将展示, 这对于其他类型的对象也同样适用, 包括(可能为负的)整数、有理数、向量、列表、图以及许多其他对象.  
 
-### Representing (potentially negative) integers
+在很多情况下, 为一条数据选择"合适的"字符串表示是非常复杂的任务, 寻找"最佳"表示(例如, 最紧凑, 保真度最高, 最易操作、鲁棒性强(抗干扰能力强), 信息量最大等)一直都是研究的热点.  
 
-Since we can represent natural numbers as strings, we can represent the full set of _integers_ (i.e., members of the set $\Z=\{ \ldots, -3 , -2 , -1 , 0 , +1, +2, +3,\ldots \}$ ) by adding one more bit that represents the sign.
-To represent a (potentially negative) number $m$, we prepend to the representation of the natural number $|m|$ a bit $\sigma$ that equals $0$ if $m  \geq 0$ and equals $1$ if $m<0$.
-Formally, we  define the function $ZtS:\Z \rightarrow \{0,1\}^*$ as follows
+但目前, 我们先专注于展示一些简单的表示方法, 用于将各种对象作为计算的输入和输出.
+
+### 表示带有负数的全体整数
+
+既然我们可以将自然数表示为字符串, 我们也可以基于此表示 **整数** 的全集 (即集合 $\Z=\{ \ldots, -3 , -2 , -1 , 0 , +1, +2, +3,\ldots \}$ 的成员), 只需增加一位用于表示符号.  
+
+为了表示一个(可能为负的)数字 $m$, 我们在自然数 $|m|$ 的表示前加上一个比特 $\sigma$, 若 $m \geq 0$ 则 $\sigma=0$, 若 $m<0$ 则 $\sigma=1$.  
+
+形式上, 我们将函数 $ZtS:\Z \rightarrow \{0,1\}^*$ 定义如下:
 
 $$
 ZtS(m) = \begin{cases}
@@ -201,403 +203,429 @@ ZtS(m) = \begin{cases}
 \end{cases}
 $$
 
-where $NtS$ is defined as in [ntseq](){.eqref}.
+其中, $NtS$ 的定义如 [ntseq](){.eqref} 所示.  
 
-While the encoding function of a representation needs to be one to one, it does not have to be _onto_.
-For example, in the representation above there is no number that is represented by the empty string but it is still a fine representation, since every integer is represented uniquely by some string.
+虽然表示的编码函数必须是一一对应的, 但不必是 **满射**.  
+例如, 在上述表示法中, 没有任何数字被表示为空字符串, 但这仍然是有效的表示方法, 因为每个整数都能被唯一地表示为某个字符串.  
 
-Given a string $y\in \{0,1\}^*$, how do we know if it's "supposed" to represent a (non-negative) natural number or a (potentially negative) integer?
-For that matter, even if we know $y$ is "supposed" to be an integer, how do we know what representation scheme it uses?
-The short answer is that we do not necessarily know this information, unless it is supplied from the context. (In programming languages, the compiler or interpreter determines the representation of the sequence of bits corresponding to a variable based on the variable's _type_.)
-We can treat the same string $y$ as representing a natural number, an integer, a piece of text, an image, or a green gremlin.
-Whenever we say a sentence such as "let $n$ be the number represented by the string $y$," we will assume that we are fixing some canonical representation scheme such as the ones above.
-The choice of the particular representation scheme will rarely matter, except that we want to make sure to stick with the same one for consistency.
+给定一个字符串 $y\in \{0,1\}^*$, 我们如何判断它"应该"表示一个(非负的)自然数还是一个(可能为负的)整数?  
+更进一步, 即便我们知道 $y$ "应该"是一个整数, 我们又如何知道它使用的是哪种表示方案?  
+事实上, 除非上下文提供该信息, 否则我们不一定知道. (在编程语言中, 编译器或解释器会根据变量的 **类型** 决定对应变量的比特序列的表示方法.)  
 
-### Two's complement representation (optional)
+我们可以将同一个字符串 $y$ 视作表示自然数、整数、一段文本、一幅图像, 或者一个绿色的小妖精.  
+每当我们说类似 "令 $n$ 为字符串 $y$ 表示的数字" 这样的句子时, 我们假设固定某种规范表示方案, 比如上文所示的那些.  
+具体选择哪种表示方案通常无关紧要, 只需要确保在使用时保持一致即可.
 
-[repnegativeintegerssec](){.ref}'s approach of representing an integer using a specific "sign bit" is known as the _Signed Magnitude Representation_ and was used in some early computers.
-However,  the [two&#39;s complement representation](https://en.wikipedia.org/wiki/Two%27s%5Fcomplement) is much more common in practice.
-The _two's complement representation_ of an integer $k$ in the set $\{ -2^n , -2^n+1, \ldots, 2^n-1 \}$ is the string $ZtS_n(k)$ of length $n+1$ defined as follows:
+
+### 补码表示(选读)
+
+[repnegativeintegerssec](){.ref} 中使用特定的"符号位"来表示整数的方法被称为 **有符号数表示法 (Signed Magnitude Representation)**, 曾在一些早期计算机中使用.  
+然而, [二进制补码表示](https://en.wikipedia.org/wiki/Two%27s%5Fcomplement) 在实际中更为常见.  
+
+整数 $k$ 在集合 $\{ -2^n , -2^n+1, \ldots, 2^n-1 \}$ 的 **二进制补码表示** 是长度为 $n+1$ 的字符串 $ZtS_n(k)$, 定义如下:
 
 $$
 ZtS_n(k) = \begin{cases} NtS_{n+1}(k) & 0 \leq k \leq 2^n-1 \\
                      NtS_{n+1}(2^{n+1}+k) & -2^n \leq k \leq -1 \end{cases} \;,
 $$
 
-where $NtS_\ell(m)$ denotes the standard binary representation of a number  $m \in \{0,\ldots, 2^{\ell}\}$ as string of length $\ell$, padded with leading zeros as needed.
-For example, if $n=3$ then $ZtS_3(1)=NtS_4(1)=0001$, $ZtS_3(2)=NtS_4(2)=0010$, $ZtS_3(-1)=NtS_4(16-1)=1111$, and $ZtS_3(-8)=NtS_4(16-8)=1000$.
-If $k$ is a  negative number larger than or equal to $-2^n$ then  $2^{n+1}+k$ is a number between $2^n$ and $2^{n+1}-1$.
-Hence the two's complement representation of such a number $k$ is a string of length $n+1$  with its first digit equal to $1$.
+其中, $NtS_\ell(m)$ 表示数字 $m \in \{0,\ldots, 2^{\ell}\}$ 的标准二进制表示, 作为长度为 $\ell$ 的字符串, 并根据需要用前导零填充.  
+例如, 如果 $n=3$, 则 $ZtS_3(1)=NtS_4(1)=0001$, $ZtS_3(2)=NtS_4(2)=0010$, $ZtS_3(-1)=NtS_4(16-1)=1111$, 而 $ZtS_3(-8)=NtS_4(16-8)=1000$.  
+如果 $k$ 是大于或等于 $-2^n$ 的负数, 那么 $2^{n+1}+k$ 是一个位于 $2^n$ 和 $2^{n+1}-1$ 之间的数字.  
+因此, 该数字 $k$ 的二进制补码表示是长度为 $n+1$ 的字符串, 其首位为 $1$.  
 
-Another way to say this is that  we represent a potentially negative number $k \in \{ -2^n,\ldots, 2^n-1 \}$ as the non-negative number $k \mod 2^{n+1}$ (see also [twoscomplementfig](){.ref}).
-This means that if two (potentially negative) numbers $k$ and $k'$ are not too large (i.e., $ k + k' \in \{ -2^n,\ldots, 2^n-1 \}$), then we can compute the representation of $k+k'$ by adding modulo $2^{n+1}$ the representations of $k$ and $k'$ as if they were non-negative integers.
-This property of the two's complement representation is its main attraction since, depending on their architectures, microprocessors can often perform arithmetic operations modulo $2^w$ very efficiently (for certain values of $w$ such as $32$ and $64$).
-Many systems leave it to the programmer to check that values are not too large and will carry out this modular arithmetic regardless of the size of the numbers involved.
-For this reason, in some systems adding two large positive numbers can result in a _negative_ number (e.g., adding $2^n-100$ and $2^n-200$ might result in $-300$ since $(2^{n+1}-300) \mod 2^{n+1} = -300$, see also [twoscomplementfig](){.ref}).
+换句话说, 我们将一个可能为负的数字 $k \in \{ -2^n,\ldots, 2^n-1 \}$ 表示为非负数 $k \mod 2^{n+1}$ (参见 [twoscomplementfig](){.ref}).  
+这意味着, 如果两个可能为负的数字 $k$ 和 $k'$ 不太大 (即 $ k + k' \in \{ -2^n,\ldots, 2^n-1 \}$), 那么我们可以通过将 $k$ 和 $k'$ 的表示当作非负整数来进行模 $2^{n+1}$ 加法, 从而得到 $k+k'$ 的表示.  
+二进制补码表示的这一特性是其主要优势, 因为根据微处理器的架构, 它们通常可以非常高效地执行模 $2^w$ 的算术运算(对于某些 $w$ 值, 如 32 或 64).  
+
+许多系统将检查值是否过大留给程序员, 无论数字大小如何, 系统都会执行这种模运算.  
+因此, 在某些系统中, 两个大的正数相加可能得到一个 **负数** (例如, 将 $2^n-100$ 与 $2^n-200$ 相加可能得到 $-300$, 因为 $(2^{n+1}-300) \mod 2^{n+1} = -300$, 参见 [twoscomplementfig](){.ref}).  
+
 
 ![In the two's complement representation  we represent a potentially negative integer <span class=](../figure/twoscomplement.png)k \in \{ -2^n ,\ldots, 2^n-1 \}k \in \{ -2^n ,\ldots, 2^n-1 \} as an $$ length string using the binary representation of the integer $$. On the left-hand side: this representation for $$ (the red integers are the numbers being represented by the blue binary strings). If a microprocessor does not check for overflows, adding the two positive numbers $$ and $$ might result in the negative number $$ (since $$. The right-hand side is a C program that will on some $$ bit architecture print a negative number after adding two positive numbers. (Integer overflow in C is considered undefined behavior which means the result of this program, including whether it runs or crashes, could differ depending on the architecture, compiler, and even compiler options and version.)" />{#twoscomplementfig .margin}
 
-### Rational numbers and representing pairs of strings
+### 有理数及字符串表示对
 
-We can represent a rational number of the form $a/b$ by representing the two numbers $a$ and $b$.
-However, merely concatenating the representations of $a$ and $b$ will not work.
-For example, the binary representation of $4$ is $100$ and the binary representation of  $43$ is $101011$, but the concatenation  $100101011$ of these strings is also the concatenation of the representation $10010$ of $18$ and the representation $1011$ of $11$.
-Hence, if we used such simple concatenation then we would not be able to tell if the string $100101011$ is supposed to represent $4/43$ or  $18/11$.
+我们可以通过表示两个数字 $a$ 和 $b$ 来表示分数形式的有理数 $a/b$.  
+然而, 仅仅将 $a$ 和 $b$ 的表示简单连接起来是行不通的.  
+例如, 数字 $4$ 的二进制表示是 $100$, 数字 $43$ 的二进制表示是 $101011$, 但将它们简单连接得到的字符串 $100101011$ 也可以看作是 $18$ 的表示 $10010$ 与 $11$ 的表示 $1011$ 的连接.  
+因此, 如果使用这种简单连接方式, 我们将无法判断字符串 $100101011$ 是表示 $4/43$ 还是 $18/11$.  
 
-We tackle this by giving a general representation for _pairs of strings_.
-If we were using a pen and paper, we would just use a separator symbol such as  $\|$ to represent, for example, the pair consisting of the numbers represented by $10$ and $110001$ as the length-$9$ string "$10\|110001$".
-In other words, there is a one to one map $F$ from _pairs of strings_ $x,y \in \{0,1\}^*$ into a single string $z$ over the alphabet   $\Sigma = \{0,1,\| \}$ (in other words, $z\in \Sigma^*$).
-Using such separators is similar to the way we use spaces and punctuation to separate words in English.
-By adding a little redundancy, we achieve the same effect in the digital domain.
-We can map the three-element set $\Sigma$ to the three-element set $\{00,11,01 \} \subset \{0,1\}^2$ in a one-to-one fashion, and hence encode a length $n$ string $z\in \Sigma^*$  as a length $2n$ string $w\in \{0,1\}^*$.
+我们通过给 **字符串对** 提供通用表示来解决这个问题.  
+如果使用纸笔, 我们只需使用一个分隔符号如 $\|$, 将表示数字 $10$ 和 $110001$ 的一对数字表示为长度为 9 的字符串 "$10\|110001$".  
+换句话说, 存在一个一一对应的映射 $F$, 将 **字符串对** $x,y \in \{0,1\}^*$ 映射为一个在字母表 $\Sigma = \{0,1,\|\}$ 上的单个字符串 $z$ (即 $z \in \Sigma^*$).  
+使用分隔符类似于英语中使用空格和标点来分隔单词.  
+通过增加少量冗余, 我们可以在数字领域实现同样的效果.  
+我们可以将三元素集合 $\Sigma$ 映射到三元素集合 $\{00,11,01\} \subset \{0,1\}^2$ 并保持一一对应, 从而将长度为 $n$ 的字符串 $z \in \Sigma^*$ 编码为长度为 $2n$ 的字符串 $w \in \{0,1\}^*$.  
 
-Our final representation for rational numbers is obtained by composing the following steps:
+我们对有理数的最终表示通过以下步骤组合得到:  
 
-1. Representing a (potentially negative) rational number as a pair of integers $a,b$ such that $r=a/b$.
-2. Representing an integer by a string via the binary representation.
-3. Combining 1 and 2 to obtain a representation of a rational number as a pair of strings.
-4. Representing a pair of strings over $\{0,1\}$ as a single string over $\Sigma = \{0,1,\|\}$.
-5. Representing a string over $\Sigma$ as a longer string over $\{0,1\}$.
+1. 将一个(可能为负的)有理数表示为一对整数 $a,b$, 使得 $r = a/b$.  
+2. 将整数表示为二进制字符串.  
+3. 将步骤 1 和 2 结合, 得到有理数作为字符串对的表示.  
+4. 将 $\{0,1\}$ 上的字符串对表示为 $\Sigma = \{0,1,\|\}$ 上的单个字符串.  
+5. 将 $\Sigma$ 上的字符串表示为更长的 $\{0,1\}$ 字符串.  
 
-::: {.example title="Representing a rational number as a string" #represnumberbypairs}
-Consider the rational number $r=-5/8$.
-We represent $-5$ as $1101$ and $+8$ as $01000$, and so we can represent $r$ as the _pair_ of strings $(1101,01000)$ and represent this pair as the length $10$ string $1101\|01000$ over the alphabet  $\{0,1,\|\}$.
-Now, applying the map $0 \mapsto 00$, $1\mapsto 11$, $\| \mapsto 01$, we can represent the latter string as the length $20$ string  $s=11110011010011000000$ over the alphabet $\{0,1\}$.
+
+::: {.example title="将一个有理数表示为字符串" #represnumberbypairs}
+考虑有理数 $r=-5/8$.  
+我们将 $-5$ 表示为 $1101$, $+8$ 表示为 $01000$, 因此可以将 $r$ 表示为字符串对 $(1101,01000)$, 并将该字符串对表示为字母表 $\{0,1,\|\}$ 上长度为 10 的字符串 $1101\|01000$.  
+
+现在, 通过映射 $0 \mapsto 00$, $1 \mapsto 11$, $\| \mapsto 01$, 我们可以将该字符串表示为字母表 $\{0,1\}$ 上长度为 20 的字符串 $s=11110011010011000000$.  
+
 :::
 
-The same idea can be used to represent triples of strings, quadruples, and so on as a string.
-Indeed, this is one instance of a very general principle that we use time and again in both the theory and practice of computer science (for example, in Object Oriented programming):
+同样的思想可以用来表示字符串三元组、四元组, 甚至更多, 作为单个字符串.  
+实际上, 这是一个非常通用的原则的实例, 我们会在计算机科学的理论与实践中反复使用它(例如, 在面向对象编程中):  
 
 ::: { .bigidea #representtuplesidea }
-If we can represent objects of type $T$ as strings, then we can represent tuples of objects of type $T$ as strings as well.
+如果我们可以将类型为 $T$ 的对象表示为字符串, 那么我们也可以将类型为 $T$ 的对象元组表示为字符串.  
 :::
 
-Repeating the same idea, once we can represent objects of type $T$, we can also represent _lists of lists_ of such objects, and even lists of lists of lists and so on and so forth.
-We will come back to this point when we discuss _prefix free encoding_ in [prefixfreesec](){.ref}.
+重复同样的思想, 一旦我们可以表示类型为 $T$ 的对象, 我们也可以表示这些对象的 **列表的列表**, 甚至是列表的列表的列表, 如此类推.  
+当我们讨论 [prefixfreesec](){.ref} 中的 **前缀无歧义编码 (prefix free encoding)** 时, 我们会再次回到这一点.  
 
-## Representing real numbers
 
-The set of _real numbers_ $\R$ contains all numbers including positive, negative, and fractional, as well as _irrational_ numbers such as $\pi$ or $e$.
-Every real number can be approximated by a rational number, and thus we can represent every real number $x$ by a rational number $a/b$ that is very close to $x$.
-For example, we can represent $\pi$ by $22/7$ within an error of about $10^{-3}$.  If we want a smaller error (e.g., about $10^{-4}$) then we can use $311/99$, and so on and so forth.
+## 实数的表示
 
-![The floating-point representation of a real number <span class=](../figure/floatingpoint.png)x\in \Rx\in \R is its approximation as a number of the form $$ where $$, $$ is an (potentially negative) integer, and $$ is a rational number between $$ and $$ expressed as a binary fraction $$ for some $$ (that is $$). Commonly-used floating-point representations fix the numbers  $$ and $$  of bits to represent $$ and $$ respectively. In the example above, assuming we use two's complement representation for $$, the number represented is $$." />{#floatingpointfig}
+**实数集** $\R$ 包含所有正数、负数、分数，以及像 $\pi$ 或 $e$ 这样的 **无理数**.  
+每个实数都可以用有理数近似, 因此我们可以用一个接近 $x$ 的有理数 $a/b$ 来表示实数 $x$.  
+例如, 我们可以用 $22/7$ 来表示 $\pi$, 误差约为 $10^{-3}$. 若希望误差更小(例如约 $10^{-4}$)，可以使用 $311/99$, 以此类推.  
 
-The above representation of real numbers via rational numbers that approximate them is a fine choice for a representation scheme.
-However, typically in computing applications, it is more common to use the _floating-point representation scheme_   (see [floatingpointfig](){.ref}) to represent real numbers.
-In the floating-point representation scheme we represent $x\in \R$ by the pair $(b,e)$ of (positive or negative) integers of some prescribed sizes (determined by the desired accuracy) such that $b \times 2^{e}$ is closest to $x$.
-Floating-point representation is the base-two version of  [scientific notation](https://goo.gl/MUJnVE), where one represents a number $y\in R$ as its approximation of the form $b \times 10^e$ for  $b,e$.
-It is called "floating-point"  because we can think of the number $b$ as specifying a sequence of binary digits, and $e$ as describing the location of the "binary point" within this sequence.
-The use of floating representation is the reason why in many programming systems, printing the expression `0.1+0.2` will result in `0.30000000000000004` and not `0.3`, see [here](http://floating-point-gui.de/), [here](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html) and [here](https://randomascii.wordpress.com/2012/04/05/floating-point-complexities/) for more.
+![实数 $x\in \R$ 的浮点表示](../figure/floatingpoint.png)  
+实数通过近似有理数来表示是一个可行的表示方案.  
+
+然而, 在计算机应用中, 通常更常用 **浮点表示法** (参见 [floatingpointfig](){.ref}) 来表示实数.  
+在浮点表示法中, 我们用一对 $(b,e)$ 表示 $x \in \R$, 其中 $b$ 和 $e$ 是某些规定长度的(可能为正或负的)整数, 并且 $b \times 2^{e}$ 最接近 $x$.  
+浮点表示是 [科学计数法](https://goo.gl/MUJnVE) 的二进制版本, 即将一个数字 $y \in \R$ 表示为 $b \times 10^e$ 的近似.  
+称之为"浮点"是因为可以将 $b$ 看作指定一串二进制数字, $e$ 描述这串数字中"二进制小数点"的位置.  
+
+正是浮点表示的使用, 导致许多编程系统中, 表达式 `0.1+0.2` 的输出为 `0.30000000000000004` 而不是 `0.3`.  
+更多信息可见: [这里](http://floating-point-gui.de/), [这里](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html), [这里](https://randomascii.wordpress.com/2012/04/05/floating-point-complexities/).  
+
 
 ![XKCD cartoon on floating-point arithmetic.](../figure/e_to_the_pi_minus_pi.png){#xkcdfloatingfig .margin  }
 
-The reader might be (rightly) worried about the fact that the floating-point representation (or the rational number one) can only _approximately_ represent real numbers.
-In many (though not all) computational applications, one can make the accuracy tight enough so that this does not affect the final result, though sometimes we do need to be careful.
-Indeed, floating-point bugs can sometimes be no joking matter.
-For example, floating-point rounding errors have been implicated in the   [failure](http://embeddedgurus.com/barr-code/2014/03/lethal-software-defects-patriot-missile-failure/) of a U.S. Patriot missile to intercept an Iraqi Scud missile, costing 28 lives, as well as a 100 million pound error in computing [payouts to British pensioners](https://catless.ncl.ac.uk/Risks/5/74).
+读者可能会(合理地)担心, 浮点表示法(或有理数表示法)只能 **近似** 表示实数.  
+在许多(但不是全部)计算应用中, 可以将精度调得足够高, 以至于不会影响最终结果.  
 
-## Cantor's Theorem, countable sets, and string representations of the real numbers
+但有时我们仍需要谨慎. 事实上, 浮点数错误有时可能造成严重后果.  
+例如, 浮点舍入误差曾导致美国爱国者导弹未能拦截伊拉克飞毛腿导弹, 造成 28 人死亡 ([详细报道](http://embeddedgurus.com/barr-code/2014/03/lethal-software-defects-patriot-missile-failure/)), 以及在计算 [英国养老金发放金额](https://catless.ncl.ac.uk/Risks/5/74) 时出现过的 1 亿英镑的错误.
+
+## Cantor定理, 可数集, 以及实数的字符串表示
 
 ::: {.quote}
-_"For any collection of fruits, we can make more fruit salads than there are fruits. If not, we could label each salad with a different fruit, and consider the salad of all fruits not in their salad. The label of this salad is in it if and only if it is not."_, [Martha Storey](https://twitter.com/JDHamkins/status/1266278627018043392).
+_"对于任意一组水果, 我们可以制作的水果沙拉数量总可以比水果数量更多. 如果不是这样, 我们可以给每个沙拉贴上一个不同水果的标签, 最后再考虑这样一个沙拉, 它包含所有未被标签所指的水果, 那么某个水果恰好在这个沙拉的标签中当且仅当它不在其中."_ — [Martha Storey](https://twitter.com/JDHamkins/status/1266278627018043392)
+
 :::
 
-Given the issues with floating-point approximations for real numbers,
-a natural question is whether it is possible to represent real numbers _exactly_ as strings.
-Unfortunately, the following theorem shows that this cannot be done:
+鉴于浮点数对实数的近似问题, 一个自然的问题是: 是否可以将实数 **精确地** 表示为字符串.  
+不幸的是, 下述定理表明这是不可能的:  
 
-There does not exist a one-to-one function $RtS:\R \rightarrow \{0,1\}^*$.^[$RtS$ stands for "real numbers to strings".]
+不存在一一对应的函数 $RtS:\R \rightarrow \{0,1\}^*$.^[其中 $RtS$ 代表 "real numbers to strings".]  
 
-__Countable sets.__ We say that a set $S$ is _countable_ if there is an onto map $C:\N \rightarrow S$, or in other words, we can write $S$ as the sequence
-$C(0),C(1),C(2),\ldots$.
-Since the binary representation yields an onto map from $\{0,1\}^*$ to $\N$, and the composition of two onto maps is onto,
-a set $S$ is countable iff there is an onto map from $\{0,1\}^*$ to $S$.
-Using the basic properties of functions (see [functionsec](){.ref}), a set is countable if and only if there is a one-to-one function
-from $S$ to $\{0,1\}^*$.
-Hence, we can rephrase [cantorthm](){.ref} as follows:
+__可数集.__ 我们说一个集合 $S$ 是 **可数的**, 如果存在一个满射 $C:\N \rightarrow S$, 或者换句话说, 我们可以将 $S$ 写成序列  
+$C(0), C(1), C(2), \ldots$.  
+由于二进制表示给出了从 $\{0,1\}^*$ 到 $\N$ 的满射, 并且两个满射的复合仍然是满射, 集合 $S$ 是可数的当且仅当存在从 $\{0,1\}^*$ 到 $S$ 的满射.
+利用函数的基本性质(见 [functionsec](){.ref}), 一个集合可数当且仅当存在从 $S$ 到 $\{0,1\}^*$ 的一一函数.  
 
-The reals are uncountable. That is, there does not exist an onto function $NtR:\N \rightarrow \R$.
+因此, 我们可以将 [cantorthm](){.ref} 重述如下:  
 
-[cantorthmtwo](){.ref} was proven by [Georg Cantor](https://en.wikipedia.org/wiki/Georg_Cantor) in 1874.
-This result (and the theory around it) was quite shocking to mathematicians at the time.
-By showing that there is no one-to-one map from $\R$ to $\{0,1\}^*$ (or $\N$), Cantor showed that these two infinite sets have "different forms of infinity" and that the set of real numbers $\R$ is in some sense "bigger"  than the infinite set $\{0,1\}^*$.
-The notion that there are "[shades of infinity](https://www.youtube.com/watch?v=SrU9YDoXE88)" was deeply disturbing to mathematicians and philosophers at the time.
-The philosopher Ludwig Wittgenstein (whom we mentioned before) called Cantor's results "utter nonsense" and "laughable."
-Others thought they were even worse than that.
-Leopold Kronecker called Cantor a "corrupter of youth," while Henri Poincaré said that Cantor's ideas "should be banished from mathematics once and for all."
-The tide eventually turned, and these days Cantor's work is universally accepted as the cornerstone of set theory and the foundations of mathematics.
-As David Hilbert said in 1925, _"No one shall expel us from the paradise which Cantor has created for us."_
-As we will see later in this book, Cantor's ideas also play a huge role in the theory of computation.
+**实数是不可数的**. 也就是说, 不存在从 $\N$ 到 $\R$ 的满射 $NtR:\N \rightarrow \R$.  
 
-Now that we have discussed [cantorthm](){.ref}'s importance, let us see the proof.
-It is achieved in two steps:
+[cantorthmtwo](){.ref} 由 [Georg Cantor](https://en.wikipedia.org/wiki/Georg_Cantor) 于 1874 年证明.  
+这一结果(以及相关结论)震惊了当时的数学家. 通过证明不存在从 $\R$ 到 $\{0,1\}^*$(或 $\N$)的一一映射, Cantor 展示了这两个无限集合有"不同的无限形式", 并且实数集 $\R$ 在某种意义上比无限集合 $\{0,1\}^*$ "更大".  
+"无限的层次"这一概念当时让数学家和哲学家深感困惑. 哲学家 Ludwig Wittgenstein(前面提到过)称 Cantor 的结果为"完全的胡扯"且"可笑", 其他人甚至认为更糟: Leopold Kronecker 称 Cantor 是"腐蚀青年的人", 而 Henri Poincaré 说 Cantor 的思想"应从数学中彻底剔除".
+不过事实证明 Cantor 看得更远. 如今 Cantor 的工作已被普遍接受为集合论和数学基础的基石.  
+正如 David Hilbert 在 1925 年所说, _"无人能将我们从 Cantor 为我们创造的天堂中驱逐出去"_.  
+也正如我们稍后将在本书中看到的, Cantor 的思想在计算理论中也起着重要作用.  
 
-1. Define some infinite set $\mathcal{X}$ for which it is easier for us to prove that $\mathcal{X}$ is not countable (namely,  it's easier for us to prove that there is no one-to-one function from  $\mathcal{X}$ to $\{0,1\}^*$).
-2. Prove that there _is_ a one-to-one function $G$ mapping $\mathcal{X}$ to $\mathbb{R}$.
+我们已经讨论了 [cantorthm](){.ref} 的重要性, 让我们来看看它的证明. 这将分两步进行:  
 
-We can use a proof by contradiction to show that these two facts together imply [cantorthm](){.ref}.
-Specifically, if we assume (towards the sake of contradiction) that there exists some one-to-one $F$ mapping $\mathbb{R}$ to $\{0,1\}^*$, then the function $x \mapsto F(G(x))$ obtained by composing $F$ with the function $G$ from Step 2 above would be a one-to-one function from $\mathcal{X}$ to $\{0,1\}^*$, which contradicts what we proved in Step 1!
+1. 定义一个无限集合 $\mathcal{X}$, 对于它证明不可数更加容易(即证明不存在从 $\mathcal{X}$ 到 $\{0,1\}^*$ 的一一函数更容易).  
+2. 证明存在一个一一函数 $G$ 将 $\mathcal{X}$ 映射到 $\mathbb{R}$.  
 
-To turn this idea into a full proof of [cantorthm](){.ref} we need to:
+利用反证法, 这两条事实结合起来可以推出 [cantorthm](){.ref}.  
+具体来说, 如果假设(为了反证)存在某个一一函数 $F$ 将 $\mathbb{R}$ 映射到 $\{0,1\}^*$,  
+那么通过将 $F$ 与步骤 2 中的函数 $G$ 复合得到的函数 $x \mapsto F(G(x))$ 就是从 $\mathcal{X}$ 到 $\{0,1\}^*$ 的一一函数,  
+这与步骤 1 中的结论矛盾!  
 
-* Define the set $\mathcal{X}$.
-* Prove that there is no one-to-one function from $\mathcal{X}$ to $\{0,1\}^*$
-* Prove that there _is_ a one-to-one function from $\mathcal{X}$ to $\R$.
+为了将这个想法完整地转化为 [cantorthm](){.ref} 的证明, 我们需要:  
 
-We now proceed to do precisely that.
-That is, we will define the set $\{0,1\}^\infty$, which will play the role of $\mathcal{X}$, and then state and prove two lemmas that show that this set satisfies our two desired properties.
+* 定义集合 $\mathcal{X}$.  
+* 证明不存在从 $\mathcal{X}$ 到 $\{0,1\}^*$ 的一一函数.  
+* 证明存在从 $\mathcal{X}$ 到 $\R$ 的一一函数.  
+
+接下来我们将精确地做到这些:  
+我们将定义集合 $\{0,1\}^\infty$, 它将扮演 $\mathcal{X}$ 的角色,  
+然后陈述并证明两个引理, 说明该集合满足我们所需的两个性质.
+
 
 ::: {.definition #bitsinfdef}
-We denote by $\{0,1\}^\infty$ the set  $\{ f \;|\; f:\N \rightarrow \{0,1\} \}$.
+将 $\{0,1\}^\infty$ 定义为集合 $\{ f \;|\; f:\N \rightarrow \{0,1\} \}$.
 :::
 
-That is, $\{0,1\}^\infty$ is a set of _functions_, and a function $f$ is in $\{0,1\}^\infty$ iff its domain is $\N$ and its codomain is $\{0,1\}$.
-We can also think of $\{0,1\}^\infty$ as the set of all infinite _sequences_ of bits, since a function $f:\N \rightarrow \{0,1\}$ can be identified with the sequence $(f(0),f(1),f(2),\ldots )$.
-The following two lemmas show that $\{0,1\}^\infty$ can play the role of $\mathcal{X}$ to establish [cantorthm](){.ref}.
+简单来说, $\{0,1\}^\infty$ 是一个 **函数的集合**, 并且一个函数 $f$ 属于 $\{0,1\}^\infty$ 当且仅当它的定义域是 $\N$ 而值域是 $\{0,1\}$.  
+我们可以将 $\{0,1\}^\infty$ 理解为所有无限长 **比特序列** 的集合, 因为函数 $f:\N \rightarrow \{0,1\}$ 正好一一对应于无限序列 $(f(0), f(1), f(2), \ldots)$.
 
-There does not exist a one-to-one map $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$.^[$FtS$ stands for "functions to strings".]
+下面两个引理说明, $\{0,1\}^\infty$ 可以作为 $\mathcal{X}$ 来证明 [cantorthm](){.ref}:  
 
-There _does_ exist a one-to-one map $FtR:\{0,1\}^\infty \rightarrow \R$.^[$FtR$ stands for "functions to reals."]
+* 不存在从 $\{0,1\}^\infty$ 到 $\{0,1\}^*$ 的一一映射 $FtS$.^[$FtS$ 代表 "functions to strings".]  
+* 存在从 $\{0,1\}^\infty$ 到 $\R$ 的一一映射 $FtR$.^[$FtR$ 代表 "functions to reals".]  
 
-As we've seen above, [sequencestostrings](){.ref} and [sequencestoreals](){.ref} together imply [cantorthm](){.ref}.
-To repeat the argument more formally, suppose, for the sake of contradiction, that there did exist a one-to-one function $RtS:\R \rightarrow \{0,1\}^*$.
-By [sequencestoreals](){.ref}, there exists a one-to-one function $FtR:\{0,1\}^\infty \rightarrow \R$.
-Thus, under this assumption, since the composition of two one-to-one functions is one-to-one (see [onetoonecompex](){.ref}), the function $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$ defined as $FtS(f)=RtS(FtR(f))$ will be one to one, contradicting [sequencestostrings](){.ref}.
-See [proofofcantorfig](){.ref} for a graphical illustration of this argument.
+如上所示, [sequencestostrings](){.ref} 和 [sequencestoreals](){.ref} 结合起来即可推出 [cantorthm](){.ref}.  
+为了更正式地重复这一论证, 为了反证, 假设存在一一函数 $RtS:\R \rightarrow \{0,1\}^*$.  
+由 [sequencestoreals](){.ref}, 存在一一函数 $FtR:\{0,1\}^\infty \rightarrow \R$.  
+因此, 根据假设, 由于两个一一函数的复合仍是一一函数（见 [onetoonecompex](){.ref}）,  
+函数 $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$ 定义为 $FtS(f)=RtS(FtR(f))$ 将是一一函数,  
+这与 [sequencestostrings](){.ref} 矛盾.  
+参见 [proofofcantorfig](){.ref} 获取该论证的图示说明.
+
 
 ![We prove cantorthm{.ref} by combining sequencestostrings{.ref} and sequencestoreals{.ref}.  sequencestoreals{.ref}, which uses standard calculus tools, shows the existence of a one-to-one map <span class=](../figure/proofofcantor.png)FtRFtR from the set $$ to the real numbers. So, if a hypothetical one-to-one map $$ existed, then we could compose them to get a one-to-one map $$. Yet this contradicts sequencestostrings{.ref}- the heart of the proof- which rules out the existence of such a map." />{#proofofcantorfig }
 
-Now all that is left is to prove these two lemmas.
-We start by proving  [sequencestostrings](){.ref} which is really the heart of [cantorthm](){.ref}.
+现在只剩下证明这两个引理.
+我们先从证明 [sequencestostrings](){.ref} 开始, 这实际上是 [cantorthm](){.ref} 的核心部分.
 
 ![We construct a function <span class=](../figure/diagonalization.png)\overline{d}\overline{d} such that $$ for every $$ by ensuring that $$ for every $$ with lexicographic order $$. We can think of this as building a table where the columns correspond to numbers $$ and the rows correspond to $$ (sorted according to $$). If the entry in the $$-th row and the $$-th column corresponds to $$ where $$ then $$ is obtained by going over the "diagonal" elements in this table (the entries corresponding to the $$-th row and $$-th column) and ensuring that $$. " />{#diagrealsfig   }
 
-__Warm-up: "Baby Cantor".__ The proof of [sequencestostrings](){.ref} is rather subtle. One way to get intuition for it is to consider the following finite statement "there is no onto function $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$". Of course we know it's true since the set $\{0,1\}^{100}$ is bigger than the set $[100]$, but let's see a direct proof. For every $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$, we can define the string $\overline{d} \in \{0,1\}^{100}$ as follows: $\overline{d} = (1-f(0)_0, 1-f(1)_1 , \ldots, 1-f(99)_{99})$. If $f$ was onto, then there would exist some $n\in [100]$ such that $f(n) =\overline{d}$, but we claim that no such $n$ exists.  Indeed, if there was such $n$, then the $n$-th coordinate of $\overline{d}$ would equal $f(n)_n$ but by definition this coordinate equals $1-f(n)_n$. See also a [&#34;proof by code&#34;](https://trinket.io/python/4cff7e58f4) of this statement.
+__Warm-up: "Baby Cantor".__ [sequencestostrings](){.ref} 的证明相当微妙. 一种获得直觉的方法是考虑以下有限版本的陈述: "不存在一个满射函数 $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$". 当然我们知道这是正确的, 因为集合 $\{0,1\}^{100}$ 比集合 $[100]$ 更大, 但让我们来看一个不太直接的证明: 对于任意 $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$, 我们可以定义字符串 $\overline{d} \in \{0,1\}^{100}$ 如下: $\overline{d} = (1-f(0)_0, 1-f(1)_1 , \ldots, 1-f(99)_{99})$. 如果 $f$ 是满射, 那么必然存在某个 $n\in [100]$ 使得 $f(n) =\overline{d}$, 但我们声称不存在这样的 $n$. 实际上, 如果存在这样的 $n$, 那么 $\overline{d}$ 的第 $n$ 个分量应当等于 $f(n)_n$, 但根据定义这个分量等于 $1-f(n)_n$. 另见此陈述的 [“proof by code”](https://trinket.io/python/4cff7e58f4).
 
 <iframe src="https://trinket.io/embed/python/4cff7e58f4" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
 
 ::: {.proof data-ref="sequencestostrings"}
-We will prove that there does not exist an _onto_ function $StF:\{0,1\}^* \rightarrow \{0,1\}^\infty$.
-This implies the lemma since for every two sets $A$ and $B$, there exists an onto function from $A$ to $B$ if and only if there exists a one-to-one function from $B$ to $A$  (see [onetooneimpliesonto](){.ref}).
+我们将证明不存在一个 _满射_ 函数 $StF:\{0,1\}^* \rightarrow \{0,1\}^\infty$.  
+这将推出该引理, 因为对于任意两个集合 $A$ 和 $B$, 当且仅当存在一个从 $B$ 到 $A$ 的一一映射时, 才存在一个从 $A$ 到 $B$ 的满射 (见 [onetooneimpliesonto](){.ref}).  
 
-The technique of this proof is known as the "diagonal argument" and is illustrated in [diagrealsfig](){.ref}.
-We assume, towards a contradiction, that there exists such a function $StF:\{0,1\}^* \rightarrow \{0,1\}^\infty$.
-We will show that $StF$ is not onto by demonstrating a function $\overline{d}\in \{0,1\}^\infty$ such that $\overline{d} \neq StF(x)$ for every $x\in \{0,1\}^*$.
-Consider the lexicographic ordering of binary strings (i.e., $""$,$0$,$1$,$00$,$01$,$\ldots$).
-For every $n\in \N$, we let $x_n$ be the $n$-th string in this order.
-That is $x_0 =""$, $x_1 = 0$, $x_2= 1$ and so on and so forth.
-We define the function $\overline{d} \in \{0,1\}^\infty$ as follows:
+这个证明技巧被称为 "diagonal argument" (对角线论证), 详情可见 [diagrealsfig](){.ref}.  
+为了得到矛盾, 我们假设存在这样一个函数 $StF:\{0,1\}^* \rightarrow \{0,1\}^\infty$. 然后我们通过构造一个函数 $\overline{d}\in \{0,1\}^\infty$, 使得对每个 $x\in \{0,1\}^*$ 都有 $\overline{d} \neq StF(x)$, 来证明 $StF$ 不是满射.
+
+考虑二进制字符串的字典序排列 (即 "", $0$, $1$, $00$, $01$, $\ldots$).  
+对于每个 $n\in \N$, 我们令 $x_n$ 为此顺序中的第 $n$ 个字符串.  
+也就是说 $x_0 = ""$, $x_1 = 0$, $x_2 = 1$ 等等.  
+对每个 $n\in \N$, 我们定义函数 $\overline{d} \in \{0,1\}^\infty$ 如下:
 
 $$
 \overline{d}(n) = 1 - StF(x_n)(n)
 $$
 
-for every $n\in \N$.
-That is,  to compute  $\overline{d}$ on input $n\in\N$, we first compute $g= StF(x_n)$, where $x_n \in \{0,1\}^*$ is the $n$-th string in the lexicographical ordering.
-Since $g \in \{0,1\}^\infty$, it is a function mapping $\N$ to $\{0,1\}$.
-The value $\overline{d}(n)$ is defined to be the negation of $g(n)$.
+也就是说, 为了计算 $\overline{d}$ 在输入 $n\in\N$ 时的值, 我们首先计算 $g= StF(x_n)$, 其中 $x_n \in \{0,1\}^*$ 是字典序中的第 $n$ 个字符串.  
+由于 $g \in \{0,1\}^\infty$, 它是一个将 $\N$ 映射到 $\{0,1\}$ 的函数.  
+值 $\overline{d}(n)$ 被定义为 $g(n)$ 的取反.  
 
-The definition of the function $\overline{d}$ is a bit subtle.
-One way to think about it is to imagine the function $StF$ as being specified by an infinitely long table, in which every row corresponds to a string $x\in \{0,1\}^*$ (with strings sorted in lexicographic order), and contains the sequence $StF(x)(0), StF(x)(1), StF(x)(2),\ldots$.
-The _diagonal_ elements in this table   are the values
+函数 $\overline{d}$ 的定义有些微妙.  
+一种理解方式是将函数 $StF$ 想象为由一张无限长的表格指定, 其中每一行对应一个字符串 $x\in \{0,1\}^*$ (字符串按字典序排列), 并包含序列 $StF(x)(0), StF(x)(1), StF(x)(2),\ldots$.  
+然后, 我们取该表格中的 _对角线_ 元素如下:
 
 $$
 StF("")(0),StF(0)(1),StF(1)(2),StF(00)(3), StF(01)(4),\ldots
 $$
 
-which correspond to the elements $StF(x_n)(n)$ in the $n$-th row and $n$-th column of this table for $n=0,1,2,\ldots$.
-The function $\overline{d}$ we defined above maps every $n\in \N$ to the negation of the $n$-th diagonal value.
+这些元素对应于表格中第 $n$ 行第 $n$ 列的 $StF(x_n)(n)$, 对于 $n=0,1,2,\ldots$.  
+我们上面定义的函数 $\overline{d}$ 将每个 $n\in \N$ 映射到第 $n$ 个对角线元素的取反值.  
 
-To complete the proof that $StF$ is not onto we need to show that $\overline{d} \neq StF(x)$ for every $x\in \{0,1\}^*$.
-Indeed, let $x\in \{0,1\}^*$ be some string and let $g = StF(x)$.
-If $n$ is the position of $x$ in the lexicographical order then by construction $\overline{d}(n) = 1-g(n) \neq g(n)$ which means that $g \neq \overline{d}$ which is what we wanted to prove.
+为了完成 $StF$ 不是满射的证明, 我们需要说明对每个 $x\in \{0,1\}^*$ 都有 $\overline{d} \neq StF(x)$.  
+事实上, 令 $x\in \{0,1\}^*$ 为某个字符串, 并令 $g = StF(x)$.  
+如果 $n$ 是 $x$ 在字典序中的位置, 则根据构造有 $\overline{d}(n) = 1-g(n) \neq g(n)$, 这意味着 $g \neq \overline{d}$, 这正是我们需要的.
 :::
 
-::: {.remark title="Generalizing beyond strings and reals" #generalizepowerset}
-[sequencestostrings](){.ref} doesn't really have much to do with the natural numbers or the strings.
-An examination of the proof shows that it really shows that for _every_ set $S$, there is no one-to-one map $F:\{0,1\}^S \rightarrow S$ where $\{0,1\}^S$ denotes the set $\{ f \;|\; f:S \rightarrow \{0,1\} \}$ of all Boolean functions with domain $S$.
-Since we can identify a subset $V \subseteq S$ with its characteristic function $f=1_V$ (i.e., $1_V(x)=1$ iff $x\in V$), we can think of $\{0,1\}^S$ also as the set of all _subsets_ of $S$.
-This subset is sometimes called the _power set_ of $S$ and denoted by $\mathcal{P}(S)$ or $2^S$.
+::: {.remark title="推广到字符串或实数以外" #generalizepowerset}
+[sequencestostrings](){.ref} 实际上与自然数或字符串没有太大关系.  
+仔细审视这个证明可以发现, 它实际上说明对于 _任意_ 集合 $S$, 不存在一个一一映射 $F:\{0,1\}^S \rightarrow S$, 其中 $\{0,1\}^S$ 表示所有以 $S$ 为定义域的布尔函数的集合 $\{ f \;|\; f:S \rightarrow \{0,1\} \}$.  
+由于我们可以将子集 $V \subseteq S$ 与其特征函数 $f=1_V$ 对应 (即 $1_V(x)=1$ 当且仅当 $x\in V$), 我们也可以将 $\{0,1\}^S$ 看作 $S$ 的所有 _子集_ 的集合.  
+这个子集集合有时被称为 $S$ 的 _幂集_, 记作 $\mathcal{P}(S)$ 或 $2^S$.  
 
-The proof of [sequencestostrings](){.ref} can be generalized to show that there is no one-to-one map between a set and its power set.
-In particular, it means that the set $\{0,1\}^\R$ is "even bigger" than $\R$.
-Cantor used these ideas to construct an infinite hierarchy of shades of infinity.
-The number of such shades turns out to be much larger than $|\N|$ or even $|\R|$.
-He denoted the cardinality of $\N$ by  $\aleph_0$ and denoted the next largest infinite number by $\aleph_1$. ($\aleph$ is the first letter in the Hebrew alphabet.)
-Cantor also made the [continuum hypothesis](https://en.wikipedia.org/wiki/Continuum_hypothesis) that $|\R|=\aleph_1$.
-We will come back to the fascinating story of this hypothesis later on in this book.
-[This lecture of Aaronson](https://www.scottaaronson.com/democritus/lec2.html) mentions some of these issues (see also [this Berkeley CS 70 lecture](http://www.fa19.eecs70.org/static/notes/n10.pdf)).
+[sequencestostrings](){.ref} 的证明可以推广, 说明不存在一个集合与其幂集之间的一一映射.  
+特别地, 这意味着集合 $\{0,1\}^\R$ “比” $\R$ 更大.  
+Cantor 利用这些思想构建了无限的无穷层级.  
+这些无穷的数量远大于 $|\N|$ 甚至 $|\R|$.  
+他将 $\N$ 的基数记作 $\aleph_0$, 并将下一个更大的无限数记作 $\aleph_1$ ($\aleph$ 是希伯来字母表的第一个字母).  
+Cantor 还提出了 [连续统假设](https://en.wikipedia.org/wiki/Continuum_hypothesis), 即 $|\R|=\aleph_1$.  
+我们将在本书后续回到这个假设背后的精彩故事.  
+[Aaronson 的这节讲座](https://www.scottaaronson.com/democritus/lec2.html) 提到了一些相关问题 (另见 [Berkeley CS 70 lecture](http://www.fa19.eecs70.org/static/notes/n10.pdf)).
+
 :::
 
-To complete the proof of [cantorthm](){.ref}, we need to show [sequencestoreals](){.ref}.
-This requires some calculus background but is otherwise straightforward.
-If you have not had much experience with limits of a real series before, then the formal proof below might be a little hard to follow.
-This part is not the core of Cantor's argument, nor are such limits important to the remainder of this book, so you can feel free to take [sequencestoreals](){.ref} on faith and skip the proof.
+为了完成 [cantorthm](){.ref} 的证明, 我们需要证明 [sequencestoreals](){.ref}.  
+这个证明虽然需要一些微积分基础, 但使用了的地方都比较直接易懂.  
+不过如果你之前处理实数列极限的经验不多, 那么下面的证明还是可能会有些难以理解.  
+当然, 这部分并非 Cantor 论证的核心, 此类极限对于本书后续内容也不重要, 因此你完全可以选择相信 [sequencestoreals](){.ref} 并跳过这些繁琐的证明.
 
 ::: {.proofidea data-ref="sequencestoreals"}
-We define $FtR(f)$ to be the number between $0$ and $2$ whose decimal expansion is $f(0).f(1) f(2) \ldots$, or in other words  $FtR(f) = \sum_{i=0}^{\infty} f(i) \cdot 10^{-i}$.
-If $f$ and $g$ are two distinct functions in $\{0,1\}^\infty$, then there must be some input $k$ in which they disagree.
-If we take the minimum such $k$, then the numbers $f(0).f(1) f(2) \ldots f(k-1) f(k) \ldots$ and $g(0) . g(1) g(2) \ldots g(k) \ldots$ agree with each other all the way up to the $k-1$-th digit after the decimal point, and disagree on the $k$-th digit.
-But then these numbers must be distinct.
-Concretely, if $f(k)=1$ and $g(k)=0$ then the first number is larger than the second, and otherwise ($f(k)=0$ and $g(k)=1$) the first number is smaller than the second.
-In the proof we have to be a little careful since these are numbers with _infinite expansions_. For example, the number one half has two decimal expansions $0.5$ and $0.49999\cdots$. However, this issue does not come up here, since we restrict attention only to numbers with decimal expansions that do not involve the digit $9$.
+我们定义 $FtR(f)$ 为介于 $0$ 和 $2$ 之间的数, 其十进制展开为 $f(0).f(1) f(2) \ldots$, 换句话说, $FtR(f) = \sum_{i=0}^{\infty} f(i) \cdot 10^{-i}$.  
+如果 $f$ 和 $g$ 是 $\{0,1\}^\infty$ 中的两个不同函数, 那么必然存在某个输入 $k$ 使它们在该输入上不一致.  
+取最小的这样的 $k$, 那么数字 $f(0).f(1) f(2) \ldots f(k-1) f(k) \ldots$ 与 $g(0).g(1) g(2) \ldots g(k) \ldots$ 在小数点后的第 $0$ 到 $k-1$ 位完全相同, 并在第 $k$ 位上不同.  
+因此这些数字必然不同.  
+具体来说, 如果 $f(k)=1$ 且 $g(k)=0$, 则第一个数字大于第二个; 否则 ($f(k)=0$ 且 $g(k)=1$) 第一个数字小于第二个.  
+在证明中我们需要稍微注意, 因为某些数字可以被 _无限展开_, 例如, 数字 $\frac{1}{2}$ 有两种十进制展开: $0.5$ 和 $0.49999\cdots$.  
+但在这里不会出现这个问题, 因为按上述定义, 我们使用的数字的十进制展开中永远不会包含数字 $9$.
+
 :::
 
 ::: {.proof data-ref="sequencestoreals"}
-For every $f \in \{0,1\}^\infty$,  we define $FtR(f)$ to be the number whose decimal expansion is $f(0).f(1)f(2)f(3)\ldots$.
-Formally,
+对于每个 $f \in \{0,1\}^\infty$, 我们定义 $FtR(f)$ 为其十进制展开为 $f(0).f(1)f(2)f(3)\ldots$ 的数字.  
+形式上,
 
 $$
 FtR(f) = \sum_{i=0}^\infty f(i) \cdot 10^{-i} \label{eqcantordecimalexpansion}
 $$
 
-It is a known result in calculus (whose proof we will not repeat here) that the series on the right-hand side of [eqcantordecimalexpansion](){.eqref} converges to a definite limit in $\mathbb{R}$.
+在微积分中有一个已知结论(这里我们不重复证明): [eqcantordecimalexpansion](){.eqref} 右侧的级数在 $\mathbb{R}$ 中收敛到一个确定的极限.  
 
-We now prove that $FtR$ is one to one.
-Let $f,g$ be two distinct functions in $\{0,1\}^\infty$.
-Since $f$ and $g$ are distinct, there must be some input on which they differ, and we define $k$ to be the smallest such input and assume without loss of generality that
-$f(k)=0$ and $g(k)=1$.
-(Otherwise, if $f(k)=1$ and $g(k)=0$, then we can simply switch the roles of $f$ and $g$.)
-The numbers $FtR(f)$ and $FtR(g)$ agree with each other up to the $k-1$-th digit up after the decimal point.
-Since this digit equals $0$ for $FtR(f)$  and equals $1$ for $FtR(g)$, we claim that $FtR(g)$ is bigger than $FtR(f)$ by at least $0.5 \cdot 10^{-k}$.
-To see this note that the difference $FtR(g)-FtR(f)$ will be minimized if   $g(\ell)=0$ for every $\ell>k$  and $f(\ell)=1$ for every $\ell>k$, in which case (since $f$ and $g$ agree up to the $k-1$-th digit)
+现在我们证明 $FtR$ 是一一映射.  
+设 $f,g$ 是 $\{0,1\}^\infty$ 中的两个不同函数.  
+由于 $f$ 和 $g$ 不同, 必然存在某个输入它们的值不同, 我们令 $k$ 为最小的这样的输入, 并且不失一般性地假设 $f(k)=0$ 且 $g(k)=1$.  
+(否则, 如果 $f(k)=1$ 且 $g(k)=0$, 我们可以简单地交换 $f$ 和 $g$ 的角色.)  
+数字 $FtR(f)$ 和 $FtR(g)$ 在小数点后的前 $k-1$ 位完全相同.  
+由于这第 $k$ 位在 $FtR(f)$ 中为 $0$ 而在 $FtR(g)$ 中为 $1$, 我们声称 $FtR(g)$ 比 $FtR(f)$ 至少大 $0.5 \cdot 10^{-k}$.  
+要理解这一点, 注意 $FtR(g)-FtR(f)$ 的差值在以下情况下最小: 对于所有 $\ell>k$, $g(\ell)=0$ 且 $f(\ell)=1$, 此时(由于 $f$ 和 $g$ 在前 $k-1$ 位相同)
+
 
 $$
 FtR(g)-FtR(f) = 10^{-k} - 10^{-k-1} - 10^{-k-2} - 10^{-k-3} - \cdots \label{eqcantordecimalexpansion2}
 $$
 
-Since the infinite series $\sum_{i=0}^{\infty} 10^{-i}$ converges to $10/9$, it follows that for every such $f$ and $g$, $FtR(g) - FtR(f) \geq 10^{-k} - 10^{-k-1}\cdot (10/9) > 0$.
-In particular we see that for every distinct $f,g \in \{0,1\}^\infty$, $FtR(f) \neq FtR(g)$, implying that the function $FtR$ is one to one.
+由于无穷级数 $\sum_{i=0}^{\infty} 10^{-i}$ 收敛到 $10/9$, 可得对于每一对这样的 $f$ 和 $g$, $FtR(g) - FtR(f) \geq 10^{-k} - 10^{-k-1}\cdot (10/9) > 0$.  
+特别地, 我们看到对于每一对不同的 $f,g \in \{0,1\}^\infty$, $FtR(f) \neq FtR(g)$, 从而函数 $FtR$ 是一一映射.
+
 :::
 
-::: {.remark title="Using decimal expansion (optional)" #decimal}
-In the proof above we used the fact that $1 + 1/10 + 1/100 + \cdots$ converges to $10/9$, which plugging into [eqcantordecimalexpansion2](){.eqref} yields that the difference between $FtR(g)$ and $FtR(h)$ is at least $10^{-k} - 10^{-k-1}\cdot (10/9) > 0$.
-While the choice of the decimal representation for $FtR$ was arbitrary, we could not have used the binary representation in its place.
-Had we used the _binary_ expansion instead of decimal, the corresponding sequence $1 + 1/2 + 1/4 + \cdots$ converges to $2/1=2$, and since $2^{-k} = 2^{-k-1} \cdot 2$, we could not have deduced that $FtR$ is one to one.
-Indeed there do exist pairs of distinct sequences $f,g\in \{0,1\}^\infty$ such that $\sum_{i=0}^\infty f(i)2^{-i} = \sum_{i=0}^\infty g(i)2^{-i}$.
-(For example, the sequence $1,0,0,0,\ldots$ and the sequence $0,1,1,1,\ldots$ have this property.)
+::: {.remark title="十进制展开的使用(选读)" #decimal}
+在上面的证明中, 我们使用了级数 $1 + 1/10 + 1/100 + \cdots$ 收敛到 $10/9$ 的事实, 将其代入 [eqcantordecimalexpansion2](){.eqref} 可得 $FtR(g)$ 与 $FtR(h)$ 的差值至少为 $10^{-k} - 10^{-k-1}\cdot (10/9) > 0$.  
+虽然我们为 $FtR$ 选择的十进制表示是任意的, 但我们不能用二进制表示代替.  
+如果使用 _binary_ 展开而非十进制, 相应的级数 $1 + 1/2 + 1/4 + \cdots$ 收敛到 $2/1=2$, 并且由于 $2^{-k} = 2^{-k-1} \cdot 2$, 我们无法推导出 $FtR$ 是一一映射.  
+事实上, 确实存在一些不同的序列对 $f,g\in \{0,1\}^\infty$ 满足 $\sum_{i=0}^\infty f(i)2^{-i} = \sum_{i=0}^\infty g(i)2^{-i}$.  
+(例如, 序列 $1,0,0,0,\ldots$ 与序列 $0,1,1,1,\ldots$ 就具有此性质.)
+
 :::
 
-### Corollary: Boolean functions are uncountable
+### 推论: 布尔函数全体不可数.
 
-Cantor's Theorem yields the following corollary that we will use several times in this book: the set of all _Boolean functions_ (mapping $\{0,1\}^*$
-to $\{0,1\}$) is not countable:
+Cantor 定理得出如下推论, 我们将在本书中多次使用: 所有 _Boolean functions_（将 $\{0,1\}^*$ 映射到 $\{0,1\}$ 的函数）构成的集合是不可数的.  
 
-Let $ALL$ be the set of all functions $F:\{0,1\}^* \rightarrow \{0,1\}$.
-Then $ALL$ is uncountable. Equivalently, there does not exist an onto map $StALL:\{0,1\}^* \rightarrow ALL$.
+设 $ALL$ 为所有函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 的集合.  
+则 $ALL$ 是不可数的. 等价地, 不存在一个满射 $StALL:\{0,1\}^* \rightarrow ALL$.  
 
-This is a direct consequence of [sequencestostrings](){.ref}, since we can use the binary representation to show a one-to-one map
-from $\{0,1\}^\infty$ to $ALL$. Hence the uncountability of $\{0,1\}^\infty$ implies the uncountability  of $ALL$.
+这是 [sequencestostrings](){.ref} 的直接推论, 因为我们可以用二进制表示构造一个从 $\{0,1\}^\infty$ 到 $ALL$ 的一一映射. 因此, $\{0,1\}^\infty$ 的不可数性意味着 $ALL$ 的不可数性.
+
 
 ::: {.proof data-ref="uncountalbefuncthm"}
-Since $\{0,1\}^\infty$ is uncountable, the result will follow by showing a one-to-one map from $\{0,1\}^\infty$ to $ALL$.
-The reason is that the existence of such a map implies that if $ALL$ was countable, and hence there was a one-to-one map from $ALL$ to $\N$, then there would have been a one-to-one map from $\{0,1\}^\infty$ to $\N$, contradicting [sequencestostrings](){.ref}.
+由于 $\{0,1\}^\infty$ 是不可数的, 我们只需展示一个从 $\{0,1\}^\infty$ 到 $ALL$ 的一一映射, 便可得到该结论.  
+原因在于, 这样的映射存在意味着如果 $ALL$ 是可数的, 从而存在一个从 $ALL$ 到 $\N$ 的一一映射, 那么就会存在一个从 $\{0,1\}^\infty$ 到 $\N$ 的一一映射, 与 [sequencestostrings](){.ref} 矛盾.  
 
-We now show this one-to-one map. We simply map a function $f \in \{0,1\}^\infty$ to the function $F:\{0,1\}^* \rightarrow \{0,1\}$ as follows.
-We let $F(0)=f(0)$, $F(1)=f(1)$, $F(10)=f(2)$, $F(11)=f(3)$ and so on and so forth.
-That is, for every $x\in \{0,1\}^*$ that represents a natural number $n$ in the binary basis, we define $F(x)=f(n)$.
-If $x$ does not represent such a number (e.g., it has a leading zero), then we set $F(x)=0$.
+现在我们展示这个一一映射. 我们简单地将一个函数 $f \in \{0,1\}^\infty$ 映射到函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 如下.  
+我们令 $F(0)=f(0)$, $F(1)=f(1)$, $F(10)=f(2)$, $F(11)=f(3)$ 等等.  
+也就是说, 对于每个 $x\in \{0,1\}^*$, 如果它在二进制下表示自然数 $n$, 我们定义 $F(x)=f(n)$.  
+如果 $x$ 不表示这样的数字（例如, 它有前导零）, 则我们令 $F(x)=0$.  
 
-This map is one-to-one since if $f \neq g$ are two distinct elements in $\{0,1\}^\infty$, then there must be some input $n\in \N$ on which $f(n) \neq g(n)$.
-But then if $x\in \{0,1\}^*$ is the string representing $n$, we see that $F(x) \neq G(x)$ where $F$ is the function in $ALL$ that $f$ mapped to, and $G$ is the function that $g$ is mapped to.
+这个映射是一一映射, 因为如果 $f \neq g$ 是 $\{0,1\}^\infty$ 中的两个不同元素, 那么必然存在某个输入 $n\in \N$ 使 $f(n) \neq g(n)$.  
+于是, 如果 $x\in \{0,1\}^*$ 是表示 $n$ 的字符串, 我们看到 $F(x) \neq G(x)$, 其中 $F$ 是 $f$ 映射到的 $ALL$ 中的函数, 而 $G$ 是 $g$ 映射到的函数.
 :::
 
-### Equivalent conditions for countability
+### 可数性的等价条件.
 
-The results above establish many equivalent ways to phrase the fact that a set is countable.
-Specifically, the following statements are all equivalent:
+上述结果建立了多种等价的方式来表述集合可数的事实.  
+具体来说, 以下陈述都是等价的:  
 
-1. The set $S$ is countable
-2. There exists an onto map from $\N$ to $S$
-3. There exists an onto map from $\{0,1\}^*$ to $S$.
-4. There exists a one-to-one map from $S$ to $\N$
-5. There exists a one-to-one map from $S$ to $\{0,1\}^*$.
-6. There exists an onto map from some countable set $T$ to $S$.
-7. There exists a one-to-one map from $S$ to some countable set $T$.
+1. 集合 $S$ 是可数的  
+2. 存在一个从 $\N$ 到 $S$ 的满射  
+3. 存在一个从 $\{0,1\}^*$ 到 $S$ 的满射  
+4. 存在一个从 $S$ 到 $\N$ 的一一映射  
+5. 存在一个从 $S$ 到 $\{0,1\}^*$ 的一一映射  
+6. 存在一个从某个可数集合 $T$ 到 $S$ 的满射  
+7. 存在一个从 $S$ 到某个可数集合 $T$ 的一一映射
+
 
 ::: { .pause }
-Make sure you know how to prove the equivalence of all the results above.
+你确定你会证明上述所有等价陈述了吗?
 :::
 
-## Representing objects beyond numbers
+## 数字以外元素的表示
 
-Numbers are of course by no means the only objects that we can represent as binary strings.
-A _representation scheme_ for representing objects from some set $\mathcal{O}$ consists of an _encoding_ function that maps an object in $\mathcal{O}$ to a string, and a _decoding_ function that decodes a string back to an object in $\mathcal{O}$.
-Formally, we make the following definition:
+当然, 数字并不是我们唯一可以表示为二进制字符串的对象.  
+用于表示某个集合 $\mathcal{O}$ 中对象的 _表示方案_ 由一个将 $\mathcal{O}$ 中对象映射为字符串的 _编码_ 函数和一个将字符串解码回 $\mathcal{O}$ 中对象的 _解码_ 函数组成.  
+形式上, 我们作如下定义:  
 
-Let $\mathcal{O}$ be any set. A _representation scheme_ for $\mathcal{O}$ is a pair of functions $E,D$  where  $E:\mathcal{O} \rightarrow \{0,1\}^*$ is a total one-to-one function, $D:\{0,1\}^* \rightarrow_p \mathcal{O}$ is a (possibly partial)  function,
-and such that  $D$ and $E$ satisfy that $D(E(o))=o$ for every $o\in \mathcal{O}$.
-$E$ is known as the _encoding_ function and $D$ is known as the _decoding_ function.
+设 $\mathcal{O}$ 为任意集合. 对 $\mathcal{O}$ 的 _表示方案_ 是一个函数对 $E,D$, 其中 $E:\mathcal{O} \rightarrow \{0,1\}^*$ 是全域一一函数, $D:\{0,1\}^* \rightarrow_p \mathcal{O}$ 是一个（可能是局部定义的）函数, 并且满足 $D$ 和 $E$ 使得 $D(E(o))=o$ 对每个 $o\in \mathcal{O}$ 成立.  
+$E$ 称为 _编码_ 函数, $D$ 称为 _解码_ 函数.  
 
-Note that the condition $D(E(o))=o$ for every $o\in\mathcal{O}$ implies that $D$ is _onto_ (can you see why?).
-It turns out that to construct a representation scheme we only need to find an _encoding_ function.
-That is, every one-to-one encoding function has a corresponding decoding function, as shown in the following lemma:
+注意, 对每个 $o\in \mathcal{O}$ 都有 $D(E(o))=o$ 的条件意味着 $D$ 是 _满射_（你能看出为什么吗？）.  
+事实上, 构造一个表示方案时, 我们只需要找到一个 _编码_ 函数.  
+也就是说, 每个一一的编码函数都有对应的解码函数, 如下引理所示:  
 
-Suppose that $E: \mathcal{O} \rightarrow \{0,1\}^*$ is one-to-one. Then there exists a function $D:\{0,1\}^* \rightarrow \mathcal{O}$ such that $D(E(o))=o$ for every $o\in \mathcal{O}$.
+假设 $E: \mathcal{O} \rightarrow \{0,1\}^*$ 是一一映射. 那么存在一个函数 $D:\{0,1\}^* \rightarrow \mathcal{O}$ 使得 $D(E(o))=o$ 对每个 $o\in \mathcal{O}$ 成立.  
 
-Let $o_0$ be some arbitrary element of $\mathcal{O}$.
-For every $x \in \{0,1\}^*$, there exists either zero or a single $o\in \mathcal{O}$ such that $E(o)=x$ (otherwise $E$ would not be one-to-one).
-We will define $D(x)$ to equal $o_0$ in the first case and this single object $o$ in the second case.
-By definition $D(E(o))=o$ for every $o\in \mathcal{O}$.
+设 $o_0$ 为 $\mathcal{O}$ 中任意一个元素.  
+对于每个 $x \in \{0,1\}^*$, 要么不存在, 要么仅存在一个 $o\in \mathcal{O}$ 使 $E(o)=x$（否则 $E$ 将不是一一映射）.  
+我们将 $D(x)$ 定义为在第一种情况取 $o_0$, 在第二种情况取该唯一对象 $o$.  
+根据定义, 对每个 $o\in \mathcal{O}$ 都有 $D(E(o))=o$.
 
-::: {.remark title="Total decoding functions" #totaldecoding}
-While the decoding function of a representation scheme can in general be a _partial_ function,  the proof of [decodelem](){.ref} implies that every representation scheme has a _total_ decoding function. This observation can sometimes be useful.
+
+::: {.remark title="全域解码函数" #totaldecoding}
+虽然表示方案的解码函数通常可以是一个 _局部_ 函数, 但 [decodelem](){.ref} 的证明表明, 每个表示方案都有一个 _全域_ 解码函数. 这一观察有时是很有用的.
+
 :::
 
-### Finite representations
+### 有限表示
 
-If $\mathcal{O}$ is _finite_, then we can represent every object in $\mathcal{O}$ as a string of length at most some number $n$.
-What is the value of $n$?
-Let us denote by  $\{0,1\}^{\leq n}$ the set $\{ x\in \{0,1\}^* : |x| \leq n \}$ of strings of length at most $n$.
-The size of $\{0,1\}^{\leq n}$ is equal to
+如果 $\mathcal{O}$ 是 _有限_ 的, 那么我们可以将 $\mathcal{O}$ 中的每个对象表示为长度至多为某个数 $n$ 的字符串.  
+那么 $n$ 的取值是多少呢？  
+我们记 $\{0,1\}^{\leq n}$ 为长度至多为 $n$ 的字符串集合 $\{ x\in \{0,1\}^* : |x| \leq n \}$.  
+集合 $\{0,1\}^{\leq n}$ 的大小等于
 
 $$
-|\{0,1\}^0| + |\{0,1\}^1| + |\{0,1\}^2| + \cdots + |\{0,1\}^n| = \sum_{i=0}^n 2^i = 2^{n+1}-1
+|\{0,1\}^0| + |\{0,1\}^1| + |\{0,1\}^2| + \cdots + |\{0,1\}^n| = \sum_{i=0}^n 2^i = 2^{n+1}-1.
 $$
 
-using the standard formula for summing a [geometric progression](https://en.wikipedia.org/wiki/Geometric_progression).
+这使用 [等比数列](https://en.wikipedia.org/wiki/Geometric_progression) 的标准求和公式即可得到.  
 
-To obtain a representation of objects in $\mathcal{O}$ as strings of length at most $n$ we need to come up with a one-to-one function from $\mathcal{O}$ to $\{0,1\}^{\leq n}$.
-We can do so, if and only if $|\mathcal{O}| \leq 2^{n+1}-1$ as is implied by the following lemma:
+为了将 $\mathcal{O}$ 中的对象表示为长度至多为 $n$ 的字符串, 我们需要构造一个从 $\mathcal{O}$ 到 $\{0,1\}^{\leq n}$ 的一一映射. 而当且仅当 $|\mathcal{O}| \leq 2^{n+1}-1$, 我们才能做到这一点, 如以下引理所示:  
 
-For every two non-empty finite sets $S,T$, there exists a one-to-one $E:S \rightarrow T$ if and only if $|S| \leq |T|$.
+对于任意两个非空有限集合 $S,T$, 当且仅当 $|S| \leq |T|$ 时, 存在一个一一映射 $E:S \rightarrow T$.  
 
-Let $k=|S|$ and $m=|T|$ and so write the elements of $S$ and $T$ as $S = \{ s_0 , s_1, \ldots, s_{k-1} \}$ and $T= \{ t_0 , t_1, \ldots, t_{m-1} \}$. We need to show that there is a one-to-one function $E: S \rightarrow T$ iff $k \leq m$.
-For the "if" direction, if $k \leq m$ we can simply define $E(s_i)=t_i$ for every $i\in [k]$.
-Clearly for $i \neq j$, $t_i = E(s_i) \neq E(s_j) = t_j$, and hence this function is one-to-one.
-In the other direction, suppose that $k>m$ and  $E: S \rightarrow T$ is some function. Then $E$ cannot be one-to-one.
-Indeed, for $i=0,1,\ldots,m-1$ let us "mark" the element $t_j=E(s_i)$ in $T$.
-If $t_j$ was marked before, then we have found two objects in $S$ mapping to the same element $t_j$.
-Otherwise, since $T$ has $m$ elements,  when we get to $i=m-1$ we mark all the objects in $T$.
-Hence, in this case, $E(s_m)$ must map to an element that was already marked before.
-(This observation is sometimes known as the "Pigeonhole Principle": the principle that if you have a pigeon coop with $m$ holes and $k>m$ pigeons, then there must be two pigeons in the same hole.)
+设 $k=|S|$ 且 $m=|T|$, 并将 $S$ 和 $T$ 的元素分别写为 $S = \{ s_0 , s_1, \ldots, s_{k-1} \}$ 和 $T= \{ t_0 , t_1, \ldots, t_{m-1} \}$.  
+我们需要证明, 存在一个一一映射 $E: S \rightarrow T$ 当且仅当 $k \leq m$.  
 
-### Prefix-free encoding
+对"当"方向, 如果 $k \leq m$, 我们可以简单地定义 $E(s_i)=t_i$ 对每个 $i\in [k]$.  
+显然, 对于 $i \neq j$, 有 $t_i = E(s_i) \neq E(s_j) = t_j$, 因此该函数是一一映射.  
 
-When showing a representation scheme for rational numbers, we used the "hack" of encoding the alphabet $\{ 0,1, \|\}$  to represent tuples of strings as a single string.
-This is a special case of the general paradigm of _prefix-free_ encoding.
-The idea is the following: if our representation has the property that no string $x$ representing an object $o$ is a _prefix_ (i.e., an initial substring) of a string $y$ representing a different object $o'$, then we can represent a _list_ of objects by merely concatenating the representations of all the list members.
-For example, because in English every sentence ends with a punctuation mark such as a period, exclamation, or question mark, no sentence can be a prefix of another and so we can represent a list of sentences by merely concatenating the sentences one after the other. (English has some complications such as periods used for abbreviations (e.g., "e.g.") or sentence quotes containing punctuation, but the high level point of a prefix-free representation for sentences still holds.)
+对"仅当"方向, 假设 $k>m$ 且 $E: S \rightarrow T$ 是某个函数. 那么 $E$ 不可能是一一映射.  
+事实上, 对 $i=0,1,\ldots,m-1$, 我们“标记” $T$ 中的元素 $t_j=E(s_i)$.  
+如果 $t_j$ 已经被标记过, 那么我们就找到了两个映射到同一元素 $t_j$ 的 $S$ 中的对象.  
+否则, 由于 $T$ 有 $m$ 个元素, 当我们标记到 $i=m-1$ 时, $T$ 中的所有对象都已被标记.  
+因此, 在这种情况下, $E(s_m)$ 必须映射到一个已经被标记过的元素.  
+(这一观察有时被称为“鸽巢原理”: 假设有 $m$ 个巢和 $k>m$ 只鸽子, 则必有两只鸽子在同一个巢中.)
 
-It turns out that we can transform _every_ representation to a prefix-free form.
-This justifies [representtuplesidea](){.ref}, and allows us to transform a representation scheme for objects of a type $T$ to a representation scheme of _lists_ of objects of the type $T$.
-By repeating the same technique, we can also represent lists of lists of objects of type $T$, and so on and so forth.
-But first let us formally define prefix-freeness:
 
-::: {.definition title="Prefix free encoding" #prefixfreedef}
-For two strings $y,y'$, we say that $y$ is a _prefix_ of $y'$ if $|y| \leq |y'|$ and for every $i<|y|$, $y'_i = y_i$.
+### 前缀无歧义编码
 
-Let $\mathcal{O}$ be a non-empty set and $E:\mathcal{O} \rightarrow \{0,1\}^*$ be a function.
-We say that $E$ is _prefix-free_ if $E(o)$ is non-empty for every $o\in\mathcal{O}$ and there does not exist a distinct pair of objects $o, o' \in \mathcal{O}$ such that  $E(o)$  is a prefix of $E(o')$.
+在展示有理数的表示方案时, 我们使用了一个"技巧": 将字母表 $\{ 0,1, \|\}$ 编码, 以便将字符串元组表示为单个字符串.  
+这是 _前缀无歧义编码_ 的一个特例.  
+
+前缀无歧义编码的思想如下, 如果我们的表示具有如下性质: 表示对象 $o$ 的字符串 $x$ 不是表示不同对象 $o'$ 的字符串 $y$ 的 _前缀_ (即初始子串), 那么我们可以仅通过将列表中所有成员的表示串联起来, 来表示一个对象列表.  
+例如, 因为在英文中每个句子都以标点符号结束, 如句号, 感叹号或问号, 没有句子可以成为另一个句子的前缀, 因此我们可以仅通过将句子一个接一个地串联来表示一个句子列表. (英文中存在一些复杂情况, 例如缩写中的句点 (如 "e.g.")或句子引号包含标点, 但高层次上前缀自由表示句子的原理仍然成立.)  
+
+事实上, 我们可以将 _每一个_ 表示转换为前缀无歧义形式.  
+这为 [representtuplesidea](){.ref} 提供了依据, 并允许我们将类型 $T$ 对象的表示方案转换为类型 $T$ 对象 _列表_ 的表示方案.  
+通过重复同样的技术, 我们还可以表示类型 $T$ 对象的列表的列表, 以此类推.  
+
+但首先, 让我们正式定义前缀无歧义性:
+
+
+::: {.definition title="前缀无歧义编码" #prefixfreedef}
+对于两个字符串 $y,y'$, 如果 $|y| \leq |y'|$ 并且对每个 $i<|y|$, 有 $y'_i = y_i$, 我们称 $y$ 是 $y'$ 的一个 _前缀_.  
+
+设 $\mathcal{O}$ 为非空集合, $E:\mathcal{O} \rightarrow \{0,1\}^*$ 为一个函数.  
+如果对每个 $o\in\mathcal{O}$, $E(o)$ 非空, 并且不存在一对不同的对象 $o, o' \in \mathcal{O}$ 使得 $E(o)$ 是 $E(o')$ 的前缀, 我们称 $E$ 是 _前缀无歧义_ 的.
 :::
 
-Recall that for every set $\mathcal{O}$, the set $\mathcal{O}^*$ consists of all finite length tuples (i.e., _lists_) of elements in $\mathcal{O}$.
-The following theorem shows that if $E$ is a prefix-free encoding of $\mathcal{O}$ then by concatenating encodings we can obtain a valid (i.e., one-to-one) representation of $\mathcal{O}^*$:
+回忆一下, 对于每个集合 $\mathcal{O}$, 集合 $\mathcal{O}^*$ 包含所有有限长度的元组（即 _列表_）的 $\mathcal{O}$ 中元素.  
+下述定理表明, 如果 $E$ 是 $\mathcal{O}$ 的前缀自由编码, 则通过串联编码, 我们可以得到 $\mathcal{O}^*$ 的一个有效的(一一)表示:
 
-::: {.theorem title="Prefix-free implies tuple encoding" #prefixfreethm}
-Suppose that $E:\mathcal{O} \rightarrow \{0,1\}^*$ is prefix-free.
-Then the following map $\overline{E}:\mathcal{O}^* \rightarrow \{0,1\}^*$ is one to one, for every $(o_0,\ldots,o_{k-1}) \in \mathcal{O}^*$, we define
+
+::: {.theorem title="前缀无歧义蕴含元组可编码" #prefixfreethm}
+假设 $E:\mathcal{O} \rightarrow \{0,1\}^*$ 是前缀无歧义的.  
+则以下映射 $\overline{E}:\mathcal{O}^* \rightarrow \{0,1\}^*$ 是一一映射: 对每个 $(o_0,\ldots,o_{k-1}) \in \mathcal{O}^*$, 我们定义
 
 $$
 \overline{E}(o_0,\ldots,o_{k-1}) = E(o_0)E(o_1) \cdots E(o_{k-1}) \;.
@@ -605,121 +633,129 @@ $$
 
 :::
 
-[prefixfreethm](){.ref} is an example of a  theorem that is a little hard to parse, but in fact is fairly straightforward to prove once you understand what it means.
-Therefore, I highly recommend that you pause here to make sure you understand the statement of this theorem. You should also try to prove it on your own before proceeding further.
+[prefixfreethm](){.ref} 可能有点难以理解, 但一旦你理解了它的含义, 实际上证明起来相当直接.  
+因此, 我强烈建议你在此处停下来, 确保你理解了该定理的陈述. 你也应该尝试自己证明它, 然后再继续阅读.
+
 
 ![If we have a prefix-free representation of each object then we can concatenate the representations of <span class=](../figure/repres_list.png)kk objects to obtain a representation for the tuple $$." />{#prefixfreerepconcat .margin  }
 
-The idea behind the proof is simple.
-Suppose that for example we want to decode a triple $(o_0,o_1,o_2)$ from its representation $x= \overline{E}(o_0,o_1,o_2)=E(o_0)E(o_1)E(o_2)$.
-We will do so by first finding the first prefix $x_0$ of $x$ that is a representation of some object.
-Then we will decode this object, remove $x_0$ from $x$ to obtain a new string $x'$,  and continue onwards to find the first prefix $x_1$ of $x'$ and so on and so forth  (see [prefix-free-tuples-ex](){.ref}).
-The prefix-freeness property of $E$ will ensure that $x_0$ will in fact be $E(o_0)$,  $x_1$ will be $E(o_1)$, etc.
+证明的思路很简单.  
+例如, 假设我们想从表示 $x= \overline{E}(o_0,o_1,o_2)=E(o_0)E(o_1)E(o_2)$ 中解码三元组 $(o_0,o_1,o_2)$.  
+我们首先找到 $x$ 的第一个前缀 $x_0$, 它是某个对象的表示.  
+然后解码该对象, 从 $x$ 中去掉 $x_0$ 得到新的字符串 $x'$, 再继续找到 $x'$ 的第一个前缀 $x_1$, 以此类推（参见 [prefix-free-tuples-ex](){.ref}）.  
+$E$ 的前缀自由性质保证了 $x_0$ 实际上就是 $E(o_0)$, $x_1$ 是 $E(o_1)$, 依此类推.
+
 
 ::: {.proof data-ref="prefixfreethm"}
-We now show the formal proof.
-Suppose, towards the sake of contradiction, that there exist two distinct tuples $(o_0,\ldots,o_{k-1})$ and $(o'_0,\ldots,o'_{k'-1})$ such that
+现在我们给出正式证明.  
+使用反证法, 假设存在两个不同的元组 $(o_0,\ldots,o_{k-1})$ 和 $(o'_0,\ldots,o'_{k'-1})$, 使得
 
 $$
 \overline{E}(o_0,\ldots,o_{k-1})= \overline{E}(o'_0,\ldots,o'_{k'-1}) \;. \label{prefixfreeassump}
 $$
 
-We will denote the string $\overline{E}(o_0,\ldots,o_{k-1})$ by $\overline{x}$.
+我们将字符串 $\overline{E}(o_0,\ldots,o_{k-1})$ 记为 $\overline{x}$.  
 
-Let $i$ be the first index such that $o_i \neq o'_i$.
-(If $o_i=o'_i$ for all $i$ then, since we assume the two tuples are distinct, one of them must be larger than the other. In this case we assume without loss of generality that $k'>k$ and let $i=k$.)
-In the case that $i<k$, we see that the string $\overline{x}$ can be written in two different ways:
+设 $i$ 为第一个使得 $o_i \neq o'_i$ 的索引.  
+（如果对所有 $i$ 都有 $o_i=o'_i$, 由于假设这两个元组不同, 则其中一个元组的长度必须大于另一个. 在这种情况下, 不失一般性, 我们假设 $k'>k$ 并令 $i=k$.）  
+在 $i<k$ 的情况下, 我们看到字符串 $\overline{x}$ 可以用两种不同的方式表示:
 
 $$
 \overline{x} = \overline{E}(o_0,\ldots,o_{k-1}) = x_0\cdots x_{i-1} E(o_i) E(o_{i+1}) \cdots E(o_{k-1})
 $$
 
-and
+以及
 
 $$
 \overline{x} = \overline{E}(o'_0,\ldots,o'_{k'-1}) = x_0\cdots x_{i-1} E(o'_i) E(o'_{i+1}) \cdots E(o'_{k'-1})
 $$
 
-where $x_j = E(o_j) = E(o'_j)$ for all $j<i$.
-Let $\overline{y}$ be the string obtained after removing the prefix $x_0 \cdots x_{i-1}$ from $\overline{x}$.
-We see that $\overline{y}$ can be written as both $\overline{y}= E(o_i)s$ for some string $s\in \{0,1\}^*$ and as $\overline{y} = E(o'_i)s'$ for some $s'\in \{0,1\}^*$.
-But this means that one of $E(o_i)$ and $E(o'_i)$ must be a prefix of the other, contradicting the prefix-freeness of $E$.
+其中 $x_j = E(o_j) = E(o'_j)$ 对所有 $j<i$ 成立.  
+令 $\overline{y}$ 为从 $\overline{x}$ 中去掉前缀 $x_0 \cdots x_{i-1}$ 后得到的字符串.  
+我们看到 $\overline{y}$ 可以写成两种形式: $\overline{y}= E(o_i)s$ 对某个字符串 $s\in \{0,1\}^*$, 也可以写成 $\overline{y} = E(o'_i)s'$ 对某个 $s'\in \{0,1\}^*$.  
+但这意味着 $E(o_i)$ 与 $E(o'_i)$ 中的一个必须是另一个的前缀, 这与 $E$ 的前缀自由性矛盾.  
 
-In the case that $i=k$ and $k'>k$, we get a contradiction in the following way. In this case
+若 $i=k$ 且 $k'>k$, 我们通过如下方式得到矛盾: 在这种情况下
 
 $$
 \overline{x} = E(o_0)\cdots E(o_{k-1}) = E(o_0) \cdots E(o_{k-1}) E(o'_k) \cdots E(o'_{k'-1})
 $$
 
-which means that $E(o'_k) \cdots E(o'_{k'-1})$ must correspond to the empty string $\text{""}$. But in such a case $E(o'_k)$ must be the empty string, which in particular is the prefix of any other string, contradicting the prefix-freeness of $E$.
+这意味着 $E(o'_k) \cdots E(o'_{k'-1})$ 必须对应于空字符串 $\text{""}$.  
+但在这种情况下, $E(o'_k)$ 也必须是空字符串, 而空字符串显然是任意其他字符串的前缀, 这与 $E$ 的前缀自由性矛盾.
+
 :::
 
-::: {.remark title="Prefix freeness of list representation" #prefixfreelistsrem}
-Even if the representation $E$ of objects in $\mathcal{O}$ is prefix free, this does not mean that our representation $\overline{E}$ of _lists_ of such objects will be prefix free as well.
-In fact, it won't be: for every three objects $o,o',o''$ the representation of the list $(o,o')$ will be a prefix of the representation of the list $(o,o',o'')$.
-However, as we see in [prefixfreetransformationlem](){.ref} below, we can transform _every_ representation into prefix-free form, and so will be able to use that transformation if needed to represent lists of lists, lists of lists of lists, and so on and so forth.
+::: {.remark title="列表表示的前缀无歧义性" #prefixfreelistsrem}
+即使集合 $\mathcal{O}$ 中对象的表示 $E$ 是前缀无歧义的, 也并不意味着这些对象的 _列表_ 的表示 $\overline{E}$ 也会是前缀无歧义的. 例如: 对于任意三个对象 $o,o',o''$, 列表 $(o,o')$ 的表示将是列表 $(o,o',o'')$ 的表示的前缀.  
+然而, 如下的 [prefixfreetransformationlem](){.ref} 所示, 我们可以将 _每一个_ 表示转换为前缀无歧义的, 因此如果需要表示列表的列表、列表的列表的列表等, 我们就可以使用该转换.
+
 :::
 
-### Making representations prefix-free
+### 构造前缀无歧义表示
 
-Some natural representations are prefix-free.
-For example, every _fixed output length_ representation (i.e., one-to-one function $E:\mathcal{O} \rightarrow \{0,1\}^n$) is automatically prefix-free, since a string $x$ can only be a prefix of an equal-length $x'$ if $x$ and $x'$ are identical.
-Moreover, the approach we used for representing rational numbers can be used to show the following:
+有一些自然的表示是前缀无歧义的.  
+例如, 每个 _固定输出长度_ 的表示（即一一函数 $E:\mathcal{O} \rightarrow \{0,1\}^n$）自动是前缀无歧义的, 因为只有当 $x$ 和 $x'$ 相等时, 长度相同的 $x'$ 才可能有 $x$ 作为前缀.  
 
-Let $E:\mathcal{O} \rightarrow \{0,1\}^*$ be a one-to-one function.
-Then there is a one-to-one prefix-free encoding $\overline{E}$ such that $|\overline{E}(o)| \leq 2|E(o)|+2$ for every $o\in \mathcal{O}$.
+此外, 我们用来表示有理数的方法也可以用来证明如下结论:  
 
-For the sake of completeness, we will include the proof below, but it is a good idea for you to pause here and try to prove it on your own, using the same technique we used for representing rational numbers.
+设 $E:\mathcal{O} \rightarrow \{0,1\}^*$ 为一一函数.  
+则存在一个一一的前缀无歧义编码 $\overline{E}$, 对每个 $o\in \mathcal{O}$ 有 $|\overline{E}(o)| \leq 2|E(o)|+2$.  
+
+为了完整起见, 我们将在下方给出证明. 不过你可以在这里停下来, 尝试用我们表示有理数时使用的相同技巧自己证明它.
+
 
 ::: {.proof data-ref="prefixfreetransformationlem"}
-The idea behind the proof is to use the map $0 \mapsto 00$, $1 \mapsto 11$ to "double" every bit in the string $x$ and then mark the end of the string by concatenating to it the pair $01$.
-If we encode a string $x$ in this way, it ensures that the encoding of $x$ is never a prefix of the encoding of a distinct string $x'$.
-Formally, we define the function $PF:\{0,1\}^* \rightarrow \{0,1\}^*$ as follows:
+证明的核心思想是使用映射 $0 \mapsto 00$, $1 \mapsto 11$ 来"加倍"字符串 $x$ 中的每一位, 然后通过在其后拼接 $01$ 来标记字符串的结束.  
+如果我们以这种方式对字符串 $x$ 进行编码, 它可以确保 $x$ 的编码绝不会是不同字符串 $x'$ 的编码的前缀.  
+形式上, 我们对每个 $x\in \{0,1\}^*$ 定义函数 $PF:\{0,1\}^* \rightarrow \{0,1\}^*$ 如下:
 
 $$
-PF(x)=x_0 x_0 x_1 x_1 \ldots x_{n-1}x_{n-1}01
+PF(x)=x_0 x_0 x_1 x_1 \ldots x_{n-1}x_{n-1}01.
 $$
 
-for every $x\in \{0,1\}^*$.
-If $E:\mathcal{O} \rightarrow \{0,1\}^*$ is the (potentially not prefix-free) representation for $\mathcal{O}$, then we transform it into a prefix-free representation $\overline{E}:\mathcal{O} \rightarrow \{0,1\}^*$ by defining $\overline{E}(o)=PF(E(o))$.
+如果 $E:\mathcal{O} \rightarrow \{0,1\}^*$ 是 $\mathcal{O}$ 的（可能不是前缀无歧义的）表示, 我们可以通过定义 $\overline{E}(o)=PF(E(o))$ 将其转换为前缀无歧义的表示 $\overline{E}:\mathcal{O} \rightarrow \{0,1\}^*$.  
 
-To prove the lemma we need to show that __(1)__ $\overline{E}$ is one-to-one and __(2)__ $\overline{E}$ is prefix-free.
-In fact, prefix freeness is a stronger condition than one-to-one (if two strings are equal then in particular one of them is a prefix of the other) and hence it suffices to prove __(2)__, which we now do.
+为了证明该引理, 我们需要证明 __(1)__ $\overline{E}$ 是一一函数, 并且 __(2)__ $\overline{E}$ 是前缀无歧义的.  
+事实上, 前缀无歧义是比一一更强的条件（如果两个字符串相等, 则其中一个必然是另一个的前缀）, 因此只需证明 __(2)__ 即可, 我们现在来证明它.  
 
-Let $o \neq o'$ in $\mathcal{O}$ be two distinct objects.
-We will prove that $\overline{E}(o)$ is not a prefix of $\overline{E}(o')$, or in other words $PF(x)$ is not a prefix of $PF(x')$ where $x = E(o)$ and $x'=E(o')$.
-Since $E$ is one-to-one, $x \neq x'$. We will split into three cases, depending on whether $|x|<|x'|$, $|x|=|x'|$, or $|x|>|x'|$.
-If $|x|<|x'|$ then the two bits in positions $2|x|,2|x|+1$ in $PF(x)$ have the value $01$ but the corresponding bits in $PF(x')$ will equal either $00$ or $11$ (depending on the $|x|$-th bit of $x'$) and hence $PF(x)$ cannot be a prefix of $PF(x')$.
-If $|x|=|x'|$ then, since $x \neq x'$, there must be a coordinate $i$ in which they differ, meaning that the strings $PF(x)$ and $PF(x')$  differ in the coordinates $2i,2i+1$, which again means that $PF(x)$ cannot be a prefix of $PF(x')$.
-If $|x|>|x'|$ then $|PF(x)|=2|x|+2>|PF(x')|=2|x'|+2$ and hence $PF(x)$ is longer than (and cannot be a prefix of)  $PF(x')$.
-In all cases we see that $PF(x)=\overline{E}(o)$ is not a prefix of $PF(x')=\overline{E}(o')$, hence completing the proof.
+设 $o \neq o'$ 为 $\mathcal{O}$ 中两个不同的对象.  
+我们将证明 $\overline{E}(o)$ 不是 $\overline{E}(o')$ 的前缀, 或换句话说, $PF(x)$ 不是 $PF(x')$ 的前缀, 其中 $x = E(o)$, $x'=E(o')$.  
+由于 $E$ 是一一函数, 所以 $x \neq x'$. 我们分三种情况讨论, 取决于 $|x|<|x'|$, $|x|=|x'|$, 或 $|x|>|x'|$.  
+
+- 如果 $|x|<|x'|$, 则 $PF(x)$ 中位置 $2|x|,2|x|+1$ 的两位为 $01$, 而 $PF(x')$ 中对应位将等于 $00$ 或 $11$（取决于 $x'$ 的第 $|x|$ 位）, 因此 $PF(x)$ 不可能是 $PF(x')$ 的前缀.  
+- 如果 $|x|=|x'|$, 由于 $x \neq x'$, 必然存在某个位置 $i$ 使它们不同, 这意味着 $PF(x)$ 和 $PF(x')$ 在位置 $2i,2i+1$ 上不同, 同样 $PF(x)$ 不是 $PF(x')$ 的前缀.  
+- 如果 $|x|>|x'|$, 则 $|PF(x)|=2|x|+2>|PF(x')|=2|x'|+2$, 因此 $PF(x)$ 比 $PF(x')$ 长, 不可能是其前缀.  
+
+在所有情况下, 我们可以预见 $PF(x)=\overline{E}(o)$ 都不是 $PF(x')=\overline{E}(o')$ 的前缀, 从而完成了证明.
+
 :::
 
-The proof of [prefixfreetransformationlem](){.ref} is not the only or even the best way to transform an arbitrary representation into prefix-free form.
-[prefix-free-ex](){.ref} asks you to construct a more efficient prefix-free transformation satisfying $|\overline{E}(o)| \leq |E(o)| + O(\log |E(o)|)$.
+[prefixfreetransformationlem](){.ref} 的证明并不是将任意表示转换为前缀无歧义形式的唯一方法，也不一定是最优方法.  
+[prefix-free-ex](){.ref} 就要求你构造一个更高效的前缀无歧义转换, 满足 $|\overline{E}(o)| \leq |E(o)| + O(\log |E(o)|)$.
 
-### "Proof by Python" (optional)
 
-The proofs of [prefixfreethm](){.ref} and [prefixfreetransformationlem](){.ref} are _constructive_ in the sense that they give us:
+### "基于Python的证明" (选读)
 
-* A way to transform the encoding and decoding functions of any representation of an object $O$ to encoding and decoding functions that are prefix-free, and
-* A way to extend prefix-free encoding and decoding of single objects to encoding and decoding of _lists_ of objects by concatenation.
+[prefixfreethm](){.ref} 和 [prefixfreetransformationlem](){.ref} 的证明是 _构造性的_, 意味着它们给出了：
 
-Specifically, we could transform any pair of Python functions `encode` and `decode` to functions `pfencode` and `pfdecode` that correspond to a prefix-free encoding and decoding.
-Similarly, given `pfencode` and `pfdecode` for single objects, we can extend them to encoding of lists.
-Let us show how this works for the case of the `NtS` and `StN` functions we defined above.
+* 将任意对象 $O$ 的表示的编码和解码函数转换为前缀无歧义的编码和解码函数的方法, 以及
+* 将单个对象的前缀无歧义编码和解码扩展到 _对象列表_ 的编码和解码的方法（通过串联实现）。
 
-We start with the "Python proof" of [prefixfreetransformationlem](){.ref}: a way to transform an arbitrary representation into one that is _prefix free_.
-The function `prefixfree` below takes as input a pair of encoding and decoding functions, and returns a triple of functions containing _prefix-free_ encoding and decoding functions, as well as a function that checks whether a string is a valid encoding of an object.
+具体来说, 我们可以将任意一对 Python 函数 `encode` 和 `decode` 转换为函数 `pfencode` 和 `pfdecode`, 对应于前缀无歧义的编码和解码.
+同样, 给定单个对象的 `pfencode` 和 `pfdecode`, 我们可以将它们扩展到列表的编码.
+下面展示了如何对上文定义的 `NtS` 和 `StN` 函数进行这种处理。
+
+我们从 [prefixfreetransformationlem](){.ref} 的“Python 证明”开始：一种将任意表示转换为 _前缀无歧义_ 表示的方法.
+下面的函数 `prefixfree` 接受一对编码和解码函数作为输入, 并返回一个三元组函数，其中包含 _前缀无歧义_ 的编码和解码函数, 以及一个检查字符串是否为对象有效编码的函数.
+
 
 ```python
-# takes functions encode and decode mapping
-# objects to lists of bits and vice versa,
-# and returns functions pfencode and pfdecode that
-# maps objects to lists of bits and vice versa
-# in a prefix-free way.
-# Also returns a function pfvalid that says
-# whether a list is a valid encoding
+# 接受 encode 和 decode 函数，分别将对象映射为比特列表以及反向映射，
+# 并返回 pfencode 和 pfdecode 函数，
+# 以前缀无歧义的方式将对象映射为比特列表以及反向映射。
+# 同时返回一个 pfvalid 函数，用于判断一个比特列表是否为有效编码
+
 def prefixfree(encode, decode):
     def pfencode(o):
         L = encode(o)
@@ -743,18 +779,18 @@ pfvalidM(pfNtS(234))
 # true
 ```
 
-Note that the Python function `prefixfree` above takes two _Python functions_ as input and outputs three Python functions as output. (When it's not too awkward, we use the term "Python function" or "subroutine" to distinguish between such snippets of Python programs and mathematical functions.)
-You don't have to know Python in this course, but you do need to get comfortable with the idea of functions as mathematical objects in their own right, that can be used as inputs and outputs of other functions.
+注意, 上述 Python 函数 `prefixfree` 接受两个 **Python 函数** 作为输入, 并输出三个 Python 函数作为结果. (无歧义的情况下, 我们会使用 “Python 函数” 或 “子程序” 这个术语来区分 Python 程序片段和数学意义上的函数.)  
+在本书中, 你不需要掌握 Python, 但你需要熟悉函数作为独立的数学对象的概念, 可以被用作其他函数的输入或输出.
 
-We now show a "Python proof" of [prefixfreethm](){.ref}. Namely, we show a function `represlists` that takes as input a prefix-free representation scheme (implemented via encoding, decoding, and validity testing functions) and outputs a representation scheme for _lists_ of such objects. If we want to make this representation prefix-free then we could fit it into the function `prefixfree` above.
+下面我们给出 [prefixfreethm](){.ref} 的 “Python 证明”. 具体来说, 我们展示一个函数 `represlists`, 它接受一个前缀无歧义表示方案作为输入 (通过编码、解码和有效性检测函数实现), 并输出一个用于表示该类对象 **列表** 的表示方案. 如果我们希望使这个表示也是前缀无歧义的, 那么可以再将其放入上面的 `prefixfree` 函数中.
+
 
 ```python
 def represlists(pfencode,pfdecode,pfvalid):
     """
-    Takes functions pfencode, pfdecode and pfvalid,
-    and returns functions encodelists, decodelists
-    that can encode and decode lists of the objects
-    respectively.
+    接受函数 pfencode, pfdecode 和 pfvalid,  
+    并返回函数 encodelists, decodelists,  
+    它们可以分别对该类对象的 **列表** 进行编码和解码.   
     """
 
     def encodelist(L):
@@ -782,34 +818,37 @@ StL(LtS([234,12,5]))
 # [234, 12, 5]
 ```
 
-### Representing letters and text
+### 字母和文本的表示
 
-We can represent a letter or symbol by a string, and then if this representation is prefix-free, we can represent a sequence of symbols by merely concatenating the representation of each symbol.
-One such representation is the [ASCII](https://en.wikipedia.org/wiki/ASCII) that represents $128$ letters and symbols as strings of $7$ bits.
-Since the ASCII representation is fixed-length, it is automatically prefix-free (can you see why?).
-[Unicode](https://en.wikipedia.org/wiki/Unicode) is the representation of (at the time of this writing) about 128,000 symbols as numbers (known as _code points_) between $0$ and  $1,114,111$.
-There are several types of prefix-free representations of the code points, a popular one being [UTF-8](https://en.wikipedia.org/wiki/UTF-8) that encodes every codepoint into a string of length between $8$ and $32$.
+我们可以用一个字符串来表示一个字母或符号, 然后如果这种表示是前缀无关的, 我们就可以通过简单地连接每个符号的表示来表示一个符号序列.  
+其中一种表示是 [ASCII](https://en.wikipedia.org/wiki/ASCII), 它用 7 位的字符串表示 128 个字母和符号.  
+由于 ASCII 表示是固定长度的, 它自动是前缀无关的 (你能看出原因吗?).  
+[Unicode](https://en.wikipedia.org/wiki/Unicode) 是一种将 (在撰写本文时) 约 128,000 个符号表示为介于 0 和 1,114,111 之间的数字的表示方法 (称为 **code points**).  
+对于这些 code points 有几种前缀无关的表示方法, 一种流行的方法是 [UTF-8](https://en.wikipedia.org/wiki/UTF-8), 它将每个 code point 编码为长度在 8 到 32 之间的字符串.
+
 
 <!-- (For example, the UTF-8 encoding for the "confused face" emoji 😕 is `11110000100111111001100010010101`) -->
 
 ![The word ](../figure/braille.png){#braillefig .class .margin }
 
-::: {.example title="The Braille representation" #braille}
-The _Braille system_ is another way to encode letters and other symbols as binary strings. Specifically, in Braille, every letter is encoded as a string in $\{0,1\}^6$, which is written using indented dots arranged in two columns and three rows, see [braillefig](){.ref}.
-(Some symbols require more than one six-bit string to encode, and so Braille uses a more general prefix-free encoding.)
+::: {.example title="Braille 编码(盲文)" #braille}
+**Braille 编码**(盲文) 是另一种将字母和其他符号编码为二进制字符串的方法. 具体来说, 在盲文中, 每个字母被编码为一个属于 $\{0,1\}^6$ 的字符串, 该字符串通过排列成两列三行的凸起点来书写, 参见 [braillefig](){.ref}.  
+（一些符号需要用超过一个六位字符串来编码, 因此盲文使用了更通用的前缀无关编码.）
 
-The Braille system was invented in 1821 by [Louis Braille](https://goo.gl/Y2BkEe) when he was just 12 years old (though he continued working on it and improving it throughout his life). Braille was a French boy who lost his eyesight at the age of 5 as the result of an accident.
+[Louis Braille](https://goo.gl/Y2BkEe) 是一个法国男孩, 因事故在 5 岁时失明. 盲文由 Braille 于 1821 年发明, 当时他只有 12 岁 (尽管他在一生中不断改进和完善它). 
+
 :::
 
-::: {.example title="Representing objects in C (optional)" #Crepresentation}
-We can use programming languages to probe how our computing environment represents various values.
-This is easiest to do in "unsafe" programming languages such as `C` that allow direct access to the memory.
+::: {.example title="C语言中对象的表示(选读)" #Crepresentation}
+我们可以使用编程语言来探究我们的计算环境如何表示各种数值.  
+在允许直接访问内存的 “不安全” 编程语言（如 C语言）中，这种操作最为简单.
 
-Using a [simple `C` program](https://goo.gl/L8oMzn) we have produced the following representations of various values.
-One can see that for integers, multiplying by 2 corresponds to a "left shift" inside each byte.
-In contrast, for floating-point numbers, multiplying by two corresponds to adding one to the exponent part of the representation.
-In the architecture we used, a negative number is represented using the [two&#39;s complement](https://goo.gl/wov5fa) approach.
-`C` represents strings in a prefix-free form by ensuring that a zero byte is at their end.
+使用一个 [简单的 C 程序](https://goo.gl/L8oMzn), 我们可以得到各种数值的表示方法.  
+可以看到, 对于整数, 乘以 2 对应于每个字节内部的 “左移”.  
+相比之下, 对于浮点数, 乘以 2 对应于表示中指数部分加 1.  
+在我们使用的架构中, 负数使用 [二进制补码](https://goo.gl/wov5fa) 方法表示.  
+C语言通过确保字符串末尾有一个零字节, 来以前缀无关的形式表示字符串.
+
 
 ```c
 int      2    : 00000010 00000000 00000000 00000000
@@ -828,99 +867,110 @@ double   132.0: 00000000 00000000 00000000 00000000 00000000 10000000 01100000 0
 
 :::
 
-### Representing vectors, matrices, images
+### 向量, 矩阵及图片的表示
 
-Once we can represent numbers and lists of numbers, then we can also represent _vectors_ (which are just lists of numbers).
-Similarly, we can represent lists of lists, and thus, in particular, can represent _matrices_.
-To represent an image, we can represent the color at each pixel by a list of three numbers corresponding to the intensity of Red, Green and Blue.
-(We can restrict to three primary colors since [most](https://en.wikipedia.org/wiki/Tetrachromacy) humans only have three types of cones in their retinas; we would have needed 16 primary colors to represent colors visible to the [Mantis Shrimp](https://goo.gl/t7JBfC).)
-Thus an image of $n$ pixels would be represented by a list of $n$ such length-three lists.
-A video can be represented as a list of images.
-Of course these representations are rather wasteful and [much](https://en.wikipedia.org/wiki/JPEG) [more](https://goo.gl/Vs8UhU) compact representations are typically used for images and videos, though this will not be our concern in this book.
+一旦我们可以表示数字和数字列表, 我们就可以表示 **向量**(本质上就是数字的列表).  
+同样, 我们可以表示列表的列表, 因此特别地, 可以表示 **矩阵**.  
+为了表示一张图像, 我们可以通过一个长度为3的数字列表表示每个像素的颜色, 分别对应红色、绿色和蓝色的强度.  
+（我们可以只使用三种原色, 因为 [大多数](https://en.wikipedia.org/wiki/Tetrachromacy) 人类视网膜中只有三种类型的视锥细胞; 而如果要表示 [螳螂虾](https://goo.gl/t7JBfC) 可见的颜色, 我们需要 16 种原色.）  
+因此, 一张包含 $n$ 个像素的图像可以表示为一个包含 $n$ 个长度为三的列表的列表.  
+视频可以表示为图像的列表.  
+当然, 这些表示方法相当浪费, 对于图像和视频通常使用 [更](https://en.wikipedia.org/wiki/JPEG) [紧凑](https://goo.gl/Vs8UhU) 的表示方法, 虽然本书不会涉及这些内容.
 
-### Representing graphs
+### 图的表示
 
-A _graph_ on $n$ vertices can be represented as an $n\times n$ _adjacency_ matrix whose $(i,j)^{th}$ entry is equal to $1$ if the edge $(i,j)$ is present and is equal to $0$ otherwise.
-That is, we can represent an $n$ vertex directed graph $G=(V,E)$ as a string  $A\in \{0,1\}^{n^2}$ such that $A_{i,j}=1$ iff the edge $\overrightarrow{i\;j}\in E$.
-We can transform an undirected graph to a directed graph by replacing every edge $\{i,j\}$ with both edges $\overrightarrow{i\; j}$ and $\overleftarrow{i\;j}$
+一个 **图** 在 $n$ 个顶点上可以表示为一个 $n \times n$ 的 **邻接矩阵**, 其第 $(i,j)$ 个元素为 1 当且仅当边 $(i,j)$ 存在, 否则为 0.  
+也就是说, 我们可以将一个 $n$ 顶点的有向图 $G=(V,E)$ 表示为一个字符串 $A \in \{0,1\}^{n^2}$, 使得 $A_{i,j}=1$ 当且仅当边 $\overrightarrow{i\;j} \in E$.  
+我们可以通过将每条无向边 $\{i,j\}$ 替换为两条有向边 $\overrightarrow{i\; j}$ 和 $\overleftarrow{i\; j}$ 来将无向图转换为有向图.
 
-Another representation for graphs is the _adjacency list_ representation. That is, we identify the vertex set $V$ of a graph with the set $[n]$ where $n=|V|$, and represent the graph $G=(V,E)$ as a list of $n$ lists, where the $i$-th list consists of the out-neighbors of vertex $i$.
-The difference between these representations can be significant for some applications, though for us would typically be immaterial.
+另一种图的表示方法是 **邻接表** 表示. 也就是说, 我们将图的顶点集合 $V$ 与集合 $[n]$ 对应, 其中 $n=|V|$, 并将图 $G=(V,E)$ 表示为 $n$ 个列表组成的列表, 其中第 $i$ 个列表包含顶点 $i$ 的出邻居.  
+对于某些应用, 这些表示方法之间的差异可能很大, 虽然对于我们而言通常无关紧要.
+
 
 ![Representing the graph <span class=](../figure/representing_graphs.png)G=(\{0,1,2,3,4\},\{ (1,0),(4,0),(1,4),(4,1),(2,1),(3,2),(4,3) \})G=(\{0,1,2,3,4\},\{ (1,0),(4,0),(1,4),(4,1),(2,1),(3,2),(4,3) \}) in the adjacency matrix and adjacency list representations." />{#representinggraphsfig .margin  }
 
-### Representing lists and nested lists
+### 列表和嵌套列表的表示
 
-If we have a way of representing objects from a set $\mathcal{O}$ as binary strings, then we can represent lists of these objects by applying a prefix-free transformation.
-Moreover, we can use a trick similar to the above to handle _nested_ lists.
-The idea is that if we have some representation $E:\mathcal{O} \rightarrow \{0,1\}^*$, then we can represent nested lists of items from $\mathcal{O}$ using strings over the five element alphabet $\Sigma = \{$ `0`,`1`,`[` , `]` , `,` $\}$.
-For example, if $o_1$ is represented by `0011`, $o_2$ is represented by `10011`, and $o_3$ is represented by `00111`, then we can represent the nested list $(o_1,(o_2,o_3))$ as the string `"[0011,[10011,00111]]"` over the alphabet $\Sigma$.
-By encoding every element of $\Sigma$ itself as a three-bit string,
-we can transform any representation for objects $\mathcal{O}$ into a representation that enables representing (potentially nested) lists of these objects.
+如果我们有一种方法将集合 $\mathcal{O}$ 中的对象表示为二进制字符串, 那么我们可以通过应用前缀无关变换来表示这些对象的列表.  
+此外, 我们可以使用类似上述的技巧来处理 **嵌套** 列表.  
+其思想是, 如果我们有某种表示 $E:\mathcal{O} \rightarrow \{0,1\}^*$, 那么我们可以使用五元素字母表 $\Sigma = \{$ `0`,`1`,`[` , `]` , `,` $\}$ 上的字符串来表示来自 $\mathcal{O}$ 的嵌套列表.  
 
-### Notation
+例如, 如果 $o_1$ 表示为 `0011`, $o_2$ 表示为 `10011`, $o_3$ 表示为 `00111`, 那么我们可以将嵌套列表 $(o_1,(o_2,o_3))$ 表示为字母表 $\Sigma$ 上的字符串 `"[0011,[10011,00111]]"`.  
 
-We will typically identify an object with its representation as a string.
-For example, if $F:\{0,1\}^* \rightarrow  \{0,1\}^*$ is some function that maps strings to strings and $n$ is an integer, we might make statements such as "$F(n)+1$ is prime" to mean that if we represent $n$ as a string $x$, then the integer $m$ represented by the string $F(x)$ satisfies that $m+1$ is prime.
-(You can see how this convention of identifying objects with their representation can save us a lot of cumbersome formalism.)
-Similarly, if $x,y$ are some objects and $F$ is a function that takes strings as inputs, then by $F(x,y)$ we will mean the result of applying $F$ to the representation of the ordered pair $(x,y)$.
-We use the same notation to invoke functions on $k$-tuples of objects for every $k$.
+通过将 $\Sigma$ 的每个元素本身编码为三位二进制字符串,  
+我们可以将任意对象集合 $\mathcal{O}$ 的表示转换为一种表示, 使得可以表示这些对象的（潜在嵌套）列表.
 
-This convention of identifying an object with its representation as a string is one that we humans follow all the time.
-For example, when people say a statement such as "$17$ is a prime number", what they really mean is that the integer whose decimal representation is the string "`17`", is prime.
+
+### 一些注释
+
+我们通常会将一个对象与其字符串表示等同起来.  
+例如, 如果 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 是某个将字符串映射到字符串的函数, 且 $n$ 是一个整数, 我们可能会说 “$F(n)+1$ 是质数”, 这意味着如果我们将 $n$ 表示为字符串 $x$, 那么由字符串 $F(x)$ 表示的整数 $m$ 满足 $m+1$ 是质数.  
+（你可以看到, 这种将对象与其表示等同的约定可以为我们节省大量繁琐的形式化表达.）  
+
+同样地, 如果 $x, y$ 是某些对象, 且 $F$ 是一个以字符串为输入的函数, 那么 $F(x,y)$ 表示将 $F$ 应用于有序对 $(x,y)$ 的表示的结果.  
+我们对任意 $k$ 元组对象使用相同的符号表示函数的调用.
+
+这种将对象与其字符串表示等同的约定, 是我们人类一直在使用的.  
+例如, 当人们说 “$17$ 是质数” 时, 他们真正的意思是, 十进制表示为字符串 "`17`" 的整数是质数.
+
 
 ::: {.quote}
-When we say
+当我们说
 
-_$A$ is an algorithm that computes the multiplication function on natural numbers._
+_“$A$ 是一个计算自然数乘法的算法”_  
 
-what we really mean is that
+时, 我们真正的意思是  
 
-_$A$ is an algorithm that computes the function $F:\{0,1\}^* \rightarrow \{0,1\}^*$ such that for every pair $a,b \in \N$, if $x\in \{0,1\}^*$ is a string representing the pair $(a,b)$ then $F(x)$ will be a string representing their product $a\cdot b$._
+_“$A$ 是一个计算函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 的算法, 满足对于每一对 $a,b \in \N$, 如果 $x \in \{0,1\}^*$ 是表示有序对 $(a,b)$ 的字符串, 那么 $F(x)$ 将是表示它们乘积 $a \cdot b$ 的字符串”_.
+
+天呐!
 :::
 
-## Defining computational tasks as mathematical functions
+## 将计算任务定义为数学函数
 
-Abstractly, a _computational process_ is some process that takes an input which is a string of bits and produces an output which is a string of bits.
-This transformation of input to output can be done using a modern computer, a person following instructions, the evolution of some natural system, or any other means.
+抽象地讲, **计算过程** 是一种将输入（二进制字符串）转换为输出（二进制字符串）的过程.  
+这种从输入到输出的变换可以通过现代计算机、遵循指令的人、某些自然系统的演化或其他任何手段完成.
 
-In future chapters, we will turn to mathematically defining computational processes, but, as we discussed above, at the moment we focus on _computational tasks_. That is, we focus on the __specification__ and not the __implementation__.
-Again, at an abstract level, a computational task can specify any relation that the output needs to have with the input.
-However, for most of this book, we will focus on the simplest and most common task of _computing a function_.
-Here are some examples:
+在后续章节中, 我们将转向对计算过程的数学定义, 但正如上文所讨论的, 目前我们关注 **计算任务**. 也就是说, 我们关注的是 **规约** 而非 **实现**.  
+同样地, 在抽象层面上, 一个计算任务可以指定输出需要满足的任意输入输出关系.  
+然而, 在本书的大部分内容中, 我们将专注于最简单、最常见的任务: **计算函数**.  
 
-* Given (a representation of) two integers $x,y$, compute the product $x\times y$. Using our representation above, this corresponds to computing a function from $\{0,1\}^*$ to $\{0,1\}^*$. We have seen that there is more than one way to solve this computational task, and in fact, we still do not know the best algorithm for this problem.
-* Given (a representation of) an integer $z>1$, compute its _factorization_; i.e., the list of primes $p_1 \leq \cdots \leq p_k$ such that $z = p_1\cdots p_k$.  This again corresponds to computing a function from $\{0,1\}^*$ to $\{0,1\}^*$. The gaps in our knowledge of the complexity of this problem are even larger.
-* Given (a representation of) a graph $G$ and two vertices $s$ and $t$, compute the length of the shortest path in $G$ between $s$ and $t$, or do the same for the _longest_ path (with no repeated vertices) between $s$ and $t$. Both these tasks correspond to computing a function from $\{0,1\}^*$ to $\{0,1\}^*$, though it turns out that there is a vast difference in their computational difficulty.
-* Given the code of a Python program, determine whether there is an input that would force it into an infinite loop. This task corresponds to computing a _partial_ function from $\{0,1\}^*$ to $\{0,1\}$ since not every string corresponds to a syntactically valid Python program. We will see that we _do_ understand the computational status of this problem, but the answer is quite surprising.
-* Given (a representation of) an image $I$, decide if $I$ is a photo of a cat or a dog. This corresponds to computing some (partial) function from $\{0,1\}^*$ to $\{0,1\}$.
+下面是一些例子:
 
-An important special case of computational tasks corresponds to computing _Boolean_ functions, whose output is a single bit $\{0,1\}$.
-Computing such functions corresponds to answering a YES/NO question, and hence this task is also known as a _decision problem_.
-Given any function $F:\{0,1\}^* \rightarrow \{0,1\}$ and $x\in \{0,1\}^*$, the task of computing $F(x)$ corresponds to the task of deciding whether or not $x\in L$ where $L = \{ x : F(x)=1 \}$ is known as the _language_ that corresponds to the function $F$. (The language terminology is due to historical connections between the theory of computation and formal linguistics as developed by Noam Chomsky.)
-Hence many texts refer to such a computational task as _deciding a language_.
+* 给定两个整数 $x, y$ 的表示, 计算它们的乘积 $x \times y$. 使用上面的表示方法, 这对应于从 $\{0,1\}^*$ 到 $\{0,1\}^*$ 的函数计算. 我们已经看到, 解决这个计算任务的方法不止一种, 事实上, 我们仍然不知道该问题的最优算法.
+* 给定一个整数 $z > 1$ 的表示, 计算其 **因式分解**; 即, 找出质数列表 $p_1 \leq \cdots \leq p_k$ 使得 $z = p_1 \cdots p_k$. 这同样对应于从 $\{0,1\}^*$ 到 $\{0,1\}^*$ 的函数计算. 对于该问题的复杂性, 我们的认知差距甚至更大.
+* 给定图 $G$ 的表示和两个顶点 $s$ 与 $t$, 计算 $G$ 中从 $s$ 到 $t$ 的最短路径长度, 或者计算从 $s$ 到 $t$ 的 **最长路径**（不重复顶点）的长度. 这两个任务都对应于从 $\{0,1\}^*$ 到 $\{0,1\}^*$ 的函数计算, 但它们的计算难度却差别极大.
+* 给定一个 Python 程序的代码, 判断是否存在输入会使程序进入无限循环. 该任务对应于从 $\{0,1\}^*$ 到 $\{0,1\}$ 的 **部分函数** 计算, 因为并非每个字符串都对应语法有效的 Python 程序. 我们会看到, 我们 _确实_ 理解该问题的计算状态(见下文的状态机), 但答案相当令人惊讶.
+* 给定图像 $I$ 的表示, 判断 $I$ 是猫的照片还是狗的照片. 这对应于从 $\{0,1\}^*$ 到 $\{0,1\}$ 的某个（部分）函数的计算.
+
+计算任务的一个重要特例是计算 **布尔函数**, 其输出为单比特 $\{0,1\}$.  
+计算这类函数对应于回答 **是/否** 问题, 因此该任务也被称为 **判定问题**.  
+给定任意函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 和 $x \in \{0,1\}^*$, 计算 $F(x)$ 的任务对应于判定 $x$ 是否属于集合 $L$, 其中 $L = \{ x : F(x)=1 \}$ 被称为与函数 $F$ 对应的 **语言**.（语言这个术语源于计算理论与诺姆·乔姆斯基发展的形式语言学之间的历史联系.）  
+因此, 许多文献将这类计算任务称为 **判定一个语言**.
+
 
 ![A subset <span class=](../figure/booleanfunc.png)L \subseteq \{0,1\}^*L \subseteq \{0,1\}^* can be identified with the function $$ such that $$ if $$ and $$ if $$. Functions with a single bit of output are called Boolean functions, while subsets of strings are called languages. The above shows that the two are essentially the same object, and we can identify the task of deciding membership in $$ (known as deciding a language in the literature) with the task of computing the function $$." />{#booleanlangfig .margin  }
 
-For every particular function $F$, there can be several possible _algorithms_ to compute $F$.
-We will be interested in questions such as:
+对于每一个特定函数 $F$, 可能存在多种 **算法** 来计算 $F$.  
+我们将关注如下问题:
 
-* For a given function $F$, can it be the case that _there is no algorithm_ to compute $F$?
-* If there is an algorithm, what is the best one? Could it be that $F$ is "effectively uncomputable" in the sense that every algorithm for computing $F$ requires a prohibitively large amount of resources?
-* If we cannot answer this question, can we show equivalence between different functions $F$ and $F'$ in the sense that either they are both easy (i.e., have fast algorithms) or they are both hard?
-* Can a function being hard to compute ever be a _good thing_? Can we use it for applications in areas such as cryptography?
+* 对于给定函数 $F$, 是否可能 **不存在算法** 来计算 $F$?
+* 如果存在算法, 哪一个是最优的? 是否可能 $F$ 在某种意义上是 “有效不可计算”的, 即计算 $F$ 的每个算法都需要极其庞大的资源?
+* 如果我们无法回答这个问题, 能否在不同函数 $F$ 和 $F'$ 之间证明某种等价性, 即它们要么都容易（有快速算法）, 要么都困难?
+* 一个函数难以计算是否可能是 **好事**? 我们能否将其应用于密码学等领域?
 
-In order to do that, we will need to mathematically define the notion of an _algorithm_, which is what we will do in [compchap](){.ref}.
+为了回答这些问题, 我们需要对 **算法** 的概念进行数学定义, 这将在 [compchap](){.ref} 中完成.
 
-### Distinguish functions from programs!
 
-You should always watch out for potential confusions between **specifications** and **implementations** or equivalently between **mathematical functions**  and **algorithms/programs**.
-It does not help that programming languages (Python included) use the term _"functions"_ to denote (parts of) _programs_.
-This confusion also stems from thousands of years of mathematical history, where people typically defined functions by means of a way to compute them.
+### 注意区分 **函数** 和 **程序**!
 
-For example, consider the multiplication function on natural numbers.
-This is the function $MULT:\N\times \N \rightarrow \N$ that maps a pair $(x,y)$ of natural numbers to the number $x \cdot y$.
-As we mentioned, it can be implemented in more than one way:
+你应始终注意 **规约** 与 **实现** 之间可能产生的混淆, 或等价地, **数学函数** 与 **算法/程序** 之间的混淆.  
+编程语言（包括 Python）使用 **函数** 这个术语来表示（部分）程序, 这只会增加混乱.  
+这种混淆还源于数千年的数学历史, 在历史上人们通常通过一种计算方法来定义函数.
+
+例如, 考虑自然数上的乘法函数.  
+这是函数 $MULT:\N\times \N \rightarrow \N$, 将一对自然数 $(x,y)$ 映射为它们的乘积 $x \cdot y$.  
+正如我们提到的, 它可以通过多种方式实现:
 
 ```python
 def mult1(x,y):
@@ -945,45 +995,48 @@ print(mult2(12,7))
 # 84
 ```
 
-Both `mult1` and `mult2` produce the same output given the same pair of natural number inputs.
-(Though `mult1` will take far longer to do so when the numbers become large.)
-Hence, even though these are two different _programs_, they compute the same _mathematical function_.
-This distinction between a _program_ or _algorithm_ $A$, and the _function_ $F$ that $A$ _computes_ will be absolutely crucial for us in this course (see also [functionornotfig](){.ref}).
+无论是 `mult1` 还是 `mult2`, 给定相同的自然数输入对, 都会产生相同的输出.  
+（不过当数字变大时, `mult1` 所需时间会长得多.）  
+因此, 尽管它们是两个不同的 **程序**, 它们计算的是相同的 **数学函数**.  
+区分 **程序或算法** $A$ 与 $A$ **计算的函数** $F$ 对本课程至关重要 (参见 [functionornotfig](){.ref}).
+
 
 ![A function is a mapping of inputs to outputs. A program is a set of instructions on how to obtain an output given an input. A program computes a function, but it is not the same as a function, popular programming language terminology notwithstanding.](../figure/functionornot.png){#functionornotfig .margin  }
 
 ::: { .bigidea #functionprogramidea }
-A _function_ is not the same as a _program_. A program _computes_ a function.
+**函数** 与 **程序** 并不相同.  
+程序是用来 **计算** 一个函数的.
 :::
 
-Distinguishing _functions_ from _programs_ (or other ways for computing, including _circuits_ and _machines_) is a crucial theme for this course.
-For this reason, this is often a running theme in questions that I (and many other instructors) assign in homework and exams (hint, hint).
+区分 **函数** 与 **程序**（或其他计算方式，包括 **电路** 和 **机器**）是本课程的一个核心主题.  
+因此，这也是我（以及许多其他教师）在作业和考试中经常提出的问题主题（暗示一下，暗示一下）.
 
-::: {.remark title="Computation beyond functions (advanced, optional)" #beyonfdunc}
-Functions capture quite a lot of computational tasks, but one can consider more general settings as well.
-For starters, we can and will talk about _partial_ functions, that are not defined on all inputs.
-When computing a partial function, we only need to worry about the inputs on which the function is defined.
-Another way to say it is that we can design an algorithm for a partial function $F$ under the assumption that someone "promised" us that all inputs $x$ would be such that $F(x)$ is defined (as otherwise, we do not care about the result).
-Hence such tasks are also known as _promise problems_.
 
-Another generalization is to consider _relations_ that may have more than one possible admissible output.
-For example, consider the task of finding any solution for a given set of equations.
-A _relation_ $R$ maps a string $x\in \{0,1\}^*$ into a _set of strings_ $R(x)$ (for example, $x$ might describe a set of equations, in which case  $R(x)$ would correspond to the set of all solutions to $x$).
-We can also identify a relation $R$ with the set of pairs of strings $(x,y)$ where $y\in R(x)$.
-A computational process solves a relation if for every $x\in \{0,1\}^*$, it outputs some string $y\in R(x)$.
+::: {.remark title="超越于函数的计算 (进阶主题, 选读)" #beyonfdunc}
+函数能够涵盖相当多的计算任务，但我们也可以考虑更一般的情形.  
+首先, 我们可以且将要讨论 **部分函数**, 它们并不在所有输入上都有定义.  
+在计算部分函数时, 我们只需关注函数定义域内的输入.  
+换句话说, 我们可以在假设有人“承诺”所有输入 $x$ 都使得 $F(x)$ 有定义的前提下, 设计部分函数 $F$ 的算法（否则我们不关心结果）.  
+因此, 这种任务也被称为 **承诺问题 (promise problems)**.
 
-Later in this book, we will consider even more general tasks, including _interactive_ tasks, such as finding a good strategy in a game, tasks defined using probabilistic notions, and others.
-However, for much of this book, we will focus on the task of computing a function, and often even a _Boolean_ function, that has only a single bit of output.
-It turns out that a great deal of the theory of computation can be studied in the context of this task, and the insights learned are applicable in the more general settings.
+另一种推广是考虑 **关系**, 它可能有多个可接受的输出.  
+例如, 考虑求解给定方程组的任意解的任务.  
+一个 **关系** $R$ 将字符串 $x \in \{0,1\}^*$ 映射为一个 **字符串集合** $R(x)$（例如, $x$ 可能描述一组方程, 此时 $R(x)$ 对应于 $x$ 的所有解的集合）.  
+我们也可以将关系 $R$ 与字符串对 $(x,y)$ 的集合对应起来, 其中 $y \in R(x)$.  
+如果一个计算过程对于每个 $x \in \{0,1\}^*$ 都输出某个 $y \in R(x)$, 则称它求解了关系 $R$.
+
+在本书后续章节, 我们将考虑更一般的任务, 包括 **交互式任务**（如在游戏中寻找良好策略）、使用概率概念定义的任务等.  
+然而, 在本书的大部分内容中, 我们将专注于 **计算函数** 的任务, 并且常常是 **布尔函数**, 输出仅为单比特.  
+事实证明, 在这个任务背景下可以研究大量计算理论, 所获得的见解在更一般的情形中同样适用.
+
 :::
+* 我们可以使用二进制字符串来表示希望计算的对象.  
+* 一个集合 $\mathcal{O}$ 的表示方案是从 $\mathcal{O}$ 到 $\{0,1\}^*$ 的一一映射.  
+* 我们可以使用前缀无歧义编码将集合 $\mathcal{O}$ 的表示“升级”为集合中元素列表的表示.  
+* 一个基本的计算任务是 **计算函数** $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 的任务. 这个任务不仅包括乘法、因式分解等算术计算, 还涵盖了科学计算、人工智能、图像处理、数据挖掘等众多领域中的其他任务.  
+* 我们将研究如何找到（或至少给出界限）计算各种有趣函数 $F$ 的 **最优算法** 的问题.
 
-* We can represent objects we want to compute on using binary strings.
-* A representation scheme for a set of objects $\mathcal{O}$ is a one-to-one map from $\mathcal{O}$ to $\{0,1\}^*$.
-* We can use prefix-free encoding to "boost" a representation for a set $\mathcal{O}$ into representations of lists of elements in $\mathcal{O}$.
-* A basic computational task is the task of _computing a function_ $F:\{0,1\}^* \rightarrow \{0,1\}^*$. This task encompasses not just arithmetical computations such as multiplication, factoring, etc. but a great many other tasks arising in areas as diverse as scientific computing, artificial intelligence, image processing, data mining and many many more.
-* We will study the question of finding (or at least giving bounds on) what the _best_ algorithm for computing $F$ for various interesting functions $F$ is.
-
-## Exercises
+## 习题
 
 ::: {.exercise}
 Which one of these objects can be represented by a binary string?
