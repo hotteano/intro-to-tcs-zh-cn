@@ -40,6 +40,7 @@ jobs:
           cargo install mdbook-katex
           cargo install mdbook-callouts
           cargo install mdbook-numthm
+          cargo install mdbook-mermaid
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4

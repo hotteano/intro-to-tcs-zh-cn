@@ -12,6 +12,8 @@ preferred-dark-theme = "black"
 git-repository-url = "https://github.com/sustech-tcs/intro-to-tcs-zh-cn"
 git-repository-icon = "fa-github"
 mathjax-support = true
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
+smart-punctuation = true
 
 [output.html.playground]
 editable = true
@@ -27,3 +29,6 @@ macros = "./macros.txt"
 custom_environments = [
   ["eq", "Equation", "**"]
 ]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
