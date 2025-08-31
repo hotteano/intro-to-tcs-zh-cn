@@ -30,8 +30,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MDBOOK_VERSION: 0.4.52
-      MDBOOK_KATEX_VERSION: 0.9.4
-      MDBOOK_CALLOUT_VERSION: 0.8.0
     steps:
       - uses: actions/checkout@v4
       - name: Install mdBook and preprocessors
@@ -39,8 +37,8 @@ jobs:
           curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf -y | sh
           rustup update
           cargo install --version ${MDBOOK_VERSION} mdbook
-          cargo install --version ${MDBOOK_KATEX_VERSION} mdbook-katex
-          cargo install --version ${MDBOOK_CALLOUT_VERSION} mdbook-callout
+          cargo install mdbook-katex
+          cargo install mdbook-callout
           cargo install mdbook-numthm
       - name: Setup Pages
         id: pages
