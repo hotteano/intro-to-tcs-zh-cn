@@ -1,5 +1,24 @@
 # 前言
 
+> 我们珍视但无法许诺自己能够达成这样的理想：我们对于“无用的知识”无拘无束的追求，将会在未来如同以往一样结出硕果。……
+>一所能够解放人类灵魂的机构，无论其毕业生是否作出所谓“有用”的贡献，其正当性就已经得到保证。一首诗歌、一首交响曲、一幅画卷、一条数学真理、一个科学事实，它们自身就已经包含了大学、学院以及研究所科学研究中需要或者要求的所有正当性。  ——Abraham Flexner，《无用以为用》
+
+>我建议你尝试你力所能及最困难的课程，因为只有当你挑战自我的时候才能够学到最多的知识……另外，我觉得CS121这门课真的很难。 ——Mark Zukerberg，2005
+
+这本书是针对本科生的计算理论入门课程。本课程的课程目标如下：
+
+* 学生们能够了解，计算在任何自然或者人造的系统中都存在，不仅仅存在于硅基现代计算机当中；
+* 类似地，我们要超越将计算理解为极其重要的“工具”的观念，进一步认识到——计算是描述自然、物理、数学甚至社会学概念的洞察工具；
+* 学生们能够了解“普遍性”的观念以及编码和数据的对偶性观念；
+* 学生们应该了解如何从数学上定义计算，并使用这样的工具去证明（有时仅仅是猜想）计算的下界以及不可能的结果。
+* 学生们要了解一些在现代理论计算机科学中出人意料的结果和发现，包含NP完全性的普遍性、交互的力量、随机性以及去随机的力量、用计算“难度”保证优质的加密，以及量子计算的无限可能。
+
+我希望通过上述课程，学生们能够认识到计算的能力与隐患。这是因为，在许多不同的背景下，例如宏定义和脚本等等看似“静态”和“有限制”的内容与形式，我们都需要讨论“计算”在其中表现出的性质。学生们应该能够理清计算证明的逻辑，包含归约的核心观点以及“自引用”的证明（例如对角化证明中，我们通过将其自身编码作为输入以导出矛盾）。学生们应该明白，某些问题是固有的难解决的，同时他们也应该能够在面对一个新问题的时候，识别其是否难以解决。尽管本书仅仅是短浅地涉猎密码学，学生们也应该了解我们在密码学中使用计算难度的目的。不论如何，本书不会局限于特定的技巧，而是要让学生们具有一种全新的思维——将计算本身视为独立的对象来审视与探究，并展示这种思维如何带来深远洞见与广泛应用。
+
+我写作本书的目标是以最简单的方式阐明计算理论中的概念，并且尝试让规范的记号与模型的核心理念更加好理解而不是晦涩难懂。我同时尝试利用学生们在编程方面的经验，拉近学生们与计算理论之间的关系（至少让教学内容更加有趣！），因此我使用了（高度简化）的编程语言来描述我们的计算模型。话虽如此，本书并不假定你对于任何特定编程语言驾轻就熟，而只要求你对“编程”这一总体概念有基本的熟悉。我们常常使用编程中的一些比喻和习惯，偶尔会提及Python、C或者Lisp等具体语言，但即使对于这些语言不熟悉，学生们也能毫无障碍地理解相关描述。
+
+本书中的证明，包含通用图灵机的存在性、有限值函数的电路可计算性、Cook-Levin定理以及其它许许多多的定理，通常都是构造性和算法性的，因为他们的最终目的都是将一个程序转换为另一个程序。尽管不看代码就阅读证明是完全可能的，我坚信保留代码资源，并且在各实际问题上实现它们并观察其表现对于学生具体地理解定理内容是更加有效的。为了达到这个目的，我们搭建了一个辅助的网站（仍在开发中）以允许学生们在我们定义的不同的计算模型上运行这些程序。与此同时，本网站也可以观看某些定理的构造性证明。
+
 ## 前言1 致学生们
 
 这一本书可能相当具有挑战性，主要原因是这本书中将各种计算理论的观点和技术融合到了一起。其中一些技巧是比较难以掌握的，不论是通过对角线论证证明停机问题的不可判定性，还是在NP完全问题归约中使用的组合工具，抑或是分析概率算法，再或者是通过讨论对抗过程从而证明密码学基本构件的安全性。
@@ -8,7 +27,7 @@
 
 * 当我陈述一个定理的时候，停下来并用一点时间尝试在你阅读证明之前自己证明这个定理。在这短短五分钟的尝试以后，你将会为能更好地理解标准证明而感到惊喜。
 * 当你在阅读定义的时候，一定要保证你完全理解了定义的含义，以及哪些自然的例子能够成为定义所描述的对象。此外，一定要去思考定义背后的动机，以及是否有其它自然的方式来形式化这些概念。
-* 积极地注意你阅读过程中脑中浮现出的问题，并且考虑他们是否在阅读文本的过程中得到了解答。
+* 积极地注意你阅读过程中，脑中浮现出的问题，并且考虑他们是否在阅读文本的过程中得到了解答。
 
 一个普遍的规则是，理解定义比理解定理更加重要，理解定理比理解证明更加重要。不论如何，在你证明定理之前，你一定要理解它到底陈述的是什么，一定要了解定理中对象所涉及的定义。不论证明如何复杂，我会提供证明定理的“证明想法”。你可以在第一次阅读的时候自由地跳过正式的证明，而单独把注意力放在“证明想法”上面。
 
@@ -51,13 +70,11 @@
 
 ## 致谢
 
-这段文字正在持续更新，我收到了许多人的反馈，对此我深怀感激。Salil Vadhan 与我共同教授了这门课程的最初版本，在此过程中给予了我大量宝贵的反馈与洞见。Michele Amoretti 和 Marika Swanberg 仔细审阅了本书的若干章节，并提供了极其详尽且有益的评论。Dave Evans 和 Richard Xu 提交了许多 pull request，修正错误并改进措辞。感谢 Anil Ada、Venkat Guruswami 和 Ryan O’Donnell 分享他们在教授 CMU 15-251 时的经验与建议。感谢 Adam Hesterberg 和 Madhu Sudan 就使用本书教授 CS121 的经验提出意见。Kunal Marwaha 提供了诸多评论，并在本书的技术制作方面给予了极大帮助。
+这段文字正在持续更新，我收到了许多人的反馈，对此我深怀感激。Salil Vadhan 与我共同教授了这门课程的最初版本，在此过程中给予了我大量宝贵的反馈与洞见。Michele Amoretti 和 Marika Swanberg 仔细审阅了本书的若干章节，并提供了极其详尽且有益的评论。Dave Evans 和 Richard Xu 提交了许多 pull request，修正错误并改进措辞。感谢 Anil Ada、Venkat Guruswami 和 Ryan O’Donnell 分享他们在教授 CMU 15-251 时的经验与建议。感谢 Adam Hesterberg 和 Madhu Sudan 就使用本书教授 CS 121 的经验提出意见。Kunal Marwaha 提供了诸多评论，并在本书的技术制作方面给予了极大帮助。
 
-感谢所有通过 GitHub仓库https://github.com/boazbk/tcs发送评论、报告错别字或提交 issue 与 pull request 的人。特别感谢以下人士的宝贵反馈：Scott Aaronson、Michele Amoretti、Aadi Bajpai、Marguerite Basta、Anindya Basu、Sam Benkelman、Jarosław Błasiok、Emily Chan、Christy Cheng、Michelle Chiang、Daniel Chiu、Chi-Ning Chou、Michael Colavita、Brenna Courtney、Rodrigo Daboin Sanchez、Robert Darley Waddilove、Anlan Du、Juan Esteller、David Evans、Michael Fine、Simon Fischer、Leor Fishman、Zaymon Foulds-Cook、William Fu、Kent Furuie、Piotr Galuszka、Carolyn Ge、Jason Giroux、Mark Goldstein、Alexander Golovnev、Sayan Goswami、Maxwell Grozovsky、Michael Haak、Rebecca Hao、Lucia Hoerr、Joosep Hook、Austin Houck、Thomas Huet、Emily Jia、Serdar Kaçka、Chan Kang、Nina Katz-Christy、Vidak Kazic、Joe Kerrigan、Eddie Kohler、Estefania Lahera、Allison Lee、Benjamin Lee、Ondřej Lengál、Raymond Lin、Emma Ling、Alex Lombardi、Lisa Lu、Kai Ma、Aditya Mahadevan、Kunal Marwaha、Christian May、Josh Mehr、Jacob Meyerson、Leon Mlodzian、George Moe、Todd Morrill、Glenn Moss、Haley Mulligan、Hamish Nicholson、Owen Niles、Sandip Nirmel、Sebastian Oberhoff、Thomas Orton、Joshua Pan、Pablo Parrilo、Juan Perdomo、Banks Pickett、Aaron Sachs、Abdelrhman Saleh、Brian Sapozhnikov、Anthony Scemama、Peter Schäfer、Josh Seides、Alaisha Sharma、Nathan Sheely、Haneul Shin、Noah Singer、Matthew Smedberg、Miguel Solano、Hikari Sorensen、David Steurer、Alec Sun、Amol Surati、Everett Sussman、Marika Swanberg、Garrett Tanzer、Eric Thomas、Sarah Turnill、Salil Vadhan、Patrick Watts、Jonah Weissman、Ryan Williams、Licheng Xu、Richard Xu、Wanqian Yang、Elizabeth Yeoh-Wang、Josh Zelinsky、Fred Zhang、Grace Zhang、Alex Zhao 与 Jessica Zhu。
+感谢所有通过 GitHub 仓库 https://github.com/boazbk/tcs 发送评论、报告错别字或提交 issue 与 pull request 的人。特别感谢以下人士的宝贵反馈：Scott Aaronson、Michele Amoretti、Aadi Bajpai、Marguerite Basta、Anindya Basu、Sam Benkelman、Jarosław Błasiok、Emily Chan、Christy Cheng、Michelle Chiang、Daniel Chiu、Chi-Ning Chou、Michael Colavita、Brenna Courtney、Rodrigo Daboin Sanchez、Robert Darley Waddilove、Anlan Du、Juan Esteller、David Evans、Michael Fine、Simon Fischer、Leor Fishman、Zaymon Foulds-Cook、William Fu、Kent Furuie、Piotr Galuszka、Carolyn Ge、Jason Giroux、Mark Goldstein、Alexander Golovnev、Sayan Goswami、Maxwell Grozovsky、Michael Haak、Rebecca Hao、Lucia Hoerr、Joosep Hook、Austin Houck、Thomas Huet、Emily Jia、Serdar Kaçka、Chan Kang、Nina Katz-Christy、Vidak Kazic、Joe Kerrigan、Eddie Kohler、Estefania Lahera、Allison Lee、Benjamin Lee、Ondřej Lengál、Raymond Lin、Emma Ling、Alex Lombardi、Lisa Lu、Kai Ma、Aditya Mahadevan、Kunal Marwaha、Christian May、Josh Mehr、Jacob Meyerson、Leon Mlodzian、George Moe、Todd Morrill、Glenn Moss、Haley Mulligan、Hamish Nicholson、Owen Niles、Sandip Nirmel、Sebastian Oberhoff、Thomas Orton、Joshua Pan、Pablo Parrilo、Juan Perdomo、Banks Pickett、Aaron Sachs、Abdelrhman Saleh、Brian Sapozhnikov、Anthony Scemama、Peter Schäfer、Josh Seides、Alaisha Sharma、Nathan Sheely、Haneul Shin、Noah Singer、Matthew Smedberg、Miguel Solano、Hikari Sorensen、David Steurer、Alec Sun、Amol Surati、Everett Sussman、Marika Swanberg、Garrett Tanzer、Eric Thomas、Sarah Turnill、Salil Vadhan、Patrick Watts、Jonah Weissman、Ryan Williams、Licheng Xu、Richard Xu、Wanqian Yang、Elizabeth Yeoh-Wang、Josh Zelinsky、Fred Zhang、Grace Zhang、Alex Zhao 与 Jessica Zhu。
 在本书的排版与制作过程中，我使用了许多开源软件包，对此我满怀感激。特别感谢 Donald Knuth 与 Leslie Lamport 创造了 LaTeX，以及 John MacFarlane 开发了 Pandoc。David Steurer 编写了最初用于生成此文本的脚本。当前版本使用了 Sergio Correia 的 panflute。LaTeX 与 HTML 模板源自 Tufte LaTeX、Gitbook 和 Bookdown。感谢 Amy Hendrickson 提供的 LaTeX 咨询。Juan Esteller 与 Gabe Montague 最初用 OCaml 与 JavaScript 实现了 NAND* 编程语言。我使用 Jupyter 项目编写了补充代码片段。
 
 最后，我要感谢我的家人：我的妻子 Ravit，以及我的孩子 Alma 与 Goren。撰写本书（以及相应的课程）占用了我大量时间，以至于 Alma 在她的五年级作文中写道：“大学不应当逼迫教授过度工作。”遗憾的是，我所能展示的成果，似乎只是 600 页极度枯燥的数学文字。
-
-
 
 
