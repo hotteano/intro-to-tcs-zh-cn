@@ -2,7 +2,7 @@
 
 - [序言](./preface.md)
 - [译者序](./translation_preface.md)
-- [第0章：简介](chapter_0.md)
+- [第0章：引言](chapter_0.md)
 - [第1章：数学背景](chapter_1.md)
 - [第2章：计算与表示](chapter_2.md)
 - [第3章：定义计算](chapter_3.md)
