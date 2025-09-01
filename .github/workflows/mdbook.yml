@@ -30,6 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       MDBOOK_VERSION: 0.4.52
+      MDBOOK_KATEX_VERSION: 0.9.4
     steps:
       - uses: actions/checkout@v4
       - name: Install mdBook and preprocessors
