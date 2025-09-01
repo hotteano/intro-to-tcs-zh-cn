@@ -19,3 +19,4 @@ editable = true
 
 [preprocessor.katex]
 after = ["links"]
+output = "mathml"
