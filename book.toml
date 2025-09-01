@@ -5,17 +5,30 @@ multilingual = false
 src = "src"
 title = "理论计算机科学导论"
 
-
 [output.html]
 site-url = "/intro-to-tcs-zh-cn"
 default-theme = "black"
 preferred-dark-theme = "black"
 git-repository-url = "https://github.com/sustech-tcs/intro-to-tcs-zh-cn"
 git-repository-icon = "fa-github"
-
+mathjax-support = true
+additional-js = ["mermaid.min.js", "mermaid-init.js"]
+smart-punctuation = true
 
 [output.html.playground]
 editable = true
 
 [preprocessor.katex]
 after = ["links"]
+output = "mathml"
+macros = "./macros.txt"
+
+[preprocessor.callouts]
+
+[preprocessor.numthm]
+custom_environments = [
+  ["eq", "Equation", "**"]
+]
+
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
