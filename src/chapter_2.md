@@ -26,17 +26,17 @@
 
 从初步的角度看, _计算_ 是一个将 _输入_ 映射为 _输出_ 的过程.
 
-![我们对计算最基本的理解，是把它看作一种将输入转化为输出的过程。](../figure/input_output.png){#computationinputtooutputfig .margin  }
+![我们对计算最基本的理解, 是把它看作一种将输入转化为输出的过程.](./images/chapter2/input_output.png)
 
 在谈论计算时, 一个关键点是要区分两个问题: __需要完成的任务是什么__(即规约), 以及 __如何去实现这一任务__(即实现方式).
 例如, 正如我们已经看到的, 计算两个整数的乘积这一任务, 并不只有唯一的一种实现方式.
 
-在本章中, 我们将聚焦于 "**what**" 部分, 即如何定义计算任务. 而这首先要求我们明确定义 _输入与输出_.
+在本章中, 我们将聚焦于 "**是什么**" 部分, 即如何定义计算任务. 而这首先要求我们明确定义 _输入与输出_.
 要囊括所有可能的输入和输出似乎颇具挑战性, 因为如今计算已经被应用在各种各样的对象上, 不仅是数字, 还可以是文本, 图像, 视频, 例如社交网络的连接图, MRI 扫描结果, 基因组数据, 甚至是其它程序.
 
-我们将尝试把所有这些对象表示为**由 0 和 1 组成的字符串**, 也就是诸如 $0011101$, $1011$, 或任意有限个 $0$ 与 $1$ 组成的序列. (当然, 这样的选择只是出于方便, 0 和 1 并非 "神圣" 而不可替代: 我们完全可以用任何其他有限集合的符号来表示.)
+我们将尝试把所有这些对象表示为 **由 0 和 1 组成的字符串**, 也就是诸如 $0011101$, $1011$, 或任意有限个 $0$ 与 $1$ 组成的序列. (当然, 这样的选择只是出于方便, 0 和 1 并非 "神圣" 而不可替代: 我们完全可以用任何其他有限集合的符号来表示.)
 
-![我们用由 0 和 1 组成的字符串来表示数字, 文本, 图像, 网络以及许多其他对象. 当然, 将这些 0 和 1 本身以绿色字体写在黑色背景上也是可选的.](../figure/zeroes-ones.jpg){#zerosandonesgreenfig .margin  }
+![我们用由 0 和 1 组成的字符串来表示数字, 文本, 图像, 网络以及许多其他对象. 当然, 将这些 0 和 1 本身以绿色字体写在黑色背景上也是可选的.](./images/chapter2/zeroes-ones.jpg)
 
 如今, 我们已经对数字化的表示习以为常, 因而并不会对这种编码的存在感到惊讶, 但这实际上是一个深刻的结果, 并带来了许多重要的影响.
 许多动物也能够表达某种恐惧或欲望, 但人类独特之处在于 _语言_: 我们使用有限的一组基本符号来描述潜在无限范围的体验.
@@ -45,9 +45,7 @@
 在过去的几十年里, 我们见证了一场关于数字化表示与传递的革命: 我们现在几乎可以完美地捕捉视觉与听觉的体验, 并几乎瞬间将其传播给无限的受众. 更重要的是, 一旦信息以数字形式存在, 我们便能够对其进行 _计算_, 并从中获取以往无法触及的数据洞见. 这场革命的核心, 是一个简单却深刻的观察: 我们能够用有限的一组符号 (事实上仅需两个符号 0 和 1) 来表示无穷多样的对象.
 
 在后续的章节中, 我们通常会默认这种表示方法的存在, 因此会使用诸如 "程序 $P$ 以 $x$ 为输入" 这样的表述, 即便 $x$ 可能是一个数字、向量、图, 或者其他任意对象. 不过我们真正的意思是, $P$ 的输入实际上是 $x$ 的 _二进制字符串表示_.
-在本章中, 我们会更深入地探讨如何构造这样的表示方法.
-
-::: {.nonmath}
+在本章中, 我们会更深入地探讨如何构造这样的表示方法. 
 
 本章的主要要点如下:
 
@@ -83,7 +81,8 @@
 更多示例见下表.  
 
 
-![Representing each one the digits <span class=](../figure/digitsbitmap.png)0,1,2,\ldots,90,1,2,\ldots,9 as a $$ bitmap image, which can be thought of as a string in $$. Using this scheme we can represent a natural number $$ of $$ decimal digits as a string in $$. Image taken from blog post of A. C. Andersen." />{#bitmapdigitsfig .margin  }
+![将数字 0, 1, 2, ..., 9 的每个数字表示为一个 12×8 的位图图像, 该图像可以被视为属于 $\{0,1\}^\{96\}$ 的一个字符串. 使用这个方案, 我们可以把具有 $n$ 位十进制数字的自然数 $x$ 表示为属于 $\{0,1\}^\{96n\}$ 的一个字符串. 图片来源: [A. C. Andersen 的博客文章](http://blog.andersen.im/2010/12/autonomous-neural-development-and-pruning/).](./images/chapter2/digitsbitmap.png)
+
 
 | **十进制表示** | **二进制表示** |
 | ----------------------------------------- | ---------------------------------------- |
@@ -242,8 +241,7 @@ $$
 因此, 在某些系统中, 两个大的正数相加可能得到一个 **负数** (例如, 将 $2^n-100$ 与 $2^n-200$ 相加可能得到 $-300$, 因为 $(2^{n+1}-300) \mod 2^{n+1} = -300$, 参见 [twoscomplementfig](){.ref}).  
 
 
-![In the two's complement representation  we represent a potentially negative integer <span class=](../figure/twoscomplement.png)k \in \{ -2^n ,\ldots, 2^n-1 \}k \in \{ -2^n ,\ldots, 2^n-1 \} as an $$ length string using the binary representation of the integer $$. On the left-hand side: this representation for $$ (the red integers are the numbers being represented by the blue binary strings). If a microprocessor does not check for overflows, adding the two positive numbers $$ and $$ might result in the negative number $$ (since $$. The right-hand side is a C program that will on some $$ bit architecture print a negative number after adding two positive numbers. (Integer overflow in C is considered undefined behavior which means the result of this program, including whether it runs or crashes, could differ depending on the architecture, compiler, and even compiler options and version.)" />{#twoscomplementfig .margin}
-
+![In the _two's complement representation_  we represent a potentially negative integer $k \in \{ -2^n ,\ldots, 2^n-1 \}$ as an $n+1$ length string using the binary representation of the integer $k \mod 2^{n+1}$. On the left-hand side: this representation for $n=3$ (the red integers are the numbers being represented by the blue binary strings). If a microprocessor does not check for overflows, adding the two positive numbers $6$ and $5$ might result in the negative number $-5$ (since $-5 \mod 16 = 11$. The right-hand side is a `C` program that will on some $32$ bit architecture print a negative number after adding two positive numbers. (Integer overflow in `C` is considered _undefined behavior_ which means the result of this program, including whether it runs or crashes, could differ depending on the architecture, compiler, and even compiler options and version.)](./images/chapter2/twoscomplement.png)
 ### 有理数及字符串表示对
 
 我们可以通过表示两个数字 $a$ 和 $b$ 来表示分数形式的有理数 $a/b$.  
@@ -292,7 +290,7 @@ $$
 每个实数都可以用有理数近似, 因此我们可以用一个接近 $x$ 的有理数 $a/b$ 来表示实数 $x$.  
 例如, 我们可以用 $22/7$ 来表示 $\pi$, 误差约为 $10^{-3}$. 若希望误差更小(例如约 $10^{-4}$)，可以使用 $311/99$, 以此类推.  
 
-![实数 $x\in \R$ 的浮点表示](../figure/floatingpoint.png)  
+![实数 $x\in \R$ 的浮点表示](./images/chapter2/floatingpoint.png)  
 实数通过近似有理数来表示是一个可行的表示方案.  
 
 然而, 在计算机应用中, 通常更常用 **浮点表示法** (参见 [floatingpointfig](){.ref}) 来表示实数.  
@@ -304,7 +302,7 @@ $$
 更多信息可见: [这里](http://floating-point-gui.de/), [这里](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html), [这里](https://randomascii.wordpress.com/2012/04/05/floating-point-complexities/).  
 
 
-![XKCD cartoon on floating-point arithmetic.](../figure/e_to_the_pi_minus_pi.png){#xkcdfloatingfig .margin  }
+![XKCD cartoon on floating-point arithmetic.](./images/chapter2/e_to_the_pi_minus_pi.png)
 
 读者可能会(合理地)担心, 浮点表示法(或有理数表示法)只能 **近似** 表示实数.  
 在许多(但不是全部)计算应用中, 可以将精度调得足够高, 以至于不会影响最终结果.  
@@ -382,12 +380,12 @@ $C(0), C(1), C(2), \ldots$.
 参见 [proofofcantorfig](){.ref} 获取该论证的图示说明.
 
 
-![We prove cantorthm{.ref} by combining sequencestostrings{.ref} and sequencestoreals{.ref}.  sequencestoreals{.ref}, which uses standard calculus tools, shows the existence of a one-to-one map <span class=](../figure/proofofcantor.png)FtRFtR from the set $$ to the real numbers. So, if a hypothetical one-to-one map $$ existed, then we could compose them to get a one-to-one map $$. Yet this contradicts sequencestostrings{.ref}- the heart of the proof- which rules out the existence of such a map." />{#proofofcantorfig }
+![We prove [cantorthm](){.ref} by combining [sequencestostrings](){.ref} and [sequencestoreals](){.ref}.  [sequencestoreals](){.ref}, which uses standard calculus tools, shows the existence of a one-to-one map $FtR$ from the set $\{0,1\}^\infty$ to the real numbers. So, if a hypothetical one-to-one map $RtS:\R \rightarrow \{0,1\}^*$ existed, then we could compose them to get a one-to-one map $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$. Yet this contradicts [sequencestostrings](){.ref}- the heart of the proof- which rules out the existence of such a map.](./images/chapter2/proofofcantor.png)
 
 现在只剩下证明这两个引理.
 我们先从证明 [sequencestostrings](){.ref} 开始, 这实际上是 [cantorthm](){.ref} 的核心部分.
 
-![We construct a function <span class=](../figure/diagonalization.png)\overline{d}\overline{d} such that $$ for every $$ by ensuring that $$ for every $$ with lexicographic order $$. We can think of this as building a table where the columns correspond to numbers $$ and the rows correspond to $$ (sorted according to $$). If the entry in the $$-th row and the $$-th column corresponds to $$ where $$ then $$ is obtained by going over the "diagonal" elements in this table (the entries corresponding to the $$-th row and $$-th column) and ensuring that $$. " />{#diagrealsfig   }
+![We construct a function $\overline{d}$ such that $\overline{d} \neq StF(x)$ for every $x\in \{0,1\}^*$ by ensuring that $\overline{d}(n(x)) \neq StF(x)(n(x))$ for every $x\in \{0,1\}^*$ with lexicographic order $n(x)$. We can think of this as building a table where the columns correspond to numbers $m\in \N$ and the rows correspond to $x\in \{0,1\}^*$ (sorted according to $n(x)$). If the entry in the $x$-th row and the $m$-th column corresponds to $g(m))$ where $g=StF(x)$ then $\overline{d}$ is obtained by going over the "diagonal" elements in this table (the entries corresponding to the $x$-th row and $n(x)$-th column) and ensuring that $\overline{d}(n(x)) \neq StF(x)(n(x))$. ](./images/chapter2/diagonalization.png)
 
 __Warm-up: "Baby Cantor".__ [sequencestostrings](){.ref} 的证明相当微妙. 一种获得直觉的方法是考虑以下有限版本的陈述: "不存在一个满射函数 $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$". 当然我们知道这是正确的, 因为集合 $\{0,1\}^{100}$ 比集合 $[100]$ 更大, 但让我们来看一个不太直接的证明: 对于任意 $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$, 我们可以定义字符串 $\overline{d} \in \{0,1\}^{100}$ 如下: $\overline{d} = (1-f(0)_0, 1-f(1)_1 , \ldots, 1-f(99)_{99})$. 如果 $f$ 是满射, 那么必然存在某个 $n\in [100]$ 使得 $f(n) =\overline{d}$, 但我们声称不存在这样的 $n$. 实际上, 如果存在这样的 $n$, 那么 $\overline{d}$ 的第 $n$ 个分量应当等于 $f(n)_n$, 但根据定义这个分量等于 $1-f(n)_n$. 另见此陈述的 [“proof by code”](https://trinket.io/python/4cff7e58f4).
 
@@ -637,7 +635,7 @@ $$
 因此, 我强烈建议你在此处停下来, 确保你理解了该定理的陈述. 你也应该尝试自己证明它, 然后再继续阅读.
 
 
-![If we have a prefix-free representation of each object then we can concatenate the representations of <span class=](../figure/repres_list.png)kk objects to obtain a representation for the tuple $$." />{#prefixfreerepconcat .margin  }
+![If we have a prefix-free representation of each object then we can concatenate the representations of $k$ objects to obtain a representation for the tuple $(o_0,\ldots,o_{k-1})$.](./images/chapter2/repres_list.png)
 
 证明的思路很简单.  
 例如, 假设我们想从表示 $x= \overline{E}(o_0,o_1,o_2)=E(o_0)E(o_1)E(o_2)$ 中解码三元组 $(o_0,o_1,o_2)$.  
@@ -829,7 +827,7 @@ StL(LtS([234,12,5]))
 
 <!-- (For example, the UTF-8 encoding for the "confused face" emoji 😕 is `11110000100111111001100010010101`) -->
 
-![The word ](../figure/braille.png){#braillefig .class .margin }
+![The word ](./images/chapter2/braille.png){#braillefig .class .margin }
 
 ::: {.example title="Braille 编码(盲文)" #braille}
 **Braille 编码**(盲文) 是另一种将字母和其他符号编码为二进制字符串的方法. 具体来说, 在盲文中, 每个字母被编码为一个属于 $\{0,1\}^6$ 的字符串, 该字符串通过排列成两列三行的凸起点来书写, 参见 [braillefig](){.ref}.  
@@ -887,7 +885,7 @@ double   132.0: 00000000 00000000 00000000 00000000 00000000 10000000 01100000 0
 对于某些应用, 这些表示方法之间的差异可能很大, 虽然对于我们而言通常无关紧要.
 
 
-![Representing the graph <span class=](../figure/representing_graphs.png)G=(\{0,1,2,3,4\},\{ (1,0),(4,0),(1,4),(4,1),(2,1),(3,2),(4,3) \})G=(\{0,1,2,3,4\},\{ (1,0),(4,0),(1,4),(4,1),(2,1),(3,2),(4,3) \}) in the adjacency matrix and adjacency list representations." />{#representinggraphsfig .margin  }
+![Representing the graph $G=(\{0,1,2,3,4\},\{ (1,0),(4,0),(1,4),(4,1),(2,1),(3,2),(4,3) \})$ in the adjacency matrix and adjacency list representations.](./images/chapter2/representing_graphs.png)
 
 ### 列表和嵌套列表的表示
 
@@ -949,7 +947,7 @@ _“$A$ 是一个计算函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 的算法, 满
 因此, 许多文献将这类计算任务称为 **判定一个语言**.
 
 
-![A subset <span class=](../figure/booleanfunc.png)L \subseteq \{0,1\}^*L \subseteq \{0,1\}^* can be identified with the function $$ such that $$ if $$ and $$ if $$. Functions with a single bit of output are called Boolean functions, while subsets of strings are called languages. The above shows that the two are essentially the same object, and we can identify the task of deciding membership in $$ (known as deciding a language in the literature) with the task of computing the function $$." />{#booleanlangfig .margin  }
+![A subset $L \subseteq \{0,1\}^*$ can be identified with the function $F:\{0,1\}^* \rightarrow \{0,1\}$ such that $F(x)=1$ if $x\in L$ and $F(x)=0$ if $x\not\in L$. Functions with a single bit of output are called _Boolean functions_, while subsets of strings are called _languages_. The above shows that the two are essentially the same object, and we can identify the task of deciding membership in $L$ (known as _deciding a language_ in the literature) with the task of computing the function $F$.](./images/chapter2/booleanfunc.png)
 
 对于每一个特定函数 $F$, 可能存在多种 **算法** 来计算 $F$.  
 我们将关注如下问题:
@@ -1001,7 +999,7 @@ print(mult2(12,7))
 区分 **程序或算法** $A$ 与 $A$ **计算的函数** $F$ 对本课程至关重要 (参见 [functionornotfig](){.ref}).
 
 
-![A function is a mapping of inputs to outputs. A program is a set of instructions on how to obtain an output given an input. A program computes a function, but it is not the same as a function, popular programming language terminology notwithstanding.](../figure/functionornot.png){#functionornotfig .margin  }
+![A function is a mapping of inputs to outputs. A program is a set of instructions on how to obtain an output given an input. A program computes a function, but it is not the same as a function, popular programming language terminology notwithstanding.](./images/chapter2/functionornot.png){#functionornotfig .margin  }
 
 ::: { .bigidea #functionprogramidea }
 **函数** 与 **程序** 并不相同.  

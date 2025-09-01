@@ -22,6 +22,7 @@ editable = true
 after = ["links"]
 output = "mathml"
 macros = "./macros.txt"
+pre-render = false
 
 [preprocessor.callouts]
 
