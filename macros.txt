@@ -8,3 +8,8 @@
 \ceil:{\lceil #1 \rceil}
 \expr:{\langle #1 \rangle}
 \pmod:{(\mod #1)}
+\AND:{\text{AND}}
+\OR:{\text{OR}}
+\NOT:{\text{NOT}}
+\XOR:{\text{XOR}}
+\NAND:{\text{NAND}}
