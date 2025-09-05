@@ -31,12 +31,14 @@ after = ["links"]
 macros = "./macros.txt"
 include-src = true
 trust = true
+output = "mathml"
 
 [preprocessor.toc]
 renderer = ["html"]
 
 [preprocessor.numthm]
 custom_environments = [
+  ["eq", "式", "**"],
   ["eqc", "式", "**"],
   ["thmc", "定理", "**"],
   ["lemc", "引理", "**"],
