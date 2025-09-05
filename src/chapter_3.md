@@ -439,7 +439,7 @@ $\AND$、$\OR$ 和 $\NOT$ 门分别有两个、两个和一个入边。若电路
 
 * 其余 $s$ 个顶点称为**门**。每个门标记为 $\wedge$、$\vee$ 或 $\neg$。标记为 $\wedge$（$\AND$）或 $\vee$（$\OR$）的门有两个入邻居，标记为 $\neg$（$\NOT$）的门有一个入邻居。允许存在平行边。^[平行边意味着 AND 或 OR 门 $u$ 的两个入邻居可以是同一个门 $v$。由于对任意 $a \in \{0,1\}$ 有 $\AND(a,a)=\OR(a,a)=a$，在仅使用 AND/OR/NOT 门的电路中，这类平行边并不会计算出新的值。但在后面引入更一般门集合时，我们将看到平行边的用途。]
 
-* 恰好有 $m$ 个门同时标记为 `Y[0]`, $\ldots$, `Y[m-1]`（除了其本来的 $\wedge$/$\vee$/$\neg$ 标记之外），称为**输出端**。
+* 恰好有 $m$ 个门同时标记为 $Y[0]$, $\ldots$, $Y[m-1]$（除了其本来的 $\wedge$/$\vee$/$\neg$ 标记之外），称为**输出端**。
 
 布尔电路的**规模**定义为其包含的门的数量 $s$。
 
@@ -447,138 +447,123 @@ $\AND$、$\OR$ 和 $\NOT$ 门分别有两个、两个和一个入边。若电路
 这是一个非平凡的数学定义，因此值得慢慢仔细阅读。  
 正如所有数学定义一样，我们使用已知的数学对象——**有向无环图（DAG）**——来定义一个新的对象，即布尔电路。  
 
-此时复习一些 DAG 的基本性质会很有帮助，特别是它们可以进行**拓扑排序**的事实，参见 [topsortsec]()。
+此时复习一些 DAG 的基本性质会很有帮助，特别是它们可以进行**拓扑排序**的事实，参见[1.6节](chapter_1.md#topsortsec)。
 ```
 
-If $C$ is a circuit with $n$ inputs and $m$ outputs, and $x\in \{0,1\}^n$, then we can compute the output of $C$ on the input $x$ in the natural way: assign the input vertices `X[`$0$`]`, $\ldots$, `X[`$n-1$`]` the values $x_0,\ldots,x_{n-1}$,  apply each gate on the values of its in-neighbors, and then output the values that correspond to the output vertices.
-Formally, this is defined as follows:
+如果 $C$ 是一个具有 $n$ 个输入和 $m$ 个输出的电路，且 $x \in \{0,1\}^n$，则自然可以计算 $C$ 在输入 $x$ 下的输出：  
+将输入顶点 $X[0]$, $\ldots$, $X[n-1]$ 赋值为 $x_0,\ldots,x_{n-1}$，然后对每个门应用其入邻居的值，最后输出对应于输出顶点的值。  
 
-::: {.definition title="Computing a function via a Boolean circuit" #circuitcomputedef}
-Let $C$ be a Boolean circuit with $n$ inputs and $m$ outputs.
-For every $x\in \{0,1\}^n$, the _output_ of $C$ on the input $x$, denoted by $C(x)$, is defined as the result of the following process:
+形式化定义如下：
 
+{{defc}}{circuitcomputedef}[利用布尔电路计算函数]
+设 $C$ 为一个具有 $n$ 个输入和 $m$ 个输出的布尔电路。  
+对于每个 $x \in \{0,1\}^n$，$C$ 在输入 $x$ 上的 **输出**，记作 $C(x)$，定义为以下过程的结果：  
 
-We let $h:V \rightarrow \N$ be the _minimal layering_ of $C$ (aka _topological sorting_, see [minimallayeruniquethm]()).
-We let $L$ be the maximum layer of $h$, and for $\ell=0,1,\ldots,L$  we do the following:
+我们令 $h: V \rightarrow \N$ 为 $C$ 的 **最小分层**（又称 **拓扑排序**，见[定理1.22](chapter_1.md#thm:minilayerunique)）。  
+令 $L$ 为 $h$ 的最大层数，对每个 $\ell=0,1,\ldots,L$，执行以下操作：
 
-* For every $v$ in the $\ell$-th layer (i.e., $v$ such that $h(v)=\ell$) do:
+* 对每个位于第 $\ell$ 层的顶点 $v$（即 $v$ 满足 $h(v)=\ell$）执行：
 
-  - If $v$ is an input vertex labeled with `X[`$i$`]` for some $i\in [n]$, then we assign to $v$ the value $x_i$.
+  - 如果 $v$ 是输入顶点，标记为 `X[`$i$`]`，其中 $i \in [n]$，则将 $x_i$ 赋值给 $v$。
 
-  - If $v$ is a gate vertex labeled with $\wedge$ and with two in-neighbors $u,w$ then we assign to $v$ the _AND_ of the values assigned to $u$ and $w$. (Since $u$ and $w$ are in-neighbors of $v$, they are in a lower layer than $v$, and hence their values have already been assigned.)
+  - 如果 $v$ 是标记为 $\wedge$ 的门顶点，且有两个入邻居 $u,w$，则将 $u$ 和 $w$ 的值的 $\AND$ 赋给 $v$。（由于 $u$ 和 $w$ 是 $v$ 的入邻居，它们位于比 $v$ 更低的层，因此它们的值已经被赋值。）
 
-  - If $v$ is a gate vertex labeled with $\vee$ and with two in-neighbors $u,w$ then we assign to $v$ the OR of the values assigned to $u$ and $w$.
+  - 如果 $v$ 是标记为 $\vee$ 的门顶点，且有两个入邻居 $u,w$，则将 $u$ 和 $w$ 的值的 $\OR$ 赋给 $v$。
 
-  - If $v$ is a gate vertex labeled with $\neg$ and with one in-neighbor $u$ then we assign to $v$ the negation of the value assigned to $u$.
+  - 如果 $v$ 是标记为 $\neg$ 的门顶点，且有一个入邻居 $u$，则将 $u$ 的值取反并赋给 $v$。
 
-* The result of this process is the value $y\in \{0,1\}^m$ such that for every $j\in [m]$, $y_j$ is the value assigned to the vertex with label `Y[`$j$`]`.
+* 该过程的结果是一个 $y \in \{0,1\}^m$，其中对于每个 $j \in [m]$，$y_j$ 为标记为 `Y[`$j$`]` 的顶点的值。
 
-Let $f:\{0,1\}^n \rightarrow \{0,1\}^m$. We say that the circuit $C$ _computes_ $f$ if for every $x\in \{0,1\}^n$, $C(x)=f(x)$.
-:::
+设 $f: \{0,1\}^n \rightarrow \{0,1\}^m$，如果对于每个 $x \in \{0,1\}^n$，都有 $C(x) = f(x)$，则称电路 $C$ **计算** 函数 $f$。
 
+```admonish remark title = "一些对布尔电路的吹毛求疵 (选读)"
+<a id="#booleancircuitsremarks"></a>
 
-::: {.remark title="Boolean circuits nitpicks (optional)" #booleancircuitsremarks}
-In phrasing [booleancircdef](), we've made some technical choices that are not very important, but will be convenient for us later on.
-Having parallel edges means an AND or OR gate $u$ can have both its in-neighbors be the same gate $v$.
-Since $\AND(a,a)=OR(a,a)=a$ for every $a\in \{0,1\}$, such parallel edges don't help in computing new values in circuits with AND/OR/NOT gates.
-However, we will see circuits with more general sets of gates later on.
-The condition that every input vertex has at least one out-neighbor is also not very important because we can always add "dummy gates" that touch
-these inputs. However, it is convenient since it guarantees that (since every gate has at most two in-neighbors) the number of inputs
-in a circuit is never larger than twice its size.
-:::
+在表述 {{ref: booleancircdef}} 时，我们做了一些技术性的选择，这些选择并不是非常重要，但对我们后续会很方便。  
 
+允许存在平行边意味着一个 $\AND$ 或 $\OR$ 门 $u$ 可以让它的两个入邻居都是同一个门 $v$。  
+由于对每个 $a \in \{0,1\}$ 都有 $\AND(a,a) = \OR(a,a) = a$，因此在仅使用 **$\AND/\OR/\NOT$** 门的电路中，这类平行边并不会带来新的计算值。  
+然而，我们稍后会看到包含更一般门集合的电路。  
+
+要求每个输入顶点至少有一个出邻居也不是特别重要，因为我们总可以添加“虚拟门”来使用这些输入。  
+不过这个要求很方便，因为它保证了（由于每个门最多有两个入邻居）电路中的输入数量永远不会超过其规模的两倍。
+```
 
 ## 3.4 直线程序 { #starightlineprogramsec }
 
-We have seen two ways to describe how to compute a function $f$ using _AND_, _OR_ and _NOT_:
+我们已经看到两种使用 $\AND$、$\OR$ 和 $\NOT$ 来计算函数 $f$ 的方式：
 
+* **布尔电路**，在 {{ref: booleancircdef}} 中定义，通过将 $\AND$、$\OR$ 和 $\NOT$ 门通过导线连接到输入来计算 $f$。
 
-* A _Boolean circuit_, defined in [booleancircdef](),  computes $f$ by connecting via wires _AND_, _OR_, and _NOT_ gates to the inputs.
+* 我们也可以使用 **直线程序** 来描述这样的计算，该程序的每一行形式为 `foo = AND(bar,blah)`、`foo = OR(bar,blah)` 和 `foo = NOT(bar)`，其中 `foo`、`bar` 和 `blah` 是变量名。（称其为 **直线程序**，因为它不包含循环或分支（例如 if/then）语句。）
 
-* We can also describe such a computation using a _straight-line program_ that has lines of the form `foo = AND(bar,blah)`, `foo = OR(bar,blah)` and `foo = NOT(bar)` where `foo`, `bar` and `blah` are variable names. (We call this a _straight-line program_ since it contains no loops or branching (e.g., if/then) statements.)
+为了更精确地描述第二种定义，我们现在定义一种与布尔电路等价的 **编程语言**。  
+我们将这种编程语言称为 **AON-CIRC 编程语言**（"AON" 代表 $\AND/\OR/\NOT$；"CIRC" 代表 **circuit**）。
 
-To make the second definition more precise, we will now define a _programming language_ that is equivalent to Boolean circuits.
-We call this programming language the **AON-CIRC programming language** ("AON" stands for _AND_/_OR_/_NOT_; "CIRC" stands for _circuit_).
-
-For example, the following is an AON-CIRC program that on input $x \in \{0,1\}^2$, outputs $\overline{x_0 \wedge x_1}$ (i.e., the $\NOT$ operation applied to $\AND(x_0,x_1)$:
+例如，以下是一个 AON-CIRC 程序，对于输入 $x \in \{0,1\}^2$，输出 $\overline{x_0 \wedge x_1}$（即对 $\AND(x_0,x_1)$ 应用 $\NOT$ 操作）：
 
 ```python
 temp = AND(X[0],X[1])
 Y[0] = NOT(temp)
 ```
 
-AON-CIRC is not a practical programming language: it was designed for pedagogical purposes only, as a way to model computation as the composition of $\AND$, $\OR$, and $\NOT$.
-However, it can still be easily implemented on a computer.
+AON-CIRC 并不是一种实用的编程语言：它仅用于教学目的，用来将计算建模为 $\AND$、$\OR$ 和 $\NOT$ 的组合。然而，它仍然可以很容易地在计算机上实现。
 
+根据这个例子，你可能已经能够猜到如何编写程序来计算（例如）$x_0 \wedge \overline{x_1 \vee x_2}$，以及更一般地，如何将布尔电路翻译为 AON-CIRC 程序。但是，由于我们希望对 AON-CIRC 程序证明数学性质，我们需要精确定义 AON-CIRC 编程语言。  
 
-Given this example, you might already be able to guess how to write a program for computing (for example) $x_0 \wedge \overline{x_1 \vee x_2}$, and in general how to translate a Boolean circuit into an AON-CIRC program.
-However, since we will want to prove mathematical statements about AON-CIRC programs, we will need to precisely define the AON-CIRC programming language.
-Precise specifications of programming languages can sometimes be long and tedious,^[For example the [C programming language specification](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1124.pdf) takes more than 500 pages.] but are crucial for secure and reliable implementations.
-Luckily, the AON-CIRC programming language is simple enough that we can define it formally with relatively little pain.
+编程语言的精确定义有时可能冗长且枯燥，例如，[C 语言规范](http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1124.pdf) 就超过 500 页。但对于安全可靠的实现至关重要。幸运的是，AON-CIRC 编程语言足够简单，我们可以相对轻松地对其进行正式定义。
 
+### 3.4.1 AON-CIRC 编程语言规范
 
+一个 AON-CIRC 程序是一系列字符串，我们称之为“行”，满足以下条件：
 
-### Specification of the AON-CIRC programming language
+* 每一行具有以下形式之一：`foo = AND(bar,baz)`、`foo = OR(bar,baz)` 或 `foo = NOT(bar)`，其中 `foo`、`bar` 和 `baz` 是 **变量标识符**。（我们遵循常见的 [编程语言惯例](https://goo.gl/QyHa3b)，使用 `foo`、`bar`、`baz` 等名称作为通用标识符的示例。）  
+  行 `foo = AND(bar,baz)` 对应于将变量 `foo` 赋值为变量 `bar` 和 `baz` 的逻辑 $\AND$。类似地，`foo = OR(bar,baz)` 和 `foo = NOT(bar)` 分别对应逻辑 $\OR$ 和逻辑 $\NOT$ 操作。
 
-An AON-CIRC program is a sequence of strings, which we call "lines", satisfying the following conditions: 
+* AON-CIRC 编程语言中的 **变量标识符** 可以由字母、数字、下划线和方括号的任意组合构成。有两类特殊变量：
+  - 形式为 `X[`$i$`]` 的变量，其中 $i \in \{0,1,\ldots,n-1\}$，称为 **输入变量**。
+  - 形式为 `Y[`$j$`]` 的变量，称为 **输出变量**。
 
+* 一个有效的 AON-CIRC 程序 $P$ 包含输入变量 `X[`$0$`]`，$\ldots$，`X[`$n-1$`]` 和输出变量 `Y[`$0$`]`，$\ldots$，`Y[`$m-1$`]`，其中 $n,m$ 为自然数。我们称 $n$ 为程序 $P$ 的 **输入数**，$m$ 为 **输出数**。
 
-* Every line has one of the following forms: `foo = AND(bar,baz)`,  `foo = OR(bar,baz)`, or  `foo = NOT(bar)` where `foo`, `bar` and `baz` are _variable identifiers_. (We follow the common [programming languages convention](https://goo.gl/QyHa3b)  of using names such as `foo`, `bar`, `baz` as stand-ins for generic identifiers.) The line `foo = AND(bar,baz)` corresponds to the operation of assigning to the variable `foo` the logical AND of the values of the variables `bar` and `baz`. Similarly  `foo = OR(bar,baz)` and `foo = NOT(bar)` correspond to the logical OR and logical NOT operations. 
+* 在有效的 AON-CIRC 程序中，每一行右侧的变量必须是输入变量或在之前的行中已经被赋值的变量。
 
+* 若 $P$ 是一个具有 $n$ 个输入和 $m$ 个输出的有效 AON-CIRC 程序，则对于每个 $x \in \{0,1\}^n$，程序 $P$ 在输入 $x$ 上的 **输出** 是字符串 $y \in \{0,1\}^m$，定义如下：
+  - 将输入变量 `X[`$0$`]`，$\ldots$，`X[`$n-1$`]` 初始化为 $x_0,\ldots,x_{n-1}$。
+  - 按顺序逐行执行 $P$ 的操作行，在每行中将左侧变量赋值为右侧操作的结果。
+  - 执行结束后，令 $y \in \{0,1\}^m$ 为输出变量 `Y[`$0$`]`，$\ldots$，`Y[`$m-1$`]` 的值。
 
-* A _variable identifier_ in the AON-CIRC programming language can be any combination of letters, numbers,  underscores, and brackets. There are two special types of variables:
-  - Variables of the form `X[`$i$`]`, with $i \in \{0,1,\ldots, n-1\}$  are known as _input_ variables.
-  - Variables of the form `Y[`$j$`]` are known as _output_ variables.
+* 我们用 $P(x)$ 表示程序 $P$ 在输入 $x$ 上的输出。
 
-* A valid AON-CIRC program $P$ includes input variables of the form `X[`$0$`]`,$\ldots$,`X[`$n-1$`]` and output variables of the form `Y[`$0$`]`,$\ldots$, `Y[`$m-1$`]` where $n,m$ are natural numbers. We say that $n$ is the number of _inputs_ of the program $P$ and $m$ is the number of outputs. 
+* AON-CIRC 程序 $P$ 的 **规模** 是它包含的行数。（读者可能注意到，这与我们定义的电路规模——门的数量——是一致的。）
 
-* In a valid AON-CIRC program, in every line the variables on the right-hand side of the assignment operator must either be input variables or variables that have already been assigned a value in a previous line.
+现在我们已经正式定义了 AON-CIRC 程序的规范，就可以定义 AON-CIRC 程序 $P$ **计算**一个函数 $f$ 的含义：
 
+{{defc}}{AONcircdef}[使用AON-CIRC程序计算一个函数]
+设 $f:\{0,1\}^n \rightarrow \{0,1\}^m$，且 $P$ 为一个具有 $n$ 个输入和 $m$ 个输出的有效 AON-CIRC 程序。  
+如果对于每个 $x \in \{0,1\}^n$ 都有 $P(x) = f(x)$，则称 **$P$ 计算函数 $f$**。
 
-* If $P$ is a valid AON-CIRC program of $n$ inputs and $m$ outputs, then for every $x\in \{0,1\}^n$ the _output_ of $P$ on input $x$ is the string $y\in \{0,1\}^m$ defined as follows:
-  - Initialize the input variables `X[`$0$`]`,$\ldots$,`X[`$n-1$`]` to the values $x_0,\ldots,x_{n-1}$
-  - Run the operator lines of $P$ one by one in order, in each line assigning to the variable on the left-hand side of the assignment operators the value of the operation on the right-hand side.
-  - Let $y\in \{0,1\}^m$ be the values of the output variables `Y[`$0$`]`,$\ldots$, `Y[`$m-1$`]` at the end of the execution.
+以下已解练习给出了一个 AON-CIRC 程序的示例。
 
-* We denote the output of $P$ on input $x$ by $P(x)$.
+{{exec}}{aonforcmpsolved}考虑如下函数 $CMP:\{0,1\}^4 \rightarrow \{0,1\}$：对四个输入比特 $a,b,c,d \in \{0,1\}$，当且仅当由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字时输出 $1$。  
+即 $CMP(a,b,c,d) = 1$ 当且仅当 $2a + b > 2c + d$。
 
-* The _size_ of an AON circ program $P$ is the number of lines it contains. (The reader might note that this corresponds to our definition of the size of a circuit as the number of gates it contains.)
+给出一个计算 $CMP$ 的 AON-CIRC 程序示例.
 
+~~~admonish solution collapsible=true
+编写这样的程序虽然繁琐，但并不困难。比较两个数字时，我们首先比较它们的最高有效位，然后依次比较下一位，以此类推。在数字仅有两位二进制的情况下，这些比较特别简单。由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字，当且仅当满足以下任一条件：
 
-Now that we formally specified AON-CIRC programs, we can define what it means for an AON-CIRC program $P$ to compute a function $f$:
+1. $(a,b)$ 的最高有效位 $a$ 大于 $(c,d)$ 的最高有效位 $c$；  
 
-::: {.definition title="Computing a function via AON-CIRC programs" #AONcircdef}
-Let $f:\{0,1\}^n \rightarrow\{0,1\}^m$, and $P$ be a valid AON-CIRC program with $n$ inputs and $m$ outputs.
-We say that _$P$ computes $f$_ if $P(x)=f(x)$ for every $x\in \{0,1\}^n$.
-:::
+或  
 
-The following solved exercise gives an example of an AON-CIRC program.
+2. 两个最高有效位 $a$ 和 $c$ 相等，但 $b > d$。
 
-::: {.solvedexercise title="" #aonforcmpsolved}
-Consider the following function $CMP:\{0,1\}^4 \rightarrow \{0,1\}$ that on four input bits $a,b,c,d\in \{0,1\}$, outputs $1$ iff the number represented by $(a,b)$ is larger than the number represented by $(c,d)$.
-That is $CMP(a,b,c,d)=1$ iff $2a+b>2c+d$.
+另一种等价表述为：数字 $(a,b)$ 大于 $(c,d)$ 当且仅当 $a>c$ **或** ($a\ge c$ **且** $b>d$)。
 
-Write an AON-CIRC program to compute $CMP$.
-:::
+对于二进制位 $\alpha, \beta$，条件 $\alpha > \beta$ 仅当 $\alpha = 1$ 且 $\beta = 0$，也就是 $\AND(\alpha, \NOT(\beta)) = 1$；条件 $\alpha \ge \beta$ 则为 $\OR(\alpha, \NOT(\beta)) = 1$。  
 
-::: {.solution data-ref="aonforcmpsolved"}
-Writing such a program is tedious but not truly hard.
-To compare two numbers we first compare their most significant digit, and then go down to the next digit and so on and so forth.
-In this case where the numbers have just two binary digits, these comparisons are particularly simple.
-The number represented by $(a,b)$ is larger than the number represented by $(c,d)$ if and only if one of the following conditions happens:
-
-1. The most significant bit $a$ of $(a,b)$   is larger than the most significant bit $c$ of $(c,d)$.
-
-or
-
-2. The two most significant bits $a$ and $c$ are equal, but $b>d$.
-
-
-Another way to express the same condition is the following:
-the number $(a,b)$ is larger than $(c,d)$ iff  $a>c$ __OR__ ($a\ge c$ __AND__ $b>d$).
-
-For binary digits $\alpha,\beta$, the condition $\alpha>\beta$ is simply that $\alpha=1$ and $\beta=0$ or $\AND(\alpha,NOT(\beta))=1$, and the condition $\alpha\ge\beta$ is simply $\OR(\alpha, NOT(\beta))=1$.
-Together these observations can be used to give the following AON-CIRC program to compute $CMP$:
+结合这些观察，可以得到用于计算 $CMP$ 的以下 AON-CIRC 程序：
 
 ```python
 # Compute CMP:{0,1}^4-->{0,1}
@@ -592,57 +577,59 @@ temp_6 = AND(temp_5,temp_3)
 Y[0] = OR(temp_2,temp_6)
 ```
 
-We can also present this 8-line program as a circuit with 8 gates, see [aoncmpfig]().
-:::
+我们也可以将这个 8 行程序表示为一个包含 8 个门的电路，见[下图](#aoncmpfig)。
+~~~
 
+```admonish quote title=""
+<a id="aoncmpfig">![A circuit for computing the $CMP$ function. The evaluation of this circuit on $(1,1,1,0)$ yields the output $1$, since the number $3$ (represented in binary as $11$) is larger than the number $2$ (represented in binary as $10$).](./images/chapter3/comparecircuit.png)</a>
+一个用于计算 $CMP$ 函数的电路。以输入 $(1,1,1,0)$ 运行该电路，输出为 $1$，因为数字 $3$（二进制表示为 $11$）大于数字 $2$（二进制表示为 $10$）。
+```
 
-![A circuit for computing the $CMP$ function. The evaluation of this circuit on $(1,1,1,0)$ yields the output $1$, since the number $3$ (represented in binary as $11$) is larger than the number $2$ (represented in binary as $10$).](./images/chapter3/comparecircuit.png){#aoncmpfig .margin}
+### 3.4.2 证明AON-CIRC程序与布尔电路的等价性
 
+我们现在正式证明 AON-CIRC 程序和布尔电路具有完全相同的计算能力：
 
+{{thmc}}{slcircuitequivthm}[电路与直线程序的等价性]
+设 $f:\{0,1\}^n \rightarrow \{0,1\}^m$, $s \ge m$ 为某个正整数。则 $f$ 可以由一个包含 $s$ 个门的布尔电路计算，当且仅当 $f$ 可以由一个包含 $s$ 行的 AON-CIRC 程序计算。
 
-### Proving equivalence of AON-CIRC programs and Boolean circuits
+```admonish idea title="证明思路"
+证明思路很简单——AON-CIRC 程序和布尔电路只是描述同一计算过程的不同方式。  
+例如，布尔电路中的一个 $\AND$ 门对应于对两个已计算值执行 $\AND$ 操作。  
+在 AON-CIRC 程序中，这对应于一行将两个已计算变量的 $\AND$ 结果存储到一个变量中的语句。
+```
 
+```admonish pause
+{{ref: slcircuitequivthm}} 的证明本质上很简单，但其中包含的所有细节可能会让阅读起来有些繁琐。  
+你最好先尝试自己推导一遍，再去阅读证明。  
+我们的 [GitHub 仓库](https://github.com/boazbk/tcscode) 中提供了 {{ref: slcircuitequivthm}} 的“Python 证明”：实现了 `circuit2prog` 和 `prog2circuits` 函数，用于在布尔电路和 AON-CIRC 程序之间互相转换。
+```
 
-We now formally prove that AON-CIRC programs and Boolean circuits have exactly the same power:
+```admonish proof collapsible=true
+设 $f:\{0,1\}^n \rightarrow \{0,1\}^m$。由于该定理是**“当且仅当”**的命题，要证明它，我们需要展示两个方向：  
+1. 将计算 $f$ 的 AON-CIRC 程序转换为计算 $f$ 的布尔电路；  
+2. 将计算 $f$ 的布尔电路转换为计算 $f$ 的 AON-CIRC 程序。  
 
-> ### {.theorem title="Equivalence of circuits and straight-line programs" #slcircuitequivthm}
-Let $f:\{0,1\}^n \rightarrow \{0,1\}^m$ and $s \geq m$ be some number. Then $f$ is computable by a Boolean circuit with $s$ gates  if and only if $f$ is computable by an AON-CIRC program of $s$ lines.
+我们先考虑第一个方向。设 $P$ 是一个计算 $f$ 的 AON-CIRC 程序。我们定义一个电路 $C$ 如下：该电路有 $n$ 个输入和 $s$ 个门。对于每个 $i \in [s]$，若第 $i$ 行运算为 `foo = AND(bar,blah)`，则电路中的第 $i$ 个门为 $\AND$ 门，其入邻居连接到对应的第 $j$ 和第 $k$ 个门，$j$ 和 $k$ 分别对应于在第 $i$ 行之前最后一次写入变量 `bar` 和 `blah` 的行号。（例如，如果 $i=57$，且 `bar` 最近一次被写入的是第 $35$ 行，`blah` 最近一次被写入的是第 $17$ 行，则门 $57$ 的两个入邻居为门 $35$ 和门 $17$。）  
+如果 `bar` 或 `blah` 是输入变量，则将门连接到对应的输入顶点。  
+如果 `foo` 是输出变量（形式为 `Y[j]`），则在对应门上添加相同标签，将其标记为输出门。  
+对于 $\OR$ 或 $\NOT$ 操作的情况也类似，只是使用对应的 $\OR$ 或 $\NOT$ 门，并且 $\NOT$ 门只有一个入邻居。  
 
+对于任意输入 $x \in \{0,1\}^n$，若运行程序 $P$，第 $i$ 行计算的值恰好等于在电路 $C$ 上对 $x$ 求值时第 $i$ 个门的值。因此，对所有 $x \in \{0,1\}^n$，有 $C(x)=P(x)$。
 
+再看另一个方向。设 $C$ 是一个具有 $n$ 个输入、$s$ 个门的电路，计算函数 $f$。我们对门按照拓扑序排序，记为 $v_0,\ldots,v_{s-1}$。  
+现在可以构造一个包含 $s$ 行运算的程序 $P$：  
+对于每个 $i \in [s]$，若 $v_i$ 是一个 $\AND$ 门，其入邻居为 $v_j, v_k$，则在 $P$ 中添加一行 `temp_i = AND(temp_j,temp_k)`，除非某个顶点是输入顶点或输出门，此时改用 `X[.]` 或 `Y[.]`。  
+由于我们按照拓扑顺序操作，保证入邻居 $v_j$ 和 $v_k$ 对应的变量已被赋值。  
+$\OR$ 和 $\NOT$ 门同理。  
 
-> ### {.proofidea data-ref="slcircuitequivthm"}
-The idea is simple - AON-CIRC programs and Boolean circuits are just different ways of describing the exact same computational process.
-For example, an _AND_ gate in a Boolean circuit corresponds to computing the _AND_ of two previously-computed values.
-In an AON-CIRC program this will correspond to the line that stores in a variable the `AND` of two previously-computed variables.
+再次验证，对于每个输入 $x$，$P(x)=C(x)$，因此程序计算与电路相同的函数。  
+（注意，由于 $C$ 是合法电路，根据 {{ref: booleancircdef}}，$C$ 的每个输入顶点至少有一个出邻居，并且恰有 $m$ 个输出门标记为 $0,\ldots,m-1$；因此所有变量 `X[0],\ldots,X[n-1]` 和 `Y[0],\ldots,Y[m-1]` 都会出现在程序 $P$ 中。）
+```
 
-::: { .pause }
-This proof of [slcircuitequivthm]() is simple at heart, but all the details it contains can make it a little cumbersome to read. You might be better off trying to work it out yourself before reading it.
-Our  [GitHub repository](https://github.com/boazbk/tcscode)  contains a  "proof by Python" of [slcircuitequivthm](): implementation of functions `circuit2prog` and `prog2circuits` mapping Boolean circuits to AON-CIRC programs
-and vice versa.
-:::
-
-::: {.proof data-ref="slcircuitequivthm"}
-Let $f:\{0,1\}^n \rightarrow \{0,1\}^m$. Since the theorem is an "if and only if" statement, to prove it we need to show both directions: translating an AON-CIRC program that computes $f$ into a circuit that computes $f$, and translating a circuit that computes $f$ into an AON-CIRC program that does so.
-
-We start with the first direction. Let $P$ be an AON-CIRC program that computes $f$. We define a circuit $C$ as follows: the circuit will have $n$ inputs and $s$ gates. For every $i \in [s]$, if the $i$-th operator line has the form `foo = AND(bar,blah)` then the $i$-th gate in the circuit will be an AND gate that is connected to gates $j$ and $k$ where $j$ and $k$ correspond to the last lines before $i$ where the variables `bar` and `blah` (respectively) were written to. (For example, if $i=57$ and the last line `bar` was written to is $35$ and the last line `blah` was written to is $17$ then the two in-neighbors of gate $57$ will be gates $35$ and $17$.)
-If either `bar` or `blah` is an input variable then we connect the gate to the corresponding input vertex instead.
-If `foo` is an output variable of the form `Y[`$j$`]` then we add the same label to the corresponding gate to mark it as an output gate.
-We do the analogous operations if the $i$-th line involves an `OR` or a `NOT` operation (except that we use the corresponding _OR_ or _NOT_ gate, and in the latter case have only one in-neighbor instead of two).
-For every input $x\in \{0,1\}^n$, if we run the program $P$ on $x$, then the value written that is computed in the $i$-th line is exactly the value that will be assigned to the $i$-th gate if we evaluate the circuit $C$ on $x$. Hence $C(x)=P(x)$ for every $x\in \{0,1\}^n$.
-
-For the other direction, let $C$ be a circuit of $s$ gates and $n$ inputs that computes the function $f$. We sort the gates according to a topological order and write them as $v_0,\ldots,v_{s-1}$.
-We now can create a program $P$ of $s$ operator lines as follows.
-For every $i\in [s]$, if $v_i$ is an AND gate with in-neighbors  $v_j,v_k$ then we will add a line to $P$ of the form `temp_`$i$ ` = AND(temp_`$j$`,temp_`$k$`)`, unless one of the vertices is an input vertex or an output gate, in which case we change this to the form `X[.]` or `Y[.]` appropriately.
-Because we work in topological ordering, we are guaranteed that the in-neighbors $v_j$ and $v_k$ correspond to variables that have already been assigned a value.
-We do the same for OR and NOT gates.
-Once again, one can verify that for every input $x$, the value $P(x)$ will equal $C(x)$ and hence the program computes the same function as the circuit.
-(Note that since $C$ is a valid circuit, per [booleancircdef](), every input vertex of $C$ has at least one out-neighbor and there are exactly $m$ output gates labeled $0,\ldots,m-1$;
-hence all the variables  `X[0]`, $\ldots$, `X[`$n-1$`]` and `Y[0]` ,$\ldots$, `Y[`$m-1$`]` will appear in the  program $P$.)
-:::
-
-
-![Two equivalent descriptions of the same AND/OR/NOT computation as both an AON program and a Boolean circuit.](./images/chapter3/aoncircequiv.png){#aoncircequivfig .margin  }
-
+```admonish quote title=""
+<a id="aoncircequivfig">![Two equivalent descriptions of the same AND/OR/NOT computation as both an AON program and a Boolean circuit.](./images/chapter3/aoncircequiv.png)</a>
+同一 $\AND/\OR/\NOT$ 计算的两种等效描述：既作为 AON 程序，也作为布尔电路。
+```
 
 ## 3.5 Physical implementations of computing devices (digression) {#physicalimplementationsec }
 
@@ -996,7 +983,7 @@ For every $f:\{0,1\}^n \rightarrow \{0,1\}^m$ and $s \geq m$, $f$ is computable 
 ![A NAND program and the corresponding circuit. Note how every line in the program corresponds to a gate in the circuit.](./images/chapter3/nandcircuitequiv.png){#progandcircfig   .margin  }
 
 
-We omit the proof of [NANDcircslequivthm]() since it follows along exactly the same lines as the equivalence of Boolean circuits and AON-CIRC program  ([slcircuitequivthm]()).
+We omit the proof of [NANDcircslequivthm]() since it follows along exactly the same lines as the equivalence of Boolean circuits and AON-CIRC program  ({{ref: slcircuitequivthm}}).
 Given [NANDcircslequivthm]() and [NANDuniversamthm](), we know that we can translate every $s$-line AON-CIRC program $P$ into an equivalent NAND-CIRC program of at most $3s$ lines.
 In fact, this translation can be easily done by replacing every line of the form `foo = AND(bar,blah)`, `foo = OR(bar,blah)` or `foo = NOT(bar)` with the equivalent 1-3 lines that use the `NAND` operation.
 Our [GitHub repository](https://github.com/boazbk/tcscode) contains a "proof by code": a simple Python program `AON2NAND` that transforms an AON-CIRC into an equivalent NAND-CIRC program.
@@ -1014,7 +1001,7 @@ We will come back to this distinction later on in this book.
 ## 3.7 Equivalence of all these models
 
 
-If we put together [slcircuitequivthm](), [NANDuniversamthm](), and [NANDcircslequivthm](), we obtain the following result:
+If we put together {{ref: slcircuitequivthm}}, [NANDuniversamthm](), and [NANDcircslequivthm](), we obtain the following result:
 
 ::: {.theorem title="Equivalence between models of finite computation" #equivalencemodelsthm}
 For every sufficiently large $s,n,m$  and $f:\{0,1\}^n \rightarrow \{0,1\}^m$, the following conditions are all equivalent to one another:
@@ -1035,10 +1022,10 @@ For example, if $f$ can be computed by a Boolean circuit of $s$ gates, then it c
 
 
 > ### {.proofidea data-ref="equivalencemodelsthm"}
-We omit the formal proof, which is obtained by combining [slcircuitequivthm](), [NANDuniversamthm](), and [NANDcircslequivthm](). The key observation is that the results we have seen allow us to translate a program/circuit that computes $f$ in one of the above models into a program/circuit that computes $f$ in another model by increasing the lines/gates by at most a constant factor (in fact this constant factor is at most $3$).
+We omit the formal proof, which is obtained by combining {{ref: slcircuitequivthm}}, [NANDuniversamthm](), and [NANDcircslequivthm](). The key observation is that the results we have seen allow us to translate a program/circuit that computes $f$ in one of the above models into a program/circuit that computes $f$ in another model by increasing the lines/gates by at most a constant factor (in fact this constant factor is at most $3$).
 
 
-[slcircuitequivthm]() is a special case of a more general result.
+{{ref: slcircuitequivthm}} is a special case of a more general result.
 We can consider even more general models of computation, where instead of AND/OR/NOT or NAND, we use other operations (see [othergatessec]() below).
 It turns out that Boolean circuits are equivalent in power to such models as well.
 The fact that all these different ways to define computation lead to equivalent models shows that we are "on the right track".
@@ -1069,7 +1056,7 @@ We say that $\mathcal{F}$ is a _universal set of operations_ (also known as a un
 AON-CIRC programs correspond to $\{AND,OR,NOT\}$ programs, NAND-CIRC programs corresponds to $\mathcal{F}$ programs for the set  $\mathcal{F}$ that only contains the $\text{NAND}$ function,   but we can also define  $\{ IF, ZERO, ONE\}$ programs (see below), or use any other set.
 
 We can also define _$\mathcal{F}$ circuits_, which will be directed graphs in which each _gate_ corresponds to applying a function $f_i \in \mathcal{F}$, and will each have $k_i$ incoming wires and a single outgoing wire. (If the function $f_i$ is not _symmetric_, in the sense that the order of its input matters then we need to label each wire entering a gate as to which parameter of the function it corresponds to.)
-As in [slcircuitequivthm](), we can show that $\mathcal{F}$ circuits and $\mathcal{F}$ programs are equivalent.
+As in {{ref: slcircuitequivthm}}, we can show that $\mathcal{F}$ circuits and $\mathcal{F}$ programs are equivalent.
 We have seen that for $\mathcal{F} = \{ AND,OR, NOT\}$, the resulting circuits/programs are equivalent in power to the NAND-CIRC programming language, as we can compute $\text{NAND}$ using $\AND$/$\OR$/$\NOT$ and vice versa.
 This turns out to be a special case of a general phenomenon — the _universality_ of $\text{NAND}$ and other gate sets — that we will explore more in-depth later in this book.
 
@@ -1169,7 +1156,7 @@ if $B$ is universal then there is a $B$-circuit of at most $O(1)$ gates to compu
 
 
 ::: {.exercise title="Size and inputs / outputs" #nandcircsizeex}
-Prove that for every NAND circuit of size $s$ with $n$ inputs and $m$ outputs, $s \geq \min \{ n/2 , m \}$. See footnote for hint.^[_Hint:_ Use the conditions of [booleancircdef]() stipulating that every input vertex has at least one out-neighbor and there are exactly $m$ output gates. See also [booleancircuitsremarks]().]
+Prove that for every NAND circuit of size $s$ with $n$ inputs and $m$ outputs, $s \geq \min \{ n/2 , m \}$. See footnote for hint.^[_Hint:_ Use the conditions of {{ref: booleancircdef}} stipulating that every input vertex has at least one out-neighbor and there are exactly $m$ output gates. See also [booleancircuitsremarks]().]
 :::
 
 
@@ -1229,5 +1216,5 @@ Whitehead and Russell used NAND as the basis for their logic in their magnum opu
 In her Ph.D thesis, Ernst [@Ernst2009phd] investigates empirically the minimal NAND circuits for various functions.
 Nisan and Shocken's book [@NisanShocken2005]  builds a computing system starting from NAND gates and ending with high-level programs and games ("NAND to Tetris"); see also the website [nandtotetris.org](https://www.nand2tetris.org/).
 
-We defined the _size_ of a Boolean circuit in [booleancircdef]() to be the number of gates it contains. This is one of two conventions used in the literature. The other convention is to define the size as the number of _wires_ (equivalent to the number of gates plus the number of inputs).
+We defined the _size_ of a Boolean circuit in {{ref: booleancircdef}} to be the number of gates it contains. This is one of two conventions used in the literature. The other convention is to define the size as the number of _wires_ (equivalent to the number of gates plus the number of inputs).
 This makes very little difference in almost all settings, but can affect the circuit size complexity of some "pathological examples" of functions such as the constant zero function that do not depend on much of their inputs.

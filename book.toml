@@ -65,11 +65,13 @@ before = ["katex"]
 directive = "proof"
 icon = "./src/images/icons/proof.svg"
 color = "#ffd700"
+title = "证明"
 
 [[preprocessor.admonish.custom]]
 directive = "solution"
 icon = "./src/images/icons/solution.svg"
 color = "#00c853"
+title = "解答"
 
 [[preprocessor.admonish.custom]]
 directive = "pause"
