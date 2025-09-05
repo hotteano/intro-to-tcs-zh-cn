@@ -1,15 +1,20 @@
 # 定义计算 {#compchap }
-> *“没有理由不借助机器来节省脑力劳动和体力劳动。”* —— Charles Babbage，1852   
 
-> *“如果有谁不以我的例子为戒，而尝试并成功地用不同的原理或更简单的机械手段，构造出一台在自身中体现数学分析执行部门全部功能的机器，那么我丝毫不担心将我的声誉交付于他，因为唯有他能完全理解我努力的性质及其成果的价值。”* —— Charles Babbage，1864 
+```admonish quote
+*“没有理由不借助机器来节省脑力劳动和体力劳动。”* —— Charles Babbage，1852   
 
-> *“要理解一个程序，你必须既成为机器，又成为程序。”* —— Alan Perlis，1982 
+*“如果有谁不以我的例子为戒，而尝试并成功地用不同的原理或更简单的机械手段，构造出一台在自身中体现数学分析执行部门全部功能的机器，那么我丝毫不担心将我的声誉交付于他，因为唯有他能完全理解我努力的性质及其成果的价值。”* —— Charles Babbage，1864 
+
+*“要理解一个程序，你必须既成为机器，又成为程序。”* —— Alan Perlis，1982
+```
+
+
 ## 学习目标 {.objectives  }
 * 理解计算可以被精确建模。  
 * 学习 **布尔电路** / **直线程序** 的计算模型。  
 * 电路与直线程序的等价性。  
 * AND/OR/NOT 与 NAND 的等价性。  
-* 物理世界中的计算实例。  
+* 物理世界中的计算实例。 
 
 ## 目录
 
@@ -32,12 +37,12 @@
 借助这一框架，我们便能精确地表述诸如：“函数 $f$ 可以由模型 $X$ 计算”或“函数 $f$ 可以由模型 $X$ 在 $s$ 步操作内计算完成”这样的命题。  
 
 
-> <a id="compchapwhatvshowfig"> ![compchapwhatvshowfig](./images/chapter3/compchapterwhatvshow.png) {#compchapwhatvshowfig} </a>
+> <a id="compchapwhatvshowfig"> ![compchapwhatvshowfig](./images/chapter3/compchapterwhatvshow.png) </a>
 > 一个将字符串映射到字符串的函数，**规定**了一项计算任务，也就是说，它描述了输入与输出之间所期望的关系。在本章中，我们将定义一些模型，用来**实现**这些计算过程，从而达到所需的关系，也就是描述**如何**根据输入来计算输出。我们将看到若干此类模型的例子，包括布尔电路和直线型编程语言。
 
 
 ::: {.nonmath}
-阅读本章, 读者主要有以下收获：
+阅读本章, 我们希望读者能够有以下收获：
 
 * 我们可以使用 **逻辑运算**，如 $AND$(与)、$OR$(或) 和 $NOT$(非)，从输入计算输出（见 [3.2节](#andornotsec)）。
 
@@ -231,7 +236,7 @@ $$
 
 以下算法使用 $AND$、$OR$ 和 $NOT$ 来计算 $XOR$：
 
-> {{alg}}{XORfromAONalg}[用 $AND$, $OR$ 与 $NOT$ 计算 $XOR$]
+> {{algc}}{XORfromAONalg}[用 $AND$, $OR$ 与 $NOT$ 计算 $XOR$]
 > $$
   \begin{array}{l}
   \mathbf{Input:}\ a,b \in \{0,1\} \\
@@ -244,12 +249,12 @@ $$
   \end{array}
   $$
 
-{{lem}}{alganalaysis}
-对于每个 $a,b \in \{0,1\}$，在输入 $a,b$ 时，算法 [XORfromAONalg](){.ref} 输出 $a + b \mod 2$。
+{{lemc}}{alganalaysis}
+对于每个 $a,b \in \{0,1\}$，在输入 $a,b$ 时, {{ref: XORfromAONalg}} 输出 $a + b \mod 2$。
 
 ::: {.proof data-ref="alganalaysis"}
 对于任意 $a,b$，有 $XOR(a,b)=1$ 当且仅当 $a$ 与 $b$ 不同。  
-在输入 $a,b \in \{0,1\}$ 时，[XORfromAONalg](){.ref} 输出  
+在输入 $a,b \in \{0,1\}$ 时，{{ref: XORfromAONalg}} 输出  
 $$
 AND(w2, w3)
 $$  
@@ -266,7 +271,7 @@ $$
 
 :::
 
-We can also express [XORfromAONalg](){.ref} using a programming language.
+We can also express {{ref: XORfromAONalg}} using a programming language.
 Specifically, the following is a _Python_ program that computes the $XOR$ function:
 
 ```python
