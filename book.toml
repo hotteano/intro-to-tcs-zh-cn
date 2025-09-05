@@ -37,6 +37,7 @@ output = "mathml"
 renderer = ["html"]
 
 [preprocessor.numthm]
+prefix = true
 custom_environments = [
   ["eq", "式", "**"],
   ["eqc", "式", "**"],
@@ -60,6 +61,7 @@ assets_version = "3.1.0" # do not edit: managed by `mdbook-admonish install`
 [preprocessor.numeq]
 after = ["links"]
 before = ["katex"]
+prefix = true
 
 [[preprocessor.admonish.custom]]
 directive = "proof"

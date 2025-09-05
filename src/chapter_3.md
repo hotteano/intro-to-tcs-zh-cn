@@ -1,5 +1,14 @@
 ```admonish warning title = ""
-❗**页面施工中**: 目前状态: 翻译中.
+❗**页面施工中**: 目前状态: 翻译中(余习题).
+
+待办: 
+
+- [√]将所有numthm环境用灰色admonish(quote)框起.
+- [ ]修复对cellularautomatasec(8.4节)的引用, 需要等候翻译进度.
+- [ ]修复对NANDsfromActivationfunctionex(于习题)的引用.
+- [ ]修复对chapequivalentmodels(第7章)的引用, 需要等候翻译进度.
+- [ ]修复对functionprogramidea, secimplvsspec(第2章)的引用.
+- [ ]修复结尾传记部分的文献引用.
 ```
 
 # 定义计算 {#compchap }
@@ -16,7 +25,7 @@
 * 理解计算可以被精确建模。  
 * 学习 **布尔电路** / **直线程序** 的计算模型。  
 * 电路与直线程序的等价性。  
-* $\AND$/$\OR$/$\NOT$ 与 $\text{NAND}$ 的等价性。  
+* $\AND$/$\OR$/$\NOT$ 与 $\NAND$ 的等价性。  
 * 物理世界中的计算实例。 
 
 ## 目录
@@ -53,11 +62,11 @@ Charles Babbage的计算轮。图片取自 Harvard Mark I 计算机的“操作�
 
 * 我们还可以把布尔电路描述为 **直线型程序**，即不包含循环结构的程序（没有 `while` / `for` / `do .. until` 等）（见 [3.4节](#starightlineprogramsec)）。
 
-* 可以通过 $\text{NAND}$ 运算来实现 $\AND$、$\OR$ 和 $\NOT$ 运算（反之亦然）。  
-  这意味着带有 $\AND$/$\OR$/$\NOT$ 门的电路，与带有 $\text{NAND}$ 门的电路在计算能力上是**等价的**，我们可以根据需要选择其中任一模型来描述计算（见 [3.6节](#nandsec)）。  
+* 可以通过 $\NAND$ 运算来实现 $\AND$、$\OR$ 和 $\NOT$ 运算（反之亦然）。  
+  这意味着带有 $\AND$/$\OR$/$\NOT$ 门的电路，与带有 $\NAND$ 门的电路在计算能力上是**等价的**，我们可以根据需要选择其中任一模型来描述计算（见 [3.6节](#nandsec)）。  
   先提前剧透一下，在 [下一章](chapter_4.md) 中我们将看到，这类电路可以计算**所有有限函数**。
 
-本章的一个“大思想”是 **模型之间的等价性**（见 [equivalencemodels](#equivalencemodels)）。如果两个计算模型能够计算相同集合的函数，那么它们就是**等价的**。布尔电路（$\AND$/$\OR$/$\NOT$ 门）与 $\text{NAND}$ 电路的等价性只是一个例子，本书中我们还会多次遇到类似的普遍现象。
+本章的一个“大思想”是 **模型之间的等价性**（见 [equivalencemodels](#equivalencemodels)）。如果两个计算模型能够计算相同集合的函数，那么它们就是**等价的**。布尔电路（$\AND$/$\OR$/$\NOT$ 门）与 $\NAND$ 电路的等价性只是一个例子，本书中我们还会多次遇到类似的普遍现象。
 ```
 
 
@@ -116,13 +125,14 @@ print(solve_eq(10, 39))
 ```
 我们可以非正式地定义算法如下：
 
+```admonish quote title=""
 {{defc}}{defofalg}[算法的非正式定义] **算法**是一组指令，用于通过执行一系列“基本步骤”从输入计算出输出。如果对于每一个输入 $x$，按照算法 $A$ 的指令操作都能得到输出 $F(x)$，则称算法 $A$ **计算**函数 $F$。
-
+```
 在本章中，我们将使用 **布尔电路（Boolean Circuits）** 模型，更精确而正式地定义算法。我们将展示，布尔电路在计算能力上等价于用“极简”编程语言编写的 **直线程序（straight line programs）**，即不包含循环的编程语言。我们还将看到，具体选择哪种 **基本运算（elementary operations）** 并不重要，不同的选择都可以得到计算能力等价的模型（见[下图](#compchapoverviewfig)）。然而，要理解这一点，我们需要一些时间。我们将从讨论什么是“基本运算”开始，并说明如何将算法的描述映射为实际物理过程，使其在现实世界中从输入生成输出。
 
 ```admonish quote title = ""
-<a id="compchapoverviewfig"> ![An overview of the computational models defined in this chapter. We will show several equivalent ways to represent a recipe for performing a finite computation. Specifically we will show that we can model such a computation using either a _Boolean circuit_ or a _straight line program_, and these two representations are equivalent to one another. We will also show that we can choose as our basic operations either the set $\{ \AND , \OR , \NOT \}$ or the set $\{ \text{NAND} \}$ and these two choices are equivalent in power. By making the choice of whether to use circuits or programs, and whether to use   $\{ \AND , \OR , \NOT \}$ or  $\{ \text{NAND} \}$ we obtain four equivalent ways of modeling finite computation. Moreover, there are many other choices of sets of basic operations that are equivalent in power.](./images/chapter3/compcharoverview.png)</a>
-本章定义的计算模型概览。我们将展示几种等价的方式来表示执行有限计算的“操作方法”。具体而言，我们将证明，可以使用 **布尔电路（Boolean circuit）** 或 **直线程序（straight line program）** 来表示这样的计算，且这两种表示方式在计算能力上是等价的。我们还将展示，作为基本运算，我们可以选择集合 $\{ \AND , \OR , \NOT \}$ 或集合 $\{ \text{NAND} \}$，这两种选择在计算能力上也是等价的。通过选择使用电路还是程序，以及选择 $\{ \AND , \OR , \NOT \}$ 还是 $\{ \text{NAND} \}$，我们可以得到四种等价的有限计算建模方法。此外，还有许多其他基本操作集合的选择，它们在计算能力上同样是等价的。
+<a id="compchapoverviewfig"> ![An overview of the computational models defined in this chapter. We will show several equivalent ways to represent a recipe for performing a finite computation. Specifically we will show that we can model such a computation using either a _Boolean circuit_ or a _straight line program_, and these two representations are equivalent to one another. We will also show that we can choose as our basic operations either the set $\{ \AND , \OR , \NOT \}$ or the set $\{ \NAND \}$ and these two choices are equivalent in power. By making the choice of whether to use circuits or programs, and whether to use   $\{ \AND , \OR , \NOT \}$ or  $\{ \NAND \}$ we obtain four equivalent ways of modeling finite computation. Moreover, there are many other choices of sets of basic operations that are equivalent in power.](./images/chapter3/compcharoverview.png)</a>
+本章定义的计算模型概览。我们将展示几种等价的方式来表示执行有限计算的“操作方法”。具体而言，我们将证明，可以使用 **布尔电路（Boolean circuit）** 或 **直线程序（straight line program）** 来表示这样的计算，且这两种表示方式在计算能力上是等价的。我们还将展示，作为基本运算，我们可以选择集合 $\{ \AND , \OR , \NOT \}$ 或集合 $\{ \NAND \}$，这两种选择在计算能力上也是等价的。通过选择使用电路还是程序，以及选择 $\{ \AND , \OR , \NOT \}$ 还是 $\{ \NAND \}$，我们可以得到四种等价的有限计算建模方法。此外，还有许多其他基本操作集合的选择，它们在计算能力上同样是等价的。
 ```
 
 ## 3.2 使用与, 或, 非进行计算 { #andornotsec }
@@ -198,13 +208,13 @@ def MAJ(X[0],X[1],X[2]):
 于是如同加法和乘法的情况，我们通常可以省略括号，将 $((a \vee b) \vee c) \vee d$ 写作 $a \vee b \vee c \vee d$，对更多项的 $\AND$ 和 $\OR$ 同理。  
 
 它们还满足分配律的一种变体：
-
+```admonish quote title=""
 {{exec}}{distributivelaw}[$\AND$ 与 $\OR$ 满足分配律] 
 证明：对于任意 $a,b,c \in \{0,1\}$，都有
 $$
   a \wedge (b \vee c) = (a \wedge b) \vee (a \wedge c)。
 $$
-
+```
 
 ```admonish solution collapsible=true, title = "解答" 
 我们可以通过枚举 $a,b,c \in \{0,1\}$ 的所有 $8$ 种可能取值来证明这一点，但它也可以直接从标准的分配律推导出来。  
@@ -230,7 +240,7 @@ $$
 
 以下算法使用 $\AND$、$\OR$ 和 $\NOT$ 来计算 $\XOR$：
 
-
+```admonish quote title=""
 {{algc}}{XORfromAONalg}[用 $\AND$, $\OR$ 与 $\NOT$ 计算 $\XOR$]
 
 $
@@ -244,10 +254,11 @@ $
   \mathbf{Step 4: return}\ \AND(w_2,w_3)
   \end{array}
 $
-
+```
+```admonish quote title=""
 {{lemc}}{alganalaysis}
 对于每个 $a,b \in \{0,1\}$，在输入 $a,b$ 时, {{ref: XORfromAONalg}} 输出 $a + b \mod 2$。
-
+```
 
 ```admonish proof collapsible=true, title = "证明"
 对于任意 $a,b$，有 $\XOR(a,b)=1$ 当且仅当 $a$ 与 $b$ 不同。
@@ -283,12 +294,10 @@ print([f"XOR({a},{b})={XOR(a,b)}" for a in [0,1] for b in [0,1]])
 # ['XOR(0,0)=0', 'XOR(0,1)=1', 'XOR(1,0)=1', 'XOR(1,1)=0']
 ```
 
-
-
-
+```admonish quote title=""
 {{exec}}{xorthreebits}[在三个输入上计算 $\XOR$]
 定义 $\XOR_3:\{0,1\}^3\to\{0,1\}$ 为 $\XOR_3(a,b,c)=a+b+c\pmod 2$. 也就是说，当 $a+b+c$ 为奇数时 $\XOR_3(a,b,c)=1$，否则 $\XOR_3(a,b,c)=0$。证明可以仅用 $\AND$、$\OR$ 和 $\NOT$ 三种逻辑运算来计算 $\XOR_3$。你可以将其表示为公式、使用诸如 Python 的编程语言实现，或构造相应的布尔电路。
-
+```
 ~~~admonish solution collapsible=true, title = "解答"
 模 2 加法具有与通常加法相同的 **结合律** ($(a+b)+c=a+(b+c)$) 和 **交换律** ($a+b=b+a$)。  
 这意味着，如果我们定义 $a \oplus b = a+b \pmod 2$，那么  
@@ -329,9 +338,9 @@ print([f"XOR3({a},{b},{c})={XOR3(a,b,c)}" for a in [0,1] for b in [0,1] for c in
 ### 3.2.3 非正式地定义“基本运算”和“算法”
 
 我们已经看到，通过组合应用 $ \AND $、$ \OR $ 和 $ \NOT $ 可以得到一些有趣的函数。这启发我们将 $ \AND $、$ \OR $ 和 $ \NOT $ 视为我们的**基本运算**，从而给出如下关于**算法**的定义：
-
+```admonish quote title=""
 {{defc}}{semidefofalg}[算法的半形式化定义]一个**算法**由一系列步骤组成，每一步的形式是：“通过将 $ \AND $、$ \OR $ 或 $ \NOT $ 应用于先前计算得到的值（假定输入也已计算得到），来计算一个新值”。若对于函数 $F$ 的任意输入 $x$，当我们将 $x$ 作为算法 $A$ 的输入时，其最后一步计算出的值为 $F(x)$，则称算法 $A$ **计算**了函数 $F$。
-
+```
 这一定义引出了若干值得关注的问题：
 
 1. 首先，这一定义确实过于非正式。我们既没有精确说明每一步到底做了什么，也没有明确“将 $x$ 作为输入”究竟是什么意思。
@@ -358,7 +367,7 @@ print([f"XOR3({a},{b},{c})={XOR3(a,b,c)}" for a in [0,1] for b in [0,1] for c in
 
 ```admonish quote title = ""
 ![logicgatesfig](./images/chapter3/logicgates.png)
-逻辑运算或“门”的标准符号包括 $ \AND $、$ \OR $、$ \NOT $，以及在[3.6节](#nandsec)中讨论的 $ \text{NAND} $ 运算。
+逻辑运算或“门”的标准符号包括 $ \AND $、$ \OR $、$ \NOT $，以及在[3.6节](#nandsec)中讨论的 $ \NAND $ 运算。
 ```
 ```admonish quote title = ""
 <a id="smallandornotcircxorfig">![smallandornotcircxorfig](./images/chapter3/xorcircuitschemdraw.png)</a>
@@ -431,7 +440,7 @@ $\AND$、$\OR$ 和 $\NOT$ 门分别有两个、两个和一个入边。若电路
 
 在对输入 $x \in \{0,1\}^n$ 评估电路 $C$ 时，我们首先将输入顶点的值设置为 $x_0,\ldots,x_{n-1}$，然后将值向下传播，将每个门 $g$ 的值设置为对 $g$ 的入邻居的值应用 $g$ 的操作的结果。电路的输出即为分配给输出门的值。
 ```
-
+```admonish quote title=""
 {{defc}}{booleancircdef}[布尔电路]
 设 $n,m,s$ 为正整数，且 $s \geq m$。一个具有 $n$ 个输入、$m$ 个输出和 $s$ 个门的**布尔电路**是一个带标记的有向无环图（DAG） $G=(V,E)$，其顶点数为 $s+n$，满足以下性质：
 
@@ -442,7 +451,7 @@ $\AND$、$\OR$ 和 $\NOT$ 门分别有两个、两个和一个入边。若电路
 * 恰好有 $m$ 个门同时标记为 $Y[0]$, $\ldots$, $Y[m-1]$（除了其本来的 $\wedge$/$\vee$/$\neg$ 标记之外），称为**输出端**。
 
 布尔电路的**规模**定义为其包含的门的数量 $s$。
-
+```
 ```admonish pause
 这是一个非平凡的数学定义，因此值得慢慢仔细阅读。  
 正如所有数学定义一样，我们使用已知的数学对象——**有向无环图（DAG）**——来定义一个新的对象，即布尔电路。  
@@ -454,17 +463,17 @@ $\AND$、$\OR$ 和 $\NOT$ 门分别有两个、两个和一个入边。若电路
 将输入顶点 $X[0]$, $\ldots$, $X[n-1]$ 赋值为 $x_0,\ldots,x_{n-1}$，然后对每个门应用其入邻居的值，最后输出对应于输出顶点的值。  
 
 形式化定义如下：
-
+```admonish quote title=""
 {{defc}}{circuitcomputedef}[利用布尔电路计算函数]
 设 $C$ 为一个具有 $n$ 个输入和 $m$ 个输出的布尔电路。  
-对于每个 $x \in \{0,1\}^n$，$C$ 在输入 $x$ 上的 **输出**，记作 $C(x)$，定义为以下过程的结果：  
+对于每个 $x \in \{0,1\}^n$，$C$ 在输入 $x$ 上的 **输出**，记作 $C(x)$，定义为以下过程的结果:
 
-我们令 $h: V \rightarrow \N$ 为 $C$ 的 **最小分层**（又称 **拓扑排序**，见[定理1.22](chapter_1.md#thm:minilayerunique)）。  
+我们令 $h: V \rightarrow \N$ 为 $C$ 的 **最小分层**（又称 **拓扑排序**，见[定理1.26](chapter_1.md#thm:minilayerunique)）。  
 令 $L$ 为 $h$ 的最大层数，对每个 $\ell=0,1,\ldots,L$，执行以下操作：
 
 * 对每个位于第 $\ell$ 层的顶点 $v$（即 $v$ 满足 $h(v)=\ell$）执行：
 
-  - 如果 $v$ 是输入顶点，标记为 `X[`$i$`]`，其中 $i \in [n]$，则将 $x_i$ 赋值给 $v$。
+  - 如果 $v$ 是输入顶点，标记为 `X[i]`，其中 $i \in [n]$，则将 $x_i$ 赋值给 $v$。
 
   - 如果 $v$ 是标记为 $\wedge$ 的门顶点，且有两个入邻居 $u,w$，则将 $u$ 和 $w$ 的值的 $\AND$ 赋给 $v$。（由于 $u$ 和 $w$ 是 $v$ 的入邻居，它们位于比 $v$ 更低的层，因此它们的值已经被赋值。）
 
@@ -472,9 +481,10 @@ $\AND$、$\OR$ 和 $\NOT$ 门分别有两个、两个和一个入边。若电路
 
   - 如果 $v$ 是标记为 $\neg$ 的门顶点，且有一个入邻居 $u$，则将 $u$ 的值取反并赋给 $v$。
 
-* 该过程的结果是一个 $y \in \{0,1\}^m$，其中对于每个 $j \in [m]$，$y_j$ 为标记为 `Y[`$j$`]` 的顶点的值。
+* 该过程的结果是一个 $y \in \{0,1\}^m$，其中对于每个 $j \in [m]$，$y_j$ 为标记为 `Y[j]` 的顶点的值。
 
 设 $f: \{0,1\}^n \rightarrow \{0,1\}^m$，如果对于每个 $x \in \{0,1\}^n$，都有 $C(x) = f(x)$，则称电路 $C$ **计算** 函数 $f$。
+```
 
 ```admonish remark title = "一些对布尔电路的吹毛求疵 (选读)"
 <a id="#booleancircuitsremarks"></a>
@@ -521,34 +531,34 @@ AON-CIRC 并不是一种实用的编程语言：它仅用于教学目的，用�
   行 `foo = AND(bar,baz)` 对应于将变量 `foo` 赋值为变量 `bar` 和 `baz` 的逻辑 $\AND$。类似地，`foo = OR(bar,baz)` 和 `foo = NOT(bar)` 分别对应逻辑 $\OR$ 和逻辑 $\NOT$ 操作。
 
 * AON-CIRC 编程语言中的 **变量标识符** 可以由字母、数字、下划线和方括号的任意组合构成。有两类特殊变量：
-  - 形式为 `X[`$i$`]` 的变量，其中 $i \in \{0,1,\ldots,n-1\}$，称为 **输入变量**。
-  - 形式为 `Y[`$j$`]` 的变量，称为 **输出变量**。
+  - 形式为 `X[i]` 的变量，其中 $i \in \{0,1,\ldots,n-1\}$，称为 **输入变量**。
+  - 形式为 `Y[j]` 的变量，称为 **输出变量**。
 
-* 一个有效的 AON-CIRC 程序 $P$ 包含输入变量 `X[`$0$`]`，$\ldots$，`X[`$n-1$`]` 和输出变量 `Y[`$0$`]`，$\ldots$，`Y[`$m-1$`]`，其中 $n,m$ 为自然数。我们称 $n$ 为程序 $P$ 的 **输入数**，$m$ 为 **输出数**。
+* 一个有效的 AON-CIRC 程序 $P$ 包含输入变量 `X[0]`，$\ldots$，`X[n-1]` 和输出变量 `Y[0]`，$\ldots$，`Y[m-1]`，其中 $n,m$ 为自然数。我们称 $n$ 为程序 $P$ 的 **输入数**，$m$ 为 **输出数**。
 
 * 在有效的 AON-CIRC 程序中，每一行右侧的变量必须是输入变量或在之前的行中已经被赋值的变量。
 
 * 若 $P$ 是一个具有 $n$ 个输入和 $m$ 个输出的有效 AON-CIRC 程序，则对于每个 $x \in \{0,1\}^n$，程序 $P$ 在输入 $x$ 上的 **输出** 是字符串 $y \in \{0,1\}^m$，定义如下：
-  - 将输入变量 `X[`$0$`]`，$\ldots$，`X[`$n-1$`]` 初始化为 $x_0,\ldots,x_{n-1}$。
+  - 将输入变量 `X[0]`，$\ldots$，`X[n-1]` 初始化为 $x_0,\ldots,x_{n-1}$。
   - 按顺序逐行执行 $P$ 的操作行，在每行中将左侧变量赋值为右侧操作的结果。
-  - 执行结束后，令 $y \in \{0,1\}^m$ 为输出变量 `Y[`$0$`]`，$\ldots$，`Y[`$m-1$`]` 的值。
+  - 执行结束后，令 $y \in \{0,1\}^m$ 为输出变量 `Y[0]`，$\ldots$，`Y[m-1]` 的值。
 
 * 我们用 $P(x)$ 表示程序 $P$ 在输入 $x$ 上的输出。
 
 * AON-CIRC 程序 $P$ 的 **规模** 是它包含的行数。（读者可能注意到，这与我们定义的电路规模——门的数量——是一致的。）
 
 现在我们已经正式定义了 AON-CIRC 程序的规范，就可以定义 AON-CIRC 程序 $P$ **计算**一个函数 $f$ 的含义：
-
+```admonish quote title=""
 {{defc}}{AONcircdef}[使用AON-CIRC程序计算一个函数]
 设 $f:\{0,1\}^n \rightarrow \{0,1\}^m$，且 $P$ 为一个具有 $n$ 个输入和 $m$ 个输出的有效 AON-CIRC 程序。  
 如果对于每个 $x \in \{0,1\}^n$ 都有 $P(x) = f(x)$，则称 **$P$ 计算函数 $f$**。
-
+```
 以下已解练习给出了一个 AON-CIRC 程序的示例。
-
-{{exec}}{aonforcmpsolved}考虑如下函数 $CMP:\{0,1\}^4 \rightarrow \{0,1\}$：对四个输入比特 $a,b,c,d \in \{0,1\}$，当且仅当由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字时输出 $1$。  
-即 $CMP(a,b,c,d) = 1$ 当且仅当 $2a + b > 2c + d$。
-
-给出一个计算 $CMP$ 的 AON-CIRC 程序示例.
+```admonish quote title=""
+{{exec}}{aonforcmpsolved} 考虑如下函数 $\text{CMP}:\{0,1\}^4 \rightarrow \{0,1\}$：对四个输入比特 $a,b,c,d \in \{0,1\}$，当且仅当由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字时输出 $1$。  
+即 $\text{CMP}(a,b,c,d) = 1$ 当且仅当 $2a + b > 2c + d$。
+```
+给出一个计算 $\text{CMP}$ 的 AON-CIRC 程序示例.
 
 ~~~admonish solution collapsible=true
 编写这样的程序虽然繁琐，但并不困难。比较两个数字时，我们首先比较它们的最高有效位，然后依次比较下一位，以此类推。在数字仅有两位二进制的情况下，这些比较特别简单。由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字，当且仅当满足以下任一条件：
@@ -563,7 +573,7 @@ AON-CIRC 并不是一种实用的编程语言：它仅用于教学目的，用�
 
 对于二进制位 $\alpha, \beta$，条件 $\alpha > \beta$ 仅当 $\alpha = 1$ 且 $\beta = 0$，也就是 $\AND(\alpha, \NOT(\beta)) = 1$；条件 $\alpha \ge \beta$ 则为 $\OR(\alpha, \NOT(\beta)) = 1$。  
 
-结合这些观察，可以得到用于计算 $CMP$ 的以下 AON-CIRC 程序：
+结合这些观察，可以得到用于计算 $\text{CMP}$ 的以下 AON-CIRC 程序：
 
 ```python
 # Compute CMP:{0,1}^4-->{0,1}
@@ -581,17 +591,17 @@ Y[0] = OR(temp_2,temp_6)
 ~~~
 
 ```admonish quote title=""
-<a id="aoncmpfig">![A circuit for computing the $CMP$ function. The evaluation of this circuit on $(1,1,1,0)$ yields the output $1$, since the number $3$ (represented in binary as $11$) is larger than the number $2$ (represented in binary as $10$).](./images/chapter3/comparecircuit.png)</a>
-一个用于计算 $CMP$ 函数的电路。以输入 $(1,1,1,0)$ 运行该电路，输出为 $1$，因为数字 $3$（二进制表示为 $11$）大于数字 $2$（二进制表示为 $10$）。
+<a id="aoncmpfig">![A circuit for computing the $\text{CMP}$ function. The evaluation of this circuit on $(1,1,1,0)$ yields the output $1$, since the number $3$ (represented in binary as $11$) is larger than the number $2$ (represented in binary as $10$).](./images/chapter3/comparecircuit.png)</a>
+一个用于计算 $\text{CMP}$ 函数的电路。以输入 $(1,1,1,0)$ 运行该电路，输出为 $1$，因为数字 $3$（二进制表示为 $11$）大于数字 $2$（二进制表示为 $10$）。
 ```
 
 ### 3.4.2 证明AON-CIRC程序与布尔电路的等价性
 
 我们现在正式证明 AON-CIRC 程序和布尔电路具有完全相同的计算能力：
-
+```admonish quote title=""
 {{thmc}}{slcircuitequivthm}[电路与直线程序的等价性]
 设 $f:\{0,1\}^n \rightarrow \{0,1\}^m$, $s \ge m$ 为某个正整数。则 $f$ 可以由一个包含 $s$ 个门的布尔电路计算，当且仅当 $f$ 可以由一个包含 $s$ 行的 AON-CIRC 程序计算。
-
+```
 ```admonish idea title="证明思路"
 证明思路很简单——AON-CIRC 程序和布尔电路只是描述同一计算过程的不同方式。  
 例如，布尔电路中的一个 $\AND$ 门对应于对两个已计算值执行 $\AND$ 操作。  
@@ -631,324 +641,352 @@ $\OR$ 和 $\NOT$ 门同理。
 同一 $\AND/\OR/\NOT$ 计算的两种等效描述：既作为 AON 程序，也作为布尔电路。
 ```
 
-## 3.5 Physical implementations of computing devices (digression) {#physicalimplementationsec }
+## 3.5 计算设备的物理实现（插曲） {#physicalimplementationsec}
 
+**计算**是一个抽象概念，它并不等同于其物理**实现**。  
+虽然大多数现代计算设备是通过将逻辑门映射到基于半导体的晶体管实现的，但纵观历史，人类曾经使用过各种各样的机制来进行计算，包括机械系统、气体与液体（称为**流体计算**）、生物和化学过程，甚至是生物体本身（参见[下图](#crabfig)或[这个视频](https://www.youtube.com/watch?v=czk4xgdhdY4)，了解螃蟹或黏菌如何被用于计算）。  
 
-_Computation_ is an abstract notion that is distinct from its physical _implementations_.
-While most modern computing devices are obtained by mapping logical gates to semiconductor-based transistors, throughout history people have computed using a huge variety of mechanisms,  including mechanical systems, gas and liquid (known as _fluidics_), biological and chemical processes, and even living creatures (e.g., see [crabfig]() or  [this video](https://www.youtube.com/watch?v=czk4xgdhdY4) for how crabs or slime mold can be used to do computations).
+在本节中，我们将回顾这些实现方式，以帮助理解如何能够将布尔电路直接转化为物理世界中的系统，而无需经过体系结构、操作系统和编译器的完整抽象层。同时，这也强调了基于硅的处理器绝不是实现计算的唯一方式。  
 
+事实上，正如我们将在[第23章](chapter_23.md) 中看到的，一个令人兴奋的研究方向是使用不同的介质来进行计算，从而利用**量子力学效应**来实现全新的算法类型。  
 
-In this section we will review some of these implementations, both so you can get an appreciation of how it is possible to directly translate Boolean circuits to the physical world, without going through the entire stack of architecture, operating systems, and compilers, as well as to emphasize that silicon-based processors are by no means the only way to perform computation.
-Indeed, as we will see in [quantumchap](), a very exciting recent line of work involves using different media for computation that would allow us to take advantage of _quantum mechanical effects_ to enable different types of algorithms.
+```admonish quote title=""
+<a id="crabfig">![crabfig](./images/chapter3/crab-gate.jpg)</a>
+摘自 Gunji、Nishiyama 和 Adamatzky 的论文 *Robust soldier-crab ball gate* 的蟹群逻辑门。这是一个 AND 门的实例，它依赖于从不同方向出发的两群螃蟹汇合成一群，并沿两方向的平均方向继续前进。
+```
 
-![Crab-based logic gates from the paper "Robust soldier-crab ball gate" by Gunji, Nishiyama and Adamatzky. This is an example of an AND gate that relies on the tendency of two swarms of crabs arriving from different directions to combine to a single swarm that continues in the average of the directions.](./images/chapter3/crab-gate.jpg){#crabfig .margin}
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Such a cool way to explain logic gates. <a href="https://t.co/6Wgu2ZKFCx">pic.twitter.com/6Wgu2ZKFCx</a></p>&mdash; Lionel Page (\@page_eco) <a href="https://twitter.com/page_eco/status/1188749430020698112?ref_src=twsrc%5Etfw">2019年10月28日</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Such a cool way to explain logic gates. <a href="https://t.co/6Wgu2ZKFCx">pic.twitter.com/6Wgu2ZKFCx</a></p>&mdash; Lionel Page (\@page_eco) <a href="https://twitter.com/page_eco/status/1188749430020698112?ref_src=twsrc%5Etfw">October 28, 2019</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+### 3.5.1 晶体管
 
+**晶体管**（transistor）可以看作是一个具有两个输入和一个输出的电路：输入称为**源极**（source）和**栅极**（gate），输出称为**漏极**（sink）。  
+栅极决定了电流是否能够从源极流向漏极。  
 
-### Transistors
+- 在**标准晶体管**中，如果栅极处于“开（ON）”状态，则电流可以从源极流向漏极；如果栅极处于“关（OFF）”状态，则电流无法流动。  
+- 在**互补晶体管**中，情况正好相反：栅极“关”时允许电流流动，而栅极“开”时则不允许。  
 
-A _transistor_ can be thought of as an electric circuit with two inputs, known as the _source_ and the _gate_ and an output, known as the _sink_.
-The gate controls whether current flows from the source to the sink.
-In a _standard transistor_, if the gate is "ON" then current can flow from the source to the sink and if it is "OFF" then it can't.
-In a _complementary transistor_ this is reversed: if the gate is "OFF" then current can flow from the source to the sink and if it is "ON" then it can't.
+```admonish quote title=""
+<a id="transistor-water-fig">![transistor-water-fig](./images/chapter3/transistor_water.png)</a>
+我们可以用水来实现晶体管的逻辑。来自栅极的水压控制着源极与漏极之间的阀门是否打开。
+```
 
-![We can implement the logic of transistors using water. The water pressure from the gate closes or opens a faucet between the source and the sink.](./images/chapter3/transistor_water.png){#transistor-water-fig .margin  }
+实现晶体管逻辑的方法有很多。例如，可以通过水压与水龙头的开合来模拟晶体管的工作（见[上图](transistor-water-fig)）。这似乎只是个小趣味，但事实上有一个名为[流体计算](https://en.wikipedia.org/wiki/Fluidics)（fluidics）的研究领域，专门研究如何利用液体或气体实现逻辑运算。其动机之一是在极端环境（如太空或战场）中工作，因为在这些环境下常规电子设备可能无法存活。  
 
-There are several ways to implement the logic of a transistor.
-For example, we can use faucets to implement it using water pressure (e.g. [transistor-water-fig]()). This might seem as merely a curiosity, but there is a field known as [fluidics](https://en.wikipedia.org/wiki/Fluidics) concerned with implementing logical operations using liquids or gasses. Some of the motivations include operating in extreme environmental conditions such as in space or a battlefield, where standard electronic equipment would not survive.
+晶体管的标准实现是通过**电流**。而最早的实现方式之一是**真空管**。顾名思义，真空管是一个内部抽空的管子，电子可以自由地从源（电丝）流向漏（金属板）。但在它们之间有一个“栅极”（网格），通过调节其电压可以阻止电子的流动。  
 
-The standard implementations of transistors use electrical current.
-One of the original implementations used   _vacuum tubes_.
-As its name implies, a vacuum tube is a tube containing nothing (i.e., a vacuum) and where a priori electrons could freely flow from the source (a wire) to the sink (a plate). However, there is a gate (a grid)  between the two, where modulating its voltage can block the flow of electrons.
+早期真空管大约有灯泡那么大（外形也很像灯泡）。到 1950 年代，它们被**晶体管**取代。晶体管利用**半导体**实现相同的逻辑。半导体在正常情况下不导电，但通过掺杂（doping）以及施加外部电场，可以调控其导电性（即**场效应**）。  
 
-Early vacuum tubes were roughly the size of lightbulbs (and looked very much like them too).
-In the 1950's they were supplanted by _transistors_, which implement the same logic using _semiconductors_ which are materials that normally do not conduct electricity but whose conductivity can be modified and controlled by inserting impurities ("doping") and applying an external electric field (this is known as the _field effect_).
-In the 1960's computers started to be implemented using _integrated circuits_ which enabled much greater density.
-In 1965, Gordon Moore predicted that the number of transistors per integrated circuit would double every year (see [moorefig]()), and that this would lead to "such wonders as home computers —or at least terminals connected to a central computer— automatic controls for automobiles, and personal portable communications equipment".
-Since then, (adjusted versions of) this so-called "Moore's law" have been running strong, though exponential growth cannot be sustained forever, and some physical limitations are already [becoming apparent](http://www.nature.com/news/the-chips-are-down-for-moore-s-law-1.19338).
+进入 1960 年代后，计算机开始使用**集成电路**（integrated circuits），极大提高了晶体管的集成密度。1965 年，戈登·摩尔（Gordon Moore）预测集成电路中晶体管的数量大约每年会翻一番（见[下图](#moorefig)）。他还推测这将带来“诸如家庭计算机——或至少是接入中央计算机的终端——、汽车的自动控制，以及个人便携通信设备等奇迹”。  
 
-![The number of transistors per integrated circuit from 1959 till 1965 and a prediction that exponential growth will continue for at least another decade. Figure taken from "Cramming More Components onto Integrated Circuits", Gordon Moore, 1965](./images/chapter3/gordon_moore.png){#moorefig .margin  }
+从那时起，经调整后的“**摩尔定律**”基本上一直成立，尽管指数级增长不可能无限持续，一些物理极限已经[逐渐显现](http://www.nature.com/news/the-chips-are-down-for-moore-s-law-1.19338)。  
 
-![Cartoon from Gordon Moore's article "predicting" the implications of radically improving transistor density.](./images/chapter3/moore_cartoon.png){#moore-cartoon-fig .margin  }
+```admonish quote title=""
+<a id="moorefig">![moorefig](./images/chapter3/gordon_moore.png)</a>
+1959 至 1965 年间集成电路中的晶体管数量，并预测指数级增长至少能持续十年。取自戈登·摩尔 1965 年的文章 *Cramming More Components onto Integrated Circuits*。
+```
 
-![The exponential growth in computing power over the last 120 years. Graph by Steve Jurvetson, extending a prior graph of Ray Kurzweil.](./images/chapter3/1200px-Moore's_Law_over_120_Years.png){#kurzweil-fig .margin  }
+```admonish quote title=""
+<a id="moore-cartoon-fig">![moore-cartoon-fig](./images/chapter3/moore_cartoon.png)</a>
+戈登·摩尔文章中的漫画，“预测”了晶体管密度大幅提升的影响。
+```
 
+```admonish quote title=""
+<a id="kurzweil-fig">![kurzweil-fig](./images/chapter3/1200px-Moore's_Law_over_120_Years.png)</a>
+过去 120 年间计算能力的指数级增长。图表由 Steve Jurvetson 绘制，基于雷·库兹韦尔的早期图表扩展而来。
+```
 
+### 3.5.2 由晶体管到逻辑门
 
+我们可以使用晶体管来实现各种布尔函数，例如 $ \AND $、$ \OR $ 和 $ \NOT $。  
+对于每一个二输入门 $G:\{0,1\}^2 \rightarrow \{0,1\}$，其实现方式是一个具有两个输入导线 $x,y$ 和一个输出导线 $z$ 的系统。若我们将高电压视为“$1$”，低电压视为“$0$”，那么当且仅当 $G(x,y)=1$ 时，导线 $z$ 的值为“$1$”（参见下列[逻辑门的晶体管实现](logicgatestransistorsfig) 和[NAND实现](transistor-nand-fig)）。  
 
-### Logical gates from transistors
+这意味着：如果存在一个 $\AND/\OR/\NOT$ 电路可以计算函数 $g:\{0,1\}^n \rightarrow \{0,1\}^m$，那么我们也可以在物理世界中通过晶体管来计算 $g$。  
 
-We can use transistors to implement various Boolean functions such as $\AND$, $\OR$, and $\NOT$.
-For each two-input gate $G:\{0,1\}^2 \rightarrow \{0,1\}$,  such an implementation would be a system with two input wires $x,y$ and one output wire $z$, such that if we identify high voltage with "$1$" and low voltage with "$0$", then the wire  $z$ will be equal to "$1$" if and only if applying $G$ to the values of the wires $x$ and $y$ is $1$ (see [logicgatestransistorsfig]() and [transistor-nand-fig]()).
-This means that if there exists a AND/OR/NOT circuit to compute a function $g:\{0,1\}^n \rightarrow \{0,1\}^m$, then we can compute $g$ in the physical world using transistors as well.
+```admonish quote title=""
+<a id="logicgatestransistorsfig">![logicgatestransistorsfig](./images/chapter3/dtl_logic.png)</a>
+使用晶体管实现逻辑门。图源自 [Rory Mangles 的网站](http://www.northdownfarm.co.uk/rory/tim/basiclogic.htm)。
+```
 
-![Implementing logical gates using transistors. Figure taken from [Rory Mangles' website](http://www.northdownfarm.co.uk/rory/tim/basiclogic.htm).](./images/chapter3/dtl_logic.png){#logicgatestransistorsfig   .margin  }
+```admonish quote title=""
+<a id="transistor-nand-fig">![transistor-nand-fig](./images/chapter3/nand_transistor.png)</a>
+使用晶体管实现 $ \NAND $ 门（参见 [3.6节](#nandsec)）。
+```
 
-![Implementing a \text{NAND} gate  (see [3.6节](#nandsec)) using transistors.](./images/chapter3/nand_transistor.png){#transistor-nand-fig .margin  }
+### 3.5.3 生物计算
 
+计算也可以基于[生物或化学系统](http://www.nature.com/nrg/journal/v13/n7/full/nrg3197.html)。例如，[_lac_ 操纵子](https://en.wikipedia.org/wiki/Lac_operon) 仅在条件 $x \wedge (\neg y)$ 成立时才会产生消化乳糖所需的酶，其中 $x$ 表示“存在乳糖”，$y$ 表示“存在葡萄糖”。  
 
+研究人员已经成功[制造出基于 DNA 分子的晶体管](http://science.sciencemag.org/content/340/6132/554?iss=6132)，并由此构建逻辑门（参见[下图](transcriptorfig)）。诸如 [Cello 编程语言](https://www.cidarlab.org/cello) 这样的项目，能够将布尔电路转换为 DNA 序列，从而在细菌细胞中执行运算（参见[该视频](https://youtu.be/-1fqgrF7fXU)）。  
 
+DNA 计算的动机之一是实现更高的并行性或存储密度；另一个动机是创造“智能生物因子”，这些因子或许能够被注入体内，自我复制，并修复或杀死因癌症等疾病损伤的细胞。  
 
+当然，生物系统中的计算不仅限于 DNA: 甚至更大规模的系统，例如[鸟群](https://www.cs.princeton.edu/~chazelle/pubs/cacm12-natalg.pdf)，也可以被视为计算过程。  
 
-### Biological computing
+```admonish quote title=""
+<a id="transcriptorfig">![transcriptorfig](./images/chapter3/transcriptor.jpg)</a>
+基于 DNA 的逻辑门性能。图源自 [Bonnet 等人](http://science.sciencemag.org/content/early/2013/03/27/science.1232758.full)，Science, 2013。
+```
 
-Computation can be based on [biological or chemical systems](http://www.nature.com/nrg/journal/v13/n7/full/nrg3197.html).
-For example the [_lac_ operon](https://en.wikipedia.org/wiki/Lac_operon) produces the enzymes needed to digest lactose only if the conditions $x \wedge (\neg y)$ hold where $x$ is "lactose is present" and $y$ is "glucose is present".
-Researchers have managed to [create transistors](http://science.sciencemag.org/content/340/6132/554?iss=6132), and from them  logic gates, based on DNA molecules (see also [transcriptorfig]()).
-Projects such as the [Cello programming language](https://www.cidarlab.org/cello) enable converting Boolean circuits into DNA sequences that encode operations that can be executed in bacterial cells, see [this video](https://youtu.be/-1fqgrF7fXU). 
-One motivation for DNA computing is to achieve increased parallelism or storage density; another is to create "smart biological agents" that could perhaps be injected into bodies, replicate themselves, and fix or kill cells that were damaged by a disease such as cancer.
-Computing in biological systems is not restricted, of course, to DNA:
-even larger systems such as [flocks of birds](https://www.cs.princeton.edu/~chazelle/pubs/cacm12-natalg.pdf) can be considered as computational processes.
+### 3.5.4 元胞自动机和生命游戏(GoL)
 
-![Performance of DNA-based logic gates. Figure taken from paper of [Bonnet et al](http://science.sciencemag.org/content/early/2013/03/27/science.1232758.full), Science, 2013.](./images/chapter3/transcriptor.jpg){#transcriptorfig .margin  }
+**元胞自动机**是一种由一系列**细胞**组成的系统模型，每个细胞都可以处于有限的状态之一。  
+在每一步中，细胞会根据其**邻居细胞**的状态以及一些简单规则来更新自身状态。  
 
-### Cellular automata and the game of life
+正如我们将在本书后续部分讨论的那样（参见 [cellularautomatasec]()），元胞自动机（例如康威的“生命游戏”）可以用来模拟计算门。  
 
-_Cellular automata_ is a model of a system composed of a sequence of _cells_, each of which can have a finite state.
-At each step, a cell updates its state based on the states of its _neighboring cells_ and some simple rules.
-As we will discuss later in this book (see [cellularautomatasec]()), cellular automata such as Conway's "Game of Life" can be used to simulate computation gates.
+```admonish quote title=""
+<a id="gameoflifefig">![gameoflifefig](./images/chapter3/game_of_life_and.png)</a>
+利用“生命游戏”配置实现的 AND 门。图源自 [Jean-Philippe Rennard 的论文](http://www.rennard.org/alife/CollisionBasedRennard.pdf)。
+```
 
-![An AND gate using a "Game of Life" configuration. Figure taken from [Jean-Philippe Rennard's paper](http://www.rennard.org/alife/CollisionBasedRennard.pdf).](./images/chapter3/game_of_life_and.png){#gameoflifefig .margin  }
+### 3.5.5 神经网络
 
+我们每个人都随身携带的一种计算设备就是我们自己的**大脑**。大脑在人类历史上一直发挥作用，从区分猎物与捕食者，到进行科学发现和艺术创作，再到写出精巧的 280 字短消息。大脑的确切工作机制仍未完全被理解，但一种常见的数学模型是（非常庞大的）**神经网络**。  
 
-### Neural networks
+神经网络可以看作布尔电路，只是它并非以 $\AND$ / $\OR$ / $\NOT$ 为基本门，而是使用其他类型的基本门。例如，一种可以使用的基是**阈值门**。  
 
-One computation device that we all carry with us is our own _brain_.
-Brains have served humanity throughout history, doing computations that range from distinguishing prey from predators, through making scientific discoveries and artistic masterpieces, to composing witty 280 character messages.
-The exact working of the brain is still not fully understood, but one common mathematical model for it is a (very large) _neural network_.
+对于每个整数向量 $w = (w_0, \ldots, w_{k-1})$ 和整数 $t$（其中一些分量可以为负），定义对应的**阈值函数** $T_{w,t}:\{0,1\}^k \to \{0,1\}$ 为：当且仅当 $\sum_{i=0}^{k-1} w_i x_i \ge t$ 时，输入 $x \in \{0,1\}^k$ 被映射为 $1$。  
 
-A neural network can be thought of as a Boolean circuit that instead of $\AND$/$\OR$/$\NOT$ uses some other gates as the basic basis.
-For example, one particular basis we can use are _threshold gates_.
-For every vector $w= (w_0,\ldots,w_{k-1})$ of integers and integer $t$ (some or all of which could be negative),
-the _threshold function corresponding to $w,t$_ is the function
-$T_{w,t}:\{0,1\}^k \rightarrow \{0,1\}$ that maps $x\in \{0,1\}^k$ to $1$ if and only if $\sum_{i=0}^{k-1} w_i x_i \geq t$.
-For example, the threshold function $T_{w,t}$ corresponding to $w=(1,1,1,1,1)$ and $t=3$ is simply the majority function $\text{MAJ}_5$ on $\{0,1\}^5$.
-Threshold gates can be thought of as an approximation for _neuron cells_ that make up the core of human and animal brains. To a first approximation, a neuron has $k$ inputs and a single output, and the neuron "fires" or "turns on" its output when those signals pass some threshold.
+例如，向量 $w = (1,1,1,1,1)$ 与阈值 $t=3$ 所对应的 $T_{w,t}$，就是 $\{0,1\}^5$ 上的多数函数 $\text{MAJ}_5$。阈值门可以看作对构成人类与动物大脑核心的**神经元**的一种近似。粗略来说，一个神经元有 $k$ 个输入和一个输出，当这些信号的强度超过某个阈值时，神经元就会“触发”或“激活”其输出。  
 
-Many machine learning algorithms use _artificial neural networks_ whose purpose is not to imitate biology but rather to perform some computational tasks, and hence are not restricted to a threshold or other biologically-inspired gates.
-Generally, a neural network is often described as operating on signals that are real numbers, rather than $0/1$ values, and where the output of a gate on inputs $x_0,\ldots,x_{k-1}$ is obtained by applying $f(\sum_i w_i x_i)$ where $f:\R \rightarrow \R$ is an [activation function](https://goo.gl/p9izfA) such as rectified linear unit (ReLU), Sigmoid, or many others (see [activationfunctionsfig]()).
-However, for the purposes of our discussion, all of the above are equivalent (see also [NANDsfromActivationfunctionex]()).
-In particular we can reduce the setting of real inputs to binary inputs by representing a real number in the binary basis, and multiplying the weight of the bit corresponding to the $i^{th}$ digit by $2^i$.
+许多机器学习算法采用的**人工神经网络**并非旨在模仿生物学，而是为了执行某些计算任务，因此它们并不局限于阈值门或其他生物学启发的门。通常来说，神经网络的输入信号被视为实数而非 $0/1$ 值，并且一个门的输出是通过计算 $f(\sum_i w_i x_i)$ 得到的，其中 $f:\R \to \R$ 是某种[激活函数](https://goo.gl/p9izfA)，例如修正线性单元（ReLU）、Sigmoid 或其他函数（见[下图](#activationfunctionsfig)）。  
 
-![Common activation functions used in Neural Networks, including rectified linear units (ReLU), sigmoids, and hyperbolic tangent. All of those can be thought of as continuous approximations to simplify the step function. All of these can be used to compute the \text{NAND} gate (see [NANDsfromActivationfunctionex]()). This property enables neural networks to (approximately) compute any function that can be computed by a Boolean circuit.](./images/chapter3/activationfuncs.png){#activationfunctionsfig .margin }
+不过，就我们讨论的范围而言，上述所有模型在本质上是等价的（参见 [NANDsfromActivationfunctionex]()）。特别是，我们可以通过二进制表示实数并将对应权重乘以 $2^i$ 的方式，将实数输入化为二进制输入。  
 
+```admonish quote title=""
+<a id="activationfunctionsfig">![activationfunctionsfig](./images/chapter3/activationfuncs.png)</a>
 
-### A computer made from marbles and pipes
+神经网络中常用的激活函数，包括修正线性单元（ReLU）、Sigmoid 和双曲正切。它们都可以看作阶跃函数的连续近似形式。所有这些函数都能用来计算 $\NAND$ 门（参见 [NANDsfromActivationfunctionex]()）。这一性质使得神经网络（近似地）能够计算任何布尔电路可计算的函数。
+```
 
-We can implement computation using many other physical media, without any electronic, biological, or chemical components. Many suggestions for _mechanical_ computers have been put forward, going back at least to Gottfried Leibniz's computing machines from the 1670s and Charles Babbage's 1837 plan for a mechanical ["Analytical Engine"](https://en.wikipedia.org/wiki/Analytical_Engine).
-As one example, [marblefig]() shows a simple implementation of a $\text{NAND}$ (negation of AND, see [3.6节](#nandsec)) gate using marbles going through pipes. We represent a logical value in $\{0,1\}$ by a pair of pipes, such that there is a marble flowing through exactly one of the pipes.
-We call one of the pipes the "$0$ pipe" and the other the "$1$ pipe", and so the identity of the pipe containing the marble determines the logical value.
-A NAND gate corresponds to a mechanical object with two pairs of incoming pipes and one pair of outgoing pipes, such that for every $a,b \in \{0,1\}$, if two marbles are rolling toward the object in the $a$ pipe of the first pair and the $b$ pipe of the second pair, then a marble will roll out of the object in the $\text{NAND}(a,b)$-pipe of the outgoing pair.
-In fact, there is even a commercially-available educational game that uses marbles as a basis of computing, see [turingtumblefig]().
+### 3.5.6 利用弹珠和管道搭建的计算机
 
+我们可以利用许多其他物理介质来实现计算，而无需任何电子、生物或化学组件。人们曾经提出许多关于**机械计算机**的构想，至少可以追溯到 1670 年代 Gottfried Leibniz 的计算机，以及 Charles Babbage 1837 年提出的机械“[解析引擎](https://en.wikipedia.org/wiki/Analytical_Engine)”计划。  
 
+打个比方，[下图](#marblefig) 展示了使用弹珠通过管道来实现 $\NAND$（$\AND$ 的取反，参见 [3.6节](#nandsec)）门的简单方法。我们通过一对管道表示逻辑值 $\{0,1\}$，保证恰好有一颗弹珠在其中一条管道中流动。将其中一条管道称为“$0$ 管”，另一条管道称为“$1$ 管”，弹珠所在管道的身份决定逻辑值。  
 
-![A physical implementation of a NAND gate using marbles. Each wire in a Boolean circuit is modeled by a pair of pipes representing the values $0$ and $1$ respectively, and hence a gate has four input pipes (two for each logical input) and two output pipes. If one of the input pipes representing the value $0$ has a marble in it then that marble will flow to the output pipe representing the value $1$. (The dashed line represents a gadget that will ensure that at most one marble is allowed to flow onward in the pipe.) If both the input pipes representing the value $1$ have marbles in them, then the first marble will be stuck but the second one will flow onwards to the output pipe representing the value $0$.](./images/chapter3/marble.png){#marblefig .margin  }
+一个 $\NAND$ 门对应一个机械装置，具有两对输入管道和一对输出管道，使得对于每个 $a,b \in \{0,1\}$，如果两颗弹珠分别沿第一对管道的 $a$ 管和第二对管道的 $b$ 管滚向装置，那么弹珠将沿输出对中对应 $\NAND(a,b)$ 的管道滚出。  
 
-![A "gadget" in a pipe that ensures that at most one marble can pass through it. The first marble that passes causes the barrier to lift and block new ones.](./images/chapter3/gadget.png){#gadgetfig .margin  }
+事实上，市面上还有一个以弹珠为计算基础的教育游戏，参见下方的[Turing Tumble](#turingtumblefig)。
 
-![The game ["Turing Tumble"](https://www.turingtumble.com/) contains an implementation of logical gates using marbles.](./images/chapter3/turingtumble.png){#turingtumblefig .margin  }
+```admonish quote title=""
+<a id="marblefig">![marblefig](./images/chapter3/marble.png)</a>
+使用弹珠实现的 $\NAND$ 门。布尔电路中的每条导线由一对分别表示值 $0$ 和 $1$ 的管道建模，因此一个门有四条输入管（每个逻辑输入两条）和两条输出管。如果代表值 $0$ 的输入管有弹珠，则该弹珠会流向输出管表示值 $1$。（虚线表示一个装置，确保管道中最多只有一颗弹珠可以继续流动。）如果代表值 $1$ 的输入管中两颗弹珠都在流动，则第一颗弹珠会被阻住，但第二颗弹珠会流向输出管表示值 $0$。
+```
+```admonish quote title=""
+<a id="gadgetfig">![gadgetfig](./images/chapter3/gadget.png)</a>
+管道中的一个“装置”，确保最多只有一颗弹珠可以通过它。第一颗通过的弹珠会抬起障碍，阻挡后续弹珠。
+```
+```admonish quote title=""
+<a id="turingtumblefig">![turingtumblefig](./images/chapter3/turingtumble.png)</a>
+游戏 ["Turing Tumble"](https://www.turingtumble.com/) 中使用弹珠实现逻辑门。
+```
 
+## 3.6 NAND函数 { #nandsec }
 
+$\NAND$ 函数是另一个非常简单且在定义计算中极为有用的函数。  
+它是一个将 $\{0,1\}^2$ 映射到 $\{0,1\}$ 的函数，定义为：
 
+$$\NAND(a,b) = \begin{cases} 0 & a=b=1 \\ 1 & \text{否则} \end{cases}\;.$$
 
-## 3.6 The NAND function { #nandsec }
+顾名思义，$\NAND$ 是 AND 的取反（即 $\NAND(a,b) = \NOT(\AND(a,b))$），因此显然可以使用 $\AND$ 和 $\NOT$ 来计算 $\NAND$。  
+有趣的是，反过来我们也有：
+```admonish quote title=""
+{{thmc}}{univnandonethm}[用$\NAND$构造$\AND/\OR/\NOT$]
+我们可以通过仅组合 $\NAND$ 来计算 $\AND$, $\OR$, 和 $\NOT$.
+```
+```admonish proof collapsible=true
+我们从以下观察开始。对于每个 $a \in \{0,1\}$，有 $\AND(a,a) = a$。  
+因此，$\NAND(a,a) = \NOT(\AND(a,a)) = \NOT(a)$。  
 
-The $\text{NAND}$ function is another simple function that is extremely useful for defining computation.
-It is the function mapping $\{0,1\}^2$ to $\{0,1\}$ defined by:
+这意味着 $\NAND$ 可以计算 $\NOT$。  
+根据“双重否定”原理，$\AND(a,b) = \NOT(\NOT(\AND(a,b)))$，因此我们也可以使用 $\NAND$ 来计算 $\AND$。  
 
-$$\text{NAND}(a,b) = \begin{cases} 0 & a=b=1 \\ 1 & \text{otherwise} \end{cases}\;.$$
+一旦我们能够计算 $\AND$ 和 $\NOT$，就可以利用[de Morgan定律](https://goo.gl/TH86dH)计算 $\OR$：  
+$$\OR(a,b) = \NOT(\AND(\NOT(a), \NOT(b)))$$（也可以写作 $a \vee b = \overline{\overline{a} \wedge \overline{b}}$），对每个 $a,b \in \{0,1\}$ 都成立。
+```
+```admonish pause
+{{ref:univnandonethm}} 的证明非常简单，但你应当确保 __(1)__ 你理解该定理的陈述，且 __(2)__ 你能够读懂其证明过程。尤其要理解为什么de Morgan定律成立。
+```
 
-As its name implies, $\text{NAND}$ is the NOT of AND (i.e., $\text{NAND}(a,b)= NOT(AND(a,b))$), and so we can clearly compute $\text{NAND}$ using $\AND$  and $\NOT$.
-Interestingly, the opposite direction holds as well:
-
-> ### {.theorem title="NAND computes AND,OR,NOT" #univnandonethm}
-We can compute $\AND$, $\OR$, and $\NOT$ by composing only the $\text{NAND}$ function.
-
-> ### {.proof data-ref="univnandonethm"}
-We start with the following observation. For every $a\in \{0,1\}$, $\AND(a,a)=a$. Hence, $\text{NAND}(a,a)=NOT(AND(a,a))=NOT(a)$.
-This means that $\text{NAND}$ can compute $\NOT$.
-By the principle of "double negation",  $\AND(a,b)=NOT(NOT(AND(a,b)))$, and hence we can use $\text{NAND}$ to compute $\AND$ as well.
-Once we can compute $\AND$ and $\NOT$, we can compute $\OR$ using ["De Morgan's Law"](https://goo.gl/TH86dH):  $\OR(a,b)=NOT(AND(NOT(a),NOT(b)))$ (which can also be written as $a \vee b = \overline{\overline{a} \wedge \overline{b}}$) for every $a,b \in \{0,1\}$.
-
-> ### { .pause }
-[univnandonethm]()'s proof is very simple, but you should make sure that __(i)__ you understand the statement of the theorem, and __(ii)__ you follow its proof. In particular, you should make sure you understand why De Morgan's law is true.
-
-We can use $\text{NAND}$ to compute many other functions, as demonstrated in the following exercise.
-
-> ### {.solvedexercise title="Compute majority with NAND" #majbynandex}
-Let $\text{MAJ}: \{0,1\}^3 \rightarrow \{0,1\}$ be the function that on input $a,b,c$ outputs $1$ iff $a+b+c \geq 2$. Show how to compute $\text{MAJ}$ using a composition of $\text{NAND}$'s.
-
-::: {.solution data-ref="majbynandex"}
-Recall that {{eqref: eqmajandornot}} states that
-
+我们可以使用 $\NAND$ 来计算许多其他函数，如以下练习所示。
+```admonish quote title=""
+{{exec}}{majbynandex}[利用$\NAND$计算$\text{MAJ}$]
+设 $\text{MAJ}:\{0,1\}^3 \rightarrow \{0,1\}$ 为函数：对输入 $a,b,c$，当且仅当 $a+b+c \ge 2$ 时输出 $1$。说明如何用若干个 $\text{NAND}$ 的组合来计算 $\text{MAJ}$。
+```
+```admonish solution collapsible=true
+回想一下 {{eqref: eqmajandornot}} 给出的是：
 $$
-\text{MAJ}(x_0,x_1,x_2) = OR\left(\, AND(x_0,x_1)\;,\; OR \bigl( AND(x_1,x_2) \;,\; AND(x_0,x_2) \bigr) \, \right) \;. {{numeq}}{eqmajandornotrestated}
+\text{MAJ}(x_0,x_1,x_2) = \OR\bigl(\AND(x_0,x_1),\OR(\AND(x_1,x_2),\AND(x_0,x_2) )\bigr). 
+{{numeq}}{eqmajandornotrestated}
+$$我们可以利用 {{ref:univnandonethm}} 将所有出现的 $\AND$ 和 $\OR$ 用 $\NAND$ 替换。具体地，使用等价关系
 $$
-
-We can use [univnandonethm]()  to replace all the occurrences of $\AND$ and $\OR$   with $\text{NAND}$'s.
-Specifically, we can use the equivalence $\AND(a,b)=NOT(NAND(a,b))$, $\OR(a,b)=NAND(NOT(a),NOT(b))$, and $\NOT(a)=NAND(a,a)$ to replace the right-hand side of
-{{eqref: eqmajandornotrestated}} with an expression involving only $\text{NAND}$, yielding that $\text{MAJ}(a,b,c)$ is equivalent to the (somewhat unwieldy) expression
-
+\begin{align*}
+\AND(a,b)&=\NOT(\NAND(a,b)),\\
+\OR(a,b)&=\NAND(\NOT(a),\NOT(b)),\\
+\NOT(a)&=\NAND(a,a),
+\end{align*}
+$$把上式右边全部替换为仅含 $\NAND$ 的表达式，就得到 $\text{MAJ}(a,b,c)$ 等价于下列（**略显冗长**的）表达式：
 $$
 \begin{gathered}
-NAND \biggl(\, NAND\Bigl(\, NAND\bigl(NAND(a,b),NAND(a,c)\bigr), \\
-NAND\bigl(NAND(a,b),NAND(a,c)\bigr)\, \Bigr),\\
-NAND(b,c) \, \biggr)
+\NAND\!\biggl(\, \NAND\Bigl(\, \NAND\bigl(\NAND(a,b),\NAND(a,c)\bigr), \\
+\NAND\bigl(\NAND(a,b),\NAND(a,c)\bigr)\, \Bigr),\;
+\NAND(b,c) \,\biggr)
 \end{gathered}
-$$
-
-The same formula can also be expressed as a circuit with NAND gates, see [majnandcircfig]().
-:::
-
-![A circuit with NAND gates to compute the Majority function on three bits](./images/chapter3/majfromnand.png){#majnandcircfig .margin  }  
-
-
-
-
-
-### NAND Circuits
-
-We define _NAND Circuits_ as circuits in which all the gates are NAND operations.
-Such a circuit again corresponds to a directed acyclic graph (DAG) since all the gates correspond to the same function (i.e., NAND), we do not even need to label them, and all gates have in-degree exactly two.
-Despite their simplicity, NAND circuits can be quite powerful.
-
-
-::: {.example title="$\text{NAND}$ circuit for $\XOR$" #xornandexample}
-Recall the $\XOR$ function which maps $x_0,x_1 \in \{0,1\}$ to $x_0 + x_1 \mod 2$.
-We have seen in [xoraonexample](xoraonexample) that we can compute $\XOR$ using $\AND$, $\OR$, and $\NOT$, and so by [univnandonethm]() we can compute it using only $\text{NAND}$'s.
-However, the  following is a direct construction of computing $\XOR$ by a sequence of NAND operations:
-
-1. Let $u = NAND(x_0,x_1)$.
-2. Let $v = NAND(x_0,u)$
-3. Let $w = NAND(x_1,u)$.
-4. The $\XOR$ of $x_0$ and $x_1$ is $y_0 = NAND(v,w)$.
-
-One can verify that this algorithm does indeed compute $\XOR$ by enumerating all the four choices for $x_0,x_1 \in \{0,1\}$.
-We can also represent this algorithm graphically as a circuit, see [cornandcircfig]().
-:::
-
-
-![A circuit with NAND gates to compute the XOR of two bits.](./images/chapter3/nandcircxor.png){#cornandcircfig .margin  }  
-
-In fact, we can show the following theorem:
-
-> ### {.theorem title="NAND is a universal operation" #NANDuniversamthm}
-For every Boolean circuit $C$ of $s$ gates, there exists a NAND circuit $C'$ of at most $3s$ gates that computes the same function as $C$.
-
-> ### {.proofidea data-ref="NANDuniversamthm"}
-The idea of the proof is to just replace every $\AND$, $\OR$ and $\NOT$ gate with their NAND implementation following the proof of [univnandonethm]().
-
-::: {.proof data-ref="NANDuniversamthm"}
-If $C$ is a Boolean circuit, then since, as we've seen in the proof of  [univnandonethm](),  for every $a,b \in \{0,1\}$
-
-* $\NOT(a) = NAND(a,a)$
-
-* $\AND(a,b) = NAND(NAND(a,b),NAND(a,b))$
-
-* $\OR(a,b) = NAND(NAND(a,a),NAND(b,b))$
-
-we can replace every gate of $C$ with at most three $\text{NAND}$ gates to obtain an equivalent circuit $C'$. The resulting circuit will have at most $3s$ gates.
-:::
-
-::: { .bigidea #equivalencemodels }
-Two models are _equivalent in power_ if they can be used to compute the same set of functions.
-:::
-
-
-
-### More examples of NAND circuits (optional)
-
-Here are some more sophisticated examples of NAND circuits:
-
-
-__Incrementing integers.__ Consider the task of computing, given as input a string $x\in \{0,1\}^n$ that represents a natural number $X\in \N$, the representation of $X+1$.
-That is, we want to compute the function $INC_n:\{0,1\}^n \rightarrow \{0,1\}^{n+1}$ such that for every $x_0,\ldots,x_{n-1}$, $INC_n(x)=y$  which satisfies $\sum_{i=0}^n y_i 2^i = \left( \sum_{i=0}^{n-1} x_i 2^i \right)+1$. (For simplicity of notation, in this example we use the representation where the least significant digit is first rather than last.)
-
-The increment operation can be very informally described as follows: _"Add $1$ to the least significant bit and propagate the carry"_.
-A little more precisely, in the case of the binary representation, to obtain the increment of $x$, we scan $x$ from the least significant bit onwards, and flip all $1$'s to $0$'s until we encounter a bit equal to $0$, in which case we flip it to $1$ and stop.
-
-
-Thus we can compute the increment of $x_0,\ldots,x_{n-1}$ by doing the following:
-
-
-``` {.algorithm title="Compute Increment Function" #incrementalg}
-INPUT: $x_0,x_1,\ldots,x_{n-1}$ representing the number $\sum_{i=0}^{n-1} x_i\cdot 2^i$ # we use LSB-first representation
-OUTPUT:$y \in \{0,1\}^{n+1}$ such that $\sum_{i=0}^n y_i \cdot 2^i =  \sum_{i=0}^{n-1} x_i\cdot 2^i + 1$
-
-Let $c_0 \leftarrow 1$ # we pretend we have a "carry" of $1$ initially
-For{$i=0,\ldots, n-1$}
-Let $y_i \leftarrow XOR(x_i,c_i)$.
-If{$c_i=x_i=1$}
-$c_{i+1}=1$
-else
-$c_{i+1}=0$
-endif
-Endfor
-Let $y_n \leftarrow c_n$.
+$$同样的公式也可以表示为由 $\NAND$ 门组成的电路，见[下图](#majnandcircfig)。
+```
+```admonish quote title=""
+<a id="majnandcircfig">![majnandcircfig](./images/chapter3/majfromnand.png)</a>
+用于计算三位多数函数的 $\NAND$ 门电路
 ```
 
+### 3.6.1 $\NAND$ 电路
 
-[incrementalg]() describes precisely how to compute the increment operation, and can be easily transformed into _Python_ code that performs the same computation, but it does not seem to directly yield a NAND circuit to compute this.
-However, we can transform this algorithm line by line to a NAND circuit.
-For example, since for every $a$, $\text{NAND}(a,NOT(a))=1$, we can replace the initial statement $c_0=1$ with $c_0 = NAND(x_0, NAND(x_0,x_0))$.
-We already know how to compute $\XOR$ using NAND and so we can use this to implement the operation $y_i \leftarrow XOR(x_i,c_i)$.
-Similarly, we can write the "if" statement as saying $c_{i+1} \leftarrow AND(c_i,x_i)$,  or in other words $c_{i+1} \leftarrow  NAND( NAND(c_i,x_i), NAND(c_i,x_i))$.
-Finally, the assignment $y_n = c_n$ can be written as $y_n = NAND( NAND(c_n,c_n), NAND(c_n,c_n))$.
-Combining these observations yields for every $n\in \N$, a $\text{NAND}$ circuit to compute $INC_n$.
-For example, [nandincrememntcircfig]() shows what this circuit looks like for $n=4$.
+我们将 **$\NAND$ 电路** 定义为所有逻辑门均为 $\NAND$ 运算的电路。  
+这样的电路同样对应一个有向无环图（DAG），因为所有逻辑门都执行相同的功能（即 $\NAND$），因此甚至无需对它们进行标记，并且所有逻辑门的入度都恰好为 2。  
+尽管形式简单，$\NAND$ 电路却具有相当强大的能力。
 
+```admonish example title="例: 基于 $\\\NAND$ 电路的 $\\\XOR$ 实现"
+回忆 **$\XOR$ 函数**，它将 $x_0, x_1 \in \{0,1\}$ 映射为 $x_0 + x_1 \bmod 2$。  
+我们在[先前的例子](#xoraonexample)中已经看到，可以使用 $\AND$、$\OR$ 和 $\NOT$ 来计算 $\XOR$，因此根据 {{ref:univnandonethm}}，我们也可以仅用 $\NAND$ 来实现它。  
+然而，下面给出的是一个直接利用一系列 $\NAND$ 运算来计算 $\XOR$ 的构造：
 
+1. 令 $u = \NAND(x_0,x_1)$。  
+2. 令 $v = \NAND(x_0,u)$。  
+3. 令 $w = \NAND(x_1,u)$。  
+4. 则 $x_0$ 与 $x_1$ 的 **$\XOR$** 为 $y_0 = \NAND(v,w)$。  
 
-![NAND circuit with computing the _increment_ function on $4$ bits.](./images/chapter3/incrementfromnand.png){#nandincrememntcircfig  .margin }
-
-
-
-
-__From increment to addition.__
-Once we have the increment operation, we can certainly compute addition by repeatedly incrementing (i.e., compute $x+y$ by performing $INC(x)$ $y$ times).
-However, that would be quite inefficient and unnecessary.
-With the same idea of keeping track of carries we can implement the "grade-school" addition algorithm and compute the function $ADD_n:\{0,1\}^{2n} \rightarrow \{0,1\}^{n+1}$ that on input $x\in \{0,1\}^{2n}$ outputs the binary representation of the sum of the numbers represented by $x_0,\ldots,x_{n-1}$ and $x_{n},\ldots,x_{2n-1}$:
-
-
-``` {.algorithm title="Addition using NAND" #additionfromnand}
-INPUT: $u \in \{0,1\}^n$, $v\in \{0,1\}^n$ representing numbers in LSB-first binary representation.
-OUTPUT: LSB-first binary representation of $x+y$.
-
-Let $c_0 \leftarrow 0$
-For{$i=0,\ldots,n-1$}
-    Let $y_i \leftarrow u_i + v_i \mod 2$
-    If{$u_i + v_i + c_i \geq 2$}
-    $c_{i+1}\leftarrow 1$
-    else
-    $c_{i+1} \leftarrow 0$
-    endif
-Endfor
-Let $y_n \leftarrow c_n$
+我们可以通过枚举 $x_0, x_1 \in \{0,1\}$ 的所有四种取值情况来验证，该算法确实计算了 $\XOR$。  
+此外，我们还可以将该算法表示为电路图，参见[下图](#cornandcircfig)。
+```
+```admonish quote title=""
+<a id="cornandcircfig">![cornandcircfig](./images/chapter3/nandcircxor.png)</a>
+一个由 $\NAND$ 门组成的电路，用于计算两个比特的 $\XOR$。
 ```
 
+事实上, 我们可以证明以下定理:
 
-Once again, [additionfromnand]() can be translated into a NAND circuit.
-The crucial observation is that the "if/then" statement simply corresponds to
-$c_{i+1} \leftarrow \text{MAJ}_3(u_i,v_i,v_i)$ and we have seen in [majbynandex]() that the function $\text{MAJ}_3:\{0,1\}^3 \rightarrow \{0,1\}$ can be computed using $\text{NAND}$s.
+{{thmc}}{NANDuniversamthm}[$NAND$可作为通用逻辑门]
+对于任意包含 $s$ 个逻辑门的布尔电路 $C$，都存在一个至多包含 $3s$ 个逻辑门的 $\NAND$ 电路 $C'$，其计算结果与 $C$ 相同。
 
+```admonish idea title="证明思路"
+该证明的思路是：按照 {{ref:univnandonethm}} 的证明方法，将每一个 $\AND$、$\OR$ 和 $\NOT$ 门替换为它们对应的 $\NAND$ 实现。
+```
+```admonish proof collapsible=true
+如果 $C$ 是一个布尔电路，那么由于我们在 {{ref:univnandonethm}} 的证明中已经看到，对于任意 $a,b \in \{0,1\}$ 有：
 
+* $\NOT(a) = \NAND(a,a)$  
+* $\AND(a,b) = \NAND(\NAND(a,b),\NAND(a,b))$  
+* $\OR(a,b) = \NAND(\NAND(a,a),\NAND(b,b))$  
 
-### The NAND-CIRC Programming language { #nandcircsec }
+因此，我们可以将 $C$ 中的每一个逻辑门替换为至多三个 $\NAND$ 门，从而得到一个等价电路 $C'$。  
+由此得到的电路至多包含 $3s$ 个逻辑门。
+```
+```admonish warning title="等效性"
+<a id="equivalencemodels"></a>
+如果两个模型能够计算相同的函数集合，那么它们就是 **等效的**。
+```
+### 3.6.2 更多 $\NAND$ 电路的例子 (选读)
 
-Just like we did for Boolean circuits, we can define a programming-language analog of NAND circuits.
-It is even simpler than the AON-CIRC language since we only have a single operation.
-We define the _NAND-CIRC Programming Language_ to be a programming language where every line (apart from the input/output declaration) has the following form:
+下面给出一些更复杂的 NAND 电路示例：
+
+**后继数**: 考虑如下任务：输入一个字符串 $x \in \{0,1\}^n$，它表示一个自然数 $X \in \N$，我们希望计算 $X+1$ 。  
+换句话说，我们希望计算函数  
+$$\text{INC}_n:\{0,1\}^n \rightarrow \{0,1\}^{n+1}$$  
+使得对于任意 $x_0,\ldots,x_{n-1}$，有 $INC_n(x)=y$，并且满足  
+$$\sum_{i=0}^n y_i 2^i = \left( \sum_{i=0}^{n-1} x_i 2^i \right)+1.$$  
+（为了书写简洁，在此示例中我们采用最低有效位在前而不是在后的表示方式。）
+
+后继操作可以非正式地描述为：**“将 $1$ 加到最低有效位并向高位传递进位”**。  
+更准确地说，在二进制表示的情形下，要得到 $x$ 的后继，我们从最低有效位开始扫描 $x$，把所有的 $1$ 翻转为 $0$，直到遇到一个等于 $0$ 的比特，把它翻转为 $1$ 并停止。
+
+因此，我们可以通过以下步骤来计算 $x_0,\ldots,x_{n-1}$ 的后继：
+```admonish quote title=""
+{{algc}}{incrementalg}[后继函数]
+
+$
+\begin{array}{l}
+\mathbf{Input:}\ x_0,x_1,\ldots,x_{n-1} \text{ representing } \sum_{i=0}^{n-1} x_i \cdot 2^i \ (\text{LSB-first}) \\[6pt]
+\mathbf{Output:}\ y \in \{0,1\}^{n+1} \text{ such that } 
+\sum_{i=0}^n y_i \cdot 2^i = \sum_{i=0}^{n-1} x_i \cdot 2^i + 1 \\
+\hline
+\mathbf{Step 1:}\ c_0 \leftarrow 1 \quad (\text{initial carry }=1) \\[6pt]
+\mathbf{Step 2:}\ \text{For } i=0,\ldots,n-1 \\ 
+\quad \mathbf{Step 2.1:}\ y_i \leftarrow \XOR(x_i,c_i) \\ 
+\quad \mathbf{Step 2.2:}\ \text{If } (c_i=1 \wedge x_i=1) \text{ then } c_{i+1} \leftarrow 1 \\ 
+\quad \mathbf{Step 2.3:}\ \text{Else } c_{i+1} \leftarrow 0 \\ 
+\quad \mathbf{Step 2.4:}\ \text{Endif} \\ 
+\mathbf{Step 3:}\ \text{Endfor} \\[6pt]
+\mathbf{Step 4:}\ y_n \leftarrow c_n
+\end{array}
+$
+```
+
+{{ref:incrementalg}} 精确描述了如何计算后继，并且可以很容易地转化为执行相同计算的 **Python** 代码，但它似乎不能直接生成一个计算该运算的 $\NAND$ 电路。  
+然而，我们可以逐行将该算法转换为 $\NAND$ 电路。  
+
+例如，由于对任意 $a$ 都有 $\NAND(a,\NOT(a))=1$，我们可以将最初的语句 $c_0=1$ 替换为  
+$c_0 = \NAND(x_0, \NAND(x_0,x_0))$。  
+
+我们已经知道如何用 $\NAND$ 实现 $\XOR$，因此可以用它来实现操作 $y_i \leftarrow \XOR(x_i,c_i)$。  
+
+类似地，可以将 “if” 语句写作 $c_{i+1} \leftarrow \AND(c_i,x_i)$，也就是  
+$c_{i+1} \leftarrow \NAND( \NAND(c_i,x_i), \NAND(c_i,x_i))$。  
+
+最后，赋值 $y_n = c_n$ 可以写作  
+$y_n = \NAND( \NAND(c_n,c_n), \NAND(c_n,c_n))$。  
+
+结合这些观察，对于任意 $n \in \N$，我们就得到了一个计算 $\text{INC}_n$ 的 $\NAND$ 电路。  
+例如，[下图](#nandincrememntcircfig)展示了 $n=4$ 时该电路的样子。  
+
+```admonish quote title=""
+<a id="nandincrememntcircfig">![nandincrememntcircfig](./images/chapter3/incrementfromnand.png)</a>
+用于计算 $4$ 位 **自增函数** 的 $\text{NAND}$ 电路。
+```
+__从自增到加法__
+
+一旦有了自增运算，我们当然可以通过重复自增来计算加法（即通过对 $x$ 执行 $y$ 次 $INC(x)$ 来计算 $x+y$）。  然而，这种方法既低效又没有必要。  
+
+利用同样的进位跟踪思想，我们可以实现“中学”加法算法，并计算函数 $\text{ADD}_n:\{0,1\}^{2n} \rightarrow \{0,1\}^{n+1}$，其在输入 $x \in \{0,1\}^{2n}$ 时输出由 $x_0,\ldots,x_{n-1}$ 与 $x_n,\ldots,x_{2n-1}$ 所表示的两个数之和的二进制表示：
+```admonish quote title=""
+{{algc}}{additionfromnand}[利用$\NAND$计算加法]
+
+$
+\begin{array}{l}
+\mathbf{Input:}\ u \in \{0,1\}^n,\ v \in \{0,1\}^n \text{ (LSB-first binary representation)} \\
+\mathbf{Output:}\ \text{LSB-first binary representation of } u+v \\
+\hline
+\mathbf{Step 1:}\ c_0 \leftarrow 0 \\[6pt]
+\mathbf{Step 2:}\ \text{For } i=0,\ldots,n-1 \\ 
+\quad \mathbf{Step 2.1:}\ y_i \leftarrow (u_i+v_i+c_i) \bmod 2 \\ 
+\quad \mathbf{Step 2.2:}\ \text{If } (u_i+v_i+c_i \geq 2) \text{ then } c_{i+1} \leftarrow 1 \\ 
+\quad \mathbf{Step 2.3:}\ \text{Else } c_{i+1} \leftarrow 0 \\ 
+\quad \mathbf{Step 2.4:}\ \text{Endif} \\ 
+\mathbf{Step 3:}\ \text{Endfor} \\[6pt]
+\mathbf{Step 4:}\ y_n \leftarrow c_n
+\end{array}
+$
+```
+
+同样地，{{ref:additionfromnand}} 可以被转换为 $\NAND$ 电路。  
+关键的观察是，“if/then” 语句实际上对应于 $c_{i+1} \leftarrow \text{MAJ}_3(u_i,v_i,v_i)$，而我们在 {{ref:majbynandex}} 中已经看到函数 $\text{MAJ}_3:\{0,1\}^3 \rightarrow \{0,1\}$ 可以用 $\NAND$ 实现。
+
+### 3.6.3 编程语言 NAND-CIRC { #nandcircsec }
+
+正如我们为布尔电路所做的那样，我们可以定义 NAND 电路对应的编程语言。  
+它甚至比 AON-CIRC 语言更简单，因为这里只有一种操作。  
+
+我们将 **NAND-CIRC 编程语言** 定义为这样一种编程语言，其中每行（除了输入/输出声明外）具有以下形式：
 
 ```python
 foo = NAND(bar,blah)
 ```
 
-where `foo`, `bar` and `blah` are variable identifiers.
+其中 `foo`, `bar` 和 `blah` 指代变量.
 
-::: {.example title="Our first NAND-CIRC program" #NANDprogramexample}
-Here is an example of a NAND-CIRC program:
+~~~admonish example title="我们的第一个 NAND-CIRC 程序"
+<a id="NANDprogramexample"></a>
+以下是一个 NAND-CIRC 程序的例子
 
 ```python
 u = NAND(X[0],X[1])
@@ -956,160 +994,148 @@ v = NAND(X[0],u)
 w = NAND(X[1],u)
 Y[0] = NAND(v,w)
 ```
-:::
+~~~
 
+```admonish pause
+你知道这个程序计算的是什么函数吗？提示：你以前见过它。
+```
 
+形式上，就像我们在 {{ref:AONcircdef}} 中对 AON-CIRC 所做的那样，我们可以以自然的方式定义 NAND-CIRC 程序的计算概念：
+```admonish quote title=""
+{{defc}}{NANDcomp}[由 NAND-CIRC 定义的计算]
+设 $f:\{0,1\}^n \rightarrow \{0,1\}^m$ 为某个函数，$P$ 为一个 NAND-CIRC 程序。我们说 $P$ **计算**函数 $f$，如果满足以下条件：
 
-> ### { .pause }
-Do you know what function this program computes? Hint: you have seen it before.
+1. $P$ 具有 $n$ 个输入变量 `X[0]`, $\ldots$, `X[n-1]` 和 $m$ 个输出变量 `Y[0]`, $\ldots$, `Y[m-1]`。
 
-Formally, just like we did in [AONcircdef]() for AON-CIRC, we can define the notion of computation by a NAND-CIRC program in the natural way:
-
-
-::: {.definition title="Computing by a NAND-CIRC program" #NANDcomp}
-Let $f:\{0,1\}^n \rightarrow \{0,1\}^m$ be some function, and let $P$ be a NAND-CIRC program. We say that $P$ _computes_ the function $f$ if:
-
-1. $P$ has $n$ input variables `X[`$0$`]`$,\ldots,$`X[`$n-1$`]` and $m$ output variables `Y[`$0$`]`,$\ldots$,`Y[`$m-1$`]`.
-
-2. For every $x\in \{0,1\}^n$, if we execute $P$ when we assign to `X[`$0$`]`$,\ldots,$`X[`$n-1$`]` the values $x_0,\ldots,x_{n-1}$, then at the end of the execution, the output variables `Y[`$0$`]`,$\ldots$,`Y[`$m-1$`]` have the values $y_0,\ldots,y_{m-1}$ where $y=f(x)$.
-:::
-
-As before we can show that NAND circuits are equivalent to NAND-CIRC programs (see [progandcircfig]()):
-
-> ### {.theorem title="NAND circuits and straight-line program equivalence" #NANDcircslequivthm}
+2. 对于任意 $x \in \{0,1\}^n$，如果在执行 $P$ 时将输入变量 `X[0]`, $\ldots$, `X[n-1]` 赋值为 $x_0,\ldots,x_{n-1}$，则在执行结束时，输出变量 `Y[0]`, $\ldots$, `Y[m-1]` 的值为 $y_0,\ldots,y_{m-1}$，其中 $y=f(x)$。
+```
+和之前一样，我们可以证明 NAND 电路与 NAND-CIRC 程序是等价的（参见 [progandcircfig]()）。
+```admonish quote title=""
+{{thmc}}{NANDcircslequivthm}[NAND电路与直线程序的等价性]
 For every $f:\{0,1\}^n \rightarrow \{0,1\}^m$ and $s \geq m$, $f$ is computable by a NAND-CIRC program of $s$ lines if and only if $f$ is computable by a NAND circuit of $s$ gates.
+```
+```admonish quote title=""
+<a id="progandcircfig">![progandcircfig](./images/chapter3/nandcircuitequiv.png)</a>
+一个 NAND 程序及其对应的电路。注意程序中的每一行都对应电路中的一个门。
+```
 
+我们省略 {{ref:NANDcircslequivthm}} 的证明，因为其思路与布尔电路与 AON-CIRC 程序等价的证明完全相同（参见 {{ref:slcircuitequivthm}}）。  
 
-![A NAND program and the corresponding circuit. Note how every line in the program corresponds to a gate in the circuit.](./images/chapter3/nandcircuitequiv.png){#progandcircfig   .margin  }
+根据 {{ref:NANDcircslequivthm}} 和 {{ref:NANDuniversamthm}}，我们知道可以将任意 $s$ 行的 AON-CIRC 程序 $P$ 翻译为一个等价的 NAND-CIRC 程序，行数最多为 $3s$。  
+实际上，这种翻译可以通过将每一行 `foo = AND(bar,blah)`、`foo = OR(bar,blah)` 或 `foo = NOT(bar)` 替换为使用 `NAND` 的等价 1-3 行来轻松完成。  
 
+我们的 [GitHub 仓库](https://github.com/boazbk/tcscode) 提供了“代码证明”：一个简单的 Python 程序 `AON2NAND`，可以将 AON-CIRC 转换为等价的 NAND-CIRC 程序。
 
-We omit the proof of [NANDcircslequivthm]() since it follows along exactly the same lines as the equivalence of Boolean circuits and AON-CIRC program  ({{ref: slcircuitequivthm}}).
-Given [NANDcircslequivthm]() and [NANDuniversamthm](), we know that we can translate every $s$-line AON-CIRC program $P$ into an equivalent NAND-CIRC program of at most $3s$ lines.
-In fact, this translation can be easily done by replacing every line of the form `foo = AND(bar,blah)`, `foo = OR(bar,blah)` or `foo = NOT(bar)` with the equivalent 1-3 lines that use the `NAND` operation.
-Our [GitHub repository](https://github.com/boazbk/tcscode) contains a "proof by code": a simple Python program `AON2NAND` that transforms an AON-CIRC into an equivalent NAND-CIRC program.
+```admonish remark title="NAND-CIRC编程语言是否图灵完备?(选读)"
+<a id="NANDturingcompleteness"></a>
+你可能听说过“图灵完备（Turing Complete）”这一术语，有时用来描述编程语言。（如果没听过，可以忽略本备注的其余部分：我们将在 [chapequivalentmodels]() 中给出精确定义。）  
 
+如果听说过，你可能会好奇 NAND-CIRC 编程语言是否具备这一属性。答案是否定的，或者更准确地说，“图灵完备”这个术语并不真正适用于 NAND-CIRC 编程语言。  
 
+原因在于，根据设计，NAND-CIRC 编程语言只能计算**有限函数** $F:\{0,1\}^n \rightarrow \{0,1\}^m$，这些函数接受固定数量的输入比特并产生固定数量的输出比特. “图灵完备”这一术语仅适用于可以处理任意长度输入的**无限函数**的编程语言。  
 
-> ### {.remark title="Is the NAND-CIRC programming language Turing Complete? (optional note)" #NANDturingcompleteness}
-You might have heard of a term called "Turing Complete" that is sometimes used to describe programming languages. (If you haven't, feel free to ignore the rest of this remark: we define this term precisely in [chapequivalentmodels]().)
-If so, you might wonder if the NAND-CIRC programming language has this property.
-The answer is __no__, or perhaps more accurately, the term "Turing Completeness" is not really applicable for the NAND-CIRC programming language.
-The reason is that, by design, the NAND-CIRC programming language can only compute _finite_ functions $F:\{0,1\}^n \rightarrow \{0,1\}^m$ that take a fixed number of input bits and produce a fixed number of outputs bits.
-The term "Turing Complete" is only applicable to programming languages for _infinite_ functions that can take inputs of arbitrary length.
-We will come back to this distinction later on in this book.
+在本书后续章节中，我们将回到这一区分进行进一步讨论。
+```
 
-## 3.7 Equivalence of all these models
+## 3.7 上述所有模型的等价性
 
+如果我们将 {{ref:slcircuitequivthm}}、{{ref:NANDuniversamthm}} 和 {{ref:NANDcircslequivthm}} 结合起来，可得到以下结论：
+```admonish quote title=""
+{{thmc}}{equivalencemodelsthm}[有限计算模型之间的等价性]
+对于足够大的 $s,n,m$ 以及函数 $f:\{0,1\}^n \rightarrow \{0,1\}^m$，以下条件彼此等价：
+* $f$ 可以由最多 $O(s)$ 个门的布尔电路（使用 $\wedge$、$\vee$、$\neg$ 门）计算。  
+* $f$ 可以由最多 $O(s)$ 行的 AON-CIRC 直线程序计算。  
+* $f$ 可以由最多 $O(s)$ 个门的 $\NAND$ 电路计算。  
+* $f$ 可以由最多 $O(s)$ 行的 NAND-CIRC 直线程序计算。
 
-If we put together {{ref: slcircuitequivthm}}, [NANDuniversamthm](), and [NANDcircslequivthm](), we obtain the following result:
+这里的“$O(s)$”表示上界最多为 $c \cdot s$，其中 $c$ 是与 $n$ 无关的常数。例如，如果 $f$ 可以由 $s$ 个门的布尔电路计算，那么它可以由最多 $3s$ 行的 NAND-CIRC 程序计算；如果 $f$ 可以由 $s$ 个门的 NAND 电路计算，那么它可以由最多 $2s$ 行的 AON-CIRC 程序计算。
+```
+```admonish idea title="证明思路"
+我们省略正式证明，该证明可通过结合 {{ref:slcircuitequivthm}}、{{ref:NANDuniversamthm}} 和 {{ref:NANDcircslequivthm}} 得出。关键观察是：我们看到的结果允许我们将一个在上述模型之一中计算 $f$ 的程序/电路，转换为在另一模型中计算 $f$ 的程序/电路，其行数或门数最多增加一个常数因子（实际上该常数因子最多为 $3$）。  
+```
 
-::: {.theorem title="Equivalence between models of finite computation" #equivalencemodelsthm}
-For every sufficiently large $s,n,m$  and $f:\{0,1\}^n \rightarrow \{0,1\}^m$, the following conditions are all equivalent to one another:
+{{ref:slcircuitequivthm}} 是一个更一般结果的特例。  
+我们可以考虑更一般的计算模型，其中不仅使用 AND/OR/NOT 或 NAND，还可以使用其他运算（参见[下文](#othergatessec)）。事实证明，布尔电路在计算能力上与这些模型也是等价的。  
 
-* $f$ can be computed by a Boolean circuit (with $\wedge,\vee,\neg$ gates) of at most $O(s)$   gates.
+所有这些不同的计算定义方式最终导致等价模型，这表明我们“走在正确的道路上”。它证明了我们选择 AND/OR/NOT 或 NAND 作为基本操作的看似任意的选择是合理的，因为这些选择并不影响计算模型的能力。像 {{ref:equivalencemodelsthm}} 这样的等价结果意味着我们可以轻松地在布尔电路、NAND 电路、NAND-CIRC 程序等之间进行转换。在本书后续内容中，我们将经常利用这一能力，通常会根据方便选择最合适的表述，而不会过分纠结。因此，我们不会过于担心例如布尔电路与 NAND-CIRC 程序之间的区别。  
 
-* $f$ can be computed by an AON-CIRC straight-line program of at most $O(s)$ lines.
+相比之下，我们将继续特别注意区分**电路/程序**与**函数**（回忆 [functionprogramidea]()）。  
+一个函数对应于**计算任务的规范**，它本质上不同于程序或电路，后者对应于**任务的实现**。
 
-* $f$ can be computed by a NAND circuit of at most $O(s)$ gates.
+### 3.7.1 基于其它门集合的电路  {#othergatessec }
 
-* $f$ can be computed by a NAND-CIRC straight-line program of at most $O(s)$ lines.
-:::
+$\AND/\OR/\NOT$ 或 $\NAND$ 并没有什么特别之处。对于任意函数集合 $\mathcal{G} = \{ G_0,\ldots,G_{k-1} \}$，我们可以定义使用 $\mathcal{G}$ 中元素作为门的电路的概念，以及一个“$\mathcal{G}$ 编程语言”的概念，其中每一行都将一个变量 `foo` 赋值为对某个 $G_i \in \mathcal{G}$ 应用于先前定义的变量或输入变量的结果。  
 
-By "$O(s)$" we mean that the bound is at most $c\cdot s$ where $c$ is a constant that is independent of $n$.
-For example, if $f$ can be computed by a Boolean circuit of $s$ gates, then it can be computed by a NAND-CIRC program of at most $3s$ lines, and if $f$ can be computed by a NAND circuit of $s$ gates, then it can be computed by an AON-CIRC program of at most $2s$ lines.
+具体而言，我们可以做如下定义：
+```admonish quote title=""
+{{defc}}{genstraight-lineprogs}[广义直线程序]
+设 $\mathcal{F} = \{ f_0,\ldots, f_{t-1} \}$ 为有限布尔函数集合，其中 $f_i:\{0,1\}^{k_i} \rightarrow \{0,1\}$，$k_i \in \N$。  
 
+一个 **$\mathcal{F}$ 程序** 是一系列语句，每条语句将某个变量赋值为对某个 $f_i \in \mathcal{F}$ 应用于 $k_i$ 个其他变量的结果。如上所述，我们使用 `X[i]` 和 `Y[j]` 表示输入变量和输出变量。  
 
+当存在一个 $\mathcal{F}$ 程序可以计算函数 $\NAND$ 时，我们称 $\mathcal{F}$ 为**通用运算集**（也称为通用门集）。
+```
 
+AON-CIRC 程序对应于 $\{\AND,\OR,\NOT\}$ 程序，NAND-CIRC 程序对应于仅包含 $\NAND$ 函数的 $\mathcal{F}$ 程序，但我们也可以定义 $\{\text{IF,ZERO,ONE}\}$ 程序（见下文），或者使用任意其他集合。  
 
-> ### {.proofidea data-ref="equivalencemodelsthm"}
-We omit the formal proof, which is obtained by combining {{ref: slcircuitequivthm}}, [NANDuniversamthm](), and [NANDcircslequivthm](). The key observation is that the results we have seen allow us to translate a program/circuit that computes $f$ in one of the above models into a program/circuit that computes $f$ in another model by increasing the lines/gates by at most a constant factor (in fact this constant factor is at most $3$).
+我们还可以定义 **$\mathcal{F}$ 电路**，它是一个有向图，其中每个 **门** 对应于应用某个 $f_i \in \mathcal{F}$ 的操作，每个门有 $k_i$ 条入边和一条出边。（如果函数 $f_i$ 不是**对称的**，即输入顺序会影响结果，那么我们需要标记每条入边对应函数的哪个参数。）  
 
+正如在 {{ref:slcircuitequivthm}} 中，我们可以证明 $\mathcal{F}$ 电路与 $\mathcal{F}$ 程序是等价的。  
+我们已经看到，对于 $\mathcal{F} = \{AND,OR,NOT\}$，生成的电路/程序在计算能力上等价于 NAND-CIRC 编程语言，因为我们可以用 $\AND$/$\OR$/$\NOT$ 计算 $\NAND$，反之亦然。  
 
-{{ref: slcircuitequivthm}} is a special case of a more general result.
-We can consider even more general models of computation, where instead of AND/OR/NOT or NAND, we use other operations (see [othergatessec]() below).
-It turns out that Boolean circuits are equivalent in power to such models as well.
-The fact that all these different ways to define computation lead to equivalent models shows that we are "on the right track".
-It justifies the seemingly arbitrary choices that we've made of using AND/OR/NOT or NAND as our basic operations, since these choices do not affect the power of our computational model.
-Equivalence results such as [equivalencemodelsthm]() mean that we can easily translate between Boolean circuits, NAND circuits, NAND-CIRC programs and the like.
-We will use this ability later on in this book, often shifting to the most convenient formulation without making a big deal about it.
-Hence we will not worry too much about the distinction between, for example, Boolean circuits and NAND-CIRC programs.
+这实际上是一个更一般现象的特例——$\NAND$ 和其他门集的**通用性**——我们将在本书后续章节中深入探讨。
 
+```admonish example title = "$\\\\{\\\text{IF , ZERO, ONE}\\\\}$电路"
+<a id="IZOcircuits"></a>
+设 $\mathcal{F} = \{\text{IF , ZERO, ONE}\}$，其中 $\text{ZERO}:\{0,1\} \rightarrow \{0\}$ 和 $\text{ONE}:\{0,1\} \rightarrow \{1\}$ 分别是常量零函数和常量一函数{{footnote: 也可以将这些函数定义为接受长度为零的输入，这对模型的计算能力没有影响。}}，$\text{IF}:\{0,1\}^3 \rightarrow \{0,1\}$ 是一个函数，对输入 $(a,b,c)$，如果 $a=1$ 则输出 $b$，否则输出 $c$。  
 
+则 $\mathcal{F}$ 是通用的。  
 
-In contrast, we will continue to take special care to distinguish between _circuits/programs_ and _functions_ (recall [functionprogramidea]()).
-A function corresponds to a _specification_ of a computational task, and it is a fundamentally different object than a program or a circuit, which corresponds to the _implementation_ of the task.
-
-
-### Circuits with other gate sets  {#othergatessec }
-
-There is nothing special about AND/OR/NOT or NAND. For every set of functions $\mathcal{G} = \{ G_0,\ldots,G_{k-1} \}$, we can define a notion of circuits that use elements of  $\mathcal{G}$ as gates, and a notion of a "$\mathcal{G}$ programming language" where every line involves assigning to a variable `foo` the result of applying some $G_i \in \mathcal{G}$ to previously defined or input variables.
-Specifically, we can make the following definition:
-
-::: {.definition title="General straight-line programs" #genstraight-lineprogs}
-Let $\mathcal{F} = \{ f_0,\ldots, f_{t-1} \}$ be a finite collection of Boolean functions, such that
-$f_i:\{0,1\}^{k_i} \rightarrow \{0,1\}$ for some $k_i \in \N$.
-An _$\mathcal{F}$ program_ is a sequence of lines, each of which assigns to some variable the result of applying some $f_i \in \mathcal{F}$ to $k_i$ other variables. As above, we use `X[`$i$`]` and `Y[`$j$`]` to denote the input and output variables.
-
-We say that $\mathcal{F}$ is a _universal set of operations_ (also known as a universal gate set) if there exists a $\mathcal{F}$ program to compute the function $\text{NAND}$.
-:::
-
-AON-CIRC programs correspond to $\{AND,OR,NOT\}$ programs, NAND-CIRC programs corresponds to $\mathcal{F}$ programs for the set  $\mathcal{F}$ that only contains the $\text{NAND}$ function,   but we can also define  $\{ IF, ZERO, ONE\}$ programs (see below), or use any other set.
-
-We can also define _$\mathcal{F}$ circuits_, which will be directed graphs in which each _gate_ corresponds to applying a function $f_i \in \mathcal{F}$, and will each have $k_i$ incoming wires and a single outgoing wire. (If the function $f_i$ is not _symmetric_, in the sense that the order of its input matters then we need to label each wire entering a gate as to which parameter of the function it corresponds to.)
-As in {{ref: slcircuitequivthm}}, we can show that $\mathcal{F}$ circuits and $\mathcal{F}$ programs are equivalent.
-We have seen that for $\mathcal{F} = \{ AND,OR, NOT\}$, the resulting circuits/programs are equivalent in power to the NAND-CIRC programming language, as we can compute $\text{NAND}$ using $\AND$/$\OR$/$\NOT$ and vice versa.
-This turns out to be a special case of a general phenomenon — the _universality_ of $\text{NAND}$ and other gate sets — that we will explore more in-depth later in this book.
-
-::: {.example title="IF,ZERO,ONE circuits" #IZOcircuits}
-Let $\mathcal{F} = \{ IF , ZERO, ONE \}$ where $ZERO:\{0,1\} \rightarrow \{0\}$ and $ONE:\{0,1\} \rightarrow \{1\}$ are the constant zero and one functions,^[One can also define these functions as taking a length zero input. This makes no difference for the computational power of the model.] and $IF:\{0,1\}^3 \rightarrow \{0,1\}$ is the function that on input $(a,b,c)$ outputs $b$ if $a=1$ and $c$ otherwise.
-Then $\mathcal{F}$ is universal.
-
-Indeed, we can demonstrate that $\{ IF, ZERO, ONE \}$ is universal using the following formula for $\text{NAND}$:
-
+实际上，我们可以通过以下 $\NAND$ 的公式证明 $\{\text{IF, ZERO, ONE}\}$ 是通用的：
 $$
-NAND(a,b) = IF(a,IF(b,ZERO,ONE),ONE) \;.
+\NAND(a,b) = \text{IF}(a,\text{IF}(b,\text{ZERO},\text{ONE}),\text{ONE}) \;.
 $$
-:::
+```
+
+也存在一些计算能力更受限的集合 $\mathcal{F}$。  
+例如，可以证明，如果我们只使用 $\AND$ 或 $\OR$ 门（不使用 $\NOT$），则无法得到等价的计算模型。  
+练习中提供了几个通用门集与非通用门集的示例。
 
 
-There are also some sets $\mathcal{F}$ that are more restricted in power. For example it can be shown that if we use only AND or OR gates (without NOT) then we do _not_ get an equivalent model of computation.
-The exercises cover several examples of universal and non-universal gate sets.
+### 3.7.2 规范 vs. 实现（再次强调） {#specvsimplrem}
 
+```admonish quote title=""
+<a id="specvsimplfig">![specvsimplfig](./images/chapter3/specvsimpl.png)</a>
+区分计算任务的**规范**与其**实现**至关重要：规范指明要计算的函数（即“做什么”），而实现则是包含将输入映射到输出的指令的算法、程序或电路（即“如何做”）。同一个函数可以通过多种不同方式实现。
+```
 
-### Specification vs. implementation  (again) {#specvsimplrem}
+正如我们在 [secimplvsspec]() 中讨论的，本书中最重要的区别之一是**规范**与**实现**的区分，即分离“做什么”和“如何做”（见[上图](#specvsimplfig)）。  
+一个 **函数** 对应于计算任务的**规范**，即对于每个特定输入应该产生什么输出。  
+一个 **程序**（或电路，或其他任何用于指定算法的方式）对应于**实现**，即如何从输入计算所需输出。  
+也就是说，程序是一组从输入计算输出的指令。  
 
-![It is crucial to distinguish between the _specification_ of a computational task, namely _what_ is the function that is to be computed and the _implementation_ of it, namely the algorithm, program, or circuit that contains the instructions defining _how_ to map an input to an output. The same function could be computed in many different ways.](./images/chapter3/specvsimpl.png){#specvsimplfig }
+即便在同一个计算模型内，也可能有多种不同方式来计算同一个函数。例如，计算多数函数的 NAND-CIRC 程序不止一个，计算加法函数的布尔电路也不止一个，等等。  
 
+混淆规范与实现（或等价地，**函数**与**程序**）是一个常见错误，而编程语言中常将程序部分称为“函数”也在一定程度上助长了这种误解。然而，在计算机科学的理论与实践中，保持这一区别非常重要，本书尤其重视这一点。
 
-As we discussed in [secimplvsspec](), one of the most important distinctions in this book is that of _specification_ versus _implementation_ or separating "what" from "how" (see [specvsimplfig]()).
-A _function_ corresponds to the _specification_ of a computational task, that is _what_ output should be produced for every particular input.
-A _program_ (or circuit, or any other way to specify _algorithms_) corresponds to the _implementation_ of _how_ to compute the desired output from the input.
-That is, a program is a set of instructions on how to compute the output from the input.
-Even within the same computational model there can be many different ways to compute the same function.
-For example, there is more than one NAND-CIRC program that computes the majority function, more than one Boolean circuit to compute the addition function, and so on and so forth.
+```admonish hint title="回顾"
+* **算法** 是通过一系列“基本”或“简单”操作来执行计算的步骤或配方。  
+* “基本”操作的一种候选定义是集合 $\AND$、$\OR$ 和 $\NOT$。  
+* 另一种“基本”操作的候选定义是 $\NAND$ 操作。它可以通过多种物理方法轻松实现，包括电子晶体管。  
+* 我们可以使用 $\NAND$ 计算许多其他函数，包括多数、增量等。  
+* 还有其他等价选择，包括集合 $\{\AND,\OR,\NOT\}$ 和 $\{\text{IF,ZERO,ONE}\}$。  
+* 我们可以形式化定义函数 $F:\{0,1\}^n \rightarrow \{0,1\}^m$ 可被 **NAND-CIRC 编程语言** 计算的概念。  
+* 对于任意基本操作集合，通过电路可计算与通过直线程序可计算的概念是等价的。
+```
 
-Confusing specification and implementation  (or equivalently _functions_ and _programs_) is a common mistake, and one that is unfortunately encouraged by the common programming-language terminology of referring to parts of programs as "functions".
-However, in both the theory and practice of computer science, it is important to maintain this distinction, and it is particularly important for us in this book.
-
-
-> ### { .recap }
-* An _algorithm_ is a recipe for performing a computation as a sequence of "elementary" or "simple" operations.
-* One candidate definition for "elementary" operations is the set $\AND$, $\OR$ and $\NOT$.
-* Another candidate definition for an "elementary" operation is the $\text{NAND}$ operation. It is an operation that is easily implementable in the physical world in a variety of methods including by electronic transistors.
-* We can use $\text{NAND}$ to compute many other functions, including majority, increment, and others.
-* There are other equivalent choices, including the sets $\{AND,OR,NOT\}$ and $\{ IF, ZERO, ONE \}$.
-* We can formally define the notion of a function $F:\{0,1\}^n \rightarrow \{0,1\}^m$ being computable using the _NAND-CIRC Programming language_.
-* For every set of basic operations, the notions of being computable by a circuit and being computable by a straight-line program are equivalent.
-
-## Exercises
-
+## 习题
 
 ::: {.exercise title="Compare $4$ bit numbers" #comparenumbersex}
-Give a Boolean circuit (with AND/OR/NOT gates) that computes the function $CMP_8:\{0,1\}^8 \rightarrow \{0,1\}$ such that $CMP_8(a_0,a_1,a_2,a_3,b_0,b_1,b_2,b_3)=1$ if and only if the number represented by $a_0a_1a_2a_3$ is larger than the number represented by $b_0b_1b_2b_3$.
+Give a Boolean circuit (with AND/OR/NOT gates) that computes the function $\text{CMP}_8:\{0,1\}^8 \rightarrow \{0,1\}$ such that $\text{CMP}_8(a_0,a_1,a_2,a_3,b_0,b_1,b_2,b_3)=1$ if and only if the number represented by $a_0a_1a_2a_3$ is larger than the number represented by $b_0b_1b_2b_3$.
 :::
 
 ::: {.exercise title="Compare $n$ bit numbers" #compareasymnumbersex}
-Prove that there exists a constant $c$ such that for every $n$ there is a Boolean circuit (with AND/OR/NOT gates) $C$ of at most $c\cdot n$ gates  that computes the function $CMP_{2n}:\{0,1\}^{2n} \rightarrow \{0,1\}$ such that $CMP_{2n}(a_0\cdots a_{n-1} b_0 \cdots b_{n-1})=1$ if and only if the number represented by $a_0 \cdots a_{n-1}$ is larger than the number represented by $b_0 \cdots b_{n-1}$.
+Prove that there exists a constant $c$ such that for every $n$ there is a Boolean circuit (with AND/OR/NOT gates) $C$ of at most $c\cdot n$ gates  that computes the function $\text{CMP}_{2n}:\{0,1\}^{2n} \rightarrow \{0,1\}$ such that $\text{CMP}_{2n}(a_0\cdots a_{n-1} b_0 \cdots b_{n-1})=1$ if and only if the number represented by $a_0 \cdots a_{n-1}$ is larger than the number represented by $b_0 \cdots b_{n-1}$.
 :::
 
 
@@ -1152,7 +1178,7 @@ Prove that $\{ LOOKUP_1,0,1 \}$ is a universal set of gates where $0$ and $1$ ar
 
 > ### {.exercise title="Bound on universal basis size (challenge)" #universal-bound}
 Prove that for every subset $B$ of the functions from $\{0,1\}^k$ to $\{0,1\}$,
-if $B$ is universal then there is a $B$-circuit of at most $O(1)$ gates to compute the $\text{NAND}$ function (you can start by showing that there is a $B$ circuit of at most $O(k^{16})$ gates).^[Thanks to Alec Sun and Simon Fischer for comments on this problem.]
+if $B$ is universal then there is a $B$-circuit of at most $O(1)$ gates to compute the $\NAND$ function (you can start by showing that there is a $B$ circuit of at most $O(k^{16})$ gates).^[Thanks to Alec Sun and Simon Fischer for comments on this problem.]
 
 
 ::: {.exercise title="Size and inputs / outputs" #nandcircsizeex}
@@ -1165,7 +1191,7 @@ Prove that for every NAND circuit of size $s$ with $n$ inputs and $m$ outputs, $
 Prove that there is some constant $c$ such that for every $n>1$, and integers $a_0,\ldots,a_{n-1},b \in \{-2^n,-2^n+1,\ldots,-1,0,+1,\ldots,2^n\}$, there is a NAND circuit with at most $c n^4$ gates that computes the _threshold_ function $f_{a_0,\ldots,a_{n-1},b}:\{0,1\}^n \rightarrow \{0,1\}$ that on input $x\in \{0,1\}^n$ outputs $1$ if and only if $\sum_{i=0}^{n-1} a_i x_i > b$.
 
 ::: {.exercise title="NANDs from activation functions" #NANDsfromActivationfunctionex}
-We say that a function $f:\mathbb{R}^2 \rightarrow \mathbb{R}$ is a _NAND approximator_ if it has the following property: for every $a,b \in \mathbb{R}$, if $\min\{|a|,|1-a|\}\leq 1/3$ and $\min \{ |b|,|1-b| \}\leq 0.1$ then $|f(a,b) - NAND(\lfloor a \rceil, \lfloor b \rceil)| \leq 0.1$ where we denote by $\lfloor x \rceil$ the integer closest to $x$. That is, if $a,b$ are within a distance $1/3$ to $\{0,1\}$ then we want $f(a,b)$ to equal the $\text{NAND}$ of the values in $\{0,1\}$ that are closest to $a$ and $b$ respectively. Otherwise, we do not care what the output of $f$ is on $a$ and $b$.
+We say that a function $f:\mathbb{R}^2 \rightarrow \mathbb{R}$ is a _NAND approximator_ if it has the following property: for every $a,b \in \mathbb{R}$, if $\min\{|a|,|1-a|\}\leq 1/3$ and $\min \{ |b|,|1-b| \}\leq 0.1$ then $|f(a,b) - NAND(\lfloor a \rceil, \lfloor b \rceil)| \leq 0.1$ where we denote by $\lfloor x \rceil$ the integer closest to $x$. That is, if $a,b$ are within a distance $1/3$ to $\{0,1\}$ then we want $f(a,b)$ to equal the $\NAND$ of the values in $\{0,1\}$ that are closest to $a$ and $b$ respectively. Otherwise, we do not care what the output of $f$ is on $a$ and $b$.
 
 In this exercise you will show that you can construct a NAND approximator from many common activation functions used in deep neural networks. As a corollary you will obtain that deep neural networks can simulate NAND circuits. Since NAND circuits can also simulate deep neural networks, these two computational models are equivalent to one another.
 
@@ -1189,32 +1215,27 @@ Prove that for every $f:\{0,1\}^n \rightarrow \{0,1\}$, if there is a Boolean ci
 that computes $f$ then there is a Boolean circuit $C'$ of at most $s$ gates such that in the minimal layering of $C'$, the output gate of $C'$ is placed in the last layer. See footnote for hint.^[_Hint:_ Vertices in layers beyond the output can be safely removed without changing the functionality of the circuit.]
 :::
 
-## Biographical notes
+## 一些传记
 
-The excerpt from Al-Khwarizmi's book is from "The Algebra of Ben-Musa", Fredric Rosen, 1831.
+阿尔-花拉子米（Al-Khwarizmi）著作的摘录来自《The Algebra of Ben-Musa》，Fredric Rosen，1831 年。
 
+查尔斯·巴贝奇（Charles Babbage，1791-1871）是具有远见的科学家、数学家和发明家（参见 [@swade2002the, @collier2000charles]）。  
+在现代电子计算机发明的一个多世纪之前，巴贝奇就意识到计算原则上可以机械化。  
+他设计的第一台机械计算机是**差分机（difference engine）**，用于多项式插值。  
+随后他设计了**解析机（analytical engine）**，这是一台更加通用的机器，也是第一台可编程通用计算机的原型。  
+遗憾的是，巴贝奇从未完成这些原型机的设计。  
+最早意识到解析机潜力及其深远影响的人之一是阿达·洛芙莱斯（Ada Lovelace）（参见 [chaploops]() 注释）。
 
-Charles Babbage (1791-1871) was a visionary scientist, mathematician, and inventor (see [@swade2002the, @collier2000charles]).
-More than a century before the invention of modern electronic computers, Babbage realized that computation can be in principle mechanized.
-His first design for a mechanical computer was the _difference engine_ that was designed to do polynomial interpolation.
-He then designed the _analytical engine_ which was a much more general machine and the first prototype for a programmable general-purpose computer.
-Unfortunately, Babbage was never able to complete the design of his prototypes.
-One of the earliest people to realize the engine's potential and far-reaching implications was Ada Lovelace (see the notes for [chaploops]()).
+布尔代数最早由布尔（Boole）和德摩根（DeMorgan）在 1840 年代研究 [@Boole1847mathematical, @DeMorgan1847]。  
+布尔电路的定义及其与电继电器电路的联系由香农（Shannon）在其硕士论文中提出 [@Shannon1938]。  
+（霍华德·加德纳称香农的论文为“可能是 20 世纪最重要、也最著名的硕士论文”。）  
+萨维奇（Savage）的书 [@Savage1998models] 与本书类似，从布尔电路作为第一个模型开始引入计算理论。  
+Jukna 的书 [@Jukna12] 提供了现代深入的布尔电路论述，另见 [@wegener1987complexity]。
 
+Sheffer [@Sheffer1913] 证明了 $\NAND$ 函数是通用的，尽管早期 Peirce 的工作中也出现过类似结论，参见 [@Burks1978charles]。  
+怀特海德（Whitehead）和罗素（Russell）在其巨著《数学原理》（_Principia Mathematica_）中使用 $\NAND$ 作为逻辑基础 [@WhiteheadRussell1912]。  
+Ernst 在其博士论文中 [@Ernst2009phd] 实证研究了各种函数的最小 $\NAND$ 电路。  
+Nisan 和 Shocken 的书 [@NisanShocken2005] 从 $\NAND$ 门开始构建计算系统，直到高级程序和游戏（“$\NAND$ 到 Tetris”）；另见网站 [nandtotetris.org](https://www.nand2tetris.org/)。
 
-
-
-Boolean algebra was first investigated by Boole and DeMorgan in the 1840's [@Boole1847mathematical, @DeMorgan1847].
-The definition of Boolean circuits and connection to electrical relay circuits was given in Shannon's Masters Thesis [@Shannon1938].
-(Howard Gardener called Shannon's thesis "possibly the most important, and also the most famous, master's thesis of the [20th] century".)
-Savage's book [@Savage1998models], like this one, introduces the theory of computation starting with Boolean circuits as the first model.
-Jukna's book [@Jukna12] contains a modern in-depth exposition of Boolean circuits, see also [@wegener1987complexity].
-
-
-The NAND function was shown to be universal by Sheffer [@Sheffer1913], though this also appears in the earlier work of Peirce, see [@Burks1978charles].
-Whitehead and Russell used NAND as the basis for their logic in their magnum opus _Principia Mathematica_ [@WhiteheadRussell1912].
-In her Ph.D thesis, Ernst [@Ernst2009phd] investigates empirically the minimal NAND circuits for various functions.
-Nisan and Shocken's book [@NisanShocken2005]  builds a computing system starting from NAND gates and ending with high-level programs and games ("NAND to Tetris"); see also the website [nandtotetris.org](https://www.nand2tetris.org/).
-
-We defined the _size_ of a Boolean circuit in {{ref: booleancircdef}} to be the number of gates it contains. This is one of two conventions used in the literature. The other convention is to define the size as the number of _wires_ (equivalent to the number of gates plus the number of inputs).
-This makes very little difference in almost all settings, but can affect the circuit size complexity of some "pathological examples" of functions such as the constant zero function that do not depend on much of their inputs.
+我们在 {{ref:booleancircdef}} 中将布尔电路的**大小**定义为其包含的门的数量。这是文献中使用的两种约定之一。另一种约定是将大小定义为**导线**的数量（等价于门的数量加输入数量）。  
+在几乎所有情况下，这差异很小，但可能影响某些“病态例子”的电路规模复杂度，例如常量零函数，其输出几乎不依赖输入。
