@@ -35,8 +35,6 @@ trust = true
 [preprocessor.toc]
 renderer = ["html"]
 
-[preprocessor.mermaid]
-
 [preprocessor.numthm]
 custom_environments = [
   ["eqc", "式", "**"],
@@ -47,7 +45,8 @@ custom_environments = [
   ["exec", "练习", "**"]
 ]
 
-[preprocessor.numeq]
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
 
 [preprocessor.footnote]
 after = ["numthm"]
@@ -55,6 +54,8 @@ after = ["numthm"]
 [preprocessor.admonish]
 command = "mdbook-admonish"
 assets_version = "3.1.0" # do not edit: managed by `mdbook-admonish install`
+
+[preprocessor.numeq]
 after = ["links"]
 before = ["katex"]
 
