@@ -46,7 +46,8 @@ custom_environments = [
   ["lemc", "引理", "**"],
   ["algc", "算法", "**"],
   ["defc", "定义", "**"],
-  ["exec", "练习", "**"]
+  ["exec", "练习", "**"],
+  ["proc", "习题", "**"]
 ]
 
 [preprocessor.numeq]
