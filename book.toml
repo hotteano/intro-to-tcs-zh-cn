@@ -67,3 +67,9 @@ color = "#ffd700"
 directive = "solution"
 icon = "./src/images/icons/solution.svg"
 color = "#00c853"
+
+[[preprocessor.admonish.custom]]
+directive = "pause"
+icon = "./src/images/icons/pause.svg"
+color = "#00b0ff"
+title = "暂停一下"
