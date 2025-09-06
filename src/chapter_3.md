@@ -406,21 +406,21 @@ print([f"XOR3({a},{b},{c})={XOR3(a,b,c)}" for a in [0,1] for b in [0,1] for c in
 在此例中, 该电路计算 $\XOR$ 函数, 因此在输入 $10$ 下输出为 $1$. 
 ```
 
+```admonish quote title=""
 {{exec}}{allequalex}[全相等函数]
-定义函数 $ALLEQ:\{0,1\}^4 \rightarrow \{0,1\}$, 其输入为 $x \in \{0,1\}^4$, 当且仅当 $x_0 = x_1 = x_2 = x_3$ 时输出 $1$.  
-
+定义函数 $\text{ALLEQ}:\{0,1\}^4 \rightarrow \{0,1\}$, 其输入为 $x \in \{0,1\}^4$, 当且仅当 $x_0 = x_1 = x_2 = x_3$ 时输出 $1$.  
+```
 ```admonish solution collapsible=true, title="解答"
-另一种描述函数 $ALLEQ$ 的方式是: 当且仅当输入 $x \in \{0,1\}^4$ 满足 $x = 0^4$ 或 $x = 1^4$ 时, 它输出 $1$.   
+另一种描述函数 $\text{ALLEQ}$ 的方式是: 当且仅当输入 $x \in \{0,1\}^4$ 满足 $x = 0^4$ 或 $x = 1^4$ 时, 它输出 $1$.   
 我们可以将条件 $x = 1^4$ 表述为 $x_0 \wedge x_1 \wedge x_2 \wedge x_3$, 这可以用三个 $\AND$ 门计算.   
 同样地, 我们可以将条件 $x = 0^4$ 表述为 $\overline{x}_0 \wedge \overline{x}_1 \wedge \overline{x}_2 \wedge \overline{x}_3$, 这可以用四个 $\NOT$ 门和三个 $\AND$ 门计算.   
-$ALLEQ$ 的输出是这两个条件的 $\OR$, 由此得到的电路包含 4 个 $\NOT$ 门、6 个 $\AND$ 门和 1 个 $\OR$ 门, 如[下图](#allequalfig)所示. 
+$\text{ALLEQ}$ 的输出是这两个条件的 $\OR$, 由此得到的电路包含 4 个 $\NOT$ 门、6 个 $\AND$ 门和 1 个 $\OR$ 门, 如[下图](#allequalfig)所示. 
 ```
 
 ```admonish quote title = ""
-<a id="allequalfig"> ![A  Boolean circuit for computing the _all equal_ function $ALLEQ:\{0,1\}^4 \rightarrow \{0,1\}$ that outputs $1$ on $x\in \{0,1\}^4$ if and only if $x_0=x_1=x_2=x_3$.](./images/chapter3/allequalcirc2.png)</a>
-一个用于计算 **all equal** 函数 $ALLEQ:\{0,1\}^4 \rightarrow \{0,1\}$ 的布尔电路. 当且仅当 $x \in \{0,1\}^4$ 满足 $x_0 = x_1 = x_2 = x_3$ 时, 它输出 $1$. 
+<a id="allequalfig"> ![A  Boolean circuit for computing the _all equal_ function $\text{ALLEQ}:\{0,1\}^4 \rightarrow \{0,1\}$ that outputs $1$ on $x\in \{0,1\}^4$ if and only if $x_0=x_1=x_2=x_3$.](./images/chapter3/allequalcirc2.png)</a>
+一个用于计算 **全相等函数** $\text{ALLEQ}:\{0,1\}^4 \rightarrow \{0,1\}$ 的布尔电路. 当且仅当 $x \in \{0,1\}^4$ 满足 $x_0 = x_1 = x_2 = x_3$ 时, 它输出 $1$. 
 ```
-
 
 ### 3.3.1 布尔电路: 形式化定义
 
