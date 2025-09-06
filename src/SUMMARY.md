@@ -2,6 +2,7 @@
 
 [序言](./preface.md)
 [译者序](./translation_preface.md)
+[第x章: 模板](chapter_x.md)
 [第0章：引言](chapter_0.md)
 - [第1章：数学背景](chapter_1.md)
 - [第2章：计算与表示](chapter_2.md)
