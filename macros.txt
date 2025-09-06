@@ -1,11 +1,10 @@
-
+\floor:{\left\lfloor #1\right\rfloor}
+\ceil:{\left\lceil #1\right\rceil}
 \N:{\mathbb{N}}
 \R:{\mathbb{R}}
 \Z:{\mathbb{Z}}
 \E:{\mathbb{E}}
 \val:{\ensuremath{\mathrm{val}}}
-\floor:{\lfloor #1 \rfloor}
-\ceil:{\lceil #1 \rceil}
 \expr:{\langle #1 \rangle}
 \pmod:{(\mod #1)}
 \qqquad:{\quad\quad\quad}
@@ -19,3 +18,8 @@
 \return:\textbf{ return } #1
 \input:\textbf{输入：}
 \output:\textbf{输出：}
+\AND:{\text{AND}}
+\OR:{\text{OR}}
+\NOT:{\text{NOT}}
+\XOR:{\text{XOR}}
+\NAND:{\text{NAND}}
