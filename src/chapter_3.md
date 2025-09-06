@@ -3,13 +3,13 @@
 
 待办: 
 
-- [√]将所有numthm环境用灰色admonish(quote)框起.
-- [√]修复对NANDsfromActivationfunctionex(于习题)的引用.
-- [√]标点符号统一为英文.
-- [ ]修复对cellularautomatasec(8.4节)的引用, 需要等候翻译进度.
-- [ ]修复对chapequivalentmodels(第7章)的引用, 需要等候翻译进度.
-- [ ]修复对functionprogramidea, secimplvsspec(第2章)的引用.
-- [ ]修复结尾传记部分的文献引用.
+- ✅将所有numthm环境用灰色admonish(quote)框起.
+- ✅修复对NANDsfromActivationfunctionex(于习题)的引用.
+- ✅标点符号统一为英文.
+- ⬛️修复对cellularautomatasec(8.4节)的引用, 需要等候翻译进度.
+- ⬛️修复对chapequivalentmodels(第7章)的引用, 需要等候翻译进度.
+- ⬛️修复对functionprogramidea, secimplvsspec(第2章)的引用.
+- ⬛️修复结尾传记部分的文献引用.
 ```
 
 # 定义计算 {#compchap }
