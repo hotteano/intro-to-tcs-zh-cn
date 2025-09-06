@@ -1,5 +1,5 @@
 ```admonish warning title = ""
-❗**页面施工中**: 目前状态: 翻译完成. 正文开放debug.
+❗**页面施工中**: 目前状态: 翻译完成. 正文开放debug, 需要精修.
 
 待办: 
 
@@ -67,7 +67,7 @@ Charles Babbage的计算轮. 图片取自 Harvard Mark I 计算机的"操作手�
   这意味着带有 $\AND$/$\OR$/$\NOT$ 门的电路, 与带有 $\NAND$ 门的电路在计算能力上是**等价的**, 我们可以根据需要选择其中任一模型来描述计算 (见 [3.6节](#nandsec)) .   
   先提前剧透一下, 在 [下一章](chapter_4.md) 中我们将看到, 这类电路可以计算**所有有限函数**. 
 
-本章的一个"大思想"是 **模型之间的等价性** (见 [equivalencemodels](#equivalencemodels)) . 如果两个计算模型能够计算相同集合的函数, 那么它们就是**等价的**. 布尔电路 ($\AND$/$\OR$/$\NOT$ 门) 与 $\NAND$ 电路的等价性只是一个例子, 本书中我们还会多次遇到类似的普遍现象. 
+本章的一个"大思想"是 **模型之间的等价性** (见[下文](#equivalencemodels)) . 如果两个计算模型能够计算相同集合的函数, 那么它们就是**等价的**. 布尔电路 ($\AND$/$\OR$/$\NOT$ 门) 与 $\NAND$ 电路的等价性只是一个例子, 本书中我们还会多次遇到类似的普遍现象. 
 ```
 
 
@@ -129,14 +129,14 @@ print(solve_eq(10, 39))
 ```admonish quote title=""
 {{defc}}{defofalg}[算法的非正式定义] **算法**是一组指令, 用于通过执行一系列"基本步骤"从输入计算出输出. 如果对于每一个输入 $x$, 按照算法 $A$ 的指令操作都能得到输出 $F(x)$, 则称算法 $A$ **计算**函数 $F$. 
 ```
-在本章中, 我们将使用 **布尔电路 (Boolean Circuits) ** 模型, 更精确而正式地定义算法. 我们将展示, 布尔电路在计算能力上等价于用"极简"编程语言编写的 **直线程序 (straight line programs) **, 即不包含循环的编程语言. 我们还将看到, 具体选择哪种 **基本运算 (elementary operations) ** 并不重要, 不同的选择都可以得到计算能力等价的模型 (见[下图](#compchapoverviewfig)) . 然而, 要理解这一点, 我们需要一些时间. 我们将从讨论什么是"基本运算"开始, 并说明如何将算法的描述映射为实际物理过程, 使其在现实世界中从输入生成输出. 
+在本章中, 我们将使用 **布尔电路 (Boolean Circuits)** 模型, 更精确而正式地定义算法. 我们将展示, 布尔电路在计算能力上等价于用"极简"编程语言编写的 **直线程序 (straight line programs)**, 即不包含循环的编程语言. 我们还将看到, 具体选择哪种 **基本运算 (elementary operations) ** 并不重要, 不同的选择都可以得到计算能力等价的模型 (见[下图](#compchapoverviewfig)) . 然而, 要理解这一点, 我们需要一些时间. 我们将从讨论什么是"基本运算"开始, 并说明如何将算法的描述映射为实际物理过程, 使其在现实世界中从输入生成输出. 
 
 ```admonish quote title = ""
 <a id="compchapoverviewfig"> ![An overview of the computational models defined in this chapter. We will show several equivalent ways to represent a recipe for performing a finite computation. Specifically we will show that we can model such a computation using either a _Boolean circuit_ or a _straight line program_, and these two representations are equivalent to one another. We will also show that we can choose as our basic operations either the set $\{ \AND , \OR , \NOT \}$ or the set $\{ \NAND \}$ and these two choices are equivalent in power. By making the choice of whether to use circuits or programs, and whether to use   $\{ \AND , \OR , \NOT \}$ or  $\{ \NAND \}$ we obtain four equivalent ways of modeling finite computation. Moreover, there are many other choices of sets of basic operations that are equivalent in power.](./images/chapter3/compcharoverview.png)</a>
-本章定义的计算模型概览. 我们将展示几种等价的方式来表示执行有限计算的"操作方法". 具体而言, 我们将证明, 可以使用 **布尔电路 (Boolean circuit) ** 或 **直线程序 (straight line program) ** 来表示这样的计算, 且这两种表示方式在计算能力上是等价的. 我们还将展示, 作为基本运算, 我们可以选择集合 $\{ \AND , \OR , \NOT \}$ 或集合 $\{ \NAND \}$, 这两种选择在计算能力上也是等价的. 通过选择使用电路还是程序, 以及选择 $\{ \AND , \OR , \NOT \}$ 还是 $\{ \NAND \}$, 我们可以得到四种等价的有限计算建模方法. 此外, 还有许多其他基本操作集合的选择, 它们在计算能力上同样是等价的. 
+本章定义的计算模型概览. 我们将展示几种等价的方式来表示执行有限计算的"操作方法". 具体而言, 我们将证明, 可以使用 **布尔电路 (Boolean circuit)** 或 **直线程序 (straight line program)** 来表示这样的计算, 且这两种表示方式在计算能力上是等价的. 我们还将展示, 作为基本运算, 我们可以选择集合 $\{ \AND , \OR , \NOT \}$ 或集合 $\{ \NAND \}$, 这两种选择在计算能力上也是等价的. 通过选择使用电路还是程序, 以及选择 $\{ \AND , \OR , \NOT \}$ 还是 $\{ \NAND \}$, 我们可以得到四种等价的有限计算建模方法. 此外, 还有许多其他基本操作集合的选择, 它们在计算能力上同样是等价的. 
 ```
 
-## 3.2 使用与, 或, 非进行计算 { #andornotsec }
+## 3.2 使用与($\AND$), 或($\OR$), 非($\NOT$)进行计算 { #andornotsec }
 
 算法的表示需要将一个**较为复杂**的计算分解为一系列**更简单**的步骤. 这些步骤可以通过多种不同的方式来执行, 包括: 
 
@@ -147,15 +147,15 @@ print(solve_eq(10, 39))
 
 为了形式化地定义算法, 我们尝试"化繁为简", 挑出组成算法的"最小单位", 例如下列一组简单逻辑函数:
 
-* $\OR:\{0,1\}^2 \rightarrow \{0,1\}$ 定义为
-
-$$\OR(a,b) = \begin{cases} 0 & a=b=0 \\ 1 & \text{otherwise} \end{cases}$$
-
-* $\AND:\{0,1\}^2 \rightarrow \{0,1\}$ 定义为
+* 与函数 $\AND:\{0,1\}^2 \rightarrow \{0,1\}$ 定义为
 
 $$\AND(a,b) = \begin{cases} 1 & a=b=1 \\ 0 & \text{otherwise} \end{cases}$$
 
-* $\NOT:\{0,1\} \rightarrow \{0,1\}$ 定义为
+* 或函数 $\OR:\{0,1\}^2 \rightarrow \{0,1\}$ 定义为
+
+$$\OR(a,b) = \begin{cases} 0 & a=b=0 \\ 1 & \text{otherwise} \end{cases}$$
+
+* 非函数 $\NOT:\{0,1\} \rightarrow \{0,1\}$ 定义为
 
 $$\NOT(a) = \begin{cases} 0 & a = 1 \\ 1 & a = 0 \end{cases}$$
 
@@ -866,19 +866,19 @@ $$同样的公式也可以表示为由 $\NAND$ 门组成的电路, 见[下图](#
 ```
 
 事实上, 我们可以证明以下定理:
-
-{{thmc}}{NANDuniversamthm}[$NAND$可作为通用逻辑门]
+```admonish quote title=""
+{{thmc}}{NANDuniversamthm}[$\NAND$可作为通用逻辑门]
 对于任意包含 $s$ 个逻辑门的布尔电路 $C$, 都存在一个至多包含 $3s$ 个逻辑门的 $\NAND$ 电路 $C'$, 其计算结果与 $C$ 相同. 
-
+```
 ```admonish idea title="证明思路"
 该证明的思路是: 按照 {{ref:univnandonethm}} 的证明方法, 将每一个 $\AND$、$\OR$ 和 $\NOT$ 门替换为它们对应的 $\NAND$ 实现. 
 ```
 ```admonish proof collapsible=true
 如果 $C$ 是一个布尔电路, 那么由于我们在 {{ref:univnandonethm}} 的证明中已经看到, 对于任意 $a,b \in \{0,1\}$ 有: 
 
-* $\NOT(a) = \NAND(a,a)$  
 * $\AND(a,b) = \NAND(\NAND(a,b),\NAND(a,b))$  
-* $\OR(a,b) = \NAND(\NAND(a,a),\NAND(b,b))$  
+* $\OR(a,b) = \NAND(\NAND(a,a),\NAND(b,b))$
+* $\NOT(a) = \NAND(a,a)$  
 
 因此, 我们可以将 $C$ 中的每一个逻辑门替换为至多三个 $\NAND$ 门, 从而得到一个等价电路 $C'$.   
 由此得到的电路至多包含 $3s$ 个逻辑门. 
@@ -887,14 +887,14 @@ $$同样的公式也可以表示为由 $\NAND$ 门组成的电路, 见[下图](#
 <a id="equivalencemodels"></a>
 如果两个模型能够计算相同的函数集合, 那么它们就是 **等效的**. 
 ```
+
 ### 3.6.2 更多 $\NAND$ 电路的例子 (选读)
 
-下面给出一些更复杂的 NAND 电路示例: 
+下面给出一些更复杂的 $\NAND$ 电路示例: 
 
-**后继数**: 考虑如下任务: 输入一个字符串 $x \in \{0,1\}^n$, 它表示一个自然数 $X \in \N$, 我们希望计算 $X+1$ .   
-换句话说, 我们希望计算函数  
+**后继数**: 考虑如下任务: 输入一个字符串 $x \in \{0,1\}^n$, 它表示一个自然数 $X \in \N$, 我们希望计算 $X+1$. 换句话说, 我们希望计算函数  
 $$\text{INC}_n:\{0,1\}^n \rightarrow \{0,1\}^{n+1}$$  
-使得对于任意 $x_0,\ldots,x_{n-1}$, 有 $INC_n(x)=y$, 并且满足  
+使得对于任意 $x_0,\ldots,x_{n-1}$, 有 $\text{INC}_n(x)=y$, 并且满足  
 $$\sum_{i=0}^n y_i 2^i = \left( \sum_{i=0}^{n-1} x_i 2^i \right)+1.$$  
  (为了书写简洁, 在此示例中我们采用最低有效位在前而不是在后的表示方式. ) 
 
@@ -944,9 +944,10 @@ $y_n = \NAND( \NAND(c_n,c_n), \NAND(c_n,c_n))$.
 <a id="nandincrememntcircfig">![nandincrememntcircfig](./images/chapter3/incrementfromnand.png)</a>
 用于计算 $4$ 位 **自增函数** 的 $\text{NAND}$ 电路. 
 ```
+
 __从自增到加法__
 
-一旦有了自增运算, 我们当然可以通过重复自增来计算加法 (即通过对 $x$ 执行 $y$ 次 $INC(x)$ 来计算 $x+y$) .   然而, 这种方法既低效又没有必要.   
+一旦有了自增运算, 我们当然可以通过重复自增来计算加法 (即通过对 $x$ 执行 $y$ 次 $\text{INC}(x)$ 来计算 $x+y$) .   然而, 这种方法既低效又没有必要.   
 
 利用同样的进位跟踪思想, 我们可以实现"中学"加法算法, 并计算函数 $\text{ADD}_n:\{0,1\}^{2n} \rightarrow \{0,1\}^{n+1}$, 其在输入 $x \in \{0,1\}^{2n}$ 时输出由 $x_0,\ldots,x_{n-1}$ 与 $x_n,\ldots,x_{2n-1}$ 所表示的两个数之和的二进制表示: 
 ```admonish quote title=""
@@ -1010,10 +1011,12 @@ Y[0] = NAND(v,w)
 
 2. 对于任意 $x \in \{0,1\}^n$, 如果在执行 $P$ 时将输入变量 `X[0]`, $\ldots$, `X[n-1]` 赋值为 $x_0,\ldots,x_{n-1}$, 则在执行结束时, 输出变量 `Y[0]`, $\ldots$, `Y[m-1]` 的值为 $y_0,\ldots,y_{m-1}$, 其中 $y=f(x)$. 
 ```
-和之前一样, 我们可以证明 NAND 电路与 NAND-CIRC 程序是等价的 (参见 [progandcircfig]()) . 
+
+和之前一样, 我们可以证明 NAND 电路与 NAND-CIRC 程序是等价的 (见[下图](#progandcircfig)).
+
 ```admonish quote title=""
 {{thmc}}{NANDcircslequivthm}[NAND电路与直线程序的等价性]
-For every $f:\{0,1\}^n \rightarrow \{0,1\}^m$ and $s \geq m$, $f$ is computable by a NAND-CIRC program of $s$ lines if and only if $f$ is computable by a NAND circuit of $s$ gates.
+对于任意 $f:\{0,1\}^n \rightarrow \{0,1\}^m$ 和任意 $s \geq m$，$f$ 可被一个含有 $s$ 行的 NAND-CIRC 程序计算，当且仅当 $f$ 可被一个含有 $s$ 个门的 NAND 电路计算。
 ```
 ```admonish quote title=""
 <a id="progandcircfig">![progandcircfig](./images/chapter3/nandcircuitequiv.png)</a>
@@ -1022,7 +1025,7 @@ For every $f:\{0,1\}^n \rightarrow \{0,1\}^m$ and $s \geq m$, $f$ is computable 
 
 我们省略 {{ref:NANDcircslequivthm}} 的证明, 因为其思路与布尔电路与 AON-CIRC 程序等价的证明完全相同 (参见 {{ref:slcircuitequivthm}}) .   
 
-根据 {{ref:NANDcircslequivthm}} 和 {{ref:NANDuniversamthm}}, 我们知道可以将任意 $s$ 行的 AON-CIRC 程序 $P$ 翻译为一个等价的 NAND-CIRC 程序, 行数最多为 $3s$.   
+根据 {{ref:NANDuniversamthm}} 和 {{ref:NANDcircslequivthm}}, 我们知道可以将任意 $s$ 行的 AON-CIRC 程序 $P$ 翻译为一个等价的 NAND-CIRC 程序, 行数最多为 $3s$.   
 实际上, 这种翻译可以通过将每一行 `foo = AND(bar,blah)`、`foo = OR(bar,blah)` 或 `foo = NOT(bar)` 替换为使用 `NAND` 的等价 1-3 行来轻松完成.   
 
 我们的 [GitHub 仓库](https://github.com/boazbk/tcscode) 提供了"代码证明": 一个简单的 Python 程序 `AON2NAND`, 可以将 AON-CIRC 转换为等价的 NAND-CIRC 程序. 
