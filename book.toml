@@ -14,22 +14,66 @@ git-repository-icon = "fa-github"
 mathjax-support = true
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
 smart-punctuation = true
+additional-css = ["mdbook-admonish.css", "mdbook-admonish-custom.css"]
+
+[output.html.fold]
+enable = true
+level = 0
 
 [output.html.playground]
-editable = true
+editable = false
+
+[preprocessor.mathpunc]
+before = ["katex"]
 
 [preprocessor.katex]
 after = ["links"]
-output = "mathml"
 macros = "./macros.txt"
-pre-render = true
+include-src = true
+trust = true
 
-[preprocessor.callouts]
-
-[preprocessor.numthm]
-custom_environments = [
-  ["eq", "Equation", "**"]
-]
+[preprocessor.toc]
+renderer = ["html"]
 
 [preprocessor.mermaid]
-command = "mdbook-mermaid"
+
+[preprocessor.numthm]
+prefix = true
+custom_environments = [
+  ["eq", "式", "**"],
+  ["eqc", "式", "**"],
+  ["thmc", "定理", "**"],
+  ["lemc", "引理", "**"],
+  ["algc", "算法", "**"],
+  ["defc", "定义", "**"],
+  ["exec", "练习", "**"],
+  ["proc", "习题", "**"]
+]
+
+[preprocessor.numeq]
+prefix = true
+
+[preprocessor.footnote]
+after = ["numthm"]
+
+[preprocessor.admonish]
+command = "mdbook-admonish"
+assets_version = "3.1.0" # do not edit: managed by `mdbook-admonish install`
+
+[[preprocessor.admonish.custom]]
+directive = "proof"
+icon = "./src/images/icons/proof.svg"
+color = "#ffd700"
+title = "证明"
+
+[[preprocessor.admonish.custom]]
+directive = "solution"
+icon = "./src/images/icons/solution.svg"
+color = "#00c853"
+title = "解答"
+
+[[preprocessor.admonish.custom]]
+directive = "pause"
+icon = "./src/images/icons/pause.svg"
+color = "#00b0ff"
+title = "暂停一下"
