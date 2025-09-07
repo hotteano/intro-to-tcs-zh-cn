@@ -9,8 +9,8 @@
 \pmod:{(\mod #1)}
 \qqquad:{\quad\quad\quad}
 \qqqquad:{\quad\quad\quad\quad}
-\if:\textbf{if}\{#1\}
-\for:\textbf{for}\{#1\}
+\if:\textbf{if}(#1)
+\for:\textbf{for}(#1)
 \endif:\textbf{endif}
 \endfor:\textbf{endfor}
 \proc:\textbf{procedure } \mathsf{#1}
