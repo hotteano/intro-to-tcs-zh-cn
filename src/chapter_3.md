@@ -6,6 +6,7 @@
 - ✅将所有numthm环境用灰色admonish(quote)框起.
 - ✅修复对NANDsfromActivationfunctionex(于习题)的引用.
 - ✅标点符号统一为英文.
+- ✅<a>标签换成<span>.
 - ⬛️修复对cellularautomatasec(8.4节)的引用, 需要等候翻译进度.
 - ⬛️修复对chapequivalentmodels(第7章)的引用, 需要等候翻译进度.
 - ⬛️修复对functionprogramidea, secimplvsspec(第2章)的引用.
@@ -49,11 +50,11 @@ Charles Babbage的计算轮. 图片取自 Harvard Mark I 计算机的"操作手�
 本章正是要做这件事. 我们将把"从输入计算输出"定义为一系列基本操作的应用 (见[下图](#compchapwhatvshowfig)) . 借助这一框架, 我们便能精确地表述诸如: "函数 $f$ 可以由模型 $X$ 计算"或"函数 $f$ 可以由模型 $X$ 在 $s$ 步操作内计算完成"这样的命题.   
 
 ```admonish quote title = ""
-<a id="compchapwhatvshowfig"> ![compchapwhatvshowfig](./images/chapter3/compchapterwhatvshow.png) </a>
+<span id="compchapwhatvshowfig"> ![compchapwhatvshowfig](./images/chapter3/compchapterwhatvshow.png) </span>
 一个将字符串映射到字符串的函数, **规定**了一项计算任务, 也就是说, 它描述了输入与输出之间所期望的关系. 在本章中, 我们将定义一些模型, 用来**实现**这些计算过程, 从而达到所需的关系, 也就是描述**如何**根据输入来计算输出. 我们将看到若干此类模型的例子, 包括布尔电路和直线型编程语言. 
 ```
 
-```admonish info title = "不那么严谨的概述"
+```admonish info title = "简要概述"
 阅读本章, 我们希望读者能够有以下收获: 
 
 * 我们可以使用 **逻辑运算**, 如 $\AND$(与)、$\OR$(或) 和 $\NOT$(非), 从输入计算输出 (见 [3.2节](#andornotsec)) . 
@@ -92,11 +93,11 @@ Charles Babbage的计算轮. 图片取自 Harvard Mark I 计算机的"操作手�
 ```
 
 ```admonish quote title = ""
-<a id = "alKhwarizmi">![alKhwarizmi](./images/chapter3/alKhwarizmi.jpg)</a>
+<span id = "alKhwarizmi">![alKhwarizmi](./images/chapter3/alKhwarizmi.jpg)</span>
 代数学手稿中的文字页, 展示了解两类二次方程的几何解法. 馆藏号: MS. Huntington 214, 页码 fol. 004v-005r
 ```
 ```admonish quote title = ""
-<a id="childrenalg">![An explanation for children of the two digit addition algorithm](./images/chapter3/addition_regrouping.jpg)</a>
+<span id="childrenalg">![An explanation for children of the two digit addition algorithm](./images/chapter3/addition_regrouping.jpg)</span>
 
 面向儿童的两位数加法算法讲解.
 ```
@@ -129,10 +130,11 @@ print(solve_eq(10, 39))
 ```admonish quote title=""
 {{defc}}{defofalg}[算法的非正式定义] **算法**是一组指令, 用于通过执行一系列"基本步骤"从输入计算出输出. 如果对于每一个输入 $x$, 按照算法 $A$ 的指令操作都能得到输出 $F(x)$, 则称算法 $A$ **计算**函数 $F$. 
 ```
-在本章中, 我们将使用 **布尔电路 (Boolean Circuits)** 模型, 更精确而正式地定义算法. 我们将展示, 布尔电路在计算能力上等价于用"极简"编程语言编写的 **直线程序 (straight line programs)**, 即不包含循环的编程语言. 我们还将看到, 具体选择哪种 **基本运算 (elementary operations) ** 并不重要, 不同的选择都可以得到计算能力等价的模型 (见[下图](#compchapoverviewfig)) . 然而, 要理解这一点, 我们需要一些时间. 我们将从讨论什么是"基本运算"开始, 并说明如何将算法的描述映射为实际物理过程, 使其在现实世界中从输入生成输出. 
+
+在本章中, 我们将使用 **布尔电路 (Boolean Circuits)** 模型, 更精确而正式地定义算法. 我们将展示, 布尔电路在计算能力上等价于用"极简"编程语言编写的 **直线程序 (straight line programs)**, 即不包含循环的编程语言. 我们还将看到, 具体选择哪种 **基本运算 (elementary operations)** 并不重要, 不同的选择都可以得到计算能力等价的模型 (见[下图](#compchapoverviewfig)). 然而, 要理解这一点, 我们需要一些时间. 我们将从讨论什么是"基本运算"开始, 并说明如何将算法的描述映射为实际物理过程, 使其在现实世界中从输入生成输出. 
 
 ```admonish quote title = ""
-<a id="compchapoverviewfig"> ![An overview of the computational models defined in this chapter. We will show several equivalent ways to represent a recipe for performing a finite computation. Specifically we will show that we can model such a computation using either a _Boolean circuit_ or a _straight line program_, and these two representations are equivalent to one another. We will also show that we can choose as our basic operations either the set $\{ \AND , \OR , \NOT \}$ or the set $\{ \NAND \}$ and these two choices are equivalent in power. By making the choice of whether to use circuits or programs, and whether to use   $\{ \AND , \OR , \NOT \}$ or  $\{ \NAND \}$ we obtain four equivalent ways of modeling finite computation. Moreover, there are many other choices of sets of basic operations that are equivalent in power.](./images/chapter3/compcharoverview.png)</a>
+<span id="compchapoverviewfig"> ![An overview of the computational models defined in this chapter. We will show several equivalent ways to represent a recipe for performing a finite computation. Specifically we will show that we can model such a computation using either a _Boolean circuit_ or a _straight line program_, and these two representations are equivalent to one another. We will also show that we can choose as our basic operations either the set $\{ \AND , \OR , \NOT \}$ or the set $\{ \NAND \}$ and these two choices are equivalent in power. By making the choice of whether to use circuits or programs, and whether to use   $\{ \AND , \OR , \NOT \}$ or  $\{ \NAND \}$ we obtain four equivalent ways of modeling finite computation. Moreover, there are many other choices of sets of basic operations that are equivalent in power.](./images/chapter3/compcharoverview.png)</span>
 本章定义的计算模型概览. 我们将展示几种等价的方式来表示执行有限计算的"操作方法". 具体而言, 我们将证明, 可以使用 **布尔电路 (Boolean circuit)** 或 **直线程序 (straight line program)** 来表示这样的计算, 且这两种表示方式在计算能力上是等价的. 我们还将展示, 作为基本运算, 我们可以选择集合 $\{ \AND , \OR , \NOT \}$ 或集合 $\{ \NAND \}$, 这两种选择在计算能力上也是等价的. 通过选择使用电路还是程序, 以及选择 $\{ \AND , \OR , \NOT \}$ 还是 $\{ \NAND \}$, 我们可以得到四种等价的有限计算建模方法. 此外, 还有许多其他基本操作集合的选择, 它们在计算能力上同样是等价的. 
 ```
 
@@ -371,7 +373,7 @@ print([f"XOR3({a},{b},{c})={XOR3(a,b,c)}" for a in [0,1] for b in [0,1] for c in
 逻辑运算或"门"的标准符号包括 $ \AND $、$ \OR $、$ \NOT $, 以及在[3.6节](#nandsec)中讨论的 $ \NAND $ 运算. 
 ```
 ```admonish quote title = ""
-<a id="smallandornotcircxorfig">![smallandornotcircxorfig](./images/chapter3/xorcircuitschemdraw.png)</a>
+<span id="smallandornotcircxorfig">![smallandornotcircxorfig](./images/chapter3/xorcircuitschemdraw.png)</span>
 一个由 $ \AND $、$ \OR $ 和 $ \NOT $ 门构成的, 用于计算 $ \XOR $ 函数的电路. 
 ```
 
@@ -384,7 +386,7 @@ print([f"XOR3({a},{b},{c})={XOR3(a,b,c)}" for a in [0,1] for b in [0,1] for c in
 对于一个 $n$ 输入的布尔电路 $C$, 我们在输入端放置 $x \in \{0,1\}^n$ 的比特, 然后沿导线传播信号, 直到到达输出端, 从而完成电路的计算, 参见 [下图](boolancircfig). 
 
 ```admonish remark title="布尔电路的物理电路模拟" 
-<a id= "booleancircimprem"></a>
+<span id= "booleancircimprem"></span>
 
 布尔电路是一种 **数学模型**, 不一定直接对应于物理对象, 但它们可以被物理电路模拟.   
 
@@ -394,7 +396,7 @@ print([f"XOR3({a},{b},{c})={XOR3(a,b,c)}" for a in [0,1] for b in [0,1] for c in
 ```
 
 ```admonish quote title=""
-<a id="boolancircfig">![boolancircfig](./images/chapter3/booleancircuit.png)</a>
+<span id="boolancircfig">![boolancircfig](./images/chapter3/booleancircuit.png)</span>
 一个**布尔电路**由**门**组成, 这些门通过**导线**彼此连接, 并与**输入端**相连.   
 
 左图显示了一个具有 $2$ 个输入和 $5$ 个门的电路, 其中一个门被指定为输出门.   
@@ -418,7 +420,7 @@ $\text{ALLEQ}$ 的输出是这两个条件的 $\OR$, 由此得到的电路包含
 ```
 
 ```admonish quote title = ""
-<a id="allequalfig"> ![A  Boolean circuit for computing the _all equal_ function $\text{ALLEQ}:\{0,1\}^4 \rightarrow \{0,1\}$ that outputs $1$ on $x\in \{0,1\}^4$ if and only if $x_0=x_1=x_2=x_3$.](./images/chapter3/allequalcirc2.png)</a>
+<span id="allequalfig"> ![A  Boolean circuit for computing the _all equal_ function $\text{ALLEQ}:\{0,1\}^4 \rightarrow \{0,1\}$ that outputs $1$ on $x\in \{0,1\}^4$ if and only if $x_0=x_1=x_2=x_3$.](./images/chapter3/allequalcirc2.png)</span>
 一个用于计算 **全相等函数** $\text{ALLEQ}:\{0,1\}^4 \rightarrow \{0,1\}$ 的布尔电路. 当且仅当 $x \in \{0,1\}^4$ 满足 $x_0 = x_1 = x_2 = x_3$ 时, 它输出 $1$. 
 ```
 
@@ -435,7 +437,7 @@ $\text{ALLEQ}$ 的输出是这两个条件的 $\OR$, 由此得到的电路包含
 正式定义如下 (参见[下图](#generalcircuitfig)) : 
 
 ```admonish quote title=""
-<a id="generalcircuitfig">![A _Boolean Circuit_ is a labeled directed acyclic graph (DAG). It has $n$ _input_ vertices, which are marked with `X[`$0$`]`,$\ldots$, `X[`$n-1$`]` and have no incoming edges, and the rest of the vertices are _gates_. _AND_, _OR_, and _NOT_ gates have two, two, and one incoming edges, respectively. If the circuit has $m$ outputs, then $m$ of the gates are known as _outputs_ and are marked with `Y[`$0$`]`,$\ldots$,`Y[`$m-1$`]`. When we evaluate a circuit $C$ on an input $x\in \{0,1\}^n$, we start by setting the value of the input vertices to $x_0,\ldots,x_{n-1}$ and then propagate the values, assigning to each gate $g$ the result of applying the operation of $g$ to the values of $g$'s in-neighbors. The output of the circuit is the value assigned to the output gates.](./images/chapter3/generalcircuit.png)</a>
+<span id="generalcircuitfig">![A _Boolean Circuit_ is a labeled directed acyclic graph (DAG). It has $n$ _input_ vertices, which are marked with `X[`$0$`]`,$\ldots$, `X[`$n-1$`]` and have no incoming edges, and the rest of the vertices are _gates_. _AND_, _OR_, and _NOT_ gates have two, two, and one incoming edges, respectively. If the circuit has $m$ outputs, then $m$ of the gates are known as _outputs_ and are marked with `Y[`$0$`]`,$\ldots$,`Y[`$m-1$`]`. When we evaluate a circuit $C$ on an input $x\in \{0,1\}^n$, we start by setting the value of the input vertices to $x_0,\ldots,x_{n-1}$ and then propagate the values, assigning to each gate $g$ the result of applying the operation of $g$ to the values of $g$'s in-neighbors. The output of the circuit is the value assigned to the output gates.](./images/chapter3/generalcircuit.png)</span>
 **布尔电路** 是一个带标记的有向无环图 (DAG). 它有 $n$ 个 **输入** 顶点, 这些顶点标记为 `X[`$0$`]`, $\ldots$, `X[`$n-1$`]`, 且没有入边, 其余顶点为 **门**.   
 $\AND$、$\OR$ 和 $\NOT$ 门分别有两个、两个和一个入边. 若电路有 $m$ 个输出, 则 $m$ 个门被称为 **输出**, 标记为 `Y[`$0$`]`, $\ldots$, `Y[`$m-1$`]`.   
 
@@ -488,7 +490,7 @@ $\AND$、$\OR$ 和 $\NOT$ 门分别有两个、两个和一个入边. 若电路�
 ```
 
 ```admonish remark title = "一些对布尔电路的吹毛求疵 (选读)"
-<a id="booleancircuitsremarks"></a>
+<span id="booleancircuitsremarks"></span>
 
 在表述 {{ref: booleancircdef}} 时, 我们做了一些技术性的选择, 这些选择并不是非常重要, 但对我们后续会很方便.   
 
@@ -558,8 +560,8 @@ AON-CIRC 并不是一种实用的编程语言: 它仅用于教学目的, 用来�
 ```admonish quote title=""
 {{exec}}{aonforcmpsolved} 考虑如下函数 $\text{CMP}:\{0,1\}^4 \rightarrow \{0,1\}$: 对四个输入比特 $a,b,c,d \in \{0,1\}$, 当且仅当由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字时输出 $1$.   
 即 $\text{CMP}(a,b,c,d) = 1$ 当且仅当 $2a + b > 2c + d$. 
-```
 给出一个计算 $\text{CMP}$ 的 AON-CIRC 程序示例.
+```
 
 ~~~admonish solution collapsible=true
 编写这样的程序虽然繁琐, 但并不困难. 比较两个数字时, 我们首先比较它们的最高有效位, 然后依次比较下一位, 以此类推. 在数字仅有两位二进制的情况下, 这些比较特别简单. 由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字, 当且仅当满足以下任一条件: 
@@ -592,7 +594,7 @@ Y[0] = OR(temp_2,temp_6)
 ~~~
 
 ```admonish quote title=""
-<a id="aoncmpfig">![A circuit for computing the $\text{CMP}$ function. The evaluation of this circuit on $(1,1,1,0)$ yields the output $1$, since the number $3$ (represented in binary as $11$) is larger than the number $2$ (represented in binary as $10$).](./images/chapter3/comparecircuit.png)</a>
+<span id="aoncmpfig">![A circuit for computing the $\text{CMP}$ function. The evaluation of this circuit on $(1,1,1,0)$ yields the output $1$, since the number $3$ (represented in binary as $11$) is larger than the number $2$ (represented in binary as $10$).](./images/chapter3/comparecircuit.png)</span>
 一个用于计算 $\text{CMP}$ 函数的电路. 以输入 $(1,1,1,0)$ 运行该电路, 输出为 $1$, 因为数字 $3$ (二进制表示为 $11$) 大于数字 $2$ (二进制表示为 $10$) . 
 ```
 
@@ -638,7 +640,7 @@ $\OR$ 和 $\NOT$ 门同理.
 ```
 
 ```admonish quote title=""
-<a id="aoncircequivfig">![Two equivalent descriptions of the same AND/OR/NOT computation as both an AON program and a Boolean circuit.](./images/chapter3/aoncircequiv.png)</a>
+<span id="aoncircequivfig">![Two equivalent descriptions of the same AND/OR/NOT computation as both an AON program and a Boolean circuit.](./images/chapter3/aoncircequiv.png)</span>
 同一 $\AND/\OR/\NOT$ 计算的两种等效描述: 既作为 AON 程序, 也作为布尔电路. 
 ```
 
@@ -652,11 +654,11 @@ $\OR$ 和 $\NOT$ 门同理.
 事实上, 正如我们将在[第23章](chapter_23.md) 中看到的, 一个令人兴奋的研究方向是使用不同的介质来进行计算, 从而利用**量子力学效应**来实现全新的算法类型.   
 
 ```admonish quote title=""
-<a id="crabfig">![crabfig](./images/chapter3/crab-gate.jpg)</a>
+<span id="crabfig">![crabfig](./images/chapter3/crab-gate.jpg)</span>
 摘自 Gunji、Nishiyama 和 Adamatzky 的论文 *Robust soldier-crab ball gate* 的蟹群逻辑门. 这是一个 AND 门的实例, 它依赖于从不同方向出发的两群螃蟹汇合成一群, 并沿两方向的平均方向继续前进. 
 ```
 
-<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Such a cool way to explain logic gates. <a href="https://t.co/6Wgu2ZKFCx">pic.twitter.com/6Wgu2ZKFCx</a></p>&mdash; Lionel Page (\@page_eco) <a href="https://twitter.com/page_eco/status/1188749430020698112?ref_src=twsrc%5Etfw">2019年10月28日</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">Such a cool way to explain logic gates. <span href="https://t.co/6Wgu2ZKFCx">pic.twitter.com/6Wgu2ZKFCx</span></p>&mdash; Lionel Page (\@page_eco) <span href="https://twitter.com/page_eco/status/1188749430020698112?ref_src=twsrc%5Etfw">2019年10月28日</span></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ### 3.5.1 晶体管
 
@@ -667,7 +669,7 @@ $\OR$ 和 $\NOT$ 门同理.
 - 在**互补晶体管**中, 情况正好相反: 栅极"关"时允许电流流动, 而栅极"开"时则不允许.   
 
 ```admonish quote title=""
-<a id="transistor-water-fig">![transistor-water-fig](./images/chapter3/transistor_water.png)</a>
+<span id="transistor-water-fig">![transistor-water-fig](./images/chapter3/transistor_water.png)</span>
 我们可以用水来实现晶体管的逻辑. 来自栅极的水压控制着源极与漏极之间的阀门是否打开. 
 ```
 
@@ -682,17 +684,17 @@ $\OR$ 和 $\NOT$ 门同理.
 从那时起, 经调整后的"**摩尔定律**"基本上一直成立, 尽管指数级增长不可能无限持续, 一些物理极限已经[逐渐显现](http://www.nature.com/news/the-chips-are-down-for-moore-s-law-1.19338).   
 
 ```admonish quote title=""
-<a id="moorefig">![moorefig](./images/chapter3/gordon_moore.png)</a>
+<span id="moorefig">![moorefig](./images/chapter3/gordon_moore.png)</span>
 1959 至 1965 年间集成电路中的晶体管数量, 并预测指数级增长至少能持续十年. 取自戈登·摩尔 1965 年的文章 *Cramming More Components onto Integrated Circuits*. 
 ```
 
 ```admonish quote title=""
-<a id="moore-cartoon-fig">![moore-cartoon-fig](./images/chapter3/moore_cartoon.png)</a>
+<span id="moore-cartoon-fig">![moore-cartoon-fig](./images/chapter3/moore_cartoon.png)</span>
 戈登·摩尔文章中的漫画, "预测"了晶体管密度大幅提升的影响. 
 ```
 
 ```admonish quote title=""
-<a id="kurzweil-fig">![kurzweil-fig](./images/chapter3/1200px-Moore's_Law_over_120_Years.png)</a>
+<span id="kurzweil-fig">![kurzweil-fig](./images/chapter3/1200px-Moore's_Law_over_120_Years.png)</span>
 过去 120 年间计算能力的指数级增长. 图表由 Steve Jurvetson 绘制, 基于雷·库兹韦尔的早期图表扩展而来. 
 ```
 
@@ -704,12 +706,12 @@ $\OR$ 和 $\NOT$ 门同理.
 这意味着: 如果存在一个 $\AND/\OR/\NOT$ 电路可以计算函数 $g:\{0,1\}^n \rightarrow \{0,1\}^m$, 那么我们也可以在物理世界中通过晶体管来计算 $g$.   
 
 ```admonish quote title=""
-<a id="logicgatestransistorsfig">![logicgatestransistorsfig](./images/chapter3/dtl_logic.png)</a>
+<span id="logicgatestransistorsfig">![logicgatestransistorsfig](./images/chapter3/dtl_logic.png)</span>
 使用晶体管实现逻辑门. 图源自 [Rory Mangles 的网站](http://www.northdownfarm.co.uk/rory/tim/basiclogic.htm). 
 ```
 
 ```admonish quote title=""
-<a id="transistor-nand-fig">![transistor-nand-fig](./images/chapter3/nand_transistor.png)</a>
+<span id="transistor-nand-fig">![transistor-nand-fig](./images/chapter3/nand_transistor.png)</span>
 使用晶体管实现 $ \NAND $ 门 (参见 [3.6节](#nandsec)) . 
 ```
 
@@ -724,7 +726,7 @@ DNA 计算的动机之一是实现更高的并行性或存储密度；另一个�
 当然, 生物系统中的计算不仅限于 DNA: 甚至更大规模的系统, 例如[鸟群](https://www.cs.princeton.edu/~chazelle/pubs/cacm12-natalg.pdf), 也可以被视为计算过程.   
 
 ```admonish quote title=""
-<a id="transcriptorfig">![transcriptorfig](./images/chapter3/transcriptor.jpg)</a>
+<span id="transcriptorfig">![transcriptorfig](./images/chapter3/transcriptor.jpg)</span>
 基于 DNA 的逻辑门性能. 图源自 [Bonnet 等人](http://science.sciencemag.org/content/early/2013/03/27/science.1232758.full), Science, 2013. 
 ```
 
@@ -736,7 +738,7 @@ DNA 计算的动机之一是实现更高的并行性或存储密度；另一个�
 正如我们将在本书后续部分讨论的那样 (参见 [cellularautomatasec]()) , 元胞自动机 (例如康威的"生命游戏") 可以用来模拟计算门.   
 
 ```admonish quote title=""
-<a id="gameoflifefig">![gameoflifefig](./images/chapter3/game_of_life_and.png)</a>
+<span id="gameoflifefig">![gameoflifefig](./images/chapter3/game_of_life_and.png)</span>
 利用"生命游戏"配置实现的 AND 门. 图源自 [Jean-Philippe Rennard 的论文](http://www.rennard.org/alife/CollisionBasedRennard.pdf). 
 ```
 
@@ -755,7 +757,7 @@ DNA 计算的动机之一是实现更高的并行性或存储密度；另一个�
 不过, 就我们讨论的范围而言, 上述所有模型在本质上是等价的 (参见 {{ref:NANDsfromActivationfunctionex}}) . 特别是, 我们可以通过二进制表示实数并将对应权重乘以 $2^i$ 的方式, 将实数输入化为二进制输入.   
 
 ```admonish quote title=""
-<a id="activationfunctionsfig">![activationfunctionsfig](./images/chapter3/activationfuncs.png)</a>
+<span id="activationfunctionsfig">![activationfunctionsfig](./images/chapter3/activationfuncs.png)</span>
 
 神经网络中常用的激活函数, 包括修正线性单元 (ReLU) 、Sigmoid 和双曲正切. 它们都可以看作阶跃函数的连续近似形式. 所有这些函数都能用来计算 $\NAND$ 门 ( {{ref:NANDsfromActivationfunctionex}}) . 这一性质使得神经网络 (近似地) 能够计算任何布尔电路可计算的函数. 
 ```
@@ -771,15 +773,15 @@ DNA 计算的动机之一是实现更高的并行性或存储密度；另一个�
 事实上, 市面上还有一个以弹珠为计算基础的教育游戏, 参见下方的[Turing Tumble](#turingtumblefig). 
 
 ```admonish quote title=""
-<a id="marblefig">![marblefig](./images/chapter3/marble.png)</a>
+<span id="marblefig">![marblefig](./images/chapter3/marble.png)</span>
 使用弹珠实现的 $\NAND$ 门. 布尔电路中的每条导线由一对分别表示值 $0$ 和 $1$ 的管道建模, 因此一个门有四条输入管 (每个逻辑输入两条) 和两条输出管. 如果代表值 $0$ 的输入管有弹珠, 则该弹珠会流向输出管表示值 $1$.  (虚线表示一个装置, 确保管道中最多只有一颗弹珠可以继续流动. ) 如果代表值 $1$ 的输入管中两颗弹珠都在流动, 则第一颗弹珠会被阻住, 但第二颗弹珠会流向输出管表示值 $0$. 
 ```
 ```admonish quote title=""
-<a id="gadgetfig">![gadgetfig](./images/chapter3/gadget.png)</a>
+<span id="gadgetfig">![gadgetfig](./images/chapter3/gadget.png)</span>
 管道中的一个"装置", 确保最多只有一颗弹珠可以通过它. 第一颗通过的弹珠会抬起障碍, 阻挡后续弹珠. 
 ```
 ```admonish quote title=""
-<a id="turingtumblefig">![turingtumblefig](./images/chapter3/turingtumble.png)</a>
+<span id="turingtumblefig">![turingtumblefig](./images/chapter3/turingtumble.png)</span>
 游戏 ["Turing Tumble"](https://www.turingtumble.com/) 中使用弹珠实现逻辑门. 
 ```
 
@@ -837,7 +839,7 @@ $$
 $$同样的公式也可以表示为由 $\NAND$ 门组成的电路, 见[下图](#majnandcircfig). 
 ```
 ```admonish quote title=""
-<a id="majnandcircfig">![majnandcircfig](./images/chapter3/majfromnand.png)</a>
+<span id="majnandcircfig">![majnandcircfig](./images/chapter3/majfromnand.png)</span>
 用于计算三位多数函数的 $\NAND$ 门电路
 ```
 
@@ -861,7 +863,7 @@ $$同样的公式也可以表示为由 $\NAND$ 门组成的电路, 见[下图](#
 此外, 我们还可以将该算法表示为电路图, 参见[下图](#cornandcircfig). 
 ```
 ```admonish quote title=""
-<a id="cornandcircfig">![cornandcircfig](./images/chapter3/nandcircxor.png)</a>
+<span id="cornandcircfig">![cornandcircfig](./images/chapter3/nandcircxor.png)</span>
 一个由 $\NAND$ 门组成的电路, 用于计算两个比特的 $\XOR$. 
 ```
 
@@ -884,7 +886,7 @@ $$同样的公式也可以表示为由 $\NAND$ 门组成的电路, 见[下图](#
 由此得到的电路至多包含 $3s$ 个逻辑门. 
 ```
 ```admonish warning title="等效性"
-<a id="equivalencemodels"></a>
+<span id="equivalencemodels"></span>
 如果两个模型能够计算相同的函数集合, 那么它们就是 **等效的**. 
 ```
 
@@ -941,7 +943,7 @@ $y_n = \NAND( \NAND(c_n,c_n), \NAND(c_n,c_n))$.
 例如, [下图](#nandincrememntcircfig)展示了 $n=4$ 时该电路的样子.   
 
 ```admonish quote title=""
-<a id="nandincrememntcircfig">![nandincrememntcircfig](./images/chapter3/incrementfromnand.png)</a>
+<span id="nandincrememntcircfig">![nandincrememntcircfig](./images/chapter3/incrementfromnand.png)</span>
 用于计算 $4$ 位 **自增函数** 的 $\text{NAND}$ 电路. 
 ```
 
@@ -987,7 +989,7 @@ foo = NAND(bar,blah)
 其中 `foo`, `bar` 和 `blah` 指代变量.
 
 ~~~admonish example title="我们的第一个 NAND-CIRC 程序"
-<a id="NANDprogramexample"></a>
+<span id="NANDprogramexample"></span>
 以下是一个 NAND-CIRC 程序的例子
 
 ```python
@@ -1019,7 +1021,7 @@ Y[0] = NAND(v,w)
 对于任意 $f:\{0,1\}^n \rightarrow \{0,1\}^m$ 和任意 $s \geq m$，$f$ 可被一个含有 $s$ 行的 NAND-CIRC 程序计算，当且仅当 $f$ 可被一个含有 $s$ 个门的 NAND 电路计算。
 ```
 ```admonish quote title=""
-<a id="progandcircfig">![progandcircfig](./images/chapter3/nandcircuitequiv.png)</a>
+<span id="progandcircfig">![progandcircfig](./images/chapter3/nandcircuitequiv.png)</span>
 一个 NAND 程序及其对应的电路. 注意程序中的每一行都对应电路中的一个门. 
 ```
 
@@ -1031,7 +1033,7 @@ Y[0] = NAND(v,w)
 我们的 [GitHub 仓库](https://github.com/boazbk/tcscode) 提供了"代码证明": 一个简单的 Python 程序 `AON2NAND`, 可以将 AON-CIRC 转换为等价的 NAND-CIRC 程序. 
 
 ```admonish remark title="NAND-CIRC编程语言是否图灵完备?(选读)"
-<a id="NANDturingcompleteness"></a>
+<span id="NANDturingcompleteness"></span>
 你可能听说过"图灵完备 (Turing Complete) "这一术语, 有时用来描述编程语言.  (如果没听过, 可以忽略本备注的其余部分: 我们将在 [chapequivalentmodels]() 中给出精确定义. )   
 
 如果听说过, 你可能会好奇 NAND-CIRC 编程语言是否具备这一属性. 答案是否定的, 或者更准确地说, "图灵完备"这个术语并不真正适用于 NAND-CIRC 编程语言.   
@@ -1090,7 +1092,7 @@ AON-CIRC 程序对应于 $\{\AND,\OR,\NOT\}$ 程序, NAND-CIRC 程序对应于�
 这实际上是一个更一般现象的特例--$\NAND$ 和其他门集的**通用性**--我们将在本书后续章节中深入探讨. 
 
 ```admonish example title = "$\\\\{\\\text{IF , ZERO, ONE}\\\\}$电路"
-<a id="IZOcircuits"></a>
+<span id="IZOcircuits"></span>
 设 $\mathcal{F} = \{\text{IF , ZERO, ONE}\}$, 其中 $\text{ZERO}:\{0,1\} \rightarrow \{0\}$ 和 $\text{ONE}:\{0,1\} \rightarrow \{1\}$ 分别是常量零函数和常量一函数{{footnote: 也可以将这些函数定义为接受长度为零的输入, 这对模型的计算能力没有影响. }}, $\text{IF}:\{0,1\}^3 \rightarrow \{0,1\}$ 是一个函数, 对输入 $(a,b,c)$, 如果 $a=1$ 则输出 $b$, 否则输出 $c$.   
 
 则 $\mathcal{F}$ 是通用的.   
@@ -1109,7 +1111,7 @@ $$
 ### 3.7.2 规范 vs. 实现 (再次强调)  {#specvsimplrem}
 
 ```admonish quote title=""
-<a id="specvsimplfig">![specvsimplfig](./images/chapter3/specvsimpl.png)</a>
+<span id="specvsimplfig">![specvsimplfig](./images/chapter3/specvsimpl.png)</span>
 区分计算任务的**规范**与其**实现**至关重要: 规范指明要计算的函数 (即"做什么") , 而实现则是包含将输入映射到输出的指令的算法、程序或电路 (即"如何做") . 同一个函数可以通过多种不同方式实现. 
 ```
 
