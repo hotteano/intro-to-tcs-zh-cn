@@ -6,7 +6,7 @@
 - ✅将所有numthm环境用灰色admonish(quote)框起.
 - ✅修复对NANDsfromActivationfunctionex(于习题)的引用.
 - ✅标点符号统一为英文.
-- ✅<a>标签换成<span>.
+- ✅`<a>`标签换成`<span>`.
 - ⬛️修复对cellularautomatasec(8.4节)的引用, 需要等候翻译进度.
 - ⬛️修复对chapequivalentmodels(第7章)的引用, 需要等候翻译进度.
 - ⬛️修复对functionprogramidea, secimplvsspec(第2章)的引用.
@@ -68,7 +68,7 @@ Charles Babbage的计算轮. 图片取自 Harvard Mark I 计算机的"操作手�
   这意味着带有 $\AND$/$\OR$/$\NOT$ 门的电路, 与带有 $\NAND$ 门的电路在计算能力上是**等价的**, 我们可以根据需要选择其中任一模型来描述计算 (见 [3.6节](#nandsec)) .   
   先提前剧透一下, 在 [下一章](chapter_4.md) 中我们将看到, 这类电路可以计算**所有有限函数**. 
 
-本章的一个"大思想"是 **模型之间的等价性** (见[下文](#equivalencemodels)) . 如果两个计算模型能够计算相同集合的函数, 那么它们就是**等价的**. 布尔电路 ($\AND$/$\OR$/$\NOT$ 门) 与 $\NAND$ 电路的等价性只是一个例子, 本书中我们还会多次遇到类似的普遍现象. 
+本章的一个"重要启示"是 **模型之间的等价性** (见[下文](#equivalencemodels)) . 如果两个计算模型能够计算相同集合的函数, 那么它们就是**等价的**. 布尔电路 ($\AND$/$\OR$/$\NOT$ 门) 与 $\NAND$ 电路的等价性只是一个例子, 本书中我们还会多次遇到类似的普遍现象. 
 ```
 
 
@@ -885,7 +885,7 @@ $$同样的公式也可以表示为由 $\NAND$ 门组成的电路, 见[下图](#
 因此, 我们可以将 $C$ 中的每一个逻辑门替换为至多三个 $\NAND$ 门, 从而得到一个等价电路 $C'$.   
 由此得到的电路至多包含 $3s$ 个逻辑门. 
 ```
-```admonish warning title="等效性"
+```admonish bigidea
 <span id="equivalencemodels"></span>
 如果两个模型能够计算相同的函数集合, 那么它们就是 **等效的**. 
 ```
