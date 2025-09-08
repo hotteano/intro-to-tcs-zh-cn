@@ -6,6 +6,7 @@
 - ✅标点符号统一为英文.
 - ✅使用<span id="refid">添加对文内特定位置的超链接.
 - ✅使用<a href>添加引用.
+- ⬛️重要概念框.
 ```
 
 # 格式统一教程: 标题 { #templatetitle }
@@ -32,29 +33,7 @@
 
 - 每一章以一些插图引入比较合适, 如下图, 然后再写正文前的引子.
 
-```admonish quote title = ""
-<span id="markIcomp">![#markIcomp .margin](./images/chapter3/PopularMechanics1944smaller.jpg)</span>
-摘自 **Popular Mechanics** 上的一篇关于 Harvard Mark I 计算机的[文章](http://sites.harvard.edu/~chsi/markone/about.html), 1944 年.
-```
-
-- 上述图片部分的源码如下:
-```markdown
-<span id="markIcomp"> ![#markIcomp .margin](./images/chapter3/PopularMechanics1944smaller.jpg)</span>
-```
-使用`<span>`即可添加能够[超链接](#markIcomp)的ID (源码:`[引用](#markIcomp)`), 点击即可跳转, 能括住的对象不仅限于图片.
-
-- 图片的引用格式可能比较繁琐, 但可以设计prompt交给llm处理. 下面给一个例子
-
-~~~markdown
-请根据以下例子转换插入图片的格式:
-![1959 至 1965 年间集成电路中的晶体管数量，并预测指数级增长至少能持续十年。取自戈登·摩尔 1965 年的文章 *Cramming More Components onto Integrated Circuits*。](./images/chapter3/gordon_moore.png){#moorefig .margin}  
-转换为
-```admonish quote title=""
-<span id="moorefig">![moorefig](./images/chapter3/gordon_moore.png)</span>
-1959 至 1965 年间集成电路中的晶体管数量，并预测指数级增长至少能持续十年。取自戈登·摩尔 1965 年的文章 *Cramming More Components onto Integrated Circuits*。
-```
-我将提供其它相同格式的代码, 输出请装在代码块内: 要再套一层代码块, 而不是使用已有的.
-~~~
+- 使用`<span>`即可添加能够[超链接](#templateimage)的ID (源码:`[引用](#templateimage)`), 点击即可跳转.
 
 - 原文中用斜体强调的词, 在译文中统一用加粗, 如:
 
@@ -243,6 +222,48 @@ $
 ```admonish hint title="回顾"
 * **算法** 是通过一系列"基本"或"简单"操作来执行计算的步骤或配方.   
 * ...
+```
+
+## x.2 小节: 各类环境使用方式汇总
+
+### x.2.1 admonish
+
+- 插入图片: 用pic环境框起, 再付一个numthm的pic编号环境. 源码:
+
+~~~markdown
+```admonish pic id = '图片id'
+![图片alt](图片地址)
+    <-- 这里的空行不能省
+[{pic}] 图片描述    <-- 外层花括号改为方括号, 和描述之间的空格不能省
+```
+~~~
+
+效果如下, [引用](#templateimage)可直接使用pic id:
+
+```admonish pic id = 'templateimage'
+![templateimage](./images/chapterx/temppic.png)
+
+{{pic}} 这是图片描述.
+```
+
+插入图片的格式可以设计prompt交给llm处理. 下面给一个例子
+
+~~~markdown
+请根据以下例子转换插入图片的格式:
+![1959 至 1965 年间集成电路中的晶体管数量，并预测指数级增长至少能持续十年。取自戈登·摩尔 1965 年的文章 *Cramming More Components onto Integrated Circuits*。](./images/chapter3/gordon_moore.png){#moorefig .margin}  
+转换为
+```admonish pic id = "moorefig"
+![moorefig](./images/chapter3/gordon_moore.png)
+
+[{pic}] 1959 至 1965 年间集成电路中的晶体管数量，并预测指数级增长至少能持续十年。取自戈登·摩尔 1965 年的文章 *Cramming More Components onto Integrated Circuits*。
+```
+我将提供其它相同格式的代码, 输出请装在代码块内: 要再套一层代码块, 而不是使用已有的.
+~~~
+
+- 原文出现的 Big Idea(重要启示): 
+
+```admonish bigidea id="idofidea"
+此处填写IDEA. 
 ```
 
 ## 习题
