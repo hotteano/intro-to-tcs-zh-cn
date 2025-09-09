@@ -1,7 +1,6 @@
 [book]
 authors = ["TCS@SUSTech"]
 language = "zh-cn"
-multilingual = false
 src = "src"
 title = "理论计算机科学导论"
 
