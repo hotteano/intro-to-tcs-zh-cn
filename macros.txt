@@ -7,6 +7,17 @@
 \val:{\ensuremath{\mathrm{val}}}
 \expr:{\langle #1 \rangle}
 \pmod:{(\mod #1)}
+\qqquad:{\quad\quad\quad}
+\qqqquad:{\quad\quad\quad\quad}
+\if:\textbf{if}(#1)
+\for:\textbf{for}(#1)
+\endif:\textbf{endif}
+\endfor:\textbf{endfor}
+\proc:\textbf{procedure } \mathsf{#1}
+\endproc:\textbf{endproc}
+\return:\textbf{ return } #1
+\input:\textbf{输入：}
+\output:\textbf{输出：}
 \AND:{\text{AND}}
 \OR:{\text{OR}}
 \NOT:{\text{NOT}}

@@ -29,7 +29,6 @@ before = ["katex"]
 [preprocessor.katex]
 after = ["links"]
 macros = "./macros.txt"
-include-src = true
 trust = true
 
 [preprocessor.toc]
@@ -47,7 +46,8 @@ custom_environments = [
   ["algc", "算法", "**"],
   ["defc", "定义", "**"],
   ["exec", "练习", "**"],
-  ["proc", "习题", "**"]
+  ["proc", "习题", "**"],
+  ["pic", "图", "**"]
 ]
 
 [preprocessor.numeq]
@@ -77,3 +77,15 @@ directive = "pause"
 icon = "./src/images/icons/pause.svg"
 color = "#00b0ff"
 title = "暂停一下"
+
+[[preprocessor.admonish.custom]]
+directive = "bigidea"
+icon = "./src/images/icons/bigidea.svg"
+color = "#ff9100"
+title = "重要启示"
+
+[[preprocessor.admonish.custom]]
+directive = "pic"
+icon = "./src/images/icons/pic.svg"
+color = "#9e9e9e"
+title = ""
