@@ -2,6 +2,8 @@
 **本章施工中**
 ```
 
+<!-- toc -->
+
 # 数据即代码，代码即数据
 ```admonish tip title="本章的学习目标"
 - 理解计算中的最重要概念之一：代码与数据的二元性。
@@ -120,7 +122,7 @@ $$
 
 事实上，正如习题中所探讨的，**大多数**函数都属于这种情况。因此，能用少量代码行数计算的功能（如加法、乘法、图上的最短路径算法，甚至$EVAL$函数）只是例外而非普遍规律。
 
-```admonish note title="备注5.4（更高效的表示方法，高级可选内容）"
+```admonish note title="备注5.4（更高效的表示方法，高级可选内容）" id="r54"
 ASCII表示并非NAND-CIRC程序的最短表示形式。NAND-CIRC程序等价于带NAND门的电路，这意味着具有$s$行、$n$个输入和$m$个输出的NAND-CIRC程序可用包含$s+n$个顶点的标记有向图表示，其中$n$个顶点的入度为零，其余$s$个顶点的入度至多为二。使用此类图的邻接矩阵表示，我们可以将{{tref:thmc:t52}}中的隐常数降低到任意接近5的值，详见[习题5.6]()。
 ```
 
@@ -278,6 +280,26 @@ $$
 
 ### 5.4.1 高效通用程序
 
+{{tref:thmc:t59}}虽然确立了存在计算函数$EVAL_{s,n,m}$的NAND-CIRC程序，但并未明确限定该程序规模的边界。我们用于证明[定理4.9]()的{{tref:thmc:t59}}仅能保证存在一个规模可能达到输入长度**指数级**的NAND-CIRC程序。这意味着即使对于中等规模的$s,n,m$参数（例如 $n=100,s=300,m=1$），计算$EVAL_{s,n,m}$所需的NAND程序行数甚至可能超过可观测宇宙中的原子数量！幸运的是，我们能够实现比这好得多的方案。事实上，对于任意$s,n,m$，都存在一个输入长度为**多项式级**规模的NAND-CIRC程序可计算$EVAL_{s,n,m}$，如下述定理所示：
+
+```admonish quote title=""
+{{thmc}}{thmc:t510}（NAND-CIRC程序的高效有界通用性）
+
+对于每个$s,n,m\in\N$，存在一个最多包含$O(s^2\log s)$行代码的NAND-CIRC程序，可计算上述定义的函数$EVAL_{s,n,m}:\{0,1\}^{S+n}\to\{0,1\}^m$（其中$S$表示用二进制表示$s$行的程序时所需要的位数）。
+```
+
+```admonish pause title="暂停一下"
+若你尚未接触相关内容，建议此时回顾[1.4.8节](./chapter_1.md#148-渐近分析与大o表示法)中关于大$O$表示法的说明。需要特别指出的是，{{tref:thmc:t510}}的等价表述为：**存在**常数$c>0$，使得**对于任意**$s,n,m\in\N$，都存在一个最多包含$cs^2 \log s$行代码的NAND-CIRC程序$P$可计算函数$EVAL_{s,n,m}$。
+```
+
+与{{tref:thmc:t59}}不同，{{tref:thmc:t510}}并非“任意有限函数均可用电路计算”这一事实的平凡推论。证明{{tref:thmc:t510}}需要构造一个具体的NAND-CIRC程序来计算$EVAL_{s,n,m}$函数，我们将通过以下阶段实现：
+
+1. 首先用“伪代码”描述计算$EVAL_{s,n,m}$的算法流程；
+2. 随后展示如何用**Python**编写实现该函数的程序（无需深入掌握Python知识，任何具备编程语言基础的读者都能理解）；
+3. 最终演示如何将此Python程序转化为NAND-CIRC程序。
+
+这种方法不仅证明了{{tref:thmc:t510}}，更揭示了重要规律：我们总是可以将Python等高级语言的（无循环）代码转化为NAND-CIRC程序（进而转化为布尔电路）。
+
 ### 5.4.2 “伪代码”形式的NAND-CIRC解释器
 
 ### 5.4.3 Python实现的NAND解释器
@@ -294,4 +316,99 @@ $$
 
 ## 5.8 习题
 
+```admonish question title=""
+{{proc}}{proc:q51}
+
+以下哪一项陈述是错误的：
+
+a. 存在一个$O(s^3)$行的NAND-CIRC程序，当输入为采用元组列表表示法的$s$行的程序$P$且所有输入均为$1$时，能够计算$P$的输出。
+
+b. 存在一个$O(s^3)$行的NAND-CIRC程序，当输入为使用ASCII编码（以$7s$位字符串表示）的$s$字符程序$P$且所有输入均为$1$时，能够计算$P$的输出。
+
+c. 存在一个$O(\sqrt{s})$行的NAND-CIRC程序，当输入为采用元组列表表示法的$s$行程序$P$且所有输入均为$1$时，能够计算$P$的输出。
+```
+
+```admonish question title=""
+{{proc}}{proc:q52}（等值函数）
+
+对于每个$k\in\N$，证明存在一个$O(k)$行的NAND-CIRC程序，用于计算函数$EQUAL_k:\{0,1\}^{2k}\to\{0,1\}$，其中当且仅当$x=x'$时，$EQUALS(x,x')=1$。
+```
+
+```admonish question title=""
+{{proc}}{proc:q53}（等于常数的函数）
+
+对于每个$k\in\N$和$x'\in\{0,1\}^k$，证明存在一个$O(k)$行NAND-CIRC程序，用于计算函数$EQUALS_{x'}:\{0,1\}^k\to\{0,1\}$，该函数在输入$x\in\{0,1\}^k$时，当且仅当$x=x'$时输出$1$。
+```
+
+```admonish question title=""
+{{proc}}{proc:q54}（多输出函数的计数下界）
+
+证明存在一个数$\delta>0$，使得对于每个足够大的$n$和每个$m$，存在一个函数$f:\{0,1\}^n\to\{0,1\}^m$，需要至少$\delta m\cdot 2^n/n$个NAND门来计算。提示见脚注。{{footnote: 存在多少个从$\{0,1\}^n$到$\{0,1\}^m$的函数？注意，我们对电路的定义要求每个输出对应一个唯一的门，尽管这一限制最多会对门数产生$O(m)$的附加差异。}}
+```
+
+```admonish question title=""
+{{proc}}{proc:q55}（多输出函数的规模层次定理）
+
+证明存在一个数$C$，使得对于每个$n,m$和$n+m<s<m\cdot 2^n/(Cn)$，存在一个函数$f\in SIZE_{n,m}(C\cdot s)\setminus SIZE_{n,m}(s)$。提示见脚注。{{footnote: 遵循{{tref:thmc:t55}}证明，将计数论证的使用替换为{{tref:proc:q54}}。}}
+```
+
+```admonish question title=""
+{{proc}}{proc:q56}（电路的高效表示和更紧的计数上界）
+使用[备注5.4](#r54)的思想证明，对于每个$\epsilon>0$和足够大的$s,n,m$，
+$$
+|SIZE_{n,m}(s)| < 2^{(2+\epsilon)s \log s + n\log n + m\log s}
+$$
+并得出结论：在{{tref:thmc:t52}}中的隐常数可以任意接近$5$。提示见脚注。{{footnote: 使用邻接表表示法，具有$n$个入度为零的顶点和$s$个入度为二的顶点的图可以用大约$2s\log(s+n) \leq 2s (\log s + O(1))$位表示。$n$个输入顶点和$m$个输出顶点的标记可以通过$[n]$中的$n$个标记列表和$[m]$中的$m$个标记列表来指定。}}
+```
+
+```admonish question title=""
+{{proc}}{proc:q57}（更紧的计数下界）
+
+证明对于每个$\delta< 1/2$，如果$n$足够大，则存在一个函数$f:\{0,1\}^n\to\{0,1\}$，使得$f \not\in SIZE_{n,1}\left( \tfrac{\delta 2^n}{n} \right)$。提示见脚注。{{footnote: 提示：使用{{tref:proc:q56}}的结果，并注意在此范围内$m=1$且$n\ll s$。}}
+```
+
+```admonish question title=""
+{{proc}}{proc:q58}（随机函数的难计算性）
+
+假设$n>1000$，并且我们随机选择一个函数$F:\{0,1\}^n\to\{0,1\}$，对于每个$x\in\{0,1\}^n$，$F(x)$的值通过投掷独立的无偏硬币来确定。证明存在一个$2^n/(1000n)$行程序来计算$F$的概率至多为$2^{-100}$。{{footnote: 提示：等价的说法是，你需要证明使用最多$2^n/(1000n)$行可以计算的函数集合的元素个数少于$2^{-100}2^{2^n}$。你能看出为什么吗？}}
+```
+
+```admonish question title=""
+{{proc}}{proc:q59}
+
+以下是一个表示NAND程序的元组：$(3, 1, ((3, 2, 2), (4, 1, 1), (5, 3, 4), (6, 2, 1), (7, 6, 6), (8, 0, 0), (9, 7, 8), (10, 5, 0), (11, 9, 10)))$。
+
+1. 按照顺序写出八个值$P(000)$、$P(001)$、$P(010)$、$P(011)$、$P(100)$、$P(101)$、$P(110)$、$P(111)$的表格。
+2. 用文字描述该程序的功能。
+```
+
+```admonish question title=""
+{{proc}}{proc:q510}（使用XOR的EVAL）
+
+对于每个足够大的$n$，设$E_n:\{0,1\}^{n^2}\to\{0,1\}$是一个函数，它接受一个长度为$n^2$的字符串，该字符串编码一对$(P,x)$，其中$x\in\{0,1\}^n$，$P$是一个具有$n$个输入、单个输出且最多$n^{1.1}$行的NAND程序，并返回$P$在$x$上的输出。{{footnote: 注意，如果$n$足够大，那么很容易用$n^2$位表示这样的一对，因为我们可以用$O(n^{1.1}\log n)$位表示程序，并且我们总是可以将表示填充到恰好$n^2$长度。}}即，$E_n(P,x)=P(x)$。
+
+证明对于每个足够大的$n$，**不存在一个**XOR电路$C$来计算函数$E_n$，其中XOR电路包含$XOR$门以及常量$0$和$1$（参见[第18章](./chapter_18.md)）。即，证明存在某个常数$n_0$，使得对于每个$n>n_0$和具有$n^2$个输入与单个输出的XOR电路$C$，存在一对$(P,x)$，使得$C(P,x) \neq E_n(P,x)$。
+```
+
+```admonish question title=""
+{{proc}}{proc:q511}（学习电路（挑战性，可选，需要更多背景知识））
+
+（本练习假设你可能此时不具备概率论和/或机器学习的背景知识。可以在后续阶段，特别是在学习[第18章](./chapter_18.md)之后再来回顾。）
+在本练习中，我们将使用对大小为$s$的电路数量的界限来表明（如果我们忽略计算成本）每个这样的电路都可以从不太多的训练样本中**学习**。
+具体来说，如果我们找到一个大小为$s$的电路，该电路在来自某个分布$D$的$O(s \log s)$个训练样本上正确分类，那么可以保证它在整个分布$D$上表现良好。
+由于布尔电路建模了许多物理过程（如果（有争议的）PECTT成立，可能包括所有过程），这表明所有这样的过程也可以被学习（再次忽略在训练数据上找到表现良好的分类器的计算成本）。
+
+设$D$是$\{0,1\}^n$上的任意概率分布，$C$是一个具有$n$个输入、一个输出且规模为$s \geq n$的NAND电路。
+证明存在某个常数$c$，使得以下情况以至少$0.999$的概率成立：如果$m = c s \log s$且$x_0,\ldots,x_{m-1}$是从$D$中独立选取的，那么对于每个电路$C'$，如果在每个$i \in [m]$上$C'(x_i)=C(x_i)$，则$\Pr_{x \sim D}[C'(x) \leq C(x)] \leq 0.99$。
+
+换句话说，如果$C'$是一个所谓的“经验风险最小化器”，在所有训练样本$x_0,\ldots,x_{n-1}$上与$C$一致，那么它也有高概率与从分布$D$中抽取的样本上的$C$一致（即，使用机器学习术语来说，它“泛化”了）。提示见脚注。{{footnote: 提示：使用我们对大小为$s$的程序/电路数量的界限{{tref:thmc:t52}}，以及Chernoff界（[定理18.12]()）和联合界。}}
+```
+
 ## 5.9 参考书目
+
+$EVAL$函数通常被称为**通用电路**。我们在本章中所描述的实现并非目前已知最高效的。Valiant（[Valiant](https://scholar.google.com/scholar?hl=en&q=Valiant+Universal+circuits+(preliminary+report))）最早提出了规模为$O(n\log n)$的通用电路（其中$n$表示输入规模）。近年来，由于在密码学中的应用（参见[Lipmaa, Mohassel, Sadeghian, 2016](https://scholar.google.com/scholar?hl=en&q=Lipmaa,+Mohassel,+Sadeghian+Valiant%27s+Universal+Circuit:+Improvements,+Implementation,+and+Applications.)，[Günther, Kiss, Schneider, 2017](https://scholar.google.com/scholar?hl=en&q=G%C3%BCnther,+Kiss,+Schneider+More+efficient+universal+circuit+constructions)），通用电路获得了新的研究动力。
+
+尽管我们已经知道“大多数”将$n$比特映射到1比特的函数需要规模为指数级$\Omega(2^n/n)$的电路，但事实上我们尚未找到任何一个**显式**函数能够被**证明**需要至少$n^{100}$甚至$100n$规模的电路。目前已知的最强下界表明：存在非常简洁且显式的$n$变量函数，其计算至少需要$(5-o(1))n$线路（参见[Iwama等人的论文](http://www.wisdom.weizmann.ac.il/~ranraz/publications/P5nlb.pdf)以及[Kulikov等人更近期的研究](http://logic.pdmi.ras.ru/~kulikov/papers/2012_5n_lower_bound_cie.pdf)）。针对受限电路模型证明下界是一个极具吸引力的研究领域，Jukna的著作（[Jukna, 2012](https://scholar.google.com/scholar?hl=en&q=Jukna+Boolean+function+complexity:+advances+and+frontiers)）（另见Wegener（[Wegener, 1987](https://scholar.google.com/scholar?hl=en&q=Wegener+The+complexity+of+Boolean+functions)））为此提供了优秀的入门指南和综述。
+本人从Sasha Golovnev处获悉规模分层定理（{{tref:thmc:t55}}）的证明。
+
+Scott Aaronson关于[信息具有物理性的博客文章](http://www.scottaaronson.com/blog/?p=3327)，对PECTT相关议题进行了精彩探讨。其关于NP完全问题与物理现实的综述（[Aaronson, 2005](https://scholar.google.com/scholar?hl=en&q=Aaronson+NP-complete+problems+and+physical+reality)）也讨论了这些议题，不过建议在学完[第15章](./chapter_15.md)中关于$\mathbf{NP}$与$\mathbf{NP}$完全性的内容后再阅读会更易理解。

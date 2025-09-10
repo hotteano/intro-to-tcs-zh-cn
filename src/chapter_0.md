@@ -1,3 +1,5 @@
+<!-- toc -->
+
 # 引言
 
 ```admonish tip
