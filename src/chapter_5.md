@@ -89,7 +89,7 @@ Y[0] = NAND(temp_1,temp_2)
 
 对于任意$s,n,m\in\N$，$SIZE_{n,m}(s)\le 2^{O(s\log s)}$。
 
-这意味着最多存在$2^{O(s\log s)}$个函数可由不超过$s$行的NAND-CIRC程序计算。{{footnote: 其中$O(\cdot)$表示法中的隐常数小于10。也就是说，对于所有足够大的$s$，$|SIZ_{n,m}(s)<2^{10s\log s}|$，详见[备注5.2]()。如[1.7节](./chapter_1.md#17-本书所用到的符号及规范)所述，我们采用10这个界限值仅仅是因为它是个整数。}}
+这意味着最多存在$2^{O(s\log s)}$个函数可由不超过$s$行的NAND-CIRC程序计算。{{footnote: 其中$O(\cdot)$表示法中的隐常数小于10。也就是说，对于所有足够大的$s$，$|SIZ_{n,m}(s)<2^{10s\log s}|$，详见[备注5.4](#r54)。如[1.7节](./chapter_1.md#17-本书所用到的符号及规范)所述，我们采用10这个界限值仅仅是因为它是个整数。}}
 ```
 
 ```admonish proof collapsible=true
@@ -103,7 +103,7 @@ Y[0] = NAND(temp_1,temp_2)
 ```admonish quote title=""
 {{thmc}}{thmc:t53}（计数论证下界）
 
-存在常数$\delta>0$，使得对于所有足够大的$n$，必然存在函数$f:\{0,1\}^n\to\{0,1\}$满足$f\notin SIZE_n\left(\tfrac{\delta 2^n}{n}\right)$。也就是说，计算$f$的最短NAND-CIRC程序需要超过$\delta\cdot 2^n/n$行。{{footnote: 常数$\delta$至少为0.1，实际上，可以通过[习题5.7]()将其进一步缩小为任意接近$1/2$的值。}}
+存在常数$\delta>0$，使得对于所有足够大的$n$，必然存在函数$f:\{0,1\}^n\to\{0,1\}$满足$f\notin SIZE_n\left(\tfrac{\delta 2^n}{n}\right)$。也就是说，计算$f$的最短NAND-CIRC程序需要超过$\delta\cdot 2^n/n$行。{{footnote: 常数$\delta$至少为0.1，实际上，可以通过{{tref:proc:q57}}将其进一步缩小为任意接近$1/2$的值。}}
 ```
 
 ```admonish proof collapsible=true
@@ -123,7 +123,7 @@ $$
 事实上，正如习题中所探讨的，**大多数**函数都属于这种情况。因此，能用少量代码行数计算的功能（如加法、乘法、图上的最短路径算法，甚至$EVAL$函数）只是例外而非普遍规律。
 
 ```admonish note title="备注5.4（更高效的表示方法，高级可选内容）" id="r54"
-ASCII表示并非NAND-CIRC程序的最短表示形式。NAND-CIRC程序等价于带NAND门的电路，这意味着具有$s$行、$n$个输入和$m$个输出的NAND-CIRC程序可用包含$s+n$个顶点的标记有向图表示，其中$n$个顶点的入度为零，其余$s$个顶点的入度至多为二。使用此类图的邻接矩阵表示，我们可以将{{tref:thmc:t52}}中的隐常数降低到任意接近5的值，详见[习题5.6]()。
+ASCII表示并非NAND-CIRC程序的最短表示形式。NAND-CIRC程序等价于带NAND门的电路，这意味着具有$s$行、$n$个输入和$m$个输出的NAND-CIRC程序可用包含$s+n$个顶点的标记有向图表示，其中$n$个顶点的入度为零，其余$s$个顶点的入度至多为二。使用此类图的邻接矩阵表示，我们可以将{{tref:thmc:t52}}中的隐常数降低到任意接近5的值，详见{{tref:proc:q56}}。
 ```
 
 ### 5.2.1 规模层次定理（可选）
@@ -177,7 +177,7 @@ $$
 
 ```admonish quote title=""
 <span id="i55">![i55 .margin](./images/chapter5/sizecomplexity.png)</span>
-*关于规模复杂度类已知结论的示意图（未按比例绘制）。该图描绘了形如$SIZE_{n,n}(s)$的类，但其他规模复杂度类（如$SIZE_{n,1}(s)$）的情况类似。由[定理4.12]()（结合[4.4.2节]()的改进）可知：所有$n$比特到$n$比特的函数都可由规模为$c\cdot 2^n$（$c\leq 10$）的电路计算；另一方面，计数下界（{{tref:thmc:t53}}，另见[习题5.4]()）表明某些函数需要$0.1 \cdot 2^n$个门；规模分层定理（{{tref:thmc:t55}}）则证明当$s=o(S)$时必然存在属于$SIZE_n(S)\setminus SIZE_n(s)$的函数，另见[习题5.5]()。*
+*关于规模复杂度类已知结论的示意图（未按比例绘制）。该图描绘了形如$SIZE_{n,n}(s)$的类，但其他规模复杂度类（如$SIZE_{n,1}(s)$）的情况类似。由[定理4.12]()（结合[4.4.2节]()的改进）可知：所有$n$比特到$n$比特的函数都可由规模为$c\cdot 2^n$（$c\leq 10$）的电路计算；另一方面，计数下界（{{tref:thmc:t53}}，另见{{tref:proc:q54}}）表明某些函数需要$0.1 \cdot 2^n$个门；规模分层定理（{{tref:thmc:t55}}）则证明当$s=o(S)$时必然存在属于$SIZE_n(S)\setminus SIZE_n(s)$的函数，另见{{tref:proc:q55}}。*
 
 *我们还考虑了一些具体示例：两个$n/2$比特数的加法可在$O(n)$线路中完成，而两个$n$比特数的乘法目前尚无此类程序，但已知可在$O(n^2)$甚至更优规模内完成。上图中的$FACTOR_n$对应乘法的逆问题——求给定整数的质因数分解。目前尚未发现任何具有多项式（甚至次指数）级别线路数量的电路能计算$FACTOR_n$。*
 ```
@@ -302,11 +302,148 @@ $$
 
 ### 5.4.2 “伪代码”形式的NAND-CIRC解释器
 
-### 5.4.3 Python实现的NAND解释器
+要证明{{tref:thmc:t510}}，只需给出一个具有$O(s^2 \log s)$行代码的NAND-CIRC程序，该程序能够计算包含$s$行代码的NAND-CIRC程序。首先思考：若不受限于仅执行NAND操作，我们应如何计算此类程序？换而言之，我们将非正式地描述一个**算法**：当输入$n,m,s$、三元组列表$L$以及字符串$x\in {0,1}^n$时，该算法能计算由$(n,m,L)$表示的程序在输入$x$上的输出。
+
+```admonish quote title="暂停一下"
+强烈建议你在此暂停并尝试独立解决该问题。例如，可思考如何用你熟悉的编程语言编写函数`NANDEVAL(n,m,s,L,x)`来实现该函数。
+```
+
+接下来我们将描述这样的算法。假设我们拥有一个**位数组**数据结构，可为每个$i\in [t]$存储位$T_i \in {0,1}$。具体而言，若变量`Table`存储此数据结构，则我们假定能执行以下操作：
+
+- `GET(Table,i)`：获取`Table`中索引`i`对应的位。其中`i`为$[t]$范围内的整数。
+- `Table = UPDATE(Table,i,b)`：更新`Table`使其索引`i`对应的位变为`b`。其中`i`为$[t]$范围内的整数，`b`为${0,1}$中的位。
+
+```admonish quote title=""
+{{algc}}{algc:a511}：执行NAND-CIRC程序
+
+$
+  \begin{array}{l}
+  \mathbf{输入}：数字(n,m,s)与(t\leq 3s)，与\\
+  \mathbf{输出}：程序的执行结果，由\\
+  \hline
+  \text{Let }\texttt{Vartable}\text{ be table of size }t\\
+  \textbf{for}\{i\text{ in }[n]\}\\
+  \quad\texttt{Vartable = UPDATE(Vartable,}i,\texttt{,}x_i\texttt{)}\\
+  \textbf{endfor}\\
+  \textbf{for}\{i,j,k\text{ in }L\}\\
+  \quad a\leftarrow\texttt{GET(Vartable,}j\texttt{)}\\
+  \quad b\leftarrow\texttt{GET(Vartable,}k\texttt{)}\\
+  \quad\texttt{Vartable = UPDATE(Vartable,}i\texttt{NAND(}a\texttt{,}b\texttt{))}\\
+  \textbf{endfor}\\
+  \textbf{for}\{j\text{ in }[m]\}\\
+  \quad y_j\leftarrow\texttt{GET(Vartable,}(t-m+j)\texttt{)}\\
+  \textbf{endfor}\\
+  \textbf{return }(y_0,\dots,y_{m-1})
+  \end{array}
+$
+```
+
+{{tref:algc:a511}}通过逐行计算输入程序，并更新`Vartable`以记录每个变量的值。在执行结束时，它输出索引位置$t-m,t-m+1,\ldots,t-1$对应的变量（这些变量对应程序的输出变量）。
+
+### 5.4.3 Python实现的NAND解释器 {#nandevalpythonsec}
+
+为了使内容更加具体，我们来看如何在**Python**语言中实现{{tref:algc:a511}}。（选择Python并无特殊意义，我们同样可以轻松地使用JavaScript、C、OCaml或其他任何编程语言实现相应函数。）我们将构建一个函数`NANDEVAL`，该函数在输入$n,m,L,x$时，会输出由$(n,m,L)$所表示的程序在$x$上的求值结果。为简化说明，我们暂不考虑$L$不能表示具有$n$个输入和$m$个输出的有效程序的情况。具体代码展示于[图5.7](#i57)中。
+
+```admonish quote title="图5.7"
+<span id="i57"></span>
+~~~python
+def NANDEVAL(n,m,L,X):
+    # 执行一个由元组列表表示的NAND-CIRC程序
+    s = len(L) # 行数
+    t = max(max(a,b,c) for (a,b,c) in L)+1 # L + 1中的最大编号
+    Vartable = [0] * t # 初始化变量表
+
+    # 辅助函数
+    def GET(V,i): return V[i]
+    def UPDATE(V,i,b):
+        V[i]=b
+        return V
+
+    # 加载输入值到变量表
+    for i in range(n):
+        Vartable = UPDATE(Vartable,i,X[i])
+
+    # 执行程序
+    for (i,j,k) in L:
+        a = GET(Vartable,j)
+        b = GET(Vartable,k)
+        c = NAND(a,b)
+        Vartable = UPDATE(Vartable,i,c)
+
+    # 返回输出 Vartable[t-m], Vartable[t-m+1],....,Vartable[t-1]
+    return [GET(Vartable,t-m+j) for j in range(m)]
+
+# 在XOR上测试（2个输入, 1个输出）
+L = ((2, 0, 1), (3, 0, 2), (4, 1, 2), (5, 3, 4))
+print(NANDEVAL(2,1,L,(0,1))) # XOR(0,1)
+# [1]
+print(NANDEVAL(2,1,L,(1,1))) # XOR(1,1)
+# [0]
+~~~
+```
+
+访问数组`Vartable`中特定索引处的元素仅需常数次基本操作。因此（由于$n,m \leq s$且$t \leq 3s$），上述程序将执行$O(s)$量级的基本操作。{{footnote: Python虽不区分列表与数组，但允许对这两种结构中的索引元素进行常数时间随机访问。若考虑程序长度真正无界（例如超过$2^{64}$）的情况，则访问成本将变为与数组或列表长度的对数相关，但$O(s)$与$O(s \log s)$的差异不影响本文后续讨论。}}
 
 ### 5.4.4 用NAND-CIRC构建NAND-CRIC解释器
 
+现在我们来阐述{{tref:thmc:t510}}的证明。要证明该定理，仅提供一个Python程序是不够的。我们需要展示如何通过**NAND-CIRC程序**计算函数$EVAL_{s,n,m}$。换言之，我们的任务是为每一组$s,n,m$，将[5.4.3节](#nandevalpythonsec)中的Python代码转换为能计算函数$EVAL_{s,n,m}$的NAND-CIRC程序$U_{s,n,m}$。
+
+```admonish pause title="暂停一下"
+在继续阅读之前，请思考**你**将如何给出{{tref:thmc:t510}的“构造性证明”。也就是说，思考如何用你选择的编程语言编写函数`universal(s,n,m)`，使其在输入$s,n,m$时输出能计算$EVAL_{s,n,m}$的NAND-CIRC程序$U_{s,n,m}$的代码。这个函数与前述Python程序`NANDEVAL`存在微妙但关键的差异：函数`universal`并非实际执行给定程序$P$对输入$w$的求值，而是输出一个能计算映射关系$(P,x) \mapsto P(x)$的NAND-CIRC程序**代码**。
+```
+
+我们的构造将紧密遵循前文中`EVAL`的Python实现。我们将使用变量`Vartable`[$0$],$\ldots$,`Vartable`[$2^\ell-1$]（其中$\ell = \lceil \log 3s \rceil$）来存储变量。但NAND不具备整数值变量，因此我们不能编写类似`Vartable`[i]的代码（其中i为变量）。然而，我们可以实现函数`GET(Vartable,i)`来输出数组变量表的第`i`位——这实质上正是我们在[定理4.10]()中见过的$LOOKUP_\ell$函数！
+
+```admonish pause title="暂停一下"
+请确保你理解为何`GET`函数与$LOOKUP_\ell$是等价的。
+```
+
+我们已知，对于选择的$\ell$，可以在$O(2^\ell) = O(s)$时间内计算$LOOKUP_\ell$。
+
+对于每个$\ell$，令$UPDATE_\ell:{0,1}^{2^\ell + \ell +1} \rightarrow {0,1}^{2^\ell}$对应长度为$2^\ell$数组的`UPDATE`函数。即对于输入$V\in {0,1}^{2^\ell}$, $i\in {0,1}^\ell$, $b\in {0,1}$，$UPDATE_\ell(V,i,b)$等于满足以下条件的$V' \in {0,1}^{2^\ell}$：
+
+$$
+V'_j = \begin{cases} V_j & j \neq i \\ b & j = i \end{cases}
+$$
+
+其中我们将字符串$i \in {0,1}^\ell$通过二进制表示视为${0,\ldots, 2^{\ell}-1 }$中的数字。我们可以通过$O(2^\ell \ell)=(s \log s)$行NAND-CIRC程序计算$UPDATE_\ell$，具体如下：
+
+对于每个$j\in [2^\ell]$，存在一个$O(\ell)$行NAND-CIRC程序来计算函数$\mathit{EQUALS}_j: {0,1}^\ell \rightarrow {0,1}$，该函数在输入$i$时当且仅当$i$等于$j$的二进制表示时输出$1$（验证工作留作{{tref:proc:q52}}和{{tref:proc:q53}}）。
+
+我们已知可以计算函数$\mathit{IF}:\{0,1\}^3 \rightarrow \{0,1\}$，使得$\mathit{IF}(a,b,c)$在$a=1$时输出$b$，在$a=0$时输出$c$。
+
+综合以上两点，我们可以通过以下方式计算`UPDATE`函数（使用有限循环的语法糖）：
+
+```python
+def UPDATE_ell(V,i,b):
+    # 输入: V[0]...V[2^ell-1], i ∈ {0,1}^ell, b ∈ {0,1}
+    # 输出: NewV[0],...,NewV[2^ell-1]
+    # 更新后的数组满足NewV[i]=b，其余位置与V相同
+    for j in range(2**ell): # j = 0,1,2,...,2^ell -1
+        a = EQUALS_j(i)
+        NewV[j] = IF(a,b,V[j])
+    return NewV
+```
+
+由于`UPDATE`函数中的循环`j`会运行$2^\ell$次，且计算$\mathit{EQUALS}_j$需要$O(\ell)$行代码，因此计算`UPDATE`的总行数为$O(2^\ell \cdot \ell) = O(s \log s)$。一旦我们能计算`GET`和`UPDATE`函数，剩余的实现主要是需要仔细处理的“簿记工作”，但这并不需要深度的理解，因此我们省略完整细节。由于我们运行`GET`和`UPDATE`函数$s$次，计算$EVAL_{s,n,m}$的总行数为$O(s^2) + O(s^2 \log s) = O(s^2 \log s)$。至此（除省略的细节外），我们完成了{{tref:thmc:t510}}的证明。
+
+```admonish note title="备注5.12：改进至准线性开销（高级可选笔记）"
+上述NAND-CIRC程序比其Python版本效率低，因为NAND不支持能够进行高效随机访问的数组。例如，对$s$位数组的查找操作在NAND中需要$\Omega(s)$行代码，而在**Python**中仅需$O(1)$步（或可能为$O(\log s)$步，取决于计数方式）。
+
+事实上，可以改进{{tref:thmc:t510}}的界限，使用$O(s \log s)$行NAND-CIRC程序来求值$s$行NAND-CIRC程序。关键在于将NAND-CIRC程序的描述视为电路，特别是视为有界入度的有向无环图（DAG）。用于$s$行程序的通用NAND-CIRC程序$U_s$将对应于此类$s$顶点DAG的**通用图**$H_s$。我们可以将此类图$U_s$视为通信网络的固定“布线”，它应能适应$s$个顶点之间任意可能的通信模式（该模式对应一个$s$行NAND-CIRC程序）。事实证明，存在高效的路由网络，允许将任何$s$顶点电路嵌入到大小为$O(s \log s)$的通用图中，更多内容请参阅[第5.9节](#bib)。
+```
+
 ## 5.5 用NAND-CIRC实现Python解释器（讨论）
+
+为了证明{{tref:thmc:t510}}，我们实际上将Python程序`EVAL`的每一行代码都转换为了等价的NAND-CIRC代码片段。不过，我们的推理过程并不特定于$EVAL$这个具体函数。实际上，我们可以将**每一个**Python程序都转换为具有可比效率的等价NAND-CIRC程序。（更具体地说，如果Python程序在长度不超过$n$的输入上执行$T(n)$次操作，那么存在一个$O(T(n) \log T(n))$行数的NAND-CIRC程序，能在长度为$n$的输入上与Python程序产生相同输出。）虽然具体实现需要处理大量细节并超出本书范围，但请允许我说明为何你应该相信这在原理上是可行的。
+
+首先，我们可以使用[CPython](https://en.wikipedia.org/wiki/CPython)（Python的参考实现），通过`C`程序来执行任意Python程序。再结合C编译器，就能将Python程序转换为多种“机器语言“。因此，要将Python程序转化为等价的NAND-CIRC程序，只需证明如何将**机器语言**程序转换为等价的NAND-CIRC程序。ARM架构就是一类极简（因此相当便利）的机器语言，它驱动着包括几乎所有安卓设备在内的移动设备。{{footnote: ARM代表“Advanced RISC Machine”，而RISC又代表“Reduced instruction set computer”（精简指令集计算机）。}}还存在更简单的机器语言，例如为[LLVM编译器](http://llvm.org/)用于实现后端的[LEG架构](https://github.com/frasercrmck/llvm-leg)（因此可以编译该编译器支持的[大量且不断增长的语言列表](https://en.wikipedia.org/wiki/LLVM#Front_ends)中的任何语言）。其他例子包括受交互式证明系统（我们将在[第22章](./chapter_22.md)介绍它们）启发的[TinyRAM](http://www.scipr-lab.org/doc/TinyRAM-spec-0.991.pdf)架构，以及面向教学的[超级简易计算机架构](https://www.ece.umd.edu/~blj/RiSC/)。逐一处理这些计算机的指令集并将其转换为NAND片段虽枯燥但可行。实际上，这最终与将高级代码转换为实际硅门电路的过程非常相似，而硅门操作与NAND-CIRC程序的操作并无太大差异。事实上，像[MyHDL](http://www.myhdl.org/)这样实现“从Python到硅芯片转换”的工具，就可以用于将Python程序转换为NAND-CIRC程序。
+
+NAND-CIRC编程语言仅是一种教学工具，我绝对没有表示编写NAND-CIRC程序或编译器是一种实用、有用或令人愉悦的活动。但我希望你理解为何这**能够**实现，并确保在紧要关头（至少为了你的成绩），你有信心完成这项任务。理解Python等高级语言程序如何最终转换为NAND这样的具体底层表示，是计算机科学的基础。
+
+敏锐的读者可能注意到，上述段落仅说明了为何可能为每个**特定**Python可计算函数$f$找到具有可比效率的**特定**NAND-CIRC程序$P$来计算$f$。但这似乎与我们编写“用NAND实现的Python解释器”的目标仍有距离——这意味着对于每个参数$n$，我们需要给出一个**单一的**NAND-CIRC程序$UNIV_s$，使得在给定Python程序$P$的描述、特定输入$x$以及操作步数上限$T$（其中$P$和$x$的长度以及$T$的值均不超过$s$时），该程序能返回$P$在$x$上最多执行$T$步的结果。毕竟，上述转换将每个Python程序转化为**不同的**NAND-CIRC程序，并未产生能够评估所有Python程序的“万能NAND-CIRC程序”。然而，我们实际上可以获得一个能执行**任意**Python程序的单一NAND-CIRC程序。原因在于存在用Python编写的Python解释器：即一个能读取比特串、将其解释为Python代码并执行的Python程序$U$。因此，我们只需要展示一个能计算与特定Python程序$U$相同功能的NAND-CIRC程序$U^*$，就能获得执行**所有**Python程序的方法。
+
+我们反复看到的是计算的**通用性**或**自引用**概念，即所有足够丰富的计算模型都足以“模拟自身”。这种现象对计算理论和实践（以及远超出该领域的范畴，包括数学基础和科学基本问题）的重要性，无论如何强调都不为过。
 
 ## 5.6 物理扩展Church-Turing论题（讨论）
 
@@ -475,7 +612,7 @@ $$
 换句话说，如果$C'$是一个所谓的“经验风险最小化器”，在所有训练样本$x_0,\ldots,x_{n-1}$上与$C$一致，那么它也有高概率与从分布$D$中抽取的样本上的$C$一致（即，使用机器学习术语来说，它“泛化”了）。提示见脚注。{{footnote: 提示：使用我们对大小为$s$的程序/电路数量的界限{{tref:thmc:t52}}，以及Chernoff界（[定理18.12]()）和联合界。}}
 ```
 
-## 5.9 参考书目
+## 5.9 参考书目 {#bib}
 
 $EVAL$函数通常被称为**通用电路**。我们在本章中所描述的实现并非目前已知最高效的。Valiant（[Valiant](https://scholar.google.com/scholar?hl=en&q=Valiant+Universal+circuits+(preliminary+report))）最早提出了规模为$O(n\log n)$的通用电路（其中$n$表示输入规模）。近年来，由于在密码学中的应用（参见[Lipmaa, Mohassel, Sadeghian, 2016](https://scholar.google.com/scholar?hl=en&q=Lipmaa,+Mohassel,+Sadeghian+Valiant%27s+Universal+Circuit:+Improvements,+Implementation,+and+Applications.)，[Günther, Kiss, Schneider, 2017](https://scholar.google.com/scholar?hl=en&q=G%C3%BCnther,+Kiss,+Schneider+More+efficient+universal+circuit+constructions)），通用电路获得了新的研究动力。
 
