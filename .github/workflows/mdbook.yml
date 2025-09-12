@@ -46,6 +46,7 @@ jobs:
           cargo install mdbook-footnote
           cargo install mdbook-mathpunc
           cargo install mdbook-numeq
+          cargo install mdbook-toc
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4

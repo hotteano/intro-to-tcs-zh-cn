@@ -1,3 +1,5 @@
+<!-- toc -->
+
 # 数学背景
 
 ```admonish tip 
