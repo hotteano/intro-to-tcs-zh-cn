@@ -43,7 +43,7 @@
 ```
 
 ```admonish quote title="图8.1"
-<span id="i81"> ![](./images/chapter8/tapemarkI.png)</span>
+<span id="i81"> ![](./images/chapter8/turingcomplete.png)</span>
 *一些图灵等价模型。所有这些模型在计算能力上都与图灵机（或等价的NAND-TM程序）等价，因为它们能够计算完全相同的函数类。所有这些模型都是用于计算接受无界长度输入的无限函数的模型。相比之下，布尔电路/NAND-CIRC程序只能计算有限函数，因此不是图灵完备的。*
 ```
 
