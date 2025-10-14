@@ -44,6 +44,7 @@
 
 ```admonish quote title="图8.1"
 <span id="i81"> ![](./images/chapter8/turingcomplete.png)</span>
+
 *一些图灵等价模型。所有这些模型在计算能力上都与图灵机（或等价的NAND-TM程序）等价，因为它们能够计算完全相同的函数类。所有这些模型都是用于计算接受无界长度输入的无限函数的模型。相比之下，布尔电路/NAND-CIRC程序只能计算有限函数，因此不是图灵完备的。*
 ```
 
@@ -55,6 +56,7 @@
 
 ```admonish quote title="图8.2"
 <span id="i82"> ![](./images/chapter8/ramvsturing.png)</span>
+
 *RAM机包含有限数量的局部寄存器（每个寄存器保存一个整数）和一个无界的内存数组。它可以对寄存器执行算术运算，还可以将内存中由寄存器$r'$中的数字索引的地址的内容加载到寄存器$r$中。*
 ```
 
@@ -66,6 +68,7 @@ RAM机可以执行的操作包括：
 
 ```admonish quote title="图8.3"
 <span id="i83"> ![](./images/chapter8/rammachine.png)</span>
+
 *RAM机和图灵机的不同方面。RAM机可以在其局部寄存器中存储整数，并且可以读取和写入由其寄存器指定的内存位置。相比之下，图灵机只能访问其磁头位置的内存，且磁头在每一步最多只能向右或向左移动一个位置。*
 ```
 
@@ -90,6 +93,7 @@ NAND-RAM编程语言的完整描述见[附录](http://tiny.cc/introtcsappendix)�
 
 ```admonish quote title="图8.4"
 <span id="i84"> ![](./images/chapter8/nandramproofoverview.png)</span>
+
 *使用NAND-TM模拟NAND-RAM的{{tref:thmc:t81}}证明步骤概览。我们首先使用[7.4.1节]()中的内部循环语法糖，使得能够将整数从数组加载到NAND-TM的索引变量`i`。一旦我们能这样做，我们就可以在NAND-TM中模拟索引访问。然后，我们利用$\N^2$到$\N$的嵌入，在NAND-TM中模拟二维位数组。最后，我们使用二进制表示将整数的一维数组编码为位的二维数组，从而完成使用NAND-TM对NAND-RAM的模拟。*
 ```
 
@@ -175,6 +179,7 @@ $$
 
 ```admonish quote title="图8.5"
 <span id="i85"> ![](./images/chapter8/pairing_function.png)</span>
+
 *映射$\text{embed}(x,y)=\frac{1}{2}(x+y)(x+y+1)+x$对于$x,y\in[10]$的示意图，可以看出对于每一对不同的$(x,y)$和$(x',y')$，都有$\text{embed}(x,y)\ne\text{embed}(x',y')$*
 ```
 
@@ -216,6 +221,7 @@ stackpointer -= one
 
 ```admonish quote title="图8.6"
 <span id="i86"> ![](./images/chapter8/FortranProg.jpg)</span>
+
 *表示一条Fortran语句的打孔卡片*
 ```
 
@@ -253,7 +259,7 @@ stackpointer -= one
 在任何计算理论课程中的某个时刻，教师和学生都需要进行*那次*谈话。也就是说，我们需要讨论描述算法时的*抽象层次*。在算法课程中，通常用英语描述算法{{footnote: 译者注：在本翻译版中会使用中文}}，假设读者能够“填充细节”，并在需要时能够将此类算法转化为实现。例如，{{tref:algc:a81}}是广度优先搜索算法的高级描述。
 
 ```admonish quote title=""
-{{algc}}{algc:a81}[广度优先搜索]
+{{algc}}{algc:a81}（广度优先搜索）
 $$
 \begin{aligned}
 &\mathbf{Input: }图G，顶点u,v\\
@@ -275,6 +281,7 @@ $$
 
 ```admonish quote title="图8.8"
 <span id="i88"> ![](./images/chapter8/levelsofdescription.png)</span>
+
 *我们可以用不同的粒度/细节和精确度级别来描述一个算法。在最高级别，我们只用文字描述想法，省略所有关于表示和实现的细节。在中间级别（也称为实现或伪代码），我们提供足够的实现细节，使他人能够推导出它，但我们仍然不提供完整代码。最低级别是实际代码或数学描述被完整阐述的地方。这些不同的细节层次都有其用途，在它们之间转换是计算机科学家最重要的技能之一*
 ```
 
@@ -291,8 +298,9 @@ $$
 一个*计算模型*是某种定义*程序*（由字符串表示）计算（部分）函数的方式。一个*计算模型*$\mathcal{M}$是*图灵完备*的，如果我们可以将每个图灵机（或等价的NAND-TM程序）$N$映射到$\mathcal{M}$中的一个程序$P$，使得$P$计算与$N$相同的函数。它是*图灵等价*的，如果另一个方向也成立（即，我们可以将$\mathcal{M}$中的每个程序映射到一个计算相同函数的图灵机）。我们可以形式化地定义这个概念如下。（这个形式化定义对于本书的其余部分并不关键，只要你理解图灵等价的一般概念就可以跳过它；这个概念在文献中有时被称为[哥德尔编号](https://goo.gl/rzuNPu)（Gödel numbering）或[可接纳编号](https://goo.gl/xXJoUG)（admissible numbering）。）
 
 ```admonish quote title=""
-{{defc}}{defc:d81}[图灵完备性与等价性（可选）]
-令$\mathcal{F}$为所有从$\{0,1\}^$到$\{0,1\}^$的部分函数的集合。一个*计算模型*是一个映射$\mathcal{M}:\{0,1\}^* \rightarrow \mathcal{F}$。
+{{defc}}{defc:d85}（图灵完备性与等价性（可选））
+
+令$\mathcal{F}$为所有从$\{0,1\}^*$到$\{0,1\}^*$的部分函数的集合。一个*计算模型*是一个映射$\mathcal{M}:\{0,1\}^* \rightarrow \mathcal{F}$。
 
 我们说一个程序$P \in \{0,1\}^*$ $\mathcal{M}$-*计算*一个函数$F\in \mathcal{F}$，如果$\mathcal{M}(P) = F$。
 
@@ -307,14 +315,135 @@ $$
 - NAND-TM程序
 - NAND-RAM程序
 - $\lambda$演算
-- 生命游戏（将程序和输入/输出映射到起始和结束配置）
+- 生命游戏（将程序和输入/输出映射到起始和结束格局）
 - 编程语言，如Python/C/Javascript/OCaml...（允许无限存储）
 
 ## 8.4 元胞自动机
 
+许多物理系统可以被描述为由大量相互作用的基元组件组成。一种模拟此类系统的方法是使用*元胞自动机*。这是一个由大量（甚至无限）细胞组成的系统。每个细胞只有有限个可能的状态。在每个时间步，细胞通过将某个简单规则应用于自身及其邻居的状态来更新到新状态。
+
+```admonish quote title="图8.9"
+<span id="i89"> ![](./images/chapter8/conwaysgrids.png)</span>
+
+*康威生命游戏的规则。图片来自[此博客文章](https://mblogscode.wordpress.com/2017/06/07/python-simulation-coding-conways-game-of-life/)*
+```
+
+元胞自动机的一个典型例子是[康威的生命游戏](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)（Conway's Game of Life）。在此自动机中，细胞排列在一个无限二维网格中。每个细胞只有两种状态：“死亡”（我们可以编码为$0$并标识为$\varnothing$）或“存活”（我们可以编码为$1$）。细胞的下一个状态取决于其先前状态及其8个垂直、水平和对角线邻居的状态（参见[图8.9](#i89)）。死亡细胞只有在恰好有三个存活邻居时才会变为存活。存活细胞只有在有两个或三个存活邻居时继续存活。尽管细胞数量可能无限，但我们可以通过仅跟踪存活细胞来使用有限长度字符串编码状态。如果我们在具有有限数量存活细胞的格局中初始化系统，那么在所有未来步骤中存活细胞的数量将保持有限。生命游戏的[维基百科页面](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life)上有一些产生非常有趣演化的格局的美丽图形和动画。
+
+```admonish quote title="图8.10"
+<span id="i810"> ![](./images/chapter8/onetwodimensionalca.png)</span>
+
+*在二维元胞自动机中，每个细胞位于某个整数$i,j \in \Z$的位置$i,j$上。细胞的状态是某个值$A_{i,j} \in \Sigma$，其中$\Sigma$是某个有限字母表。在给定时间步，细胞的状态根据应用于$(i,j)$及其所有邻居$(i \pm 1, j\pm 1)$状态的某个函数进行调整。在一维元胞自动机中，每个细胞位于位置$i\in \Z$上，且$i$在下一个时间步的状态$A_i$取决于其当前状态及其两个邻居$i-1$和$i+1$的状态*
+```
+
+由于生命游戏中的细胞排列在无限二维网格中，它是二维元胞自动机的一个例子。我们也可以考虑*一维元胞自动机*的更简单设置，其中细胞排列在一条无限直线上，参见[图8.10](#i810)。事实证明，即使这个简单模型也足以实现图灵完备性。我们现在将正式定义一维元胞自动机，然后证明它们的图灵完备性。
+
+```admonish quote title=""
+{{defc}}{defc:d86}（一维元胞自动机）
+
+设$\Sigma$是一个包含符号$\varnothing$的有限集合。一个在字母表$\Sigma$上的*一维元胞自动机*由一个*转移规则*$r:\Sigma^3 \rightarrow \Sigma$描述，该规则满足$r(\varnothing,\varnothing,\varnothing) = \varnothing$。
+
+自动机$r$的一个*格局*（configuration）是一个函数$A:\Z \rightarrow \Sigma$。如果具有规则$r$的自动机处于格局$A$，那么它的下一个格局，记为$A' = NEXT_r(A)$，是函数$A'$，使得对于每个$i\in \Z$，有$A'(i) = r(A(i-1),A(i),A(i+1))$。换句话说，自动机$r$在点$i$的下一个状态是通过将规则$r$应用于$A$在$i$及其两个邻居的值得到的。
+```
+
+**有限格局**：如果自动机$r$的格局中只有有限个索引$i_0,\ldots,i_{j-1}$在$\Z$中使得$A(i_j) \neq \varnothing$，则我们称该格局是_有限的_。（即，对于每个$i \not\in { i_0, \ldots, i_{j-1}}$，有$A(i)=\varnothing$。）这样的格局可以使用一个有限字符串表示，该字符串编码索引$i_0,\ldots,i_{n-1}$和值$A(i_0),\ldots,A(i_{n-1})$。由于$r(\varnothing,\varnothing,\varnothing)=\varnothing$，如果$A$是有限格局，则$NEXT_r(A)$也是有限的。我们只关心在有限格局中初始化的元胞自动机，因此在其整个演化过程中保持有限格局。
+
 ### 8.4.1 一维元胞自动机的图灵完备性
 
+我们可以编写一个程序（例如使用NAND-RAM）来模拟任何元胞自动机从初始有限格局的演化，只需存储状态不等于$\varnothing$的细胞值并重复应用规则$r$。因此，元胞自动机可以被图灵机模拟。更令人惊讶的是，反过来也成立。例如，尽管其规则简单，我们可以使用生命游戏模拟图灵机（参见[图8.11](#i811)）。
+
+```admonish quote title="图8.11"
+<span id="i811"> ![](./images/chapter8/turing_gol.jpg)</span>
+
+*模拟图灵机的生命游戏格局。图片由[Paul Rendell](http://rendell-attic.org/gol/tm.htm)提供*
+```
+
+事实上，即使一维元胞自动机也可以是图灵完备的：
+
+```admonish quote title=""
+{{thmc}}{thmc:t87}（一维自动机是图灵完备的）
+
+对于每个图灵机$M$，存在一个一维元胞自动机，可以在每个输入$x$上模拟$M$。
+```
+
+为了使“模拟图灵机”的概念更精确，我们需要定义图灵机的*格局*。我们将在下面的[8.4.2节](#842-图灵机格局与状态转移函数)中这样做，但高层面上，图灵机的*格局*是一个字符串，编码了其在计算中给定步骤的完整状态。即，其磁带所有（非空）单元的内容、其当前状态以及磁头位置。
+
+{{tref:thmc:t87}}的证明的关键思想是，在图灵机$M$的计算中的每个点，$M$的磁带中唯一能改变的单元是磁头所在的位置，并且该单元改变的值是其当前状态和$M$的有限状态的函数。这一观察使我们能够将图灵机$M$的格局编码为一个元胞自动机$r$的有限格局，并确保此编码格局在$r$的规则下的一步演化对应于图灵机$M$执行中的一步。
+
 ### 8.4.2 图灵机格局与状态转移函数
+
+为了将上述思想转化为{{tref:thmc:t87}}的严格证明（甚至陈述！），我们需要精确定义图灵机的*格局*这一概念。这个概念在后续章节中对我们也有用。
+
+```admonish quote title="图8.12"
+<span id="i812"> ![](./images/chapter8/turingmachineconf.png)</span>
+
+*具有字母表$\Sigma$和状态空间$[k]$的图灵机$M$的_格局_将其在执行中特定步骤的状态编码为一个在字母表$\overline{\Sigma} = \Sigma \times ({\cdot } \cup [k])$上的字符串$\alpha$。字符串的长度为$t$，其中$t$满足$M$的磁带在所有位置$t$及更大处包含$\varnothing$，且$M$的磁头位于小于$t$的位置。如果$M$的磁头在第$i$个位置，那么对于$j \neq i$，$\alpha_j$编码$M$磁带的第$j$个单元的值，而$\alpha_i$编码此值以及$M$的当前状态。如果机器写入值$\tau$，更改状态为$t$，并向右移动，那么在下一个格局中，位置$i$将包含值$(\tau,\cdot)$，位置$i+1$将包含值$(\alpha_{i+1},t)$*
+```
+
+```admonish quote title=""
+{{defc}}{defc:d88}（图灵机的格局）
+
+设$M$是一个具有磁带字母表$\Sigma$和状态空间$[k]$的图灵机。$M$的一个*格局*是一个字符串$\alpha \in \overline{\Sigma}^*$，其中$\overline{\Sigma} = \Sigma \times \left( {\cdot} \cup [k] \right)$，满足存在恰好一个坐标$i$，使得对于某个$\sigma \in \Sigma$和$s\in [k]$，有$\alpha_i = (\sigma,s)$。对于所有其他坐标$j$，$\alpha_j = (\sigma',\cdot)$，其中$\sigma'\in \Sigma$。
+
+$M$的格局$\alpha \in \overline{\Sigma}^*$对应于其执行的以下状态：
+
+- $M$的磁带对于所有$j<|\alpha|$包含$\alpha_{j,0}$，对于所有至少为$|\alpha|$的位置包含$\varnothing$，其中我们令$\alpha_{j,0}$为值$\sigma$，使得$\alpha_j = (\sigma,t)$，其中$\sigma \in \Sigma$且$t \in {\cdot } \cup [k]$。（换句话说，由于$\alpha_j$是一个字母表符号$\sigma$和一个$[k]$中的状态或符号$\cdot$的对，$\alpha_{j,0}$是这个对的第一个分量$\sigma$。）
+- $M$的磁头位于唯一位置$i$，其中$\alpha_i$具有形式$(\sigma,s)$，$s\in [k]$，且$M$的状态等于$s$。
+```
+
+```admonish pause title = "暂停一下"
+{{tref:defc:d88}}有一些技术细节，但实际上并不深奥或复杂。尝试花点时间停下来思考*你*如何将图灵机在执行中给定点的状态编码为一个字符串。
+
+思考你需要知道哪些组件才能从此点继续执行，以及使用有限符号列表编码它们的简单方法是什么。特别是，考虑到我们未来的应用，尝试思考一种编码，使得将步骤$t$的格局映射到步骤$t+1$的格局尽可能简单。
+```
+
+{{tref:defc:d88}}有点繁琐，但无论怎么讲格局只是一个字符串，编码了图灵机在执行中给定点的*快照*。（用操作系统术语，它是一个“核心转储”（core dump）。）这样的快照需要编码以下组件：
+
+1. 当前磁头位置。
+2. 大容量存储器的完整内容，即磁带。
+3. “本地寄存器”的内容，即机器的状态。
+
+我们如何编码格局的精确细节并不重要，但我们确实想记录以下简单事实：
+
+```admonish quote title=""
+{{lemc}}{lemc:l89}
+
+设$M$是一个图灵机，令$NEXT_M:\overline{\Sigma}^* \rightarrow \overline{\Sigma}^*$是将$M$的格局映射到执行下一步格局的函数。那么对于每个$i \in \N$，$NEXT_M(\alpha)i$的值仅依赖于坐标$\alpha_{i-1},\alpha_i,\alpha_{i+1}$。
+```
+
+（为简化记号，上面我们使用约定：如果$i$“越界”，例如$i<0$或$i>|\alpha|$，则我们假设$\alpha_i = (\varnothing,\cdot)$。）我们将{{tref:lemc:l89}}的证明留作[练习8.7]()。证明背后的思想很简单：如果磁头既不在位置$i$，也不在位置$i-1$和$i+1$，那么$i$处的下一步格局将与之前相同。否则，我们可以从$i$或其邻居的格局中“读取”图灵机的状态和磁头位置的磁带值，并用其更新$i$处的新状态应该是什么。完成完整证明并不难，但这样做是确保你熟悉格局定义的好方法。
+
+**完成{{tref:thmc:t87}}的证明**：我们现在可以更正式地重述{{tref:thmc:t87}}，并完成其证明：
+
+```admonish quote title=""
+{{thmc}}{thmc:t810}（一维自动机是图灵完备的（形式化陈述））
+
+对于每个图灵机$M$，如果我们用$\overline{\Sigma}$表示其格局字符串的字母表，那么存在一个在字母表$\overline{\Sigma}^*$上的一维元胞自动机$r$，使得
+$$
+NEXT_M(\alpha)=NEXT_r(\alpha)
+$$
+对于$M$的每个格局$\alpha \in \overline{\Sigma}^*$（再次使用约定：如果$i$“越界”，则我们考虑$\alpha_i=\varnothing$）。
+```
+
+```admonish proof collapsible=true, title = "证明"
+我们将$\overline{\Sigma}$的元素$(\varnothing,\cdot)$对应于自动机$r$的$\varnothing$元素。在这种情况下，由{{tref:lemc:l89}}，将$M$的格局映射到下一个格局的函数$NEXT_M$实际上是一维自动机的有效规则。
+```
+
+从{{tref:thmc:t810}}的证明中产生的自动机具有大的字母表，而且其大小依赖于被模拟的机器$M$。事实证明，人们可以获得一个具有固定大小字母表的自动机，该字母表独立于被模拟的程序，实际上自动机的字母表可以是最小集合$\{0,1\}$！[图8.13](#i813) 展示了这样的一个图灵完备的自动机。
+
+```admonish quote title="图8.13"
+<span id="i813"> ![](./images/chapter8/Rule110Big.jpg)</span>
+
+*一维自动机的演化。图中的每一行对应一个格局。初始格局对应顶行，仅包含一个“存活”细胞。此图对应Stephen Wolfram的“规则110”自动机，它是图灵完备的。图片取自[Wolfram MathWorld](http://mathworld.wolfram.com/Rule110.html)*
+```
+
+```admonish note title="备注8.11：NAND-TM程序的格局"
+我们可以使用与{{tref:defc:d88}}相同的方法来定义*NAND-TM程序*的格局。这样的格局需要编码：
+
+1. 变量`i`的当前值。
+2. 对于每个标量变量`foo`，`foo`的值。
+3. 对于每个数组变量`Bar`，值`Bar[`$j$`]`对于每个$j \in {0,\ldots, t-1}$，其中$t-1$是指标变量`i`在计算中曾达到的最大值。
+```
 
 ## 8.5 $\lambda$演算与函数式编程语言
 
