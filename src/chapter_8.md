@@ -117,11 +117,100 @@ RAM机与实际微处理器之间的主要区别（相应地，也是NAND-RAM与
 
 ## 8.2 具体细节（可选）
 
+我们将不展示{{tref:thmc:t81}}的完整形式化证明，而是聚焦于最重要的部分：实现索引访问，以及用一维数组模拟二维数组。即便如此，描述这些部分也已经相当繁琐，这对于任何写过编译器的人都不足为奇。因此，你可以随意略读本节。重点不在于记住所有细节，而在于明白*原则上*将一个NAND-RAM程序转换为等价的NAND-TM程序是*可能*的，*你*自己如果想做也能完成。
+
 ### 8.2.1 NAND-TM中的索引访问
+
+在NAND-TM中，我们只能访问数组在索引变量`i`位置处的元素，而NAND-RAM拥有整数值变量，并能使用它们对数组进行*索引访问*，写作`Foo[bar]`。为了在NAND-TM中实现索引访问，我们将使用某种无前缀编码（参见[2.5.2节](./chapter_2.md#前缀无歧义编码)）在数组中编码整数，然后提供一个过程`Setindex(Bar)`来将`i`设置为`Bar`编码的值。我们可以通过先执行`Setindex(Bar)`再执行`Foo[i]`来模拟`Foo[Bar]`的效果。
+
+`Setindex(Bar)`的实现可以通过以下方式完成：
+
+1. 初始化一个数组`Atzero`，使得`Atzero[`$0$`]`$=1$并且对所有$j>0$，`Atzero[`$j$`]`$=0$。（这可以在NAND-TM中轻松完成，因为所有未初始化的变量默认值为零。）
+2. 通过递减`i`直到达到`Atzero[i]`$=1$的点来将`i`设置为零。
+3. 令`Temp`为一个编码数字$0$的数组。
+4. 我们使用`GOTO`来模拟一个内部循环，形式如下：当`Temp`$\neq$`Bar`时，递增`Temp`。
+5. 在循环结束时，`i`等于由`Bar`编码的值。
+
+在NAND-TM代码中（使用一些语法糖），我们可以按如下方式实现上述操作：
+
+```python
+# 假设Atzero是一个数组，满足Atzero[0]=1
+# 且对所有j>0，Atzero[j]=0
+
+# 将i设置为0。
+LABEL("zero_idx")
+dir0 = zero
+dir1 = one
+# 对应i <- i-1
+GOTO("zero_idx",NOT(Atzero[i]))
+...
+# 将temp清零
+#（下面的代码假设使用一种特定的无前缀编码，其中10是"结束标记"）
+Temp[0] = 1
+Temp[1] = 0
+# 将i设置为Bar，假设我们知道如何递增和比较
+LABEL("increment_temp")
+cond = EQUAL(Temp,Bar)
+dir0 = one
+dir1 = one
+# 对应i <- i+1
+INC(Temp)
+GOTO("increment_temp",cond)
+# 如果执行到这里，i就是Bar所编码的数字
+...
+# 程序的最终指令
+MODANDJUMP(dir0,dir1)
+```
 
 ### 8.2.2 NAND-TM中的二维数组
 
+为了实现二维数组，我们希望将它们嵌入到一个一维数组中。思路是通过一个*一一对应*的函数$\text{embed}:\N\times\N\to\N$，从而将二维数组`Two`中的位置$(i,j)$嵌入到一维数组`One`的位置$\text{embed}(i,j)$中。
+
+由于集合$\N\times\N$看上去“远大于”集合$\N$，先验地来看，这样的一个双射可能并不明显存在。然而，一旦你深入思考，你就会发现构建它并不算太难。例如，你可以让一个孩子用剪刀和胶水将一张10英寸乘10英寸的纸转换成一条1英寸乘100英寸的纸带。这本质上就是一个从$[10]\times [10]$到$[100]$的双射。我们可以推广这一点，得到一个从$[n]\times[n]$到$[n^2]$的双射，更一般地，得到一个从$\N\times\N$到$\N$的双射。
+
+具体来说，下面的$\text{embed}$函数可以做到这一点（见[图8.5](#i85)）：
+$$
+\text{embed}(x,y)=\frac{1}{2}(x+y)(x+y+1)+x
+$$
+
+```admonish quote title="图8.5"
+<span id="i85"> ![](./images/chapter8/pairing_function.png)</span>
+*映射$\text{embed}(x,y)=\frac{1}{2}(x+y)(x+y+1)+x$对于$x,y\in[10]$的示意图，可以看出对于每一对不同的$(x,y)$和$(x',y')$，都有$\text{embed}(x,y)\ne\text{embed}(x',y')$*
+```
+
+[习题8.3]()要求你证明$\text{embed}$确实是一个双射，并且可以由一个NAND-TM程序计算。（后者可以通过简单地遵循小学所学的乘法、加法和除法算法来完成。）这意味着我们可以将形式为`Two[Foo][Bar] = something`（即，访问二维数组中由一维数组`Foo`和`Bar`编码的整数对应的位置）替换为如下形式的代码：
+
+```python
+Blah = embed(Foo,Bar)
+Setindex(Blah)
+Two[i] = something
+```
+
 ### 8.2.3 其他细节
+
+一旦我们有了二维数组和索引访问，用NAND-TM模拟NAND-RAM就只是在NAND-TM中实现算术运算和比较的标准算法的问题了。虽然这很繁琐，但并不困难，最终的结果表明每个NAND-RAM程序$P$都可以被一个等价的NAND-TM程序$Q$模拟，从而完成了{{tref:thmc:t81}}的证明。
+
+```admonish note title="备注8.3：NAND-RAM中的递归（进阶）"
+*递归*是许多编程语言中都出现的一个概念，但我们没有将其包含在NAND-RAM程序中。然而，递归（以及一般的函数调用）可以在NAND-RAM中使用[栈数据结构](https://goo.gl/JweMj)来实现。*栈*是一种包含一系列元素的数据结构，我们可以按照“后进先出”的顺序向其中“压入”元素和从中“弹出”元素。
+
+我们可以使用一个整数数组`Stack`和一个标量变量`stackpointer`（表示栈中的项目数量）来实现一个栈。我们通过以下方式实现`push(foo)`：
+
+~~~python
+Stack[stackpointer]=foo
+stackpointer += one
+~~~
+
+并通过以下方式实现`bar = pop()`：
+
+~~~python
+bar = Stack[stackpointer]
+stackpointer -= one
+~~~
+
+我们通过将$F$的参数压入栈中来实现对$F$的函数调用。$F$的代码将从栈中“弹出”参数，执行计算（可能涉及进行递归或非递归调用），然后将其返回值“压入”栈中。由于栈的“后进先出”特性，直到所有递归调用完成，我们才会将控制权返回给调用过程。
+
+我们可以使用非递归语言实现递归这一事实并不令人惊讶。实际上，*机器语言*通常不具有递归（或一般的函数调用）功能，因此编译器使用栈和`GOTO`来实现函数调用。你可以在网上找到关于您最喜欢的编程语言（无论是[Python](http://interactivepython.org/runestone/static/pythonds/Recursion/StackFramesImplementingRecursion.html)、[JavaScript](https://javascript.info/recursion)还是[Lisp/Scheme](https://mitpress.mit.edu/sites/default/files/sicp/full-text/sicp/book/node110.html)）中如何通过栈实现递归的教程。
+```
 
 ## 8.3 图灵等价性（讨论）
 
