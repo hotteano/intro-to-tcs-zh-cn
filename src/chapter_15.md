@@ -26,7 +26,7 @@
 
 > **图15.1**
 > 
->![overview](cooklevin_overview.png)
+>![overview](/src/images/chapter15/cooklevin_overview.png)
 >*上图是本章内容的概览。我们用$\bf{NP}$来定义包含所有能够被高效验证的判定问题。本章的主要结果自然就是Cook-Levin定理（定理15.6），该定理表明3SAT问题拥有多项式算法当且仅当$\bf{NP}$类具有多项式时间算法。另一种说法就是说3SAT是$\bf{NP}$完全的。我们将会通过定义两个中间问题NANDSAT和3NAND并证明NANDSAT是$\bf{NP}$完全的，从而进一步证明$NANDSAT\leq_p 3NAND \leq_p 3SAT$。*
 
 ## 15.1 类$\bf{NP}$
@@ -41,7 +41,7 @@
 
 
 >**图15.2**
-![overview](NPdefinitionfig.png)
+![overview](/src/images/chapter15/NPdefinitionfig.png)
 类$\bf{NP}$对应的是那些解可以被高效验证的问题。这就是说，该类中的函数$F$，当$F(x)=1$的时候，存在一个长度为关于$x$的多项式的解$w$可以被多项式时间算法$V$验证。
 
 换句话说，对于任何在$\bf{NP}$的$F$，必然有一个多项式可计算验证函数$V$使得对于$F(x)=1$，必然存在$w$（长度为关于x的多项式）使得$V(xw)=0$。由于$w$的存在证明了$F(x)=1$，$w$通常被称为**证书**，**见证**或者**证明**。
