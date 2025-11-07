@@ -53,18 +53,18 @@
 
 数学家使用各种专业术语的原因, 与工程、法律、医学等其他众多领域并无差别: 我们需要**精确**的术语, 并为频繁使用的概念引入简洁表达. 数学文本往往在单个句子中蕴含极高的信息密度, 因此关键在于缓慢而仔细地阅读, 逐个符号解析. 
 
-随着练习时间逐渐增长, 你将发现阅读数学文本变得越来越轻松, 且专业术语也不再是问题. 更重要的是, 数学文本阅读能力是从本书中能够获得的极具迁移价值的技能之一. 我们的世界正飞速变化——这不仅体现在技术领域, 更延伸至医学、经济学、法律乃至文化等人类实践的方方面面. 无论你未来方向如何, 都很可能会接触到包含前所未见新概念的文本(参见[图1.1](#alphagozero)与[图1.2](#zerocash)中两个当代"热点领域"的例子). 掌握内化并应用新定义的能力至关重要. 在数学课程相对安全稳定的学习环境中, 这种技能更容易被掌握——至少你可以确信所有概念都有完整定义, 并能随时向教学人员答疑解惑. 
+随着练习时间逐渐增长, 你将发现阅读数学文本变得越来越轻松, 且专业术语也不再是问题. 更重要的是, 数学文本阅读能力是从本书中能够获得的极具迁移价值的技能之一. 我们的世界正飞速变化——这不仅体现在技术领域, 更延伸至医学、经济学、法律乃至文化等人类实践的方方面面. 无论你未来方向如何, 都很可能会接触到包含前所未见新概念的文本(参见[图1.1](#alphagozerofig)与[图1.2](#zerocashfig)中两个当代"热点领域"的例子). 掌握内化并应用新定义的能力至关重要. 在数学课程相对安全稳定的学习环境中, 这种技能更容易被掌握——至少你可以确信所有概念都有完整定义, 并能随时向教学人员答疑解惑. 
 
 <!-- 图1.1 -->
-```admonish pic id = 'alphagozero'
-![alphagozero](./images/chapter1/alphagozero.png)
+```admonish pic id = 'alphagozerofig'
+![alphagozerofig](./images/chapter1/alphagozero.png)
 
 {{pic}} 摘自Silver等人2017年发表于《自然》期刊的《[AlphaGo Zero](https://goo.gl/k8pVpL)》论文"方法"部分片段.
 ```
 
 <!-- 图1.2 -->
-```admonish pic id = 'zerocash'
-![zerocash](./images/chapter1/zerocash.png)
+```admonish pic id = 'zerocashfig'
+![zerocashfig](./images/chapter1/zerocash.png)
 
 {{pic}} 摘自Ben-Sasson等人奠定加密货币Zcash项目基础的《[Zerocash](http://zerocash-project.org/paper)》论文片段.
 ```
@@ -81,11 +81,11 @@
 令$S$与$T$为集合. 当一个函数$f:S\to T$对于任意两个元素$x,x'\in S$, 满足若$x\ne x'$, 则有$f(x)\ne f(x')$, 我们就称是 **单射** 的(one-to-one或injective)其, . 
 ```
 
-{{ref:def:one-to-one}}阐述了一个简单的概念, 但即便如此它也使用了大量符号. 阅读此类定义时, 一边阅读一边用笔进行标注往往很有帮助(见[图1.3](#onetoonedef3)). 例如当看到诸如$f$、$S$或$x$等符号时, 务必确认其指代的对象的类别: 是集合、函数、元素、数字, 还是小妖怪? 你可能还会发现, 向朋友(或对自己)用语言解释这一定义会很有帮助. 
+{{ref:def:one-to-one}}阐述了一个简单的概念, 但即便如此它也使用了大量符号. 阅读此类定义时, 一边阅读一边用笔进行标注往往很有帮助(见[图1.3](#onetoonedef3fig)). 例如当看到诸如$f$、$S$或$x$等符号时, 务必确认其指代的对象的类别: 是集合、函数、元素、数字, 还是小妖怪? 你可能还会发现, 向朋友(或对自己)用语言解释这一定义会很有帮助. 
 
 <!-- 图1.3 -->
-```admonish pic id = 'onetoonedef3'
-![onetoonedef3](./images/chapter1/onetoonedef3.png)
+```admonish pic id = 'onetoonedef3fig'
+![onetoonedef3fig](./images/chapter1/onetoonedef3.png)
 
 {{pic}} {{ref:def:one-to-one}}的注释版本, 标出了定义的每个对象及其关联的定义
 ```
@@ -215,8 +215,8 @@ $$
 - 若$S$与$T$是非空有限集合, 则以下条件相互等价: (a) $|S|\le|T|$; (b) 存在单射函数$F:S\to T$; (c) 存在满射函数$G:T\to S$. 这些等价关系实际上对无限集合$S$和$T$亦成立. 对于无限集合, 条件(b)(或等价的条件(c))是$|S|\le|T|$的公认定义. 
 
 <!-- 图1.4 -->
-```admonish pic id = 'functionsdiagram'
-![functionsdiagram](./images/chapter1/functionsdiagram.png)
+```admonish pic id = 'functionsdiagramfig'
+![functionsdiagramfig](./images/chapter1/functionsdiagram.png)
 
 {{pic}} 我们可以将有限函数表示为有向图, 其中从$x$到$f(x)$有一条边. 满射条件要求函数陪域中的每个顶点的入度至少为$1$. 单射条件要求函数陪域中的每个顶点入度至多为$1$, 上图的示例中, $F$是满射函数, $G$是单射函数, 而$H$既不是满射也不是单射
 ```
@@ -272,17 +272,17 @@ $$
 
 通过将路径$(u,u_1,u_2,\dots,u_{k-1},v)$与路径$(v,u_1',\dots,u_{k-1}',w)$拼接, 得到连接$u$与$w$的路径$(u,u_1,\ldots,u_{k-1},v,u'_1,\ldots,u'_{k'-1},w)$, 即可证明{{ref:lem:conntrans}}. 
 
-```admonish quote title="联通的顶点间有简单路径"
-{{lemc}}{lem:simplepath}
+```admonish quote title=""
+{{lemc}}{lem:simplepath}[联通的顶点间有简单路径]
 
 对于任意无向图$G=(V,E)$及连通顶点对$u,v$, 从$u$到$v$的最短路径是简单路径. 特别地, 任意连通顶点对间均存在连接二者的简单路径. 
 ```
 
-通过"捷径修剪法"可证明{{ref:lem:simplepath}}: 若某路径中同一节点$w$出现两次, 则移除其间的循环段(见[图1.5](#shortcutpath)). 将这一直观论证转化为形式化证明是很好的练习: 
+通过"捷径修剪法"可证明{{ref:lem:simplepath}}: 若某路径中同一节点$w$出现两次, 则移除其间的循环段(见[图1.5](#shortcutpathfig)). 将这一直观论证转化为形式化证明是很好的练习: 
 
 <!-- 图1.5 -->
-```admonish pic id = 'shortcutpath'
-![shortcutpath](./images/chapter1/shortcutpath.png)
+```admonish pic id = 'shortcutpathfig'
+![shortcutpathfig](./images/chapter1/shortcutpath.png)
 
 {{pic}} 若图中存在从$u$到$v$的路径两次经过顶点$w$, 则可移除$w$到自身的循环段, 得到仅经过$w$一次的捷径路径. 
 ```
@@ -294,7 +294,7 @@ $$
 ```
 
 ```admonish solution collapsible=true, title = "解答"
-此证明遵循[图1.6](#nvsnsquared)所示的思路. 需要注意的复杂性在于: 路径中可能有多个顶点被重复访问, 因此"捷径修建"不一定能直接得到简单路径. 我们通过考察$u$与$v$之间的**最短路径**来解决该问题. 具体如下: 
+此证明遵循[图1.6](#nvsnsquaredfig)所示的思路. 需要注意的复杂性在于: 路径中可能有多个顶点被重复访问, 因此"捷径修建"不一定能直接得到简单路径. 我们通过考察$u$与$v$之间的**最短路径**来解决该问题. 具体如下: 
 
 设$G=(V,E)$为无向图, $u$和$v$为$G$中两个连通顶点. 我们将证明存在连接$u$和$v$的简单路径. 令$k$为$u$与$v$之间路径的最短长度, 并设$P=(u_0,u_1,u_2,\dots,u_{k-1},u_k)$为一条长度为$k$的路径(可能存在多条此类路径, 若有则任选其一). (即$u_0=u$, $u_k=v$, 且对任意$l\in[k]$有$(u_l,u_{l+1})\in E$. )我们断言$P$是简单路径. 假设存在某个顶点$w$在路径中出现两次: 即对某些$i<j$有$w=u_i$且$w=u_j$. 此时可通过取$P$的前$i$个顶点(从$u_0=u$到$w$的首次出现)和后$k-j$个顶点(从$w$第二次出现后的顶点$u_{j+1}$到$u_k=v$), 得到捷径路径$P'=(u_0,u_1,\dots,u_{i-1},w,u_{j+1},\dots,u_k)$. 由于$w=u_i=u_j$, $(u_{i-1},w)$和$(w,u_{j+1})$都是$E$中的边, 因此$P'$是连接$u$和$v$的有效路径. 但$P'$的长度为$k-(j-i)<k$, 这与$P$的最小性矛盾. 
 ```
@@ -456,8 +456,8 @@ Kun的著作([Kun, 2018](https://scholar.google.com/scholar?hl=en&q=Kun+A+progra
 ```
 
 <!-- 图1.6 -->
-```admonish pic id = 'nvsnsquared'
-![nvsnsquared](./images/chapter1/nvsnsquared.png)
+```admonish pic id = 'nvsnsquaredfig'
+![nvsnsquaredfig](./images/chapter1/nvsnsquared.png)
 
 {{pic}} 若$F(n)=o(G(n))$, 则当$n$足够大时, $F(n)$将小于$G(n)$. 例如, 若算法$A$的运行时间为$1000\cdot n+10^6$, 算法$B$的运行时间为$0.01n^2$, 那么即使$B$在小输入时更高效, 当输入足够大时, $A$的运行速度将远快于$B$
 ```
@@ -611,11 +611,11 @@ Lamport格式的优点在于, 证明中每个句子的作用非常清晰. 此外
 
 ## 1.6 扩展示例: 拓扑排序 { #topsortsec }
 
-在本节中, 我们将证明如下结论: 每个有向无环图(DAG, 参见{{ref:def:dag}})都可以进行分层排列, 使得对于所有有向边$u\to v$, 顶点$v$所在的层都大于$v$所在的层. 这一结论被称为[拓扑排序](https://goo.gl/QUskBc), 被广泛应用于任务调度、构建系统、软件包管理、电子表格单元格计算等场景(见[图1.7](#topologicalsort)). 事实上, 在本书后续内容中我们也会用到这一结论. 
+在本节中, 我们将证明如下结论: 每个有向无环图(DAG, 参见{{ref:def:dag}})都可以进行分层排列, 使得对于所有有向边$u\to v$, 顶点$v$所在的层都大于$v$所在的层. 这一结论被称为[拓扑排序](https://goo.gl/QUskBc), 被广泛应用于任务调度、构建系统、软件包管理、电子表格单元格计算等场景(见[图1.7](#topologicalsortfig)). 事实上, 在本书后续内容中我们也会用到这一结论. 
 
 <!-- 图1.7 -->
-```admonish pic id = 'topologicalsort'
-![topologicalsort](./images/chapter1/topologicalsort.png)
+```admonish pic id = 'topologicalsortfig'
+![topologicalsortfig](./images/chapter1/topologicalsort.png)
 
 {{pic}} 拓扑排序示例. 我们考虑某个计算机科学专业课程先修关系对应的有向图, 其中边$u\to v$表示课程$u$是课程$v$的先修课程. 对该图进行分层或"拓扑排序"等价于将课程映射到不同学期, 使得若我们计划在学期$f(v)$修读课程$v$, 则已在此前的学期修完$v$的所有先修课程(即其入邻居)
 ```
@@ -672,11 +672,11 @@ $$
 
 ### 1.6.1 数学归纳法 { #inductionsec }
 
-证明{{ref:lem:acyclictosort}}存在多种方法. 一种做法是: 首先针对小型图(如具有1、2或3个顶点的图, 参见[图1.8](#topologicalsortexamples))进行证明——这类有限情形可通过穷举法验证, 随后尝试将证明推广至更大规模的图. 这种证明方法的技术术语称为**归纳证明**. 
+证明{{ref:lem:acyclictosort}}存在多种方法. 一种做法是: 首先针对小型图(如具有1、2或3个顶点的图, 参见[图1.8](#topologicalsortexamplesfig))进行证明——这类有限情形可通过穷举法验证, 随后尝试将证明推广至更大规模的图. 这种证明方法的技术术语称为**归纳证明**. 
 
 <!-- 图1.8 -->
-```admonish pic id = 'topologicalsortexamples'
-![topologicalsortexamples](./images/chapter1/topologicalsortexamples.png)
+```admonish pic id = 'topologicalsortexamplesfig'
+![topologicalsortexamplesfig](./images/chapter1/topologicalsortexamples.png)
 
 {{pic}} 具有一、二、三个顶点的有向无环图示例及顶点分层标注的有效方式
 ```
@@ -836,16 +836,16 @@ $$
 
 ## 1.8 习题
 
-```admonish quote title="逻辑表达式"
-{{proc}}{pro:logical}
+```admonish quote title=""
+{{proc}}{pro:logical}[逻辑表达式]
 
 a. 写出一个涉及变量$x_0,x_1,x_2$以及运算符$\wedge$(与)、$\vee$(或)和$\neg$(非)的逻辑表达式$\varphi(x)$, 使得当多数输入为真时$\varphi(x)$为真. 
 
 b. 写出一个涉及变量$x_0,x_1,x_2$以及运算符$\wedge$(与)、$\vee$(或)和$\neg$(非)的逻辑表达式$\varphi(x)$, 使得当输入之和$\sum^2_{i=0}x_i$(将"真"视为$1$, "假"视为$0$)为奇数时$\varphi(x)$为真. 
 ```
 
-```admonish quote title="量词"
-{{proc}}{pro:quantifiers}
+```admonish quote title=""
+{{proc}}{pro:quantifiers}[量词]
 
 使用逻辑量词$\forall$(对所有)、$\exists$(存在), 以及$\wedge,\vee,\neg$和算术运算符$+,\times,=,>,<$写出以下表达式: 
 
@@ -859,8 +859,8 @@ b. 表达式$\varphi(n)$使得对每个自然数$n$, $\varphi(n)$为真当且仅
 用文字描述以下语句: $\forall_{n\in\N} \exists_{p>n} \forall{a,b \in \N} (a\times b \neq p) \vee (a=1)$. 
 ```
 
-```admonish quote title="集合构造表示法"
-{{proc}}{pro:setsdescription}
+```admonish quote title=""
+{{proc}}{pro:setsdescription}[集合构造表示法]
 
 用文字描述以下集合: 
 
@@ -869,8 +869,8 @@ a. $S = \{ x\in \{0,1\}^{100} : \forall_{i\in \{0,\ldots, 99\}} x_i = x_{99-i} \
 b. $T = \{ x\in \{0,1\}^* : \forall_{i,j \in \{2,\ldots,|x|-1 \} } i\cdot j \neq |x| \}$
 ```
 
-```admonish quote title="单射映射的存在性"
-{{proc}}{pro:cardinalities}
+```admonish quote title=""
+{{proc}}{pro:cardinalities}[单射映射的存在性]
 
 对以下每组集合对$(S,T)$, 证明或证伪以下命题: 存在一个从$S$到$T$的单射函数$f$. 
 
@@ -881,8 +881,8 @@ b. 设$n>10$, $S$是所有从$\{0,1\}^n$到$\{0,1\}$的函数的集合, $T = \{0
 c. 设$n>100$, $S = \{k \in [n] \;|\; k是质数\}$, $T = \{0,1\}^{\ceil{\log n -1}}$. 
 ```
 
-```admonish quote title="容斥定理"
-{{proc}}{pro:incl}
+```admonish quote title=""
+{{proc}}{pro:incl}[容斥定理]
 
 a. 设$A,B$为有限集, 证明$|A\cup B|=|A|+|B|-|A\cap B|$. 
 
@@ -918,8 +918,8 @@ c. 设$A_0,\dots,A_{k-1}$是$\{1,\dots,n\}$的有限子集, 且对每个$i\in[k]
 证明对任意含有100个顶点的无向图$G$, 若每个顶点的度数最多为4, 则存在一个至少包含20个顶点的子集$S$, 使得$S$中任意两个顶点均不相邻. 
 ```
 
-```admonish quote title="大$O$表示法"
-{{proc}}{pro:ohnotation}
+```admonish quote title=""
+{{proc}}{pro:ohnotation}[大$O$表示法]
 
 对以下每组函数, 判断下列关系是否成立: $F=O(G)$、$F=\Omega(G)$、$F=o(G)$或$F=\omega(G)$. 
 
