@@ -7,7 +7,7 @@
 - ✅标点符号统一为英文.
 - ✅`<a>`标签换成`<span>`.
 - ✅修复对functionprogramidea, secimplvsspec(第2章)的引用.
-- ⬛️修复结尾传记部分的文献引用.
+- ✅修复结尾传记部分的文献引用.
 ```
 
 <!-- toc -->
@@ -40,11 +40,11 @@ Lewis Carroll, **爱丽丝镜中奇遇**
 
 
 ## 学习目标{ .objectives }
-* 区分规约与实现, 亦即区分数学函数与算法/程序.
+* 区分规范与实现, 亦即区分数学函数与算法/程序.
 * 将对象表示为字符串(通常由 0 和 1 构成).
 * 常见对象(如自然数、向量、列表与图)的表示实例.
-* 前缀无歧义编码.
-* Cantor定理：实数无法被有限长字符串精确表示.
+* 前缀无关编码.
+* Cantor定理: 实数无法被有限长字符串精确表示.
 * 
 <!-- 图2.1 -->
 ```admonish pic id = 'input_output'
@@ -55,7 +55,7 @@ Lewis Carroll, **爱丽丝镜中奇遇**
 
 从初步的角度看, **计算** 是一个将 **输入** 映射为 **输出** 的过程.
 
-在谈论计算时, 一个关键点是要区分两个问题: __需要完成的任务是什么__(即规约), 以及 __如何去实现这一任务__(即实现方式).
+在谈论计算时, 一个关键点是要区分两个问题: __需要完成的任务是什么__(即规范), 以及 __如何去实现这一任务__(即实现方式).
 例如, 正如我们已经看到的, 计算两个整数的乘积这一任务, 并不只有唯一的一种实现方式.
 
 在本章中, 我们将聚焦于 "**是什么**" 部分, 即如何定义计算任务. 而这首先要求我们明确定义 **输入与输出**.
@@ -84,9 +84,9 @@ Lewis Carroll, **爱丽丝镜中奇遇**
 
 * 我们可以使用 **二进制字符串** 来表示所有我们想作为输入和输出的对象. 例如, 可以利用 **二进制基** 将整数和有理数表示为二进制字符串 (参见 [第2.2.1节](#naturalnumsec) 和 [第2.2节](#morerepressec)).
 
-* 我们可以通过 **组合** 简单对象的表示, 来构造复杂对象的表示. 这样一来, 就可以表示整数或有理数的列表, 并进一步用来表示矩阵、图像和图等对象. **前缀无歧义编码** (prefix-free encoding) 是实现这种组合的一种方式 (参见 [第2.5.2节](#prefixfreesec)).
+* 我们可以通过 **组合** 简单对象的表示, 来构造复杂对象的表示. 这样一来, 就可以表示整数或有理数的列表, 并进一步用来表示矩阵、图像和图等对象. **前缀无关编码** (prefix-free encoding) 是实现这种组合的一种方式 (参见 [第2.5.2节](#prefixfreesec)).
 
-* 一个 **计算任务** 指定了从输入到输出的映射 -- 即一个 **函数**. 区分 "what" 与 "how", 或者说 **规约** (specification) 与 **实现** (implementation), 至关重要 (参见 [第2.6.1节](#secimplvsspec)). 一个函数仅仅定义了哪个输入对应哪个输出, 而并没有规定 **如何** 从输入计算出输出. 正如我们在乘法的例子中所看到的, 计算同一个函数可能存在多种方式.
+* 一个 **计算任务** 指定了从输入到输出的映射 -- 即一个 **函数**. 区分 "what" 与 "how", 或者说 **规范** (specification) 与 **实现** (implementation), 至关重要 (参见 [第2.6.1节](#secimplvsspec)). 一个函数仅仅定义了哪个输入对应哪个输出, 而并没有规定 **如何** 从输入计算出输出. 正如我们在乘法的例子中所看到的, 计算同一个函数可能存在多种方式.
 
 * 虽然所有可能的二进制字符串的集合是无限的, 它仍然无法表示 **一切**. 特别地, 并不存在将 **实数** (绝对精确地) 表示为二进制字符串的方法. 这一结果也被称为 **Cantor定理** (Cantor's Theorem) (参见 [第2.4节](#cantorsec)), 通常表述为 "实数是不可数的". 这也暗示了无限还存在 _不同的层次_, 不过在本书中我们不会深入讨论这一话题 (参见 {{ref:rem:generalizepowerset}}).
 
@@ -325,7 +325,7 @@ $$
 ```
 
 重复同样的思想, 一旦我们可以表示类型为 $T$ 的对象, 我们也可以表示这些对象的 **列表的列表**, 甚至是列表的列表的列表, 如此类推.  
-当我们讨论 [第2.5.2节](#prefixfreesec) 中的 **前缀无歧义编码 (prefix free encoding)** 时, 我们会再次回到这一点.  
+当我们讨论 [第2.5.2节](#prefixfreesec) 中的 **前缀无关编码 (prefix free encoding)** 时, 我们会再次回到这一点.  
 
 
 ## 2.3 实数的表示
@@ -463,7 +463,7 @@ $C(0), C(1), C(2), \ldots$.
 ```admonish pic id='diagrealsfig'
 ![diagrealsfig](./images/chapter2/diagonalization.png)
 
-{{pic}} 我们通过确保对于每个按字典序 $n(x)$ 排列的 $x\in {0,1}^$, 都有 $\overline{d}(n(x)) \neq StF(x)(n(x))$, 来构造一个函数 $\overline{d}$, 使得对于所有 $x\in {0,1}^$ 都满足 $\overline{d} \neq StF(x)$.我们可以将这理解为构建一个表格：其中列对应自然数 $m\in \N$, 行对应按 $n(x)$ 排序的 $x\in {0,1}^*$.若第 $x$ 行第 $m$ 列的条目对应 $g(m)$(其中 $g=StF(x)$), 则通过遍历该表格的"对角线"元素(即第 $x$ 行与第 $n(x)$ 列相交的条目)并确保 $\overline{d}(n(x)) \neq StF(x)(n(x))$, 即可得到函数 $\overline{d}$.
+{{pic}} 我们通过确保对于每个按字典序 $n(x)$ 排列的 $x\in {0,1}^*$, 都有 $\overline{d}(n(x)) \neq StF(x)(n(x))$, 来构造一个函数 $\overline{d}$, 使得对于所有 $x\in {0,1}^*$ 都满足 $\overline{d} \neq StF(x)$.我们可以将这理解为构建一个表格: 其中列对应自然数 $m\in \N$, 行对应按 $n(x)$ 排序的 $x\in {0,1}^*$.若第 $x$ 行第 $m$ 列的条目对应 $g(m)$(其中 $g=StF(x)$), 则通过遍历该表格的"对角线"元素(即第 $x$ 行与第 $n(x)$ 列相交的条目)并确保 $\overline{d}(n(x)) \neq StF(x)(n(x))$, 即可得到函数 $\overline{d}$.
 ```
 
 __热身运动: "Cantor定理青春版".__ {{ref:lem:sequencestostrings}} 的证明相当微妙. 一种获得对该证明的直觉的方法是考虑以下有限版本的陈述: "不存在一个满射函数 $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$". 当然我们知道这是正确的, 因为集合 $\{0,1\}^{100}$ 比集合 $[100]$ 更大, 但让我们来看一个不太直接的证明: 对于任意 $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$, 我们可以定义字符串 $\overline{d} \in \{0,1\}^{100}$ 如下: $\overline{d} = (1-f(0)_0, 1-f(1)_1 , \ldots, 1-f(99)_{99})$. 如果 $f$ 是满射, 那么必然存在某个 $n\in [100]$ 使得 $f(n) =\overline{d}$, 但我们声称不存在这样的 $n$. 实际上, 如果存在这样的 $n$, 那么 $\overline{d}$ 的第 $n$ 个分量应当等于 $f(n)_n$, 但根据定义这个分量等于 $1-f(n)_n$. 另见此陈述的 ["proof by code"](https://trinket.io/python/4cff7e58f4).
@@ -686,34 +686,34 @@ $$
 (这一观察有时被称为"鸽巢原理": 假设有 $m$ 个巢和 $k>m$ 只鸽子, 则必有两只鸽子在同一个巢中.)
 
 
-### 2.5.2 前缀无歧义编码 { #prefixfreesec }
+### 2.5.2 前缀无关编码 { #prefixfreesec }
 
 在展示有理数的表示方案时, 我们使用了一个"技巧": 将字母表 $\{ 0,1, \|\}$ 编码, 以便将字符串元组表示为单个字符串.  
-这是 **前缀无歧义编码** 的一个特例.  
+这是 **前缀无关编码** 的一个特例.  
 
-前缀无歧义编码的思想如下, 如果我们的表示具有如下性质: 表示对象 $o$ 的字符串 $x$ 不是表示不同对象 $o'$ 的字符串 $y$ 的 **前缀** (即初始子串), 那么我们可以仅通过将列表中所有成员的表示串联起来, 来表示一个对象列表.  
+前缀无关编码的思想如下, 如果我们的表示具有如下性质: 表示对象 $o$ 的字符串 $x$ 不是表示不同对象 $o'$ 的字符串 $y$ 的 **前缀** (即初始子串), 那么我们可以仅通过将列表中所有成员的表示串联起来, 来表示一个对象列表.  
 例如, 因为在英文中每个句子都以标点符号结束, 如句号, 感叹号或问号, 没有句子可以成为另一个句子的前缀, 因此我们可以仅通过将句子一个接一个地串联来表示一个句子列表. (英文中存在一些复杂情况, 例如缩写中的句点 (如 "e.g.")或句子引号包含标点, 但高层次上前缀自由表示句子的原理仍然成立.)  
 
-事实上, 我们可以将 **每一个** 表示转换为前缀无歧义形式.  
+事实上, 我们可以将 **每一个** 表示转换为前缀无关形式.  
 这为 {{ref:bigidea:representtuples}} 提供了依据, 并允许我们将类型 $T$ 对象的表示方案转换为类型 $T$ 对象 **列表** 的表示方案.  
 通过重复同样的技术, 我们还可以表示类型 $T$ 对象的列表的列表, 以此类推.  
 
-但首先, 让我们正式定义前缀无歧义性:
+但首先, 让我们正式定义前缀无关性:
 
 ```admonish quote title=""
-{{defc}}{def:prefixfree}[前缀无歧义编码]
+{{defc}}{def:prefixfree}[前缀无关编码]
 对于两个字符串 $y,y'$, 如果 $|y| \leq |y'|$ 并且对每个 $i<|y|$, 有 $y'_i = y_i$, 我们称 $y$ 是 $y'$ 的一个 **前缀**.  
 
 设 $\mathcal{O}$ 为非空集合, $E:\mathcal{O} \rightarrow \{0,1\}^*$ 为一个函数.  
-如果对每个 $o\in\mathcal{O}$, $E(o)$ 非空, 并且不存在一对不同的对象 $o, o' \in \mathcal{O}$ 使得 $E(o)$ 是 $E(o')$ 的前缀, 我们称 $E$ 是 **前缀无歧义** 的.
+如果对每个 $o\in\mathcal{O}$, $E(o)$ 非空, 并且不存在一对不同的对象 $o, o' \in \mathcal{O}$ 使得 $E(o)$ 是 $E(o')$ 的前缀, 我们称 $E$ 是 **前缀无关** 的.
 ```
 
 回忆一下, 对于每个集合 $\mathcal{O}$, 集合 $\mathcal{O}^*$ 包含所有有限长度的元组(即 **列表**)的 $\mathcal{O}$ 中元素.  
 下述定理表明, 如果 $E$ 是 $\mathcal{O}$ 的前缀自由编码, 则通过串联编码, 我们可以得到 $\mathcal{O}^*$ 的一个有效的(一一)表示:
 
 ```admonish quote title=""
-{{thmc}}{thm:prefixfree}[前缀无歧义蕴含元组可编码]"
-假设 $E:\mathcal{O} \rightarrow \{0,1\}^*$ 是前缀无歧义的.  
+{{thmc}}{thm:prefixfree}[前缀无关蕴含元组可编码]"
+假设 $E:\mathcal{O} \rightarrow \{0,1\}^*$ 是前缀无关的.  
 则以下映射 $\overline{E}:\mathcal{O}^* \rightarrow \{0,1\}^*$ 是一一映射: 对每个 $(o_0,\ldots,o_{k-1}) \in \mathcal{O}^*$, 我们定义
 
 $$
@@ -777,22 +777,22 @@ $$
 ```
 
 ~~~admonish info
-{{remc}}{rem:prefixfreelistsrem}[列表表示的前缀无歧义性]
-即使集合 $\mathcal{O}$ 中对象的表示 $E$ 是前缀无歧义的, 也并不意味着这些对象的 **列表** 的表示 $\overline{E}$ 也会是前缀无歧义的. 例如: 对于任意三个对象 $o,o',o''$, 列表 $(o,o')$ 的表示将是列表 $(o,o',o'')$ 的表示的前缀.  
-然而, 如下的 {{ref:lem:prefixfreetransformation}} 所示, 我们可以将 **每一个** 表示转换为前缀无歧义的, 因此如果需要表示列表的列表、列表的列表的列表等, 我们就可以使用该转换.
+{{remc}}{rem:prefixfreelistsrem}[列表表示的前缀无关性]
+即使集合 $\mathcal{O}$ 中对象的表示 $E$ 是前缀无关的, 也并不意味着这些对象的 **列表** 的表示 $\overline{E}$ 也会是前缀无关的. 例如: 对于任意三个对象 $o,o',o''$, 列表 $(o,o')$ 的表示将是列表 $(o,o',o'')$ 的表示的前缀.  
+然而, 如下的 {{ref:lem:prefixfreetransformation}} 所示, 我们可以将 **每一个** 表示转换为前缀无关的, 因此如果需要表示列表的列表、列表的列表的列表等, 我们就可以使用该转换.
 ~~~
 
-### 2.5.3 构造前缀无歧义表示
+### 2.5.3 构造前缀无关表示
 
-有一些自然的表示是前缀无歧义的.  
-例如, 每个 **固定输出长度** 的表示(即一一函数 $E:\mathcal{O} \rightarrow \{0,1\}^n$)自动是前缀无歧义的, 因为只有当 $x$ 和 $x'$ 相等时, 长度相同的 $x'$ 才可能有 $x$ 作为前缀.  
+有一些自然的表示是前缀无关的.  
+例如, 每个 **固定输出长度** 的表示(即一一函数 $E:\mathcal{O} \rightarrow \{0,1\}^n$)自动是前缀无关的, 因为只有当 $x$ 和 $x'$ 相等时, 长度相同的 $x'$ 才可能有 $x$ 作为前缀.  
 
 此外, 我们用来表示有理数的方法也可以用来证明如下结论:  
 
 ```admonish quote title=""
 {{lemc}}{lem:prefixfreetransformation}
 设 $E:\mathcal{O} \rightarrow \{0,1\}^*$ 为一一函数.  
-则存在一个一一的前缀无歧义编码 $\overline{E}$, 对每个 $o\in \mathcal{O}$ 有 $|\overline{E}(o)| \leq 2|E(o)|+2$.  
+则存在一个一一的前缀无关编码 $\overline{E}$, 对每个 $o\in \mathcal{O}$ 有 $|\overline{E}(o)| \leq 2|E(o)|+2$.  
 ```
 
 为了完整起见, 我们将在下方给出证明. 不过你可以在这里停下来, 尝试用我们表示有理数时使用的相同技巧自己证明它.
@@ -807,10 +807,10 @@ $$
 PF(x)=x_0 x_0 x_1 x_1 \ldots x_{n-1}x_{n-1}01.
 $$
 
-如果 $E:\mathcal{O} \rightarrow \{0,1\}^*$ 是 $\mathcal{O}$ 的(可能不是前缀无歧义的)表示, 我们可以通过定义 $\overline{E}(o)=PF(E(o))$ 将其转换为前缀无歧义的表示 $\overline{E}:\mathcal{O} \rightarrow \{0,1\}^*$.  
+如果 $E:\mathcal{O} \rightarrow \{0,1\}^*$ 是 $\mathcal{O}$ 的(可能不是前缀无关的)表示, 我们可以通过定义 $\overline{E}(o)=PF(E(o))$ 将其转换为前缀无关的表示 $\overline{E}:\mathcal{O} \rightarrow \{0,1\}^*$.  
 
-为了证明该引理, 我们需要证明 __(1)__ $\overline{E}$ 是一一函数, 并且 __(2)__ $\overline{E}$ 是前缀无歧义的.  
-事实上, 前缀无歧义是比一一更强的条件(如果两个字符串相等, 则其中一个必然是另一个的前缀), 因此只需证明 __(2)__ 即可, 我们现在来证明它.  
+为了证明该引理, 我们需要证明 __(1)__ $\overline{E}$ 是一一函数, 并且 __(2)__ $\overline{E}$ 是前缀无关的.  
+事实上, 前缀无关是比一一更强的条件(如果两个字符串相等, 则其中一个必然是另一个的前缀), 因此只需证明 __(2)__ 即可, 我们现在来证明它.  
 
 设 $o \neq o'$ 为 $\mathcal{O}$ 中两个不同的对象.  
 我们将证明 $\overline{E}(o)$ 不是 $\overline{E}(o')$ 的前缀, 或换句话说, $PF(x)$ 不是 $PF(x')$ 的前缀, 其中 $x = E(o)$, $x'=E(o')$.  
@@ -823,29 +823,29 @@ $$
 在所有情况下, 我们可以预见 $PF(x)=\overline{E}(o)$ 都不是 $PF(x')=\overline{E}(o')$ 的前缀, 从而完成了证明.
 ```
 
-{{ref:lem:prefixfreetransformation}} 的证明并不是将任意表示转换为前缀无歧义形式的唯一方法, 也不一定是最优方法.  
-{{ref:pro:prefix-free}} 就要求你构造一个更高效的前缀无歧义转换, 满足 $|\overline{E}(o)| \leq |E(o)| + O(\log |E(o)|)$.
+{{ref:lem:prefixfreetransformation}} 的证明并不是将任意表示转换为前缀无关形式的唯一方法, 也不一定是最优方法.  
+{{ref:pro:prefix-free}} 就要求你构造一个更高效的前缀无关转换, 满足 $|\overline{E}(o)| \leq |E(o)| + O(\log |E(o)|)$.
 
 
 ### 2.5.4 "基于Python的证明" (选读)
 
-{{ref:thm:prefixfree}} 和 {{ref:lem:prefixfreetransformation}} 的证明是 **构造性的**, 意味着它们给出了：
+{{ref:thm:prefixfree}} 和 {{ref:lem:prefixfreetransformation}} 的证明是 **构造性的**, 意味着它们给出了: 
 
-* 将任意对象 $O$ 的表示的编码和解码函数转换为前缀无歧义的编码和解码函数的方法, 以及
-* 将单个对象的前缀无歧义编码和解码扩展到 **对象列表** 的编码和解码的方法(通过串联实现). 
+* 将任意对象 $O$ 的表示的编码和解码函数转换为前缀无关的编码和解码函数的方法, 以及
+* 将单个对象的前缀无关编码和解码扩展到 **对象列表** 的编码和解码的方法(通过串联实现). 
 
-具体来说, 我们可以将任意一对 Python 函数 `encode` 和 `decode` 转换为函数 `pfencode` 和 `pfdecode`, 对应于前缀无歧义的编码和解码.
+具体来说, 我们可以将任意一对 Python 函数 `encode` 和 `decode` 转换为函数 `pfencode` 和 `pfdecode`, 对应于前缀无关的编码和解码.
 同样, 给定单个对象的 `pfencode` 和 `pfdecode`, 我们可以将它们扩展到列表的编码.
 下面展示了如何对上文定义的 `NtS` 和 `StN` 函数进行这种处理. 
 
-我们从 {{ref:lem:prefixfreetransformation}} 的"Python 证明"开始：一种将任意表示转换为 **前缀无歧义** 表示的方法.
-下面的函数 `prefixfree` 接受一对编码和解码函数作为输入, 并返回一个三元组函数, 其中包含 **前缀无歧义** 的编码和解码函数, 以及一个检查字符串是否为对象有效编码的函数.
+我们从 {{ref:lem:prefixfreetransformation}} 的"Python 证明"开始: 一种将任意表示转换为 **前缀无关** 表示的方法.
+下面的函数 `prefixfree` 接受一对编码和解码函数作为输入, 并返回一个三元组函数, 其中包含 **前缀无关** 的编码和解码函数, 以及一个检查字符串是否为对象有效编码的函数.
 
 
 ```python
 # 接受 encode 和 decode 函数, 分别将对象映射为比特列表以及反向映射, 
 # 并返回 pfencode 和 pfdecode 函数, 
-# 以前缀无歧义的方式将对象映射为比特列表以及反向映射. 
+# 以前缀无关的方式将对象映射为比特列表以及反向映射. 
 # 同时返回一个 pfvalid 函数, 用于判断一个比特列表是否为有效编码
 
 def prefixfree(encode, decode):
@@ -874,7 +874,7 @@ pfvalidM(pfNtS(234))
 注意, 上述 Python 函数 `prefixfree` 接受两个 **Python 函数** 作为输入, 并输出三个 Python 函数作为结果. (无歧义的情况下, 我们会使用 "Python 函数" 或 "子程序" 这个术语来区分 Python 程序片段和数学意义上的函数.)  
 在本书中, 你不需要掌握 Python, 但你需要熟悉函数作为独立的数学对象的概念, 可以被用作其他函数的输入或输出.
 
-下面我们给出 {{ref:thm:prefixfree}} 的 "Python 证明". 具体来说, 我们展示一个函数 `represlists`, 它接受一个前缀无歧义表示方案作为输入 (通过编码、解码和有效性检测函数实现), 并输出一个用于表示该类对象 **列表** 的表示方案. 如果我们希望使这个表示也是前缀无歧义的, 那么可以再将其放入上面的 `prefixfree` 函数中.
+下面我们给出 {{ref:thm:prefixfree}} 的 "Python 证明". 具体来说, 我们展示一个函数 `represlists`, 它接受一个前缀无关表示方案作为输入 (通过编码、解码和有效性检测函数实现), 并输出一个用于表示该类对象 **列表** 的表示方案. 如果我们希望使这个表示也是前缀无关的, 那么可以再将其放入上面的 `prefixfree` 函数中.
 
 
 ```python
@@ -1031,7 +1031,7 @@ double   132.0: 00000000 00000000 00000000 00000000 00000000 10000000 01100000 0
 抽象地讲, **计算过程** 是一种将输入(二进制字符串)转换为输出(二进制字符串)的过程.  
 这种从输入到输出的变换可以通过现代计算机、遵循指令的人、某些自然系统的演化或其他任何手段完成.
 
-在后续章节中, 我们将转向对计算过程的数学定义, 但正如上文所讨论的, 目前我们关注 **计算任务**. 也就是说, 我们关注的是 **规约** 而非 **实现**.  
+在后续章节中, 我们将转向对计算过程的数学定义, 但正如上文所讨论的, 目前我们关注 **计算任务**. 也就是说, 我们关注的是 **规范** 而非 **实现**.  
 同样地, 在抽象层面上, 一个计算任务可以指定输出需要满足的任意输入输出关系.  
 然而, 在本书的大部分内容中, 我们将专注于最简单、最常见的任务: **计算函数**.  
 
@@ -1068,7 +1068,7 @@ double   132.0: 00000000 00000000 00000000 00000000 00000000 10000000 01100000 0
 
 ### 2.6.1 注意区分 **函数** 和 **程序**! { #secimplvsspec }
 
-你应始终注意 **规约** 与 **实现** 之间可能产生的混淆, 或等价地, **数学函数** 与 **算法/程序** 之间的混淆.  
+你应始终注意 **规范** 与 **实现** 之间可能产生的混淆, 或等价地, **数学函数** 与 **算法/程序** 之间的混淆.  
 编程语言(包括 Python)使用 **函数** 这个术语来表示(部分)程序, 这只会增加混乱.  
 这种混淆还源于数千年的数学历史, 在历史上人们通常通过一种计算方法来定义函数.
 
@@ -1141,7 +1141,7 @@ print(mult2(12,7))
 
 * 我们可以使用二进制字符串来表示希望计算的对象.  
 * 一个集合 $\mathcal{O}$ 的表示方案是从 $\mathcal{O}$ 到 $\{0,1\}^*$ 的一一映射.  
-* 我们可以使用前缀无歧义编码将集合 $\mathcal{O}$ 的表示"升级"为集合中元素列表的表示.  
+* 我们可以使用前缀无关编码将集合 $\mathcal{O}$ 的表示"升级"为集合中元素列表的表示.  
 * 一个基本的计算任务是 **计算函数** $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 的任务. 这个任务不仅包括乘法、因式分解等算术计算, 还涵盖了科学计算、人工智能、图像处理、数据挖掘等众多领域中的其他任务.  
 * 我们将研究如何找到(或至少给出界限)计算各种有趣函数 $F$ 的 **最优算法** 的问题.
 
@@ -1149,137 +1149,142 @@ print(mult2(12,7))
 
 ```admonish quote title=""
 {{proc}}
-Which one of these objects can be represented by a binary string?
 
-a. An integer $x$
+以下哪个对象可以用二进制字符串表示? 
 
-b. An undirected graph $G$.
+a. 一个整数 $x$
 
-c. A directed graph $H$
+b. 一个无向图 $G$
 
-d. All of the above.
+c. 一个有向图 $H$
+
+d. 以上所有
+
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:binaryrep}[Binary representation]
-a. Prove that the function $NtS:\N \rightarrow \{0,1\}^*$ of the binary representation defined in {{eqref:eq:ntseq}} satisfies that for every $n\in \N$, if $x = NtS(n)$ then $|x| =1+\max(0,\floor{\log_2 n})$ and $x_i = \floor{x/2^{\floor{\log_2 n}-i}} \mod 2$.
+{{proc}}{pro:binaryrep}[二进制表示]
+a. 证明在 {{eqref:eq:ntseq}} 中定义的二进制表示函数 $NtS:\mathbb{N} \rightarrow \{0,1\}^*$ 满足对于每个 $n\in \mathbb{N}$, 如果 $x = NtS(n)$, 那么 $|x| =1+\max(0,\lfloor \log_2 n \rfloor)$ 且 $x_i = \lfloor x / 2^{\lfloor \log_2 n \rfloor - i} \rfloor \mod 2$. 
 
-b. Prove that $NtS$ is a one to one function by coming up with a function $StN:\{0,1\}^* \rightarrow \N$ such that $StN(NtS(n))=n$ for every $n\in \N$.
+b. 给出一个函数 $StN:\{0,1\}^* \rightarrow \mathbb{N}$ 使得对于每个 $n\in \mathbb{N}$ 都有 $StN(NtS(n))=n$, 从而证明 $NtS$ 是一个单射函数. 
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:compactrepletters}[More compact than ASCII representation]
-The ASCII encoding can be used to encode a string of $n$ English letters as a $7n$ bit binary string, but in this exercise, we ask about finding a more compact representation for strings of English lowercase letters.
+{{proc}}{pro:compactrepletters}[更加紧凑的ASCII表示]
+ASCII 编码可以将由 $n$ 个英文字母组成的字符串编码为一个 $7n$ 位的二进制字符串, 但在本练习中, 我们要求为小写英文字母字符串寻找一种更紧凑的表示方法. 
 
-1. Prove that there exists a representation scheme $(E,D)$ for strings over the 26-letter alphabet $\{ a, b,c,\ldots,z \}$ as binary strings such that for every $n>0$ and length-$n$ string $x \in \{ a,b,\ldots,z \}^n$, the representation $E(x)$ is a binary string of length at most  $4.8n+1000$. In other words, prove that for every $n$, there exists a one-to-one function $E:\{a,b,\ldots, z\}^n \rightarrow \{0,1\}^{\lfloor 4.8n +1000 \rfloor}$.
-2. Prove that there exists _no_ representation scheme for strings over the alphabet $\{ a, b,\ldots,z \}$ as binary strings such that for every length-$n$ string $x \in \{ a,b,\ldots, z\}^n$, the representation $E(x)$ is a binary string of length  $\lfloor 4.6n+1000 \rfloor$. In other words, prove that there exists some $n>0$ such that there is no one-to-one function $E:\{a,b,\ldots,z \}^n \rightarrow \{0,1\}^{\lfloor 4.6n + 1000 \rfloor}$.
-3. Python's `bz2.compress` function is a mapping from strings to strings,  which uses the _lossless_ (and hence _one to one_) [bzip2](https://en.wikipedia.org/wiki/Bzip2) algorithm for compression.  After converting to lowercase, and truncating spaces and numbers, the text of Tolstoy's "War and Peace" contains $n=2,517,262$. Yet, if we run `bz2.compress` on the string of the text of "War and Peace" we get a string of length $k=6,274,768$ bits, which is only $2.49n$ (and in particular much smaller than $4.6n$). Explain why this does not contradict your answer to the previous question.
-4. Interestingly, if we try to apply `bz2.compress` on a _random_ string, we get much worse performance. In my experiments, I got a ratio of about $4.78$ between the number of bits in the output and the number of characters in the input.  However, one could imagine that one could do better and that there exists a company called "Pied Piper" with an algorithm that can losslessly compress a string of $n$ random lowercase letters to fewer than $4.6n$ bits.^[Actually that particular fictional company uses a metric that focuses more on compression _speed_ then _ratio_, see [here](https://blogs.dropbox.com/tech/2016/06/lossless-compression-with-brotli/) and [here](https://www.jefftk.com/p/weissman-scores-useful).] Show that this is not the case by proving that for _every_ $n>100$ and one to one function $Encode:\{a,\ldots,z\}^{n} \rightarrow \{0,1\}^*$, if we let $Z$ be the random variable  $|Encode(x)|$ (i.e., the length of $Encode(x)$) for $x$ chosen uniformly at random from the set $\{a,\ldots,z\}^n$, then the expected value of $Z$ is at least $4.6n$.
+1. 证明存在一种表示方案 $(E,D)$, 用于将字母表 $\{ a, b, c, \ldots, z \}$(共 26 个字母)上的字符串编码为二进制字符串, 使得对于每个 $n>0$ 和长度为 $n$ 的字符串 $x \in \{ a, b, \ldots, z \}^n$, 表示 $E(x)$ 是一个长度不超过 $\lfloor 4.8n +1000 \rfloor$ 的二进制字符串. 换言之, 证明对于每个 $n$, 存在一个单射函数 $E: \{a, b, \ldots, z\}^n \rightarrow \{0,1\}^{\lfloor 4.8n +1000 \rfloor}$. 
+   
+2. 证明不存在一种表示方案, 用于将字母表 $\{ a, b, \ldots, z \}$ 上的字符串编码为二进制字符串, 使得对于每个长度为 $n$ 的字符串 $x \in \{ a, b, \ldots, z \}^n$, 表示 $E(x)$ 是一个长度为 $\lfloor 4.6n +1000 \rfloor$ 的二进制字符串. 换言之, 证明存在某个 $n>0$, 使得不存在单射函数 $E: \{a, b, \ldots, z\}^n \rightarrow \{0,1\}^{\lfloor 4.6n +1000 \rfloor}$. 
+
+3. Python 的 `bz2.compress` 函数是一个从字符串到字符串的映射, 它使用无损(因此是单射)的 [bzip2](https://en.wikipedia.org/wiki/Bzip2) 算法进行压缩. 在转换为小写并截去空格和数字后, 托尔斯泰的《战争与和平》文本包含 $n=2,517,262$ 个字符. 然而, 如果我们对《战争与和平》的文本字符串运行 `bz2.compress`, 会得到一个长度为 $k=6,274,768$ 位的字符串, 这只有 $2.49n$(尤其远小于 $4.6n$). 解释为什么这不与你对前一个问题的回答相矛盾. 
+
+4. 有趣的是, 如果我们尝试对**随机**字符串应用 `bz2.compress`, 性能会差得多. 在我的实验中, 输出位数与输入字符数之间的比率约为 $4.78$. 然而, 有人可能会想象可以做得更好, 并且存在一家名为“Pied Piper”的公司, 其算法可以将由 $n$ 个随机小写字母组成的字符串无损压缩到少于 $4.6n$ 位. {{footnote:实际上, 这家虚构公司使用的指标更关注压缩速度而非压缩率, 参见[这里](https://blogs.dropbox.com/tech/2016/06/lossless-compression-with-brotli/)和[这里](https://www.jefftk.com/p/weissman-scores-useful). }} 通过证明对于每个 $n>100$ 和单射函数 $Encode: \{a, \ldots, z\}^{n} \rightarrow \{0,1\}^*$, 如果我们令 $Z$ 为随机变量 $|Encode(x)|$(即 $Encode(x)$ 的长度), 其中 $x$ 是从集合 $\{a, \ldots, z\}^n$ 中均匀随机选择的, 则 $Z$ 的期望值至少为 $4.6n$, 来说明这种情况不可能发生. 
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:representinggraphs}[Representing graphs: upper bound]
-Show that there is a string representation of directed graphs with vertex set $[n]$ and degree at most $10$ that uses at most $1000 n\log n$ bits. More formally, show the following: Suppose we define for every $n\in\mathbb{N}$, the set $G_n$ as the set containing all directed graphs (with no self loops) over the vertex set $[n]$ where every vertex has degree at most $10$. Then, prove that for every sufficiently large $n$, there exists a one-to-one function $E:G_n \rightarrow \{0,1\}^{\lfloor 1000 n \log n \rfloor}$.
+{{proc}}{pro:representinggraphs}[表示图: 上界]
+证明存在一个字符串表示顶点集为 $[n]$、度数最多为10的有向图, 该表示最多使用 $1000 n\log n$ 比特. 更正式地, 证明如下: 假设对于每个 $n\in\mathbb{N}$, 我们定义集合 $G_n$ 为包含所有在顶点集 $[n]$ 上的有向图(无自环)的集合, 其中每个顶点的度数最多为10. 那么, 证明对于每个足够大的 $n$, 存在一个一对一函数 $E:G_n \rightarrow \{0,1\}^{\lfloor 1000 n \log n \rfloor}$. 
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:represgraphlb}[Representing graphs: lower bound]
-1. Define $S_n$ to be the set of one-to-one and onto functions mapping $[n]$ to $[n]$. Prove that there is a one-to-one mapping from $S_n$ to $G_{2n}$, where $G_{2n}$ is the set defined in {{ref:pro:representinggraphs}} above.
-2. In this question you will show that one cannot improve the representation of {{ref:pro:representinggraphs}} to length $o(n \log n)$. Specifically, prove for every sufficiently large  $n\in \mathbb{N}$ there is _no_ one-to-one function $E:G_n \rightarrow \{0,1\}^{\lfloor 0.001 n \log n \rfloor +1000}$.
+{{proc}}{pro:represgraphlb}[表示图: 下界]
+1. 定义 $S_n$ 为从 $[n]$ 到 $[n]$ 的双射函数( 即置换)的集合. 证明存在一个从 $S_n$ 到 $G_{2n}$ 的单射映射, 其中 $G_{2n}$ 是上面 {{ref:pro:representinggraphs}} 中定义的集合. 
+2. 证明无法将 {{ref:pro:representinggraphs}} 中的表示改进到 $o(n \log n)$ 的长度. 具体来说, 证明对于每个足够大的 $n\in \mathbb{N}$, 不存在单射函数 $E:G_n \rightarrow \{0,1\}^{\lfloor 0.001 n \log n \rfloor +1000}$. 
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:multrepres}[Multiplying in different representation]
-Recall that the grade-school algorithm for multiplying two numbers requires $O(n^2)$ operations. Suppose that instead of using decimal representation, we use one of the following representations $R(x)$ to represent a number $x$ between $0$ and $10^n-1$. For which one of these representations you can still multiply the numbers in $O(n^2)$ operations?
+{{proc}}{pro:multrepres}[不同表示法下的乘法运算]
+回想一下, 小学阶段计算两个数乘法的算法需要$O(n^2)$次操作. 假设我们不使用十进制表示法, 而是使用以下某种表示法$R(x)$来表示一个介于$0$到$10^n-1$之间的数$x$. 对于以下哪种表示法, 你仍然可以在$O(n^2)$次操作内完成两个数的乘法？
 
-a. The standard binary representation: $B(x)=(x_0,\ldots,x_{k})$ where $x = \sum_{i=0}^{k} x_i 2^i$ and $k$ is the largest number s.t. $x \geq 2^k$.
+a. 标准二进制表示法: $B(x)=(x_0,\ldots,x_{k})$, 其中$x = \sum_{i=0}^{k} x_i 2^i$, 且$k$是满足$x \geq 2^k$的最大整数. 
 
-b. The reverse binary representation: $B(x) = (x_{k},\ldots,x_0)$ where $x_i$ is defined as above for $i=0,\ldots,k-1$. \
+b. 反向二进制表示法: $B(x) = (x_{k},\ldots,x_0)$, 其中$x_i$的定义与上述相同, $i=0,\ldots,k-1$. 
 
-c. Binary coded decimal representation: $B(x)=(y_0,\ldots,y_{n-1})$ where $y_i \in \{0,1\}^4$ represents the $i^{th}$ decimal digit of $x$ mapping $0$ to $0000$, $1$ to $0001$, $2$ to $0010$, etc. (i.e. $9$ maps to $1001$)
+c. 二进制编码的十进制表示法: $B(x)=(y_0,\ldots,y_{n-1})$, 其中$y_i \in {0,1}^4$表示$x$的第$i$个十进制数字, 映射关系为$0$对应$0000$, $1$对应$0001$, $2$对应$0010$, 以此类推( 例如$9$对应$1001$). 
 
-d.  All of the above.
+d. 以上所有选项. 
 ```
 
 ```admonish quote title=""
 {{proc}}
-Suppose that $R:\N \rightarrow \{0,1\}^*$ corresponds to representing a number $x$ as a string of $x$ $1$'s, (e.g., $R(4)=1111$, $R(7)=1111111$, etc.).
-If $x,y$ are numbers between $0$ and $10^n -1$, can we still multiply $x$ and $y$ using $O(n^2)$ operations if we are given them in the representation $R(\cdot)$?
+假设 $R:\N \rightarrow \{0,1\}^*$ 对应于将一个数 $x$ 表示为一个由 $x$ 个 1 组成的字符串( 例如, $R(4)=1111$, $R(7)=1111111$ 等). 如果 $x$ 和 $y$ 是介于 $0$ 和 $10^n -1$ 之间的数, 那么当以 $R(\cdot)$ 表示形式给出它们时, 我们是否仍然能用 $O(n^2)$ 次操作将 $x$ 和 $y$ 相乘？
 ```
 
 ```admonish quote title=""
 {{proc}}
-Recall that if $F$ is a one-to-one and onto function mapping elements of a finite set $U$ into a finite set $V$ then the sizes of $U$ and $V$ are the same. Let $B:\N\rightarrow\{0,1\}^*$ be the function such that for every $x\in\N$, $B(x)$ is the binary representation of $x$.
+回忆一下, 如果 $F$ 是一个一一对应且满射的函数, 将有限集 $U$ 中的元素映射到有限集 $V$, 那么 $U$ 和 $V$ 的大小相同. 令 $B:\N\rightarrow\{0,1\}^*$ 是一个函数, 使得对于每个 $x\in\N$, $B(x)$ 是 $x$ 的二进制表示. 
 
-1. Prove that $x < 2^k$ if and only if $|B(x)| \leq k$.
-2. Use 1. to compute the size of the set $\{ y \in \{0,1\}^* : |y| \leq k \}$ where $|y|$ denotes the length of the string $y$.
-3. Use 1. and 2. to prove that $2^k-1 = 1 + 2 + 4+ \cdots + 2^{k-1}$.
+证明 $x < 2^k$ 当且仅当 $|B(x)| \leq k$. 
+
+使用第1题来计算集合 ${ y \in \{0,1\}^* : |y| \leq k }$ 的大小, 其中 $|y|$ 表示字符串 $y$ 的长度. 
+
+使用第1题和第2题来证明 $2^k-1 = 1 + 2 + 4+ \cdots + 2^{k-1}$. 
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:prefix-free-tuples}[Prefix-free encoding of tuples]
-Suppose that $F:\N\rightarrow\{0,1\}^*$ is a one-to-one function that is _prefix-free_ in the sense that there is no $a\neq b$ s.t.  $F(a)$ is a prefix of $F(b)$.
+{{proc}}{pro:prefix-free-tuples}[元组的前缀无关编码]
+假设 $ F:\mathbb{N} \rightarrow \{0,1\}^* $ 是一个一对一函数, 且是 **前缀无关** 的, 即不存在 $ a \neq b $ 使得 $ F(a) $ 是 $ F(b) $ 的前缀. 
 
-a. Prove that $F_2:\N\times \N \rightarrow \{0,1\}^*$, defined as $F_2(a,b) = F(a)F(b)$ (i.e., the concatenation of $F(a)$ and $F(b)$) is a one-to-one function.
+a. 证明 $ F_2:\mathbb{N} \times \mathbb{N} \rightarrow \{0,1\}^* $, 定义为 $ F_2(a,b) = F(a)F(b) $( 即 $ F(a) $ 和 $ F(b) $ 的连接)是一个一对一函数. 
 
-b. Prove that $F_*:\N^*\rightarrow\{0,1\}^*$ defined as $F_*(a_1,\ldots,a_k) = F(a_1)\cdots F(a_k)$ is a one-to-one function, where $\N^*$ denotes the set of all finite-length lists of natural numbers.
+b. 证明 $ F_*:\mathbb{N}^* \rightarrow \{0,1\}^* $ 定义为 $ F_*(a_1,\ldots,a_k) = F(a_1)\cdots F(a_k) $ 是一个一对一函数, 其中 $ \mathbb{N}^* $ 表示所有有限长度的自然数列表的集合. 
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:prefix-free}[More efficient prefix-free transformation]
-Suppose that $F:O\rightarrow\{0,1\}^*$ is some (not necessarily prefix-free) representation of the objects in the set $O$, and $G:\N\rightarrow\{0,1\}^*$ is a prefix-free representation of the natural numbers.  Define $F'(o)=G(|F(o)|)F(o)$ (i.e., the concatenation of the representation of the length $F(o)$ and $F(o)$).
+{{proc}}{pro:prefix-free}[更高效的前缀无关转换]
+假设 $F:O\rightarrow\{0,1\}^*$ 是集合 $O$ 中对象的一种表示法( 不一定前缀无关), 且 $G:\N\rightarrow\{0,1\}^*$ 是自然数的一种前缀无关表示法. 定义 $F'(o)=G(|F(o)|)F(o)$( 即, 将 $F(o)$ 的长度的表示与 $F(o)$ 本身连接起来). 
 
-a. Prove that $F'$ is a prefix-free representation of $O$.
+a. 证明 $F'$ 是 $O$ 的一种前缀无关表示法. 
 
-b. Show that we can transform any representation to a prefix-free one by a modification that takes a $k$ bit string into a string of length at most $k+O(\log k)$.
+b. 证明我们可以通过一种修改将任何表示法转换为前缀无关的表示法, 该修改将一个 $k$ 位字符串转换为长度至多为 $k+O(\log k)$ 的字符串. 
 
-c. Show that we can transform any representation to a prefix-free one by a modification that takes a $k$ bit string into a string of length at most $k+ \log k + O(\log\log k)$.^[Hint: Think recursively how to represent the length of the string.]
+c. 证明我们可以通过一种修改将任何表示法转换为前缀无关的表示法, 该修改将一个 $k$ 位字符串转换为长度至多为 $k+ \log k + O(\log\log k)$ 的字符串. {{footnote: 提示: 递归地思考如何表示字符串的长度. }}
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:prefix-free-lb}[Kraft's Inequality]
-Suppose that $S \subseteq \{0,1\}^*$ is some finite prefix-free set, and let $n$ some number larger than $\max \{ |x| : x\in X \}$.
+{{proc}}{pro:prefix-free-lb}[Kraft不等式]
+假设 $ S \subseteq \{0,1\}^* $ 是一个有限的前缀无关集合, 且令 $ n $ 是某个大于 $ \max \{ |x| : x\in S \} $ 的数. 
 
-a. For every $x\in S$, let $L(x) \subseteq \{0,1\}^n$ denote all the length-$n$ strings whose first $k$ bits are $x_0,\ldots,x_{k-1}$. Prove that __(1)__ $|L(x)|=2^{n-|x|}$ and __(2)__ For every distinct $x,x' \in S$,  $L(x)$ is disjoint from $L(x')$.
+a. 对于每个 $ x \in S $, 令 $ L(x) \subseteq \{0,1\}^n $ 表示所有长度为 $ n $ 的字符串中前 $ k $ 位等于 $ x_0,\ldots,x_{k-1} $ 的字符串集合. 证明: ( 1)$ |L(x)| = 2^{n-|x|} $; ( 2)对于任意不同的 $ x, x' \in S $, $ L(x) $ 与 $ L(x') $ 是不相交的. 
 
-b. Prove that $\sum_{x\in S}2^{-|x|} \leq 1$. (_Hint:_ first show that $\sum_{x \in S} |L(x)| \leq 2^n$.)
+b. 证明 $ \sum_{x\in S} 2^{-|x|} \leq 1 $. ( 提示: 首先证明 $ \sum_{x \in S} |L(x)| \leq 2^n $. )
 
-c. Prove that there is no prefix-free encoding of strings with less than logarithmic overhead. That is, prove that there is no function $PF:\{0,1\}^* \rightarrow \{0,1\}^*$ s.t. $|PF(x)| \leq |x|+0.9\log |x|$ for every sufficiently large $x\in \{0,1\}^*$ and such that the set $\{ PF(x) : x\in \{0,1\}^* \}$ is prefix-free. The factor $0.9$ is arbitrary; all that matters is that it is less than $1$.
+c. 证明不存在对字符串的前缀无关编码, 其开销小于对数. 即, 证明不存在函数 $ PF:\{0,1\}^* \rightarrow \{0,1\}^* $, 使得对于每个足够大的 $ x \in \{0,1\}^* $, 满足 $ |PF(x)| \leq |x| + 0.9 \log |x| $, 并且集合 $ \{ PF(x) : x\in \{0,1\}^* \} $ 是前缀无关的. 其中因子 $ 0.9 $ 是任意的, 关键是其值小于 $ 1 $. 
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:onetoonecomp}[Composition of one-to-one functions]
-Prove that for every two one-to-one functions $F:S \rightarrow T$ and $G:T \rightarrow U$, the function $H:S \rightarrow U$ defined as $H(x)=G(F(x))$ is one to one.
+{{proc}}{pro:onetoonecomp}[单射函数的复合]
+证明对于任意两个单射函数 $F:S \rightarrow T$ 和 $G:T \rightarrow U$, 由 $H(x)=G(F(x))$ 定义的函数 $H:S \rightarrow U$ 是单射的. 
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:naturalsstringsmap}[Natural numbers and strings]
-1. We have shown that the natural numbers can be represented as strings. Prove that the other direction holds as well: that there is a one-to-one map $StN:\{0,1\}^* \rightarrow \N$. ($StN$ stands for "strings to numbers.")
-2. Recall that Cantor proved that there is no one-to-one map $RtN:\R \rightarrow \N$. Show that Cantor's result implies {{ref:thm:cantor}}.
+{{proc}}{pro:naturalsstringsmap}[自然数与字符串]
+1. 我们已经证明了自然数可以表示为字符串. 证明反方向也成立: 存在一个一对一映射 $StN:\{0,1\}^* \rightarrow \N$. ( $StN$ 表示“字符串到数字”. )
+2. 回忆一下, Cantor 证明了不存在一对一映射 $RtN:\R \rightarrow \N$. 证明 Cantor 的结果蕴含 {{ref:thm:cantor}}. 
 ```
 
 ```admonish quote title=""
-{{proc}}{pro:listsinttonum}[Map lists of integers to a number]
-Recall that for every set $S$, the set $S^*$ is defined as the set of all finite sequences of members of $S$ (i.e., $S^* = \{ (x_0,\ldots,x_{n-1}) \;|\; n\in\mathbb{N} \;,\; \forall_{i\in [n]} x_i \in S \}$ ). Prove that there is a one-one-map from $\mathbb{Z}^*$ to $\mathbb{N}$ where $\mathbb{Z}$ is the set of $\{ \ldots, -3 , -2 , -1,0,+1,+2,+3,\ldots \}$ of all integers.
+{{proc}}{pro:listsinttonum}[将整数序列映射到数]
+回忆一下, 对于每个集合 $S$, 集合 $S^*$ 定义为 $S$ 中元素的所有有限序列的集合( 即 $S^ = { (x_0,\ldots,x_{n-1}) ;|; n\in\mathbb{N} ;,; \forall_{i\in [n]} x_i \in S }$ ). 证明存在一个从 $\mathbb{Z}^*$ 到 $\mathbb{N}$ 的单射映射, 其中 $\mathbb{Z}$ 是所有整数的集合 ${ \ldots, -3 , -2 , -1,0,+1,+2,+3,\ldots }$. 
 ```
 
 ## 2.8 参考书目 { #bibnotesrepres }
 
-The study of representing data as strings, including issues such as _compression_ and _error corrections_ falls under the purview of _information theory_, as covered in the classic textbook of Cover and Thomas [@CoverThomas06].
-Representations are also studied in the field of _data structures design_, as covered in texts such as  [@CLRS].
+将数据表示为字符串的研究( 包括 **压缩** 和 **纠错** 等问题)属于 **信息论** 的范畴, 这在 Cover 和 Thomas 的经典教材 ([Cover, Thomas, 2006](https://scholar.google.com/scholar?hl=en&q=Cover,+Thomas+Elements+of+information+theory+2nd+edition)) 中有涵盖. 
+表示法也在 **数据结构设计** 领域中被研究, 相关教材如 ([Cormen, Leiserson, Rivest, Stein, 2009](https://scholar.google.com/scholar?hl=en&q=Cormen,+Leiserson,+Rivest,+Stein+Introduction+to+Algorithms,+3rd+Edition)). 
 
-The question of whether to represent integers with the most significant digit first or last is known as [Big Endian vs. Little Endian](https://betterexplained.com/articles/understanding-big-and-little-endian-byte-order/) representation.
-This terminology comes from Cohen's [@cohen1981holy]  entertaining and informative paper about the conflict between adherents of both schools which he compared to the warring tribes in Jonathan Swift's _"Gulliver's Travels"_.
-The two's complement representation of signed integers was suggested in von Neumann's classic report [@vonNeumann45] that detailed the design approaches for a stored-program computer, though similar representations have been used even earlier in abacus and other mechanical computation devices.
+关于用最高有效位在前还是在后表示整数的问题, 被称为[大端序与小端序](https://betterexplained.com/articles/understanding-big-and-little-endian-byte-order/)表示法. 
+这一术语来源于 Cohen 的 ([Cohen, 1981](https://scholar.google.com/scholar?hl=en&q=Cohen+On+holy+wars+and+a+plea+for+peace)) 那篇兼具趣味性与知识性的论文, 他在文中将两派拥护者之间的冲突比作乔纳森·斯威夫特的《格列佛游记》中交战不休的部落. 
+有符号整数的二进制补码表示法是在冯·诺依曼的经典报告 ([von Neumann, 1945](https://scholar.google.com/scholar?hl=en&q=von+Neumann+First+Draft+of+a+Report+on+the+EDVAC)) 中提出的, 该报告详细阐述了存储程序计算机的设计方案, 不过类似的表示法甚至更早就在算盘和其他机械计算设备中得到了使用. 
 
-The idea that we should separate the _definition_ or _specification_ of a function from its _implementation_ or _computation_ might seem "obvious," but it took quite a lot of time for mathematicians to arrive at this viewpoint.
-Historically, a function $F$ was identified by rules or formulas showing how to derive the output from the input.
-As we discuss in greater depth in  [第9章](./chapter_9.md), in the 1800s this somewhat informal notion of a function started "breaking at the seams," and eventually mathematicians arrived at the more rigorous definition of a function as an arbitrary assignment of input to outputs.
-While many functions may be described (or computed) by one or more formulas, today we do not consider that to be an essential property of functions, and also allow functions that do not correspond to any "nice" formula.
+我们应当将函数的 **定义** 或 **规范** 与其 **实现** 或 **计算** 分离开来, 这一想法看似"显而易见", 但数学家们花了相当长的时间才达成这一观点. 
+历史上, 函数 $F$ 是通过展示如何从输入推导出输出的规则或公式来标识的. 正如我们在[第9章](./chapter_9.md)中更深入讨论的那样, 在 19 世纪, 这种有些非正式的函数概念开始"出现裂痕", 最终数学家们得出了更严谨的定义, 即函数是输入到输出的任意赋值. 
+虽然许多函数可以通过一个或多个公式来描述( 或计算), 但如今我们并不认为这是函数的基本属性, 也允许存在不对应于任何"优美"公式的函数. 
 
-We have mentioned that all representations of the real numbers are inherently _approximate_. Thus an important endeavor is to understand what guarantees we can offer on the approximation quality of the output of an algorithm, as a function of the approximation quality of the inputs. This question is known as the question of determining the [numerical stability](https://en.wikipedia.org/wiki/Numerical_stability) of given equations.
-The  [Floating-Point Guide website](https://floating-point-gui.de/) contains an extensive description of the floating-point representation, as well the many ways in which it could subtly fail, see also the website [0.30000000000000004.com](http://0.30000000000000004.com/).
+我们已经提到, 实数的所有表示法本质上都是 **近似的**. 因此, 一项重要的努力是理解, 我们能够就算法输出的近似质量提供何种保证, 并将其作为输入近似质量的函数. 这个问题被称为确定给定方程的[数值稳定性](https://en.wikipedia.org/wiki/Numerical_stability)的问题. 
+[浮点数指南网站](https://floating-point-gui.de/) 详细描述了浮点数表示法及其可能微妙失效的多种方式, 另请参阅网站 [0.30000000000000004.com](http://0.30000000000000004.com/). 
 
-Dauben [@Dauben90cantor] gives a biography of Cantor with emphasis on the development of his mathematical ideas. [@halmos1960naive] is a classic textbook on set theory, also including Cantor's theorem. Cantor's Theorem is also covered in many texts on discrete mathematics, including [@LehmanLeightonMeyer, @LewisZax19].
+Dauben ([Dauben, 1990](https://scholar.google.com/scholar?hl=en&q=Dauben+Georg+Cantor:+His+mathematics+and+philosophy+of+the+infinite)) 撰写了康托尔的传记, 重点介绍了他的数学思想发展历程. ([Halmos, 1960](https://scholar.google.com/scholar?hl=en&q=Halmos+Naive+set+theory)) 是一本关于集合论的经典教材, 也包括了康托尔定理. 康托尔定理也在许多离散数学教材中有所涵盖, 包括 ([Meyer, 2018](https://scholar.google.com/scholar?hl=en&q=Lehman,+Leighton,+Meyer+Mathematics+for+Computer+Science))([Lewis, Zax, 2019](https://scholar.google.com/scholar?hl=en&q=Lewis,+Zax+Essential+Discrete+Mathematics+for+Computer+Science)). 
 
-The adjacency matrix representation of graphs is not merely a convenient way to map a graph into a binary string, but it turns out that many natural notions and operations on matrices are useful for graphs as well. (For example, Google's PageRank algorithm relies on this viewpoint.)  The notes of [Spielman&#39;s course](http://www.cs.yale.edu/homes/spielman/561/) are an excellent source for this area, known as _spectral graph theory_. We will return to this view much later in this book when we talk about _random walks_.
+图的邻接矩阵表示法不仅仅是将图映射成二进制字符串的便捷方法, 而且事实证明, 矩阵的许多自然概念和运算对图也很有用. ( 例如, 谷歌的 PageRank 算法就依赖于这一观点. )[Spielman 课程](http://www.cs.yale.edu/homes/spielman/561/) 的笔记是这个领域( 称为 **谱图论** )的极佳资源. 我们将在本书后面讨论 **随机游走** 时, 重新回到这一观点. 
