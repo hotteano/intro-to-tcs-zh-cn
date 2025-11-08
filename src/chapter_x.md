@@ -90,7 +90,7 @@ print(solve_eq(10, 39))
 
 (...)
 
-我们也可以将公式 {{eqref:eqmajandornot}} 以"编程语言"的形式表示: 将其表达为一组指令, 用于在给定基本操作 $\AND, \OR, \NOT$ 的情况下计算 $\text{MAJ}$: 
+我们也可以将公式 {{eqref:eq:majandornot}} 以"编程语言"的形式表示: 将其表达为一组指令, 用于在给定基本操作 $\AND, \OR, \NOT$ 的情况下计算 $\text{MAJ}$: 
 
 ```python
 def MAJ(X[0],X[1],X[2]):
@@ -296,3 +296,12 @@ $
 
 - 杂记需要修复对文献的引用. 使用 `<a>` 编写引用.
 
+### 未完成章节中的引用: 
+
+以下是未完成的章节中的引用
+ 
+{{wip}}{thm:circuit-univ}
+{{wip}}{thm:NAND-univ}
+{{wip}}{thm:NAND-univ-improved}
+{{wip}}{thm:lookup}
+{{wip}}{thm:chernoff}
