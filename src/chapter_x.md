@@ -90,7 +90,7 @@ print(solve_eq(10, 39))
 
 (...)
 
-我们也可以将公式 {{eqref:eqmajandornot}} 以"编程语言"的形式表示: 将其表达为一组指令, 用于在给定基本操作 $\AND, \OR, \NOT$ 的情况下计算 $\text{MAJ}$: 
+我们也可以将公式 {{eqref:eq:majandornot}} 以"编程语言"的形式表示: 将其表达为一组指令, 用于在给定基本操作 $\AND, \OR, \NOT$ 的情况下计算 $\text{MAJ}$: 
 
 ```python
 def MAJ(X[0],X[1],X[2]):
@@ -115,7 +115,7 @@ $$
 
 ```admonish quote title=""
 {{lemc}}{templatelem}
-对于每个 $a,b \in \{0,1\}$, 在输入 $a,b$ 时, {{ref: XORfromAONalg}} 输出 $a + b \mod 2$. 
+对于每个 $a,b \in \{0,1\}$, 在输入 $a,b$ 时, {{ref:alg:XORfromAON}} 输出 $a + b \mod 2$. 
 ```
 
 ```admonish quote title=""
@@ -148,7 +148,7 @@ $$
 
 ```admonish proof collapsible=true, title = "证明"
 对于任意 $a,b$, 有 $\XOR(a,b)=1$ 当且仅当 $a$ 与 $b$ 不同. 
-令 $w1 = \AND(a,b)$, $w2 = \NOT(\AND(a,b))$, $w3 = \OR(a,b)$. 则在输入 $a,b \in \{0,1\}$ 时, {{ref: XORfromAONalg}} 输出  
+令 $w1 = \AND(a,b)$, $w2 = \NOT(\AND(a,b))$, $w3 = \OR(a,b)$. 则在输入 $a,b \in \{0,1\}$ 时, {{ref:alg:XORfromAON}} 输出  
 $$
 \AND(w2, w3)
 $$ 
@@ -296,3 +296,12 @@ $
 
 - 杂记需要修复对文献的引用. 使用 `<a>` 编写引用.
 
+### 未完成章节中的引用: 
+
+以下是未完成的章节中的引用
+ 
+{{wip}}{thm:circuit-univ}
+{{wip}}{thm:NAND-univ}
+{{wip}}{thm:NAND-univ-improved}
+{{wip}}{thm:lookup}
+{{wip}}{thm:chernoff}
