@@ -115,7 +115,7 @@ $$
 
 ```admonish quote title=""
 {{lemc}}{templatelem}
-对于每个 $a,b \in \{0,1\}$, 在输入 $a,b$ 时, {{ref: XORfromAONalg}} 输出 $a + b \mod 2$. 
+对于每个 $a,b \in \{0,1\}$, 在输入 $a,b$ 时, {{ref:alg:XORfromAON}} 输出 $a + b \mod 2$. 
 ```
 
 ```admonish quote title=""
@@ -148,7 +148,7 @@ $$
 
 ```admonish proof collapsible=true, title = "证明"
 对于任意 $a,b$, 有 $\XOR(a,b)=1$ 当且仅当 $a$ 与 $b$ 不同. 
-令 $w1 = \AND(a,b)$, $w2 = \NOT(\AND(a,b))$, $w3 = \OR(a,b)$. 则在输入 $a,b \in \{0,1\}$ 时, {{ref: XORfromAONalg}} 输出  
+令 $w1 = \AND(a,b)$, $w2 = \NOT(\AND(a,b))$, $w3 = \OR(a,b)$. 则在输入 $a,b \in \{0,1\}$ 时, {{ref:alg:XORfromAON}} 输出  
 $$
 \AND(w2, w3)
 $$ 
