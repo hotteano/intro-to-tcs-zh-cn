@@ -171,7 +171,7 @@ $$
 \end{cases} \;.
 $$
 
-也就是说, 对于每个 $x\in \{0,1\}^3$, 当且仅当 $x$ 的三个元素中至少有两个等于 $1$ 时, $\text{MAJ}(x)=1$. 你能用 $\AND$、$\OR$ 和 $\NOT$ 写出一个计算 $\text{MAJ}$ 的公式吗？ (此处建议你先停下来自己推导公式. 提示: 虽然某些函数需要用到 $\NOT$, 但计算 $\text{MAJ}$ 不需要使用它. ) 
+也就是说, 对于每个 $x\in \{0,1\}^3$, 当且仅当 $x$ 的三个元素中至少有两个等于 $1$ 时, $\text{MAJ}(x)=1$. 你能用 $\AND$、$\OR$ 和 $\NOT$ 写出一个计算 $\text{MAJ}$ 的公式吗?  (此处建议你先停下来自己推导公式. 提示: 虽然某些函数需要用到 $\NOT$, 但计算 $\text{MAJ}$ 不需要使用它. ) 
 
 我们先用文字重新表述 $\text{MAJ}(x)$: "当且仅当存在一对不同的元素 $i,j$, 且 $x_i$ 和 $x_j$ 都等于 $1$ 时, $\text{MAJ}(x)=1$. "  
 换句话说, $\text{MAJ}(x)=1$ 当且仅当 **$x_0=1$ 且 $x_1=1$**, **或** **$x_1=1$ 且 $x_2=1$**, **或** **$x_0=1$ 且 $x_2=1$**. 
@@ -343,9 +343,9 @@ print([f"XOR3({a},{b},{c})={XOR3(a,b,c)}" for a in [0,1] for b in [0,1] for c in
 
 1. 首先, 这一定义确实过于非正式. 我们既没有精确说明每一步到底做了什么, 也没有明确"将 $x$ 作为输入"究竟是什么意思. 
 
-2. 其次, 选择 $ \AND $、$ \OR $ 或 $ \NOT $ 看起来相当任意. 为什么不是 $ \XOR $ 和 $ \text{MAJ} $？为什么不允许加法和乘法这样的运算？又或者其他逻辑结构, 例如 `if/then` 或 `while`？
+2. 其次, 选择 $ \AND $、$ \OR $ 或 $ \NOT $ 看起来相当任意. 为什么不是 $ \XOR $ 和 $ \text{MAJ} $? 为什么不允许加法和乘法这样的运算? 又或者其他逻辑结构, 例如 `if/then` 或 `while`? 
 
-3. 第三, 我们是否确信该定义真的与实际计算有关？如果有人给出了这种算法的描述, 我们是否真的能够在现实中用它来计算相应的函数？
+3. 第三, 我们是否确信该定义真的与实际计算有关? 如果有人给出了这种算法的描述, 我们是否真的能够在现实中用它来计算相应的函数? 
 
 ```admonish pause title="暂停一下"
 这些问题将在很大程度上引导我们接下来的章节. 因此, 建议你重新阅读上述非正式定义, 并思考自己对这些问题的看法. 
@@ -385,7 +385,7 @@ print([f"XOR3({a},{b},{c})={XOR3(a,b,c)}" for a in [0,1] for b in [0,1] for c in
 对于一个 $n$ 输入的布尔电路 $C$, 我们在输入端放置 $x \in \{0,1\}^n$ 的比特, 然后沿导线传播信号, 直到到达输出端, 从而完成电路的计算, 参见 [图3.9](#boolancircfig). 
 
 ```admonish remark title="布尔电路的物理电路模拟" 
-<span id= "booleancircimprem">
+{{remc}}{rem:booleancircimp}
 
 布尔电路是一种 **数学模型**, 不一定直接对应于物理对象, 但它们可以被物理电路模拟.   
 
@@ -517,7 +517,7 @@ $\AND$、$\OR$ 和 $\NOT$ 门分别有两个、两个和一个入边. 若电路�
 * 我们也可以使用 **直线程序** 来描述这样的计算, 该程序的每一行形式为 `foo = AND(bar,blah)`、`foo = OR(bar,blah)` 和 `foo = NOT(bar)`, 其中 `foo`、`bar` 和 `blah` 是变量名.  (称其为 **直线程序**, 因为它不包含循环或分支 (例如 if/then) 语句. ) 
 
 为了更精确地描述第二种定义, 我们现在定义一种与布尔电路等价的 **编程语言**.   
-我们将这种编程语言称为 **AON-CIRC 编程语言** ("AON" 代表 $\AND/\OR/\NOT$；"CIRC" 代表 **circuit**) . 
+我们将这种编程语言称为 **AON-CIRC 编程语言** ("AON" 代表 $\AND/\OR/\NOT$; "CIRC" 代表 **circuit**) . 
 
 例如, 以下是一个 AON-CIRC 程序, 对于输入 $x \in \{0,1\}^2$, 输出 $\overline{x_0 \wedge x_1}$ (即对 $\AND(x_0,x_1)$ 应用 $\NOT$ 操作) : 
 
@@ -572,7 +572,7 @@ AON-CIRC 并不是一种实用的编程语言: 它仅用于教学目的, 用来�
 ~~~admonish solution collapsible=true
 编写这样的程序虽然繁琐, 但并不困难. 比较两个数字时, 我们首先比较它们的最高有效位, 然后依次比较下一位, 以此类推. 在数字仅有两位二进制的情况下, 这些比较特别简单. 由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字, 当且仅当满足以下任一条件: 
 
-1. $(a,b)$ 的最高有效位 $a$ 大于 $(c,d)$ 的最高有效位 $c$；  
+1. $(a,b)$ 的最高有效位 $a$ 大于 $(c,d)$ 的最高有效位 $c$;   
 
 或  
 
@@ -580,7 +580,7 @@ AON-CIRC 并不是一种实用的编程语言: 它仅用于教学目的, 用来�
 
 另一种等价表述为: 数字 $(a,b)$ 大于 $(c,d)$ 当且仅当 $a>c$ **或** ($a\ge c$ **且** $b>d$). 
 
-对于二进制位 $\alpha, \beta$, 条件 $\alpha > \beta$ 仅当 $\alpha = 1$ 且 $\beta = 0$, 也就是 $\AND(\alpha, \NOT(\beta)) = 1$；条件 $\alpha \ge \beta$ 则为 $\OR(\alpha, \NOT(\beta)) = 1$.   
+对于二进制位 $\alpha, \beta$, 条件 $\alpha > \beta$ 仅当 $\alpha = 1$ 且 $\beta = 0$, 也就是 $\AND(\alpha, \NOT(\beta)) = 1$; 条件 $\alpha \ge \beta$ 则为 $\OR(\alpha, \NOT(\beta)) = 1$.   
 
 结合这些观察, 可以得到用于计算 $\text{CMP}$ 的以下 AON-CIRC 程序: 
 
@@ -627,7 +627,7 @@ Y[0] = OR(temp_2,temp_6)
 
 ```admonish proof collapsible=true
 设 $f:\{0,1\}^n \rightarrow \{0,1\}^m$. 由于该定理是**"当且仅当"**的命题, 要证明它, 我们需要展示两个方向:   
-1. 将计算 $f$ 的 AON-CIRC 程序转换为计算 $f$ 的布尔电路；  
+1. 将计算 $f$ 的 AON-CIRC 程序转换为计算 $f$ 的布尔电路;   
 2. 将计算 $f$ 的布尔电路转换为计算 $f$ 的 AON-CIRC 程序.   
 
 我们先考虑第一个方向. 设 $P$ 是一个计算 $f$ 的 AON-CIRC 程序. 我们定义一个电路 $C$ 如下: 该电路有 $n$ 个输入和 $s$ 个门. 对于每个 $i \in [s]$, 若第 $i$ 行运算为 `foo = AND(bar,blah)`, 则电路中的第 $i$ 个门为 $\AND$ 门, 其入邻居连接到对应的第 $j$ 和第 $k$ 个门, $j$ 和 $k$ 分别对应于在第 $i$ 行之前最后一次写入变量 `bar` 和 `blah` 的行号.  (例如, 如果 $i=57$, 且 `bar` 最近一次被写入的是第 $35$ 行, `blah` 最近一次被写入的是第 $17$ 行, 则门 $57$ 的两个入邻居为门 $35$ 和门 $17$. )   
@@ -644,7 +644,7 @@ Y[0] = OR(temp_2,temp_6)
 $\OR$ 和 $\NOT$ 门同理.   
 
 再次验证, 对于每个输入 $x$, $P(x)=C(x)$, 因此程序计算与电路相同的函数.   
- (注意, 由于 $C$ 是合法电路, 根据 {{ref:def:booleancirc}}, $C$ 的每个输入顶点至少有一个出邻居, 并且恰有 $m$ 个输出门标记为 $0,\ldots,m-1$；因此所有变量 `X[0],\ldots,X[n-1]` 和 `Y[0],\ldots,Y[m-1]` 都会出现在程序 $P$ 中. ) 
+ (注意, 由于 $C$ 是合法电路, 根据 {{ref:def:booleancirc}}, $C$ 的每个输入顶点至少有一个出邻居, 并且恰有 $m$ 个输出门标记为 $0,\ldots,m-1$; 因此所有变量 `X[0],\ldots,X[n-1]` 和 `Y[0],\ldots,Y[m-1]` 都会出现在程序 $P$ 中. ) 
 ```
 
 <!--图3.13-->
@@ -677,7 +677,7 @@ $\OR$ 和 $\NOT$ 门同理.
 **晶体管** (transistor) 可以看作是一个具有两个输入和一个输出的电路: 输入称为**源极** (source) 和**栅极** (gate) , 输出称为**漏极** (sink) .   
 栅极决定了电流是否能够从源极流向漏极.   
 
-- 在**标准晶体管**中, 如果栅极处于"开 (ON) "状态, 则电流可以从源极流向漏极；如果栅极处于"关 (OFF) "状态, 则电流无法流动.   
+- 在**标准晶体管**中, 如果栅极处于"开 (ON) "状态, 则电流可以从源极流向漏极; 如果栅极处于"关 (OFF) "状态, 则电流无法流动.   
 - 在**互补晶体管**中, 情况正好相反: 栅极"关"时允许电流流动, 而栅极"开"时则不允许. 
 
 <!--图3.15-->
@@ -745,7 +745,7 @@ $\OR$ 和 $\NOT$ 门同理.
 
 研究人员已经成功[制造出基于 DNA 分子的晶体管](http://science.sciencemag.org/content/340/6132/554?iss=6132), 并由此构建逻辑门 (参见[图3.21](transcriptorfig)) . 诸如 [Cello 编程语言](https://www.cidarlab.org/cello) 这样的项目, 能够将布尔电路转换为 DNA 序列, 从而在细菌细胞中执行运算 (参见[该视频](https://youtu.be/-1fqgrF7fXU)) .   
 
-DNA 计算的动机之一是实现更高的并行性或存储密度；另一个动机是创造"智能生物因子", 这些因子或许能够被注入体内, 自我复制, 并修复或杀死因癌症等疾病损伤的细胞.   
+DNA 计算的动机之一是实现更高的并行性或存储密度; 另一个动机是创造"智能生物因子", 这些因子或许能够被注入体内, 自我复制, 并修复或杀死因癌症等疾病损伤的细胞.   
 
 当然, 生物系统中的计算不仅限于 DNA: 甚至更大规模的系统, 例如[鸟群](https://www.cs.princeton.edu/~chazelle/pubs/cacm12-natalg.pdf), 也可以被视为计算过程.   
 
@@ -1033,7 +1033,7 @@ foo = NAND(bar,blah)
 其中 `foo`, `bar` 和 `blah` 指代变量.
 
 ~~~admonish example title="我们的第一个 NAND-CIRC 程序"
-<span id="NANDprogramexample">
+{{exac}}{exa:NANDprogramexample}
 以下是一个 NAND-CIRC 程序的例子
 
 ```python
@@ -1045,7 +1045,7 @@ Y[0] = NAND(v,w)
 ~~~
 
 ```admonish pause
-你知道这个程序计算的是什么函数吗？提示: 你以前见过它. 
+你知道这个程序计算的是什么函数吗? 提示: 你以前见过它. 
 ```
 
 形式上, 就像我们在 {{ref:def:AONcirc}} 中对 AON-CIRC 所做的那样, 我们可以以自然的方式定义 NAND-CIRC 程序的计算概念: 
@@ -1062,7 +1062,7 @@ Y[0] = NAND(v,w)
 
 ```admonish quote title=""
 {{thmc}}{thm:NANDcircslequiv}[NAND电路与直线程序的等价性]
-对于任意 $f:\{0,1\}^n \rightarrow \{0,1\}^m$ 和任意 $s \geq m$，$f$ 可被一个含有 $s$ 行的 NAND-CIRC 程序计算，当且仅当 $f$ 可被一个含有 $s$ 个门的 NAND 电路计算。
+对于任意 $f:\{0,1\}^n \rightarrow \{0,1\}^m$ 和任意 $s \geq m$, $f$ 可被一个含有 $s$ 行的 NAND-CIRC 程序计算, 当且仅当 $f$ 可被一个含有 $s$ 个门的 NAND 电路计算. 
 ```
 
 <!--图3.30-->
@@ -1079,7 +1079,8 @@ Y[0] = NAND(v,w)
 我们的 [GitHub 仓库](https://github.com/boazbk/tcscode) 提供了"代码证明": 一个简单的 Python 程序 `AON2NAND`, 可以将 AON-CIRC 转换为等价的 NAND-CIRC 程序. 
 
 ```admonish remark title="NAND-CIRC编程语言是否图灵完备?(选读)"
-<span id="NANDturingcompleteness">
+{{remc}}{rem:NANDturingcompleteness}
+
 你可能听说过"图灵完备 (Turing Complete) "这一术语, 有时用来描述编程语言.  (如果没听过, 可以忽略本备注的其余部分: 我们将在 [第七章](./chapter_7.md) 中给出精确定义. )   
 
 如果听说过, 你可能会好奇 NAND-CIRC 编程语言是否具备这一属性. 答案是否定的, 或者更准确地说, "图灵完备"这个术语并不真正适用于 NAND-CIRC 编程语言.   
@@ -1100,7 +1101,7 @@ Y[0] = NAND(v,w)
 * $f$ 可以由最多 $O(s)$ 个门的 $\NAND$ 电路计算.   
 * $f$ 可以由最多 $O(s)$ 行的 NAND-CIRC 直线程序计算. 
 
-这里的"$O(s)$"表示上界最多为 $c \cdot s$, 其中 $c$ 是与 $n$ 无关的常数. 例如, 如果 $f$ 可以由 $s$ 个门的布尔电路计算, 那么它可以由最多 $3s$ 行的 NAND-CIRC 程序计算；如果 $f$ 可以由 $s$ 个门的 NAND 电路计算, 那么它可以由最多 $2s$ 行的 AON-CIRC 程序计算. 
+这里的"$O(s)$"表示上界最多为 $c \cdot s$, 其中 $c$ 是与 $n$ 无关的常数. 例如, 如果 $f$ 可以由 $s$ 个门的布尔电路计算, 那么它可以由最多 $3s$ 行的 NAND-CIRC 程序计算; 如果 $f$ 可以由 $s$ 个门的 NAND 电路计算, 那么它可以由最多 $2s$ 行的 AON-CIRC 程序计算. 
 ```
 
 ```admonish proof collapsible=true, title="证明思路"
@@ -1139,7 +1140,7 @@ AON-CIRC 程序对应于 $\{\AND,\OR,\NOT\}$ 程序, NAND-CIRC 程序对应于�
 这实际上是一个更一般现象的特例--$\NAND$ 和其他门集的**通用性**--我们将在本书后续章节中深入探讨. 
 
 ```admonish example title = "$\\\\{\\\text{IF , ZERO, ONE}\\\\}$电路"
-<span id="IZOcircuits">
+{{exac}}{exa:IZOcircuits}
 设 $\mathcal{F} = \{\text{IF , ZERO, ONE}\}$, 其中 $\text{ZERO}:\{0,1\} \rightarrow \{0\}$ 和 $\text{ONE}:\{0,1\} \rightarrow \{1\}$ 分别是常量零函数和常量一函数{{footnote: 也可以将这些函数定义为接受长度为零的输入, 这对模型的计算能力没有影响. }}, $\text{IF}:\{0,1\}^3 \rightarrow \{0,1\}$ 是一个函数, 对输入 $(a,b,c)$, 如果 $a=1$ 则输出 $b$, 否则输出 $c$.   
 
 则 $\mathcal{F}$ 是通用的.   
@@ -1302,7 +1303,7 @@ Jukna 的书 [Jukna, 2012](https://scholar.google.com/scholar?hl=en&q=Jukna+Bool
 Sheffer [Sheffer, 1913](https://scholar.google.com/scholar?hl=en&q=Sheffer+A+set+of+five+independent+postulates+for+Boolean+algebras,+with+application+to+logical+constants) 证明了 $\NAND$ 函数是通用的, 尽管早期 Peirce 的工作中也出现过类似结论, 参见 [Burks, 1978](https://scholar.google.com/scholar?hl=en&q=Burks+Booke+review:+Charles+S.+Peirce,+The+new+elements+of+mathematics).   
 怀特海德 (Whitehead) 和罗素 (Russell) 在其巨著《数学原理》 (**Principia Mathematica**) 中使用 $\NAND$ 作为逻辑基础 [Whitehead, Russell, 1912](https://scholar.google.com/scholar?hl=en&q=Whitehead,+Russell+Principia+mathematica).   
 Ernst 在其博士论文中 [Ernst, 2009](https://scholar.google.com/scholar?hl=en&q=Ernst+Optimal+combinational+multi-level+logic+synthesis) 实证研究了各种函数的最小 $\NAND$ 电路.   
-Nisan 和 Shocken 的书 [Nisan, Schocken, 2005](https://scholar.google.com/scholar?hl=en&q=Nisan,+Schocken+The+elements+of+computing+systems:+building+a+modern+computer+from+first+principles) 从 $\NAND$ 门开始构建计算系统, 直到高级程序和游戏 ("$\NAND$ 到 Tetris") ；另见网站 [nandtotetris.org](https://www.nand2tetris.org/). 
+Nisan 和 Shocken 的书 [Nisan, Schocken, 2005](https://scholar.google.com/scholar?hl=en&q=Nisan,+Schocken+The+elements+of+computing+systems:+building+a+modern+computer+from+first+principles) 从 $\NAND$ 门开始构建计算系统, 直到高级程序和游戏 ("$\NAND$ 到 Tetris") ; 另见网站 [nandtotetris.org](https://www.nand2tetris.org/). 
 
 我们在 {{ref:def:booleancirc}} 中将布尔电路的**大小**定义为其包含的门的数量. 这是文献中使用的两种约定之一. 另一种约定是将大小定义为**导线**的数量 (等价于门的数量加输入数量) .   
 在几乎所有情况下, 这差异很小, 但可能影响某些"病态例子"的电路规模复杂度, 例如常量零函数, 其输出几乎不依赖输入. 
