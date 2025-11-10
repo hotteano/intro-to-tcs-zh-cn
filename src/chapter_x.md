@@ -299,9 +299,5 @@ $
 ### 未完成章节中的引用: 
 
 以下是未完成的章节中的引用
- 
-{{wip}}{thm:circuit-univ}
-{{wip}}{thm:NAND-univ}
-{{wip}}{thm:NAND-univ-improved}
-{{wip}}{thm:lookup}
+
 {{wip}}{thm:chernoff}

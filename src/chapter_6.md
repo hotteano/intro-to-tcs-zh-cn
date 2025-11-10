@@ -194,7 +194,7 @@ def F(x):
 
 ```admonish proof collapsible=true, title = "对{{ref:thm:computeallinfinitefunc}}的证明"
 这是布尔电路通用性的一个立即推论. 
-事实上，因为$F$把$\{0,1\}^n$映射到$\{0,1\}$，定理4.15表明一定有一个布尔函数$C_n$来计算它. 
+事实上，因为$F$把$\{0,1\}^n$映射到$\{0,1\}$，定理{{ref:thm:NAND-univ-improved}}表明一定有一个布尔函数$C_n$来计算它. 
 事实上，这个电路的大小为至多$c \cdot 2^n / n$个门，其中$c \leq 10$为常数. $\square$
 ```
 
@@ -268,7 +268,7 @@ def XOR(X):
 形式化地讲，一个DFA由 **(1)** $C \cdot 2$条规则构成的表格，该表格用 **转移函数** $T$表示. $T$将状态$s \in [C]$和位$\sigma \in \{0,1\}$映射到状态$s' \in [C]$. DFA将会在输入$\sigma$下从状态$s$转移到$s'$; 和 **(2)** 接受状态集$\mathcal{S}$
 
 ```admonish quote title=""
-{{def}}{def:DFA}[确定性有穷自动机] 
+{{defc}}{def:DFA}[确定性有穷自动机] 
 
 一个在$\{0,1\}$上定义的$C$个状态的确定性有穷自动机是一个对$(T, \mathcal{S})$. 其中$T:[C]\times \{0,1\} \rightarrow [C]$ 而 $\mathcal{S} \subseteq [C]$. 
 有限函数$T$称为DFA的 **转移函数** . 集合$\mathcal{S}$称为 **接受状态** 集. 
@@ -439,7 +439,7 @@ $$
 形式化地说，正则表达式由以下递归定义所定义: 
 
 ```admonish quote title=""
-{{def}}{def:regexp}[正则表达式] 
+{{defc}}{def:regexp}[正则表达式] 
 字母表$\Sigma$上定义的 **正则表达式** $e$是$\Sigma \cup \{ (,),|,*,\emptyset, \texttt{""} \}$上的一个串，并具有下列形式之一
 1. $e = \sigma$，其中$\sigma \in \Sigma$
 2. $e = (e' | e'')$，其中$e', e''$为正则表达式
@@ -459,7 +459,7 @@ $\Phi_{e}$的形式化定义是那种写比掌握麻烦的类型. 因此第一�
 ```
 
 ```admonish quote title=""
-{{def}}{def:matchingregexp}[匹配正则表达式] 
+{{defc}}{def:matchingregexp}[匹配正则表达式] 
 令$e$为字母表$\Sigma$上的正则表达式
 函数$\Phi_{e}:\Sigma^* \rightarrow \{0,1\}$ 定义如下:
 1. 若$e = \sigma$，则当且仅当$x=\sigma$时$\Phi_{e}(x)=1$. 
@@ -477,7 +477,7 @@ $\Phi_{e}$的形式化定义是那种写比掌握麻烦的类型. 因此第一�
 若一个布尔函数在输出$1$时，所有的输入串都能够被某些正则表达式匹配，就说这个布尔函数是"正则的". 
 
 ```admonish quote title=""
-{{def}}{def:regularfunctions}[定义6.8] 正则函数/语言
+{{defc}}{def:regularfunctions}[定义6.8] 正则函数/语言
 令$\Sigma$为一个有限集，而$F:\Sigma^*\rightarrow \{0,1\}$为一个布尔函数. 若存在某个正则表达式$e$，$F=\Phi_{e}$，就称$F$是 **正则** 的. 
 类似的，对每个形式语言$L \subseteq \Sigma^*$，称$L$是正则的当且仅当存在某个正则表达式$e$使得$x\in L$当且仅当$e$匹配$x$. 
 ```
@@ -867,7 +867,7 @@ $\overline{F}$也是正则的. $\square$
 ```
 
 ```admonish proof collapsible=true, title = "对{{ref:thm:closurereg}}的证明"
-这是正则函数在或运算和非运算(因此也有与运算)下的封闭性，与{{ref:thm:circuit-univ}}(注:定理4.13)——其声明每个$f$都可以被一个布尔电路计算(其只不过是与、或、非运算的结合)——结合的直接结果. $\square$
+这是正则函数在或运算和非运算(因此也有与运算)下的封闭性，与{{ref:thm:circuit-univ}}——其声明每个$f$都可以被一个布尔电路计算(其只不过是与、或、非运算的结合)——结合的直接结果. $\square$
 ```
 
 ## 6.5 正则表达式的限制与泵引理 
