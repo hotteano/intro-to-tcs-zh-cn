@@ -187,12 +187,12 @@ def F(x):
 因为$F_n$是一个有限函数，所以它可以被一个布尔电路计算. 以下定理表明了这一点. 
 
 ```admonish quote title=""
-{{thmc}}{thm:computeallinfinitefunc}[定理6.1] 无限函数的电路族 
+{{thmc}}{thm:computeallinfinitefunc}[无限函数的电路族] 
  
 令$F:\{0,1\}^* \rightarrow \{0,1\}$.. 则有一个电路族$\{ C_n \}_{n\in \{1,2,\ldots\}}$使得对每个$n>0$，$C_n$能够计算$F$在输入长度为$n$上的限制$F_n$
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:computeallinfinitefunc}}的证明"
 这是布尔电路通用性的一个立即推论. 
 事实上，因为$F$把$\{0,1\}^n$映射到$\{0,1\}$，定理4.15表明一定有一个布尔函数$C_n$来计算它. 
 事实上，这个电路的大小为至多$c \cdot 2^n / n$个门，其中$c \leq 10$为常数. $\square$
@@ -376,16 +376,16 @@ def F(X):
 然而，有很多并 **不是** 这种情况. 我们马上就会发现一些简单的，却无法被DFA计算的无限函数. 但对于初学者，我们先证明这样的函数是存在的. 
 
 ```admonish quote title=""
-{{thmc}}{thm:DFAcompuncountable}[定理6.4] DFA可计算的函数是可数的
+{{thmc}}{thm:DFAcompuncountable}[DFA可计算的函数是可数的]
  
 让$DFACOMP$为全体使得存在一个DFA计算$F$的布尔函数$F:\{0,1\}^* \rightarrow \{0,1\}$的集合. 则$DFACOMP$可数. 
 ```
 
-```admonish proof collapsible=true, title = "证明思路"
+```admonish proof collapsible=true, title = "对{{ref:thm:DFAcompuncountable}}的证明思路"
 每个DFA都能用一个有限长度的串来描述，从而产生一个从$\{0,1\}^*$到$DFACOMP$的满射: 更准确地说，这个函数将一个描述自动机$A$的串对应到$A$计算的函数. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:DFAcompuncountable}}的证明"
 每个DFA都能用一个表示转移函数$T$和接收状态集的串描述，而每个DFA $A$都计算 **某些** 函数$F:\{0,1\}^* \rightarrow \{0,1\}$. 
 因此可以定义如下函数$StDC:\{0,1\}^* \rightarrow DFACOMP$:
 $$
@@ -401,12 +401,12 @@ $$
 因为 **所有** 布尔函数的集合是不可数的，所以有如下推论: 
 
 ```admonish quote title=""
-{{thmc}}{thm:DFAdontcomputeeverything}[定理6.5] DFA不可计算函数的存在性
+{{thmc}}{thm:DFAdontcomputeeverything}[DFA不可计算函数的存在性] 
  
 存在一个布尔函数$F:\{0,1\}^* \rightarrow \{0,1\}$不能被 **任何的** DFA计算. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:DFAdontcomputeeverything}}的证明"
 如果每个布尔函数$F$都可以被一些DFA计算，那么$DFACOMP$就与集合$ALL$(所有布尔函数的集合)相等. 但根据定理2.12，后者不可数，又与{{ref:thm:DFAcompuncountable}}相矛盾. $\square$
 ```
 
@@ -566,7 +566,7 @@ $$
 ```
 
 ~~~admonish quote collapsible=true title=""
-{{algc}}{alg:regexpmatchempty}[算法6.11] 匹配空串{{footnote:译者注: 该算法并未要求输入串$x\in\Sigma^*$. 此处应为作者笔误}}
+{{algc}}{alg:regexpmatchempty}[匹配空串]{{footnote:译者注: 该算法并未要求输入串$x\in\Sigma^*$. 此处应为作者笔误}}
 
 $$
 \begin{aligned}
@@ -592,7 +592,7 @@ $$
 我们将会在[第13章](./chapter_13.md)中介绍时间复杂度的形式化定义
 
 ```admonish quote title=""
-{{thmc}}{thm:reglintime}[定理6.12] 在线性时间内匹配正则表达式
+{{thmc}}{thm:reglintime}[在线性时间内匹配正则表达式]
  
 给定一个正则表达式$e$，则存在$O(n)$时间的算法计算$\Phi_{e}$
 ```
@@ -721,8 +721,8 @@ $$
 令$e$为正则表达式. 则有输入$x \in\{0,1\}^*$的计算$\Phi_e(x)$算法，其对$x$进行单次遍历并维护一个常数大小的内存. 
 ```
 
-```admonish proof collapsible=true, title="证明思路"
-算法6.16给出了一个匹配正则表达式的单遍常数内存算法来检查正则表达式是否匹配一个串. 其思路在于使用"记忆化搜索"的方法，将{{ref:alg:regexpmatchlinear}}这一个递归算法用[动态规划](https://goo.gl/kgLdX1)的算法替代. 如果你还没有上过算法课，你可能不知道这些技巧，这没有关系; 尽管这个更高效的算法对正则表达式的实践应用十分关键，对这本书却并不是很重要. 
+```admonish proof collapsible=true, title="对{{ref:thm:DFAforREG}}的证明思路"
+{{ref:alg:regexpmatchdfa}}给出了一个匹配正则表达式的单遍常数内存算法来检查正则表达式是否匹配一个串. 其思路在于使用"记忆化搜索"的方法，将{{ref:alg:regexpmatchlinear}}这一个递归算法用[动态规划](https://goo.gl/kgLdX1)的算法替代. 如果你还没有上过算法课，你可能不知道这些技巧，这没有关系; 尽管这个更高效的算法对正则表达式的实践应用十分关键，对这本书却并不是很重要. 
 ```
 
 ```admonish quote title=""
@@ -746,7 +746,7 @@ $$
 $$
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:DFAforREG}}的证明"
 {{ref:alg:regexpmatchdfa}}判定给定的串$x\in \Sigma^*$是否被正则表达式$e$所匹配. 
 
 对每个正则表达式，这个算法都有恒定数量的布尔变量(更准确地说，对每个$e' \in S(e)$有一个变量$v_{e'}$和$last_{e'}$. 该算法利用了一个事实: 对每个$e' \in S(e)$，$e'[x_i]$都在$S(e)$中. )
@@ -769,7 +769,7 @@ $$
 令$F:\{0,1\}^* \rightarrow \{0,1\}$. 则$F$正则当且仅当存在DFA$(T,\mathcal{S})$计算$F$. 
 ```
 
-```admonish proof collapsible=true, title = "证明思路"
+```admonish proof collapsible=true, title = "对{{ref:thm:dfaregequiv}}的证明思路"
 一个方向由{{ref:thm:DFAforREG}}证明，其说明对每个正则表达式$e$，函数$\Phi_e$可以被一个DFA计算(见样例[图 6.6](#automatonfig)). 
 在另一个方向上，我们说明给定一个DFA$(T,\mathcal{S})$，对每个$v,w \in [C]$都可以找到这样一个正则表达式: 当且仅当DFA从状态$v$出发，在读取$x$后最终会到达$w$时，该正则表达式才匹配串$x\in \{0,1\}^*$. 
 ```
@@ -788,7 +788,7 @@ $$
 {{pic}} 给定一个$C$状态DFA，对于每个$v,w \in [C]$和数$t\in\{0,\ldots,C\}$，定义函数$F^t_{v,w}:\{0,1\}^* \rightarrow \{0,1\}$，其输入为$x\in \{0,1\}^*$. 当且仅当DFA从状态$v$出发，在给定输入为$x$的情况下，最后会到达状态$w$，且过程中仅通过了中间状态$\{0,\ldots,t-1\}$，则函数值为$1$. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:dfaregequiv}}的证明"
 既然{{ref:thm:DFAforREG}}已经证明了"仅当"方向，现在只需要证明"当"方向. 
 令$A=(T,\mathcal{S})$为一个$C$状态DFA，其计算函数$F$，需要证明$F$是正则的. 
 
@@ -852,7 +852,7 @@ $$
 若$F:\{0,1\}^* \rightarrow \{0,1\}$正则，则函数$\overline{F}$也正则，其中对每个$x\in \{0,1\}^*$，$\overline{F}(x) = 1 - F(x)$. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:regcomplement}}的证明"
 如果$F$正则，则根据{{ref:thm:reglintime}}，其可被DFA $A$计算. 然后可构造一个DFA $\overline{A}$，其进行的计算相同，但是翻转了接受状态集. DFA $\overline{A}$将计算$\overline{F}$. 根据{{ref:thm:dfaregequiv}}，这表明
 $\overline{F}$也是正则的. $\square$
 ```
@@ -866,7 +866,7 @@ $\overline{F}$也是正则的. $\square$
 令$f:\{0,1\}^k \rightarrow \{0,1\}$为任意有限布尔函数，令$F_0,\ldots,F_{k-1} : \{0,1\}^* \rightarrow \{0,1\}$为正则函数，则函数$G(x) = f(F_0(x),F_1(x),\ldots,F_{k-1}(x))$正则. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:closurereg}}的证明"
 这是正则函数在或运算和非运算(因此也有与运算)下的封闭性，与{{ref:thm:circuit-univ}}(注:定理4.13)——其声明每个$f$都可以被一个布尔电路计算(其只不过是与、或、非运算的结合)——结合的直接结果. $\square$
 ```
 
@@ -901,7 +901,7 @@ $\overline{F}$也是正则的. $\square$
 {{pic}} 为了证明"泵引理"，我们观察一个串$w$，正则表达式$e$能够匹配它,并且$w$比$e$大得多. 在这种情况下，$w$的一部分一定会被具有形式$(e')^*$的子表达式匹配，而这是唯一允许表达式匹配比其长的串的操作. 如果我们考虑"最左"的、具有该形式的子表达式，并定义$y^k$是被其匹配的串，我们就得到了泵引理需要的部分. 
 ```
 
-```admonish proof collapsible=true, title = "证明思路"
+```admonish proof collapsible=true, title = "对{{ref:thm:pumping}}的证明思路"
 证明思路如下. 令$n_0$为表达式$e$中使用的字母数的两倍，串$w$满足$|w|>n_0$且$\Phi_{e}(w)=1$，则串$w$存在的唯一方法是$e$中含有操作$*$(即，闭包操作)，且$w$有一个非空子串$y$被$(e')*$匹配，其中$e'$为$e$的子串. {{footnote:译者注: 此处应为作者笔误，正确语句应当如下: 且$w$有一个非空子串$y$被$e'$匹配，其中$(e')*$为$e$的子串. }}我们可以重复$y$任意多次，而所得的串仍然被匹配. 又见[图 6.9](#pumpinglemmafig)
 ```
 
@@ -909,7 +909,7 @@ $\overline{F}$也是正则的. $\square$
 泵引理声明起来比较麻烦，但是记忆它的一个方法是，泵引理实际上只说了这句话:  **"如果一个被正则表达式的串足够长，那么它的一个子串一定是被$*$运算符所匹配的"** . 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:pumping}}的证明"
 通过归纳表达式的长度可以形式化地证明该引理. 
 
 像所有的归纳证明一样，该证明会比较长，但在结尾给出符合我们直觉结果——我们一定在某处使用了闭包运算. 阅读该证明，特别地，去理解以下的形式化证明如何与上面的直观思路相一致，是更好地熟悉该种归纳证明的好方法. 
@@ -946,7 +946,7 @@ $\overline{F}$也是正则的. $\square$
 
 通过泵引理，我们可以轻易地证明{{ref:lem:regexpparn}}(即"括号匹配"函数的非正则性): 
 
-```admonish proof collapsible=true, title="证明"
+```admonish proof collapsible=true, title="对{{ref:lem:regexpparn}}的证明"
 为了使用反证法，我们假设有一个表达式$e$使得$\Phi_{e}=MATCHPAREN$. 
 令$n_0$为{{ref:thm:pumping}}中的数，而$w=\langle^{n_0}\rangle^{n_0}$(即，$n_0$个左括号跟着$n_0$个右括号). 则若如{{ref:thm:pumping}}中那样写出$w=xyz$，$|xy| \leq n_0$表明$y$完全由左括号组成. 因此$xy^2z$中的左括号比右括号更多. 
 因此$MATCHPAREN(xy^2z)=0$. 但根据泵引理$\Phi_{e}(xy^2z)=1$，与假设$\Phi_{e}=MATCHPAREN$矛盾. $\square$
@@ -999,11 +999,11 @@ $\overline{F}$也是正则的. $\square$
 存在一个算法，给定一个正则表达式$e$，其输出$1$当且仅当$\Phi_{e}$为常零函数. 
 ```
 
-```admonish proof collapsible=true, title = "证明思路"
+```admonish proof collapsible=true, title = "对{{ref:thm:regemptyness}}的证明思路"
 思路为，我们可以直接从表达式的结构中观察到这一点. $e$计算常零函数的唯一可能是$e$具有形式$\emptyset$或者通过$\emptyset$与其他表达式连接得到. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:regemptyness}}的证明"
 如果一个正则表达式计算的是常零函数，我们就定义其是"空的". 给定一个正则表达式，通过以下规则，我们可以判定是否为空: 
 
 * 若$e$具有形式$\sigma$或$\texttt{""}$，则其非空
@@ -1022,11 +1022,11 @@ $\overline{F}$也是正则的. $\square$
 令函数$REGEQ:\{0,1\}^* \rightarrow \{0,1\}$输入(串表示的)一对正则表达式$e,e'$，$REGEQ(e,e')=1$当且仅当$\Phi_{e} = \Phi_{e'}$. 则存在一个算法计算$REGEQ$.  
 ```
 
-```admonish proof collapsible=true,title="证明思路"
+```admonish proof collapsible=true,title="对{{ref:thm:regequivalence}}的证明思路"
 证明思路是，对于给定的一对正则表达式$e$，$e'$，我们寻找一个表达式$e''$使得$\Phi_{e''}(x)=1$当且仅当$\Phi_e(x) \neq \Phi_{e'}(x)$. 因此$\Phi_{e''}$为常零函数当且仅当$e$与$e'$等价，则我们可以由此通过测试$e''$的空性来判定$e$与$e'$的等价性. 
 ```
 
-```admonish proof collapsible=true,title="证明"
+```admonish proof collapsible=true,title="对{{ref:thm:regequivalence}}的证明"
 我们从{{ref:thm:regemptyness}}中证明{{ref:thm:regequivalence}}. (这两个定理实际上是等价的: 我们很容易从{{ref:thm:regequivalence}}中证明{{ref:thm:regemptyness}}，因为测试表达式空性和判定其与$\emptyset$的等价性是一样的. )
 
 对给定的两个表达式$e$与$e'$，目标是计算表达式$e''$使得$\Phi_{e''}(x) =1$当且仅当$\Phi_e(x) \neq \Phi_{e'}(x)$. 可以发现，$e$与$e'$等价当且仅当$e''$为空. 

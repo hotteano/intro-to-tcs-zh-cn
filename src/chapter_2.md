@@ -458,7 +458,7 @@ __热身运动: "Cantor定理青春版".__ {{ref:lem:sequencestostrings}} 的证
 
 <iframe src="https://trinket.io/embed/python/4cff7e58f4" width="100%" height="600" frameborder="0" marginwidth="0" marginheight="0" allowfullscreen></iframe>
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:sequencestostrings}}的证明"
 我们将证明不存在一个 **满射** 函数 $StF:\{0,1\}^* \rightarrow \{0,1\}^\infty$.  
 这将推出该引理, 因为对于任意两个集合 $A$ 和 $B$, 当且仅当存在一个从 $B$ 到 $A$ 的一一映射时, 才存在一个从 $A$ 到 $B$ 的满射 (见 {{ref:lem:onetooneimpliesonto}}).  
 
@@ -517,7 +517,7 @@ Cantor 还提出了 [连续统假设](https://en.wikipedia.org/wiki/Continuum_hy
 不过如果你之前处理实数列极限的经验不多, 那么下面的证明还是可能会有些难以理解.  
 当然, 这部分并非 Cantor 论证的核心, 此类极限对于本书后续内容也不重要, 因此你完全可以选择相信 {{ref:lem:sequencestoreals}} 并跳过这些繁琐的证明.
 
-```admonish proof collapsible=true, title = "证明思路"
+```admonish proof collapsible=true, title = "对{{ref:lem:sequencestoreals}}的证明思路"
 我们定义 $FtR(f)$ 为介于 $0$ 和 $2$ 之间的数, 其十进制展开为 $f(0).f(1) f(2) \ldots$, 换句话说, $FtR(f) = \sum_{i=0}^{\infty} f(i) \cdot 10^{-i}$.  
 如果 $f$ 和 $g$ 是 $\{0,1\}^\infty$ 中的两个不同函数, 那么必然存在某个输入 $k$ 使它们在该输入上不一致.  
 取最小的这样的 $k$, 那么数字 $f(0).f(1) f(2) \ldots f(k-1) f(k) \ldots$ 与 $g(0).g(1) g(2) \ldots g(k) \ldots$ 在小数点后的第 $0$ 到 $k-1$ 位完全相同, 并在第 $k$ 位上不同.  
@@ -527,7 +527,7 @@ Cantor 还提出了 [连续统假设](https://en.wikipedia.org/wiki/Continuum_hy
 但在这里不会出现这个问题, 因为按上述定义, 我们使用的数字的十进制展开中永远不会包含数字 $9$.
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:sequencestoreals}}的证明"
 对于每个 $f \in \{0,1\}^\infty$, 我们定义 $FtR(f)$ 为其十进制展开为 $f(0).f(1)f(2)f(3)\ldots$ 的数字.  
 形式上,
 
@@ -578,7 +578,7 @@ Cantor 定理得出如下推论, 我们将在本书中多次使用: 所有 **布
 
 这是 {{ref:lem:sequencestostrings}} 的直接推论, 因为我们可以用二进制表示构造一个从 $\{0,1\}^\infty$ 到 $ALL$ 的一一映射. 因此, $\{0,1\}^\infty$ 的不可数性意味着 $ALL$ 的不可数性.
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:uncountablefunc}}的证明"
 由于 $\{0,1\}^\infty$ 是不可数的, 我们只需展示一个从 $\{0,1\}^\infty$ 到 $ALL$ 的一一映射, 便可得到该结论.  
 原因在于, 这样的映射存在意味着如果 $ALL$ 是可数的, 从而存在一个从 $ALL$ 到 $\N$ 的一一映射, 那么就会存在一个从 $\{0,1\}^\infty$ 到 $\N$ 的一一映射, 与 {{ref:lem:sequencestostrings}} 矛盾.  
 
@@ -630,7 +630,7 @@ $E$ 称为 **编码** 函数, $D$ 称为 **解码** 函数.
 假设 $E: \mathcal{O} \rightarrow \{0,1\}^*$ 是一一映射. 那么存在一个函数 $D:\{0,1\}^* \rightarrow \mathcal{O}$ 使得 $D(E(o))=o$ 对每个 $o\in \mathcal{O}$ 成立.  
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:decode}}的证明"
 设 $o_0$ 为 $\mathcal{O}$ 中任意一个元素.  
 对于每个 $x \in \{0,1\}^*$, 要么不存在, 要么仅存在一个 $o\in \mathcal{O}$ 使 $E(o)=x$(否则 $E$ 将不是一一映射).  
 我们将 $D(x)$ 定义为在第一种情况取 $o_0$, 在第二种情况取该唯一对象 $o$.  
@@ -725,7 +725,7 @@ $$
 $E$ 的前缀自由性质保证了 $x_0$ 实际上就是 $E(o_0)$, $x_1$ 是 $E(o_1)$, 依此类推.
 
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:prefixfree}}的证明"
 现在我们给出正式证明.  
 使用反证法, 假设存在两个不同的元组 $(o_0,\ldots,o_{k-1})$ 和 $(o'_0,\ldots,o'_{k'-1})$, 使得
 
@@ -786,7 +786,7 @@ $$
 为了完整起见, 我们将在下方给出证明. 不过你可以在这里停下来, 尝试用我们表示有理数时使用的相同技巧自己证明它.
 
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:prefixfreetransformation}}证明"
 证明的核心思想是使用映射 $0 \mapsto 00$, $1 \mapsto 11$ 来"加倍"字符串 $x$ 中的每一位, 然后通过在其后拼接 $01$ 来标记字符串的结束.  
 如果我们以这种方式对字符串 $x$ 进行编码, 它可以确保 $x$ 的编码绝不会是不同字符串 $x'$ 的编码的前缀.  
 形式上, 我们对每个 $x\in \{0,1\}^*$ 定义函数 $PF:\{0,1\}^* \rightarrow \{0,1\}^*$ 如下:

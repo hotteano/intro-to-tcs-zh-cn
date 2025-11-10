@@ -176,8 +176,8 @@ $$
 对于任意的两个非负整数$x,y$, 当输入$x,y$时, {{ref:alg:karatsuba}}的输出为$x\cdot y$.
 ```
 
-```admonish proof collapsible=true, title = "证明"
-令$n$为$x,y$位数的最大值. 我们通过对$n$的归纳来证明{{tref: lem:kara_correctness}}. 基本情况是当$n\le 4$时, 根据定义, 算法直接返回$x\cdot y$(具体采用何种算法计算四位数乘法并不重要—甚至可以使用重复相加法). 当$n>4$时, 令$m=\floor{n/2}$, 并将$x$和$y$表示为$10^m\overline x+\underline x$和$10^m\overline y+\underline y$. 
+```admonish proof collapsible=true, title = "对{{ref:lem:kara_correctness}}的证明"
+令$n$为$x,y$位数的最大值. 我们通过对$n$的归纳来证明{{ref:lem:kara_correctness}}. 基本情况是当$n\le 4$时, 根据定义, 算法直接返回$x\cdot y$(具体采用何种算法计算四位数乘法并不重要—甚至可以使用重复相加法). 当$n>4$时, 令$m=\floor{n/2}$, 并将$x$和$y$表示为$10^m\overline x+\underline x$和$10^m\overline y+\underline y$. 
 
 代入$x\cdot y$可得: 
 
@@ -199,7 +199,7 @@ $$
 假设输入$x,y$为最多有$n$位的整数, {{ref:alg:karatsuba}}将会用$O(n^{\log_2 3})$次操作来进行计算. 
 ```
 
-~~~admonish proof collapsible=true, title = "证明"
+~~~admonish proof collapsible=true, title = "对{{ref:lem:kara_complexity}}的证明"
 [图0.2](#karatsubatwodigitfig)展示了证明的核心思路, 此处我们只做概要说明, 完整的证明留作习题0.4. 本次证明同样采用归纳法: 定义$T(n)$为{{ref:alg:karatsuba}}在处理长度不超过$n$的输入时所需的最大执行步数. 当基本情况即$n\le 4$时, {{ref:alg:karatsuba}}{{footnote: 原文此处的内容为"Exercise 0.4", 疑为作者笔误}}只需执行常数次计算, 因此存在常数$c$使得$T(4)\le c$; 而当$n>4$时, 递归关系满足不等式
 
 $$
