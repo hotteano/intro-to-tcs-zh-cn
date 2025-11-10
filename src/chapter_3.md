@@ -1016,7 +1016,7 @@ $
 ```
 
 同样地, {{ref:alg:additionfromnand}} 可以被转换为 $\NAND$ 电路.   
-关键的观察是, "if/then" 语句实际上对应于 $c_{i+1} \leftarrow \text{MAJ}_3(u_i,v_i,v_i)$, 而我们在 {{ref:majbynandex}} 中已经看到函数 $\text{MAJ}_3:\{0,1\}^3 \rightarrow \{0,1\}$ 可以用 $\NAND$ 实现. 
+关键的观察是, "if/then" 语句实际上对应于 $c_{i+1} \leftarrow \text{MAJ}_3(u_i,v_i,v_i)$, 而我们在 {{ref:exe:majbynand}} 中已经看到函数 $\text{MAJ}_3:\{0,1\}^3 \rightarrow \{0,1\}$ 可以用 $\NAND$ 实现. 
 
 ### 3.6.3 编程语言 NAND-CIRC { #nandcircsec }
 

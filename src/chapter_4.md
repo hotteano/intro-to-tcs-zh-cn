@@ -43,8 +43,8 @@
  其有时也被称为$AND$, $OR$ 与 $NOT$ 函数的"通用性" (利用[第3章](chapter_3.md)中的等价, 这也是$NAND$的"通用性")
  - 尽管{{ref:thm:circuit-univ}}是一项重要结论, 但其证明过程实际上并不复杂. [第4.5节](chapter_4.md#seccomputalternative)将给出该结论的一个相对简洁的直接证明. 
  不过在[第4.1节](chapter_4.md#secsyntacticsugar)和[第4.3节](chapter_4.md#seclookupfunc)中, 我们采用了"语法糖"(参见{{ref:ide:synsugar}})这一概念来推导该结论. 对于编程语言的理论与实践而言, 这都是一个至关重要的概念. 
- "语法糖"的核心思想在于：我们可以通过基础组件实现高级功能, 从而扩展编程语言的表现力. 例如, 基于[第3章](chapter_3.md)介绍的AON-CIRC和NAND-CIRC编程语言, 我们可以通过扩展实现用户自定义函数(如`def Foo(...)`)、条件语句(如`if blah ...`)等高级特性. 
- 一旦掌握了这些扩展功能, 我们就不难证明：通过获取任意函数的真值表(即所有输入输出对应表), 可以据此创建出能将每个输入映射至对应输出的AON-CIRC或NAND-CIRC程序. 
+ "语法糖"的核心思想在于: 我们可以通过基础组件实现高级功能, 从而扩展编程语言的表现力. 例如, 基于[第3章](chapter_3.md)介绍的AON-CIRC和NAND-CIRC编程语言, 我们可以通过扩展实现用户自定义函数(如`def Foo(...)`)、条件语句(如`if blah ...`)等高级特性. 
+ 一旦掌握了这些扩展功能, 我们就不难证明: 通过获取任意函数的真值表(即所有输入输出对应表), 可以据此创建出能将每个输入映射至对应输出的AON-CIRC或NAND-CIRC程序. 
  - 本章中我们还将首次接触 **定量分析** 的概念. 虽然{{ref:thm:circuit-univ}}定理指出每个函数都能通过某个电路实现, 但该电路所需逻辑门的数量可能呈指数级增长. 
  (此处使用的"指数级"并非口语中泛指的"非常巨大", 而是精确的数学概念——当然这个数学概念恰好也意味着规模极其庞大. )
  我们发现, **某些函数** (例如, 整数加法和乘法) 事实上可以用更少的门电路计算. 我们将在[第5章](./chapter_5.md)与接下来的章节中更加深入探讨这种"门电路复杂度".
@@ -52,24 +52,17 @@
 
 ## 4.1 语法糖的一些例子  { #secsyntacticsugar }
 
-We now present some examples of "syntactic sugar" transformations that we can use in constructing straightline programs or circuits.
-We focus on the _straight-line programming language_ view of our computational models, and specifically (for the sake of concreteness) on the NAND-CIRC programming language.
-This is convenient because many of the syntactic sugar transformations we present are easiest to think about in terms of applying "search and replace" operations to the source code of a program.
-However,  by {{ref:thm:equivalencemodels}}, all of our results hold equally well for circuits, whether ones using NAND gates or Boolean circuits that use the  AND, OR, and NOT operations.
-Enumerating the examples of such  syntactic sugar transformations can be a little tedious, but we do it for two reasons:
+现在我们将展示若干"语法糖"转换的实例, 这些转换可用于构建直线式程序或电路. 我们主要从计算模型的**直线式编程语言**视角出发, 并具体以NAND-CIRC编程语言为例进行说明(以便更清晰地阐述概念). 
+这种视角的便利之处在于, 我们介绍的多数语法糖转换最容易理解的方式, 就是将其视为对程序源代码进行"查找替换"操作. 根据{{ref:thm:equivalencemodels}}定理, 我们得到的所有结论同样适用于电路模型——无论是使用NAND门的电路, 还是使用AND、OR及NOT门构成的布尔电路. 
+虽然详细列举这类语法糖转换的实例可能略显枯燥, 但我们之所以这样做, 主要基于两个原因: 
 
-1. To convince you that despite their seeming simplicity and limitations, simple models such as Boolean circuits or the NAND-CIRC programming language are actually quite powerful.
+1. 这可以让你确信, 尽管布尔电路或NAND-CIRC编程语言等简单模型看似基础且存在局限性, 但它们实际上具有强大的表达能力. 
 
-2. So you can realize how lucky you are to be taking a theory of computation course and not a compilers course... `:)`
+2. 于是你就可以意识到, 选择学习计算理论课程而非编译原理课程是多么幸运... `:)`
 
 ### 4.1.1 用户定义过程
 
-One staple of almost any programming language is the ability to define and then execute _procedures_ or _subroutines_.
-(These are often known as _functions_ in some programming languages, but we prefer the name _procedures_
-to avoid confusion with the function that a program computes.)
-The NAND-CIRC programming language does not have this mechanism built in.
-However, we can achieve the same effect using the time-honored technique of  "copy and paste".
-Specifically, we can replace code which defines a procedure such as
+几乎所有编程语言都具备一个核心功能: 定义并执行**过程**或**子程序**的能力(在某些语言中常称为 **函数** , 但为避免与程序计算的函数混淆, 我们更倾向于使用*过程*这一名称). NAND-CIRC编程语言本身并未内置这种机制, 但我们可以通过沿用已久的"复制粘贴"技巧实现相同效果. 具体来说, 我们可以将定义过程的代码: 
 
 ```python
 def Proc(a,b):
@@ -80,7 +73,7 @@ f = Proc(d,e)
 some_more_code
 ```
 
-with the following code where we "paste" the code of `Proc`
+替换为以下形式, 其中直接"粘贴"`Proc`过程的代码: 
 
 ```python
 some_code
@@ -88,32 +81,28 @@ proc_code'
 some_more_code
 ```
 
-and where `proc_code'` is obtained by replacing all occurrences of `a` with `d`, `b` with `e`, and `c` with `f`.
-When doing that we will need to ensure that all other variables appearing in `proc_code'` don't interfere with other variables.
-We can always do so by renaming variables to new names that were not used before.
-The above reasoning leads to the proof of the following theorem:
+其中`proc_code'`是通过将`Proc`代码中所有`a`替换为`d`、`b`替换为`e`、`c`替换为`f`而得到的. 在执行此操作时, 我们需要确保`proc_code'`中出现的所有其他变量不会与其他变量产生冲突——这总是可以通过将变量重命名为之前未使用过的新名称来实现. 
+由上述推理, 我们可以得到以下定理:
 
 ```admonish quote title=""
-{{thmc}}{thm:functionsynsugar}[Procedure definition syntatic sugar]
+{{thmc}}{thm:functionsynsugar}[语法糖: 过程定义]
 
-Let NAND-CIRC-PROC be the programming language NAND-CIRC augmented with the syntax above for defining procedures.
-Then for every NAND-CIRC-PROC program $P$, there exists a standard (i.e., "sugar-free") NAND-CIRC program $P'$ that computes the same function as $P$.
+令 NAND-CIRC-PROC 为 NAND_CIRC 编程语言的一个拓展, 其具有定义过程的语法.
+则对于每个 NAND-CIRC-PROC 程序 $P$, 存在一个标准的 (即"无糖") NAND-CIRC 程序 $P'$ 与 $P$ 计算相同的函数.
 ```
 
 ```admonish info
-{{remc}}{rem:norecursion}[No recursive procedure]
+{{remc}}{rem:norecursion}[无递归过程]
 
-NAND-CIRC-PROC only allows _non-recursive_ procedures. In particular, the code of a procedure `Proc` cannot call `Proc` but only use procedures that were defined before it.
-Without this restriction, the above "search and replace" procedure might never terminate and {{ref:thm:functionsynsugar}} would not be true.
+NAND-CIRC-PROC只允许 **无递归** 过程. 事实上, 过程`Proc`的代码无法调用`Proc`, 而只能使用在其之前定义的过程.
+如果没有这样的限制, 上述的"搜索并替换"的过程可能永远无法结束, 而{{ref:thm:functionsynsugar}}随之不成立.
 ```
 
-{{ref:thm:functionsynsugar}} can be proven using the transformation above, but since the formal proof is somewhat long and tedious, we omit it here.
-
+{{ref:thm:functionsynsugar}} 可通过上述转换方法证明, 但由于形式化证明过程较为冗长繁琐, 此处予以省略. 
 
 ~~~admonish example
-{{exac}}{exa:majcircnand}[Computing Majority from NAND using syntactic sugar]
-Procedures allow us to express NAND-CIRC programs much more cleanly and succinctly.
-For example, because we can compute AND, OR, and NOT using NANDs, we can compute the _Majority_ function as follows:
+{{exac}}{exa:majcircnand}[使用语法糖通过NAND计算多数函数]
+过程机制让我们能够更清晰简洁地表达NAND-CIRC程序. 例如, 由于我们可以通过NAND实现AND、OR和NOT运算, 因此可以通过以下方式计算 **多数** 函数: 
 
 ```python
 def NOT(a):
@@ -137,94 +126,86 @@ print(MAJ(0,1,1))
 # 1
 ```
 
-{{ref:fig:progcircmaj}} presents the "sugar-free" NAND-CIRC program (and the corresponding circuit) that is obtained by "expanding out" this program, replacing the calls to procedures with their definitions.
+{{ref:fig:progcircmaj}} 展示了通过"展开"此程序(将其中的过程调用替换为具体定义)后得到的"无糖"版NAND-CIRC程序及其对应电路. 
 ~~~
-
-
 
 ```admonish bigidea
 {{idec}}{ide:synsugar}
-Once we show that a computational model $X$ is equivalent to a model that has feature $Y$, we can assume we have $Y$ when showing that a function $f$ is computable by $X$.
+一旦我们证明某个计算模型 $X$ 与具有特性 $Y$ 的模型等价, 那么在论证函数 $f$ 可由 $X$ 计算时, 即可直接假定我们拥有特性 $Y$. 
 ```
-
-
-
 
 ```admonish pic id="progcircmajfig"
 ![progcircmajfig](./images/chapter4/progcircmaj.png)
 
-{{pic}}{fig:progcircmaj} A standard (i.e., "sugar-free") NAND-CIRC program that is obtained by expanding out the procedure definitions in the program for Majority of {{ref:exa:majcircnand}}. The corresponding circuit is on the right. Note that this is not the most efficient NAND circuit/program for majority: we can save on some gates by "shortcutting" steps where a gate $u$ computes $NAND(v,v)$ and then a gate $w$ computes $NAND(u,u)$ (as indicated by the dashed green arrows in the above figure).
+{{pic}}{fig:progcircmaj} 通过展开多数函数程序({{ref:exa:majcircnand}})中的过程定义后得到的标准(即"无糖")NAND-CIRC程序, 右侧为其对应电路. 需注意, 这并非实现多数函数最高效的NAND电路/程序: 通过简化某些步骤(例如当门电路 $u$ 计算 $NAND(v,v)$ 后, 门电路 $w$ 又计算 $NAND(u,u)$ 的情况, 图中绿色虚线箭头标示处), 我们可以减少逻辑门的使用数量. 
 ```
 
-
-
-
-
 ```admonish info
-{{remc}}{rem:countinglines}[Counting lines]
-While we can use syntactic sugar to _present_ NAND-CIRC programs in more readable ways, we did not change the definition of the language itself.
-Therefore, whenever we say that some function $f$ has an $s$-line NAND-CIRC program we mean a standard "sugar-free" NAND-CIRC program, where all syntactic sugar has been expanded out.
-For example, the program of {{ref:exa:majcircnand}} is a $12$-line program for computing the $MAJ$ function, even though it can be written in fewer lines using NAND-CIRC-PROC.
+{{remc}}{rem:countinglines}[计算行数]
+
+尽管我们可以通过使用语法糖来以一种更易读的方式 **表示** NAND-CIRC程序, 我们并没有改变语言本身的定义.
+因此, 不管什么时候, 当我们说某个函数 $f$ 有一个 $s$ 行的NAND-CIRC程序时, 我们指的总是一个标准"无糖"NAND-CIRC程序, 其中所有的语法糖都已经被展开了.
+例如, {{ref:exa:majcircnand}}的程序是计算 $MAJ$ 的一个 $12$ 行程序, 尽管使用NAND-CIRC-PROC时其可以用更少的代码行数写出.
 ```
 
 ### 4.1.2 由Python证明 (选读) { #functionsynsugarthmpython }
 
-We can write a Python program that implements the proof of {{ref:thm:functionsynsugar}}.
-This is a Python program that takes a  NAND-CIRC-PROC program $P$ that includes procedure definitions and uses simple "search and replace" to transform $P$ into a standard (i.e., "sugar-free") NAND-CIRC program $P'$ that computes the same function as $P$ without using any procedures.
-The idea is simple: if the program $P$ contains a definition of a procedure `Proc` of two arguments `x` and `y`, then whenever we see a line of the form `foo = Proc(bar,blah)`, we can replace this line by:
+我们可以编写一个Python程序来实现{{ref:thm:functionsynsugar}}的证明. 该程序将接受包含过程定义的NAND-CIRC-PROC程序$P$, 通过简单的"查找替换"操作将其转换为标准的(即"无糖")NAND-CIRC程序$P'$, 使得$P'$在不使用任何过程的情况下计算与$P$相同的函数. 
 
+核心思路很简单: 如果程序$P$包含一个带有两个参数`x`和`y`的过程`Proc`的定义, 那么每当遇到形如`foo = Proc(bar,blah)`的语句时, 我们可以用以下内容替换该行: 
 
-1. The body of the procedure `Proc` (replacing all occurrences of `x` and `y` with `bar` and `blah` respectively).
+1. 过程`Proc`的主体代码(将所有出现的`x`和`y`分别替换为`bar`和`blah`)
 
-2. A line `foo = exp`, where `exp` is the expression following the `return` statement in the definition of the procedure `Proc`.
+2. 一行`foo = exp`, 其中`exp`是过程`Proc`定义中`return`语句后面的表达式
 
-To make this more robust we add a prefix to the internal variables used by `Proc` to ensure they don't conflict with the variables of $P$; for simplicity we ignore this issue in the code below though it can be easily added.
+为使转换更加健壮, 我们可以为`Proc`使用的内部变量添加前缀, 以确保它们不会与$P$中的变量冲突; 为简化起见, 我们在下面的代码中暂不考虑这个问题, 但实际实现时可以轻松添加此功能. 
 
-The code of the Python function `desugar` below achieves such a  transformation.
+以下Python函数`desugar`的代码实现了这样的转换: 
 
 ```admonish example
-{{exac}}{exa:desugarcode}[Python code for transforming NAND-CIRC-PROC programs into standard sugar-free NAND-CIRC programs.]
+{{exac}}{exa:desugarcode}[将NAND-CIRC-PROC程序转化为标准无糖NAND-CIRC程序的Python代码]
 ~~~python
 def desugar(code, func_name, func_args,func_body):
     """
-    Replaces all occurences of 
+    将所有具有形式
        foo = func_name(func_args) 
-    with
+    用以下代码替换
        func_body[x->a,y->b]
        foo = [result returned in func_body]    
     """
-    # Uses Python regular expressions to simplify the search and replace,
-    # see https://docs.python.org/3/library/re.html and Chapter 9 of the book
+    # 使用Python的正则表达式来简化代码
+    # 参见 https://docs.python.org/3/library/re.html 和本书第九章
 
-    # regular expression for capturing a list of variable names separated by commas
+    # 捕获由逗号分割的参数列表的正则表达式
     arglist = ",".join([r"([a-zA-Z0-9\_\[\]]+)" for i in range(len(func_args))])
-    # regular expression for capturing a statement of the form
+    # 捕获具有下列形式的正在表达式
     # "variable = func_name(arguments)"
     regexp = fr'([a-zA-Z0-9\_\[\]]+)\s*=\s*{func_name}\({arglist}\)\s*$'#$
     while True:
         m = re.search(regexp, code, re.MULTILINE)
         if not m: break
         newcode = func_body 
-        # replace function arguments by the variables from the function invocation
+        # 将函数的参数用函数调用时传入的变量替换
         for i in range(len(func_args)): 
             newcode = newcode.replace(func_args[i], m.group(i+2))
-        # Splice the new code inside
+        # 将新代码插入
         newcode = newcode.replace('return', m.group(1) + " = ")
         code = code[:m.start()] + newcode + code[m.end()+1:]
     return code
 ~~~
-{{ref:fig:progcircmaj}} shows the result of applying  `desugar`  to the program of {{ref:exa:majcircnand}} that uses syntactic sugar to compute the Majority function.
-Specifically, we first apply `desugar` to remove usage of the OR function, then apply it to remove usage of the AND function, and finally apply it a third time to remove usage of the NOT function.
+{{ref:fig:progcircmaj}} 展示了, 对{{ref:exa:majcircnand}}中使用语法糖计算的多数函数程序, 将`desugar`函数应用于其上得到的结果. 
+具体来说, 我们首先应用`desugar`移除OR函数的使用, 然后再次应用以移除AND函数的使用, 最后第三次应用以移除NOT函数的使用. 
 ```
 
 ```admonish info
-{{remc}}{rem:parsingdeg}[Parsing function definitions (optional)]
-The function `desugar` in {{ref:exa:desugarcode}} assumes that it is given the procedure already split up into its name, arguments, and body.
-It is not crucial for our purposes to describe precisely how to scan a definition and split it up into these components, but in case you are curious, it can be achieved in Python via the following code:
+{{remc}}{rem:parsingdeg}[解析函数定义 (选读)]
+
+{{ref:exa:desugarcode}}中的`desugar`函数假定过程定义已被拆分为名称、参数和主体部分. 
+虽然精确描述如何扫描定义, 并将其拆分为这些组件, 对我们的目的并不关键. 但如果感兴趣, 可以通过以下Python代码实现这一拆分过程: 
 
 ~~~python
 def parse_func(code):
-    """Parse a function definition into name, arguments and body"""
+    """将一个函数定义解析为名称, 参数列表与函数体"""
     lines = [l.strip() for l in code.split('\n')]
     regexp = r'def\s+([a-zA-Z\_0-9]+)\(([\sa-zA-Z0-9\_,]+)\)\s*:\s*'
     m = re.match(regexp,lines[0])
@@ -236,17 +217,15 @@ def parse_func(code):
 
 ### 4.1.3 条件语句 {#ifstatementsec }
 
-Another sorely missing feature in NAND-CIRC is a conditional statement such as the `if`/`then` constructs that are found in many programming languages.
-However, using procedures, we can obtain an ersatz if/then construct.
-First we can compute the function $IF:\{0,1\}^3 \rightarrow \{0,1\}$ such that $IF(a,b,c)$
-equals $b$ if $a=1$ and $c$ if $a=0$.
+NAND-CIRC语言中另一个严重缺失的特性是条件语句(例如许多编程语言中常见的`if`/`then`结构). 
+不过, 通过运用过程机制, 我们可以实现一种替代的条件判断结构. 
+首先我们需要计算函数 $IF:\{0,1\}^3 \rightarrow \{0,1\}$, 该函数满足: 当 $a=1$ 时输出 $b$, 当 $a=0$ 时输出 $c$. 
 
-```admonish pause title="暂停一下"
-Before reading onward, try to see how you could compute the $IF$ function using $NAND$'s.
-Once you do that, see how you can use that to emulate `if`/`then` types of constructs.
+```admonish pause title="思考时刻"
+在继续阅读前, 请尝试思考如何用$NAND$门实现$IF$函数. 完成这一步后, 再思考如何利用它来模拟`if`/`then`类型的结构. 
 ```
 
-The $IF$ function can be implemented from NANDs as follows (see {{ref:pro:mux}}):
+如{{ref:pro:mux}}所示, $IF$函数可以通过NAND门按如下方式实现: 
 
 ```python
 def IF(cond,a,b):
@@ -256,22 +235,22 @@ def IF(cond,a,b):
     return NAND(temp,temp1)
 ```
 
-The $IF$ function is also known as a _multiplexing_ function, since $cond$ can be thought of as a switch that controls whether the output is connected to $a$ or $b$.
-Once we have a procedure for computing the $IF$ function, we can implement conditionals in NAND.
-The idea is that we replace code of the form
+$IF$又被称为 **多路** 函数, 因为$cond$可以被视作一个控制输出与$a$还是$b$相连的开关.
+只要我们由计算$IF$函数的过程, 就可以在NAND中实现条件语句.
+其思路为将具有以下形式的代码
 
 ```python
 if (condition):  assign blah to variable foo
 ```
 
-with code of the form
+替换为具有以下形式的代码
 
 ```python
 foo   = IF(condition, blah, foo)
 ```
 
-that assigns to `foo` its old value when `condition` equals $0$, and assign to `foo` the value of `blah` otherwise.
-More generally we can replace code of the form
+其在`condition`等于$0$时将`foo`赋值为旧值, 否则将`foo`赋值为`blah`的值.
+更一般地, 我们将如下形式的代码
 
 ```python
 if (cond):
@@ -280,7 +259,7 @@ if (cond):
     c = ...
 ```
 
-with code of the form
+替换为如下形式的代码
 
 ```python
 temp_a = ...
@@ -291,23 +270,21 @@ b = IF(cond,temp_b,b)
 c = IF(cond,temp_c,c)
 ```
 
-Using such transformations, we can prove the following theorem.
-Once again we omit the (not too insightful) full formal proof, though see [第4.1.2节](chapter_4.md#functionsynsugarthmpython) for some hints on how to obtain it.
+通过运用此类转换方法, 我们可以证明以下定理. 尽管其完整形式化证明(启发性有限)在此从略, 但读者可参阅[第4.1.2节](chapter_4.md#functionsynsugarthmpython)获取相关证明思路的提示. 
 
 ```admonish quote title=""
-{{thmc}}{thm:conditionalsugar}[Conditional statements syntactic sugar]
-Let NAND-CIRC-IF be the programming language NAND-CIRC augmented with `if`/`then`/`else` statements for allowing code to be conditionally executed based on whether a variable is equal to $0$ or $1$.  
-Then for every NAND-CIRC-IF program $P$, there exists a standard (i.e., "sugar-free") NAND-CIRC program $P'$ that computes the same function as $P$.
+{{thmc}}{thm:conditionalsugar}[语法糖: 条件语句]
+设NAND-CIRC-IF为在NAND-CIRC编程语言基础上扩展了`if`/`then`/`else`语句的语言版本, 允许代码根据变量取值是否为$0$或$1$来条件执行.   
+则对于任意NAND-CIRC-IF程序$P$, 都存在一个标准的(即"无糖")NAND-CIRC程序$P'$能计算与$P$完全相同的函数. 
 ```
 
 ## 4.2 拓展样例: 加法与乘法(选读) { #addexample }
 
-
-Using "syntactic sugar",  we can write the integer addition function as follows:
+使用"语法糖", 我们能够写出以下的整数加法函数:
 
 ```python
-# Add two n-bit integers
-# Use LSB first notation for simplicity
+# 将两个n为整数相加
+# 为了简便, 使用最低有效位优先表示法
 def ADD(A,B):
     Result = [0]*(n+1)
     Carry  = [0]*(n+1)
@@ -322,91 +299,78 @@ ADD([1,1,1,0,0],[1,0,0,0,0]);;
 # [0, 0, 0, 1, 0, 0]
 ```
 
-where `zero` is the constant zero function, and `MAJ` and `XOR` correspond to the majority and XOR functions respectively.
-While we use Python syntax for convenience, in this example $n$ is some _fixed integer_ and so for every such $n$, `ADD` is a _finite_ function that takes as input $2n$ bits and outputs $n+1$ bits.
-In particular for every $n$ we can remove the  loop construct `for i in range(n)`  by simply repeating the code $n$ times, replacing the value of `i` with $0,1,2,\ldots,n-1$.
-By expanding out all the features, for every value of $n$ we can translate the above program into a standard ("sugar-free") NAND-CIRC program. {{ref:fig:add2bitnumbers}} depicts what we get for $n=2$.
-
+其中`zero`是常数零函数, `MAJ`和`XOR`分别对应多数函数与异或函数. 虽然我们为方便起见使用了Python语法, 但此例中$n$是某个 **固定整数** , 因此对每个这样的$n$而言, `ADD`都是一个接收$2n$位输入并输出$n+1$位的有限函数. 特别地, 对于每个$n$, 我们只需将代码重复$n$次(将`i`的值依次替换为$0,1,2,\ldots,n-1$)即可消除`for i in range(n)`循环结构. 通过展开所有特性, 对每个$n$的取值, 我们都能将上述程序转换为标准的(无糖)NAND-CIRC程序. {{ref:fig:add2bitnumbers}}展示了$n=2$时的转换结果. 
 
 ```admonish pic id="add2bitnumbersfig"
 ![add2bitnumbersfig](./images/chapter4/add2bitnumbers.png)
 
-{{pic}}{fig:add2bitnumbers} The NAND-CIRC program and corresponding NAND circuit for adding two-digit binary numbers that are obtained by "expanding out" all the syntactic sugar. The program/circuit has 43 lines/gates which is by no means necessary. It is possible to add $n$ bit numbers using $9n$ NAND gates, see {{ref:pro:halffulladder}}.
+{{pic}}{fig:add2bitnumbers} 通过"展开"所有语法糖功能得到的用于两个二进制数相加的NAND-CIRC程序及对应NAND电路. 该程序/电路包含43行代码/逻辑门, 但这远非最优实现. 实际上只需使用$9n$个NAND门即可完成$n$位二进制数的加法运算, 具体实现方法参见{{ref:pro:halffulladder}}. 
 ```
 
-By going through the above program carefully and accounting for the number of gates, we can see that it yields a proof of the following theorem (see also {{ref:fig:addnumoflines}}):
+通过仔细分析上述程序并统计逻辑门数量, 我们可以证明以下定理(另见{{ref:fig:addnumoflines}}): 
 
 ```admonish quote title=""
-{{thmc}}{thm:addition}[Addition using NAND-CIRC programs]
-For every $n\in \N$, let $ADD_n:\{0,1\}^{2n}\rightarrow \{0,1\}^{n+1}$ be the function that, given $x,x'\in \{0,1\}^n$ computes the representation of the sum of the numbers that $x$ and $x'$ represent. Then there is a constant $c \leq 30$ such that for every $n$ there is a NAND-CIRC program of at most $cn$ lines computing $ADD_n$.{{footnote:The value of $c$ can be improved to $9$, see   {{ref:pro:halffulladder}}.}}
+{{thmc}}{thm:addition}[使用NAND-CIRC程序实现加法运算]
+对于任意$n\in \N$, 令$ADD_n:\{0,1\}^{2n}\rightarrow \{0,1\}^{n+1}$为如下函数: 给定$x,x'\in \{0,1\}^n$, 计算$x$和$x'$所表示数值之和的二进制表示. 则存在常数$c \leq 30$, 使得对每个$n$, 都存在一个最多包含$cn$行代码的NAND-CIRC程序可计算$ADD_n$. {{footnote: $c$的值可优化至$9$, 具体参见{{ref:pro:halffulladder}}. }}
 ```
-
 
 ```admonish pic id="addnumoflinesfig"
 ![addnumoflinesfig](./images/chapter4/addnumberoflines.png)
 
-{{pic}}{fig:addnumoflines} The number of lines in our NAND-CIRC program to add two $n$ bit numbers, as a function of $n$, for $n$'s between $1$ and $100$. This is not the most efficient program for this task, but the important point is that it has the form $O(n)$.
+{{pic}}{fig:addnumoflines} 我们实现的两位$n$比特二进制数相加的NAND-CIRC程序行数随$n$的变化关系($n$取值1到100). 虽然这不是该任务的最优实现, 但关键之处在于其复杂度呈现$O(n)$的线性特征. 
 ```
 
-
-Once we have addition, we can use the grade-school algorithm to obtain multiplication as well, thus obtaining the following theorem:
-
+只要有了加法, 我们就可以使用小学乘法算法来获得乘法, 从而得到以下定义:
 
 ```admonish quote title=""
-{{thmc}}{thm:theorem}[Multiplication using NAND-CIRC programs]
-For every $n$, let $MULT_n:\{0,1\}^{2n}\rightarrow \{0,1\}^{2n}$ be the function that, given $x,x'\in \{0,1\}^n$ computes the representation of the product of the numbers that $x$ and $x'$ represent. Then there is a constant $c$ such that for every $n$, there is a NAND-CIRC program of at most $cn^2$ lines that computes the function $MULT_n$.
+{{thmc}}{thm:theorem}[使用NAND-CIRC程序实现乘法运算]
+对于任意$n$, 设$MULT_n:\{0,1\}^{2n}\rightarrow \{0,1\}^{2n}$为这样的函数: 给定$x,x'\in \{0,1\}^n$, 计算$x$和$x'$所表示数值之积的二进制表示. 则存在常数$c$, 使得对每个$n$, 都存在一个最多包含$cn^2$行代码的NAND-CIRC程序可计算函数$MULT_n$. 
 ```
 
-We omit the proof, though in {{ref:pro:multiplication}} we ask you to supply a "constructive proof" in the form of a program (in your favorite programming language) that on input a number $n$, outputs the code of a NAND-CIRC program of at most $1000n^2$ lines that computes the $MULT_n$ function.
-In fact, we can use Karatsuba's algorithm to show that there is a NAND-CIRC program of $O(n^{\log_2 3})$ lines to compute $MULT_n$
-(and can get even further asymptotic improvements using better algorithms).
-
+我们在此省略证明过程, 不过在{{ref:pro:multiplication}}中, 我们将要求您以(用您熟悉的编程语言编写的)程序形式提供一份"构造性证明": 该程序以数字$n$作为输入, 输出一个最多包含$1000n^2$行代码的NAND-CIRC程序, 用于计算$MULT_n$函数. 
+实际上, 利用Karatsuba算法可以证明: 存在一个包含$O(n^{\log_2 3})$行代码的NAND-CIRC程序能够计算$MULT_n$函数(若采用更优算法, 还能实现更进一步的渐进性优化). 
 
 ## 4.3 LOOKUP函数 { #seclookupfunc }
 
-The $LOOKUP$ function will play an important role in this chapter and later.
-It is defined as follows:
+$LOOKUP$ 函数将在本章及后续章节中扮演重要角色.
+其定义如下:
 
 ```admonish quote title="" 
-{{defc}}{def:lookup}[Lookup function]
-For every $k$, the _lookup_ function of order $k$, $LOOKUP_k: \{0,1\}^{2^k+k}\rightarrow \{0,1\}$ is defined as follows:
-For every $x\in\{0,1\}^{2^k}$ and $i\in \{0,1\}^k$,
+{{defc}}{def:lookup}[查找函数]
+对于每个 $k$, $k$阶 **查找** 函数 $LOOKUP_k: \{0,1\}^{2^k+k}\rightarrow \{0,1\}$ 定义如下:
+对于每个 $x\in\{0,1\}^{2^k}$ 和 $i\in \{0,1\}^k$,
 $$
 LOOKUP_k(x,i)=x_i
 $$
-where $x_i$ denotes the $i^{th}$ entry of $x$, using the binary representation to identify $i$ with a number in $\{0,\ldots,2^k - 1 \}$.
+其中 $x_i$ 表示 $x$ 的第 $i^{th}$ 个条目, 使用二进制表示将 $i$ 识别为 $\{0,\ldots,2^k - 1 \}$ 中的一个数字.
 ```
 
 ```admonish pic id="lookupfig"
 ![lookupfig](./images/chapter4/lookupfunc.png)
 
-{{pic}}{fig:lookup} The $LOOKUP_k$ function takes an input in $\{0,1\}^{2^k+k}$, which we denote by $x,i$ (with $x\in \{0,1\}^{2^k}$ and $i \in \{0,1\}^k$). The output is $x_i$: the $i$-th coordinate of $x$, where we identify $i$ as a number in $[k]$ using the binary representation. In the above example $x\in \{0,1\}^{16}$ and $i\in \{0,1\}^4$. Since $i=0110$ is the binary representation of the number $6$, the output of $LOOKUP_4(x,i)$ in this case is $x_6 = 1$.
+{{pic}}{fig:lookup} $LOOKUP_k$ 函数接受一个输入在 $\{0,1\}^{2^k+k}$ 中, 我们将其表示为 $x,i$ (其中 $x\in \{0,1\}^{2^k}$ 和 $i \in \{0,1\}^k$). 输出是 $x_i$: $x$ 的第 $i$ 个坐标, 其中我们使用二进制表示将 $i$ 识别为 $[k]$ 中的一个数字. 在上面的例子中 $x\in \{0,1\}^{16}$ 和 $i\in \{0,1\}^4$. 由于 $i=0110$ 是数字 $6$ 的二进制表示, 在这种情况下 $LOOKUP_4(x,i)$ 的输出是 $x_6 = 1$.
 ```
 
-See {{ref:fig:lookup}} for an illustration of the LOOKUP function.
-It turns out that for every $k$, we can compute $LOOKUP_k$ using a NAND-CIRC program:
+对于 LOOKUP 函数的图示参见 {{ref:fig:lookup}}.
+事实证明, 对于每个 $k$, 我们可以使用 NAND-CIRC 程序计算 $LOOKUP_k$:
 
 ```admonish quote title=""
-{{thmc}}{thm:lookup}[Lookup function]
-For every $k>0$, there is a NAND-CIRC program that computes the function $LOOKUP_k: \{0,1\}^{2^k+k}\rightarrow \{0,1\}$. Moreover, the number of lines in this program is at most  $4\cdot 2^k$.
+{{thmc}}{thm:lookup}[查找函数]
+对于每个 $k>0$, 存在一个 NAND-CIRC 程序计算函数 $LOOKUP_k: \{0,1\}^{2^k+k}\rightarrow \{0,1\}$. 此外, 该程序的行数最多为 $4\cdot 2^k$.
 ```
 
-An immediate corollary of {{ref:thm:lookup}} is that for every $k>0$, $LOOKUP_k$ can be computed by a Boolean circuit (with AND, OR and NOT gates) of at most $8 \cdot 2^k$ gates.
-
-
-
+{{ref:thm:lookup}} 的一个直接推论是, 对于每个 $k>0$, $LOOKUP_k$ 可以由一个布尔电路(使用 AND,OR 和 NOT 门)计算, 其门数最多为 $8 \cdot 2^k$.
 
 ### 4.3.1 为$LOOKUP$构造一个NAND-CIRC程序
 
-We  prove {{ref:thm:lookup}} by induction.
-For the case $k=1$, $LOOKUP_1$  maps $(x_0,x_1,i) \in \{0,1\}^3$ to $x_i$.
-In other words, if $i=0$ then it outputs $x_0$ and otherwise it outputs $x_1$, which (up to reordering variables) is the same as
-the $IF$ function presented in  [第4.1.3节](chapter_4.md#ifstatementsec), which can be computed by a 4-line NAND-CIRC program.
+我们通过归纳法证明{{ref:thm:lookup}}.
 
-As a warm-up for the case of general $k$,  let us consider the case of $k=2$.
-Given input $x=(x_0,x_1,x_2,x_3)$ for $LOOKUP_2$ and an index $i=(i_0,i_1)$, if the most significant bit $i_0$ of the index is $0$ then $LOOKUP_2(x,i)$ will equal $x_0$ if $i_1=0$ and equal $x_1$ if $i_1=1$.
-Similarly, if the most significant bit $i_0$ is $1$ then $LOOKUP_2(x,i)$ will equal $x_2$ if $i_1=0$ and will equal $x_3$ if $i_1=1$.
-Another way to say this is that we can write $LOOKUP_2$ as follows:
+对于情况 $k=1$, $LOOKUP_1$ 将 $(x_0,x_1,i) \in \{0,1\}^3$ 映射到 $x_i$. 
+换句话说, 如果 $i=0$ 则它输出 $x_0$ , 否则它输出 $x_1$ , 
+(在变量重新排序后)这与 [第4.1.3节](chapter_4.md#ifstatementsec) 中提出的 $IF$ 函数相同, 
+该函数可以用一个4行 NAND-CIRC 程序计算.
+
+作为一般情况的热身, 让我们考虑 $k=2$ 的情况. 给定 $LOOKUP_2$ 的输入 $x=(x_0,x_1,x_2,x_3)$ 和索引 $i=(i_0,i_1)$, 如果索引的最高有效位 $i_0$ 是 $0$ , 那么 $LOOKUP_2(x,i)$ 将等于 $x_0$ 如果 $i_1=0$ , 并等于 $x_1$ 如果 $i_1=1$ . 类似地, 如果最高有效位 $i_0$ 是 $1$ , 那么 $LOOKUP_2(x,i)$ 将等于 $x_2$ 如果 $i_1=0$ , 并将等于 $x_3$ 如果 $i_1=1$ . 另一种说法是, 我们可以将 $LOOKUP_2$ 写成如下形式:
 
 ```python
 def LOOKUP2(X[0],X[1],X[2],X[3],i[0],i[1]):
@@ -416,7 +380,7 @@ def LOOKUP2(X[0],X[1],X[2],X[3],i[0],i[1]):
         return LOOKUP1(X[0],X[1],i[1])
 ```
 
-or in other words,
+换言之
 
 ```python
 def LOOKUP2(X[0],X[1],X[2],X[3],i[0],i[1]):
@@ -425,29 +389,28 @@ def LOOKUP2(X[0],X[1],X[2],X[3],i[0],i[1]):
     return IF( i[0],a,b)
 ```
 
-More generally, as shown in the following lemma,  we can compute $LOOKUP_k$ using two invocations of $LOOKUP_{k-1}$ and one invocation of $IF$:
+更一般地, 如以下引理所示, 我们可以使用两次 $LOOKUP_{k-1}$ 调用和一次 $IF$ 调用来计算 $LOOKUP_k$ :
 
 ```admonish quote title=""
-{{lemc}}{lem:lookup-rec}[Lookup recursion]
-For every $k \geq 2$, $LOOKUP_k(x_0,\ldots,x_{2^k-1},i_0,\ldots,i_{k-1})$
-is equal to
+{{lemc}}{lem:lookup-rec}[查找递归]
+对于每个 $k \geq 2$, $LOOKUP_k(x_0,\ldots,x_{2^k-1},i_0,\ldots,i_{k-1})$ 等于
+
 $$
-IF \left(i_0, LOOKUP_{k-1}(x_{2^{k-1}},\ldots,x_{2^k-1},i_1,\ldots,i_{k-1}), LOOKUP_{k-1}(x_0,\ldots,x_{2^{k-1}-1},i_1,\ldots,i_{k-1}) \right)
+\begin{aligned}
+IF (&i_0, LOOKUP_{k-1}(x_{2^{k-1}},\ldots,x_{2^k-1},i_1,\ldots,i_{k-1}), \\ 
+    &LOOKUP_{k-1}(x_0,\ldots,x_{2^{k-1}-1},i_1,\ldots,i_{k-1}))
+\end{aligned}
 $$
 ```
 
 ```admonish proof collapsible=true, title = "对{{ref:lem:lookup-rec}}的证明"
-If the most significant bit $i_{0}$  of $i$ is zero, then the index $i$ is in $\{0,\ldots,2^{k-1}-1\}$ and hence we can perform the lookup on the "first half" of $x$ and the result of  $LOOKUP_k(x,i)$ will be the same as $a=LOOKUP_{k-1}(x_0,\ldots,x_{2^{k-1}-1},i_1,\ldots,i_{k-1})$.
-On the other hand, if this most significant bit $i_{0}$  is equal to $1$, then the index is in $\{2^{k-1},\ldots,2^k-1\}$, in which case the result of $LOOKUP_k(x,i)$ is the same as $b=LOOKUP_{k-1}(x_{2^{k-1}},\ldots,x_{2^k-1},i_1,\ldots,i_{k-1})$.
-Thus we can compute $LOOKUP_k(x,i)$ by first computing $a$ and $b$ and then outputting $IF(i_0,b,a)$.
+如果 $i$ 的最高有效位 $i_{0}$ 为零, 那么索引 $i$ 在 $\{0,\ldots,2^{k-1}-1\}$ 中, 因此我们可以在 $x$ 的"前半部分"执行查找, 并且 $LOOKUP_k(x,i)$ 的结果将与 $a=LOOKUP_{k-1}(x_0,\ldots,x_{2^{k-1}-1},i_1,\ldots,i_{k-1})$ 相同. 另一方面, 如果这个最高有效位 $i_{0}$ 等于 $1$ , 那么索引在 $\{2^{k-1},\ldots,2^k-1\}$ 中, 在这种情况下, $LOOKUP_k(x,i)$ 的结果与 $b=LOOKUP_{k-1}(x_{2^{k-1}},\ldots,x_{2^k-1},i_1,\ldots,i_{k-1})$ 相同. 因此, 我们可以通过首先计算 $a$ 和 $b$ , 然后输出 $IF(i_0,b,a)$ 来计算 $LOOKUP_k(x,i)$ .
 ```
 
-
-__Proof of {{ref:thm:lookup}} from {{ref:lem:lookup-rec}}.__ Now that we have {{ref:lem:lookup-rec}},
-we can complete the proof of {{ref:thm:lookup}}.
-We will prove by induction on $k$ that there is a NAND-CIRC program of at most $4\cdot (2^k-1)$ lines for $LOOKUP_k$.
-For $k=1$ this follows by the four line program for $IF$ we've seen before.
-For $k>1$, we use the following pseudocode:
+__基于 {{ref:lem:lookup-rec}} 的 {{ref:thm:lookup}} 证明.__ 既然我们已经证明 {{ref:lem:lookup-rec}}, 我们就可以完成 {{ref:thm:lookup}} 的证明.
+我们将通过对$k$归纳证明, 存在一个最多 $4\cdot (2^k-1)$ 行的 NAND-CIRC 程序用于计算 $LOOKUP_k$.
+对于 $k=1$, 这由我们之前见过的用于 $IF$ 的四行程序得出.
+对于 $k>1$, 我们使用以下伪代码来计算:
 
 ```python
 a = LOOKUP_(k-1)(X[0],...,X[2^(k-1)-1],i[1],...,i[k-1])
@@ -455,20 +418,21 @@ b = LOOKUP_(k-1)(X[2^(k-1)],...,X[2^(k-1)],i[1],...,i[k-1])
 return IF(i[0],b,a)
 ```
 
-If we let $L(k)$ be the number of lines required for $LOOKUP_k$, then the above pseudo-code shows that
+如果我们令 $L(k)$ 表示 $LOOKUP_k$ 所需的行数, 那么上述伪代码表明
 $$
-L(k) \leq 2L(k-1)+4 \;. \label{induction-lookup}
+L(k) \leq 2L(k-1)+4 \;. {{numeq}}{eq:induction-lookup}
 $$
-Since under our induction hypothesis $L(k-1) \leq 4(2^{k-1}-1)$, we get that 
-$L(k) \leq 2\cdot 4 (2^{k-1}-1) + 4 = 4(2^k - 1)$ which is what we wanted to prove. 
-See {{ref:fig:lookuplines}} for a plot of the actual number of lines in our implementation of $LOOKUP_k$.
+
+由归纳假设, $L(k-1) \leq 4(2^{k-1}-1)$, 我们有
+$L(k) \leq 2\cdot 4 (2^{k-1}-1) + 4 = 4(2^k - 1)$, 这正是我们想要证明的.
+
+对于我们实现的 $LOOKUP_k$ 的实际行数图, 参见 {{ref:fig:lookuplines}}.
 
 ```admonish pic id="lookuplinesfig"
 ![lookuplinesfig](./images/chapter4/lookup_numlines.png)
 
-{{pic}}{fig:lookuplines} The number of lines in our implementation of the `LOOKUP_k` function as a function of $k$ (i.e., the length of the index). The number of lines in our implementation is roughly $3 \cdot 2^k$.
+{{pic}}{fig:lookuplines} 我们实现的 `LOOKUP_k` 函数的行数关于 $k$ (即索引的长度) 的函数. 我们实现中的行数大约为 $3 \cdot 2^k$.
 ```
-
 
 ## 4.4 **通用** 函数计算 { #seccomputeallfunctions }
 
