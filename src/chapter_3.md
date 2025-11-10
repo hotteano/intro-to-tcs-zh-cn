@@ -207,14 +207,14 @@ def MAJ(X[0],X[1],X[2]):
 
 它们还满足分配律的一种变体: 
 ```admonish quote title=""
-{{exec}}{distributivelaw}[$\AND$ 与 $\OR$ 满足分配律] 
+{{exec}}{exe:distributivelaw}[$\AND$ 与 $\OR$ 满足分配律] 
 证明: 对于任意 $a,b,c \in \{0,1\}$, 都有
 $$
   a \wedge (b \vee c) = (a \wedge b) \vee (a \wedge c). 
 $$
 ```
 
-```admonish solution collapsible=true, title = "解答" 
+```admonish solution collapsible=true, title = "对{{ref:exe:distributivelaw}}的解答" 
 我们可以通过枚举 $a,b,c \in \{0,1\}$ 的所有 $8$ 种可能取值来证明这一点, 但它也可以直接从标准的分配律推导出来.   
 
 假设我们将任意正整数视为"真", 将零视为"假". 那么对于每个数 $u,v \in \mathbb{N}$, $u+v$ 为正当且仅当 $u \vee v$ 为真, 而 $u \cdot v$ 为正当且仅当 $u \wedge v$ 为真.   
@@ -293,10 +293,10 @@ print([f"XOR({a},{b})={XOR(a,b)}" for a in [0,1] for b in [0,1]])
 ```
 
 ```admonish quote title=""
-{{exec}}{exec:xorthreebits}[在三个输入上计算 $\XOR$]
+{{exec}}{exe:xorthreebits}[在三个输入上计算 $\XOR$]
 定义 $\XOR_3:\{0,1\}^3\to\{0,1\}$ 为 $\XOR_3(a,b,c)=a+b+c\pmod 2$. 也就是说, 当 $a+b+c$ 为奇数时 $\XOR_3(a,b,c)=1$, 否则 $\XOR_3(a,b,c)=0$. 证明可以仅用 $\AND$、$\OR$ 和 $\NOT$ 三种逻辑运算来计算 $\XOR_3$. 你可以将其表示为公式、使用诸如 Python 的编程语言实现, 或构造相应的布尔电路. 
 ```
-~~~admonish solution collapsible=true, title = "解答"
+~~~admonish solution collapsible=true, title = "对{{ref:exe:xorthreebits}}的解答"
 模 2 加法具有与通常加法相同的 **结合律** ($(a+b)+c=a+(b+c)$) 和 **交换律** ($a+b=b+a$).   
 这意味着, 如果我们定义 $a \oplus b = a+b \pmod 2$, 那么  
 $$
@@ -409,11 +409,11 @@ print([f"XOR3({a},{b},{c})={XOR3(a,b,c)}" for a in [0,1] for b in [0,1] for c in
 ```
 
 ```admonish quote title=""
-{{exec}}{exec:allequal}[全相等函数]
+{{exec}}{exe:allequal}[全相等函数]
 定义函数 $\text{ALLEQ}:\{0,1\}^4 \rightarrow \{0,1\}$, 其输入为 $x \in \{0,1\}^4$, 当且仅当 $x_0 = x_1 = x_2 = x_3$ 时输出 $1$.  
 ```
 
-```admonish solution collapsible=true, title="解答"
+```admonish solution collapsible=true, title="对{{ref:exe:allequal}}的解答"
 另一种描述函数 $\text{ALLEQ}$ 的方式是: 当且仅当输入 $x \in \{0,1\}^4$ 满足 $x = 0^4$ 或 $x = 1^4$ 时, 它输出 $1$.   
 我们可以将条件 $x = 1^4$ 表述为 $x_0 \wedge x_1 \wedge x_2 \wedge x_3$, 这可以用三个 $\AND$ 门计算.   
 同样地, 我们可以将条件 $x = 0^4$ 表述为 $\overline{x}_0 \wedge \overline{x}_1 \wedge \overline{x}_2 \wedge \overline{x}_3$, 这可以用四个 $\NOT$ 门和三个 $\AND$ 门计算.   
@@ -564,12 +564,12 @@ AON-CIRC 并不是一种实用的编程语言: 它仅用于教学目的, 用来�
 ```
 以下已解练习给出了一个 AON-CIRC 程序的示例. 
 ```admonish quote title=""
-{{exec}}{aonforcmpsolved} 考虑如下函数 $\text{CMP}:\{0,1\}^4 \rightarrow \{0,1\}$: 对四个输入比特 $a,b,c,d \in \{0,1\}$, 当且仅当由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字时输出 $1$.   
+{{exec}}{exe:aonforcmp} 考虑如下函数 $\text{CMP}:\{0,1\}^4 \rightarrow \{0,1\}$: 对四个输入比特 $a,b,c,d \in \{0,1\}$, 当且仅当由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字时输出 $1$.   
 即 $\text{CMP}(a,b,c,d) = 1$ 当且仅当 $2a + b > 2c + d$. 
 给出一个计算 $\text{CMP}$ 的 AON-CIRC 程序示例.
 ```
 
-~~~admonish solution collapsible=true
+~~~admonish solution collapsible=true title="对{{ref:exe:aonforcmp}}的解答"
 编写这样的程序虽然繁琐, 但并不困难. 比较两个数字时, 我们首先比较它们的最高有效位, 然后依次比较下一位, 以此类推. 在数字仅有两位二进制的情况下, 这些比较特别简单. 由 $(a,b)$ 表示的数字大于由 $(c,d)$ 表示的数字, 当且仅当满足以下任一条件: 
 
 1. $(a,b)$ 的最高有效位 $a$ 大于 $(c,d)$ 的最高有效位 $c$;   
@@ -849,10 +849,10 @@ $$\OR(a,b) = \NOT(\AND(\NOT(a), \NOT(b)))$$ (也可以写作 $a \vee b = \overli
 
 我们可以使用 $\NAND$ 来计算许多其他函数, 如以下练习所示. 
 ```admonish quote title=""
-{{exec}}{majbynandex}[利用$\NAND$计算$\text{MAJ}$]
+{{exec}}{exe:majbynand}[利用$\NAND$计算$\text{MAJ}$]
 设 $\text{MAJ}:\{0,1\}^3 \rightarrow \{0,1\}$ 为函数: 对输入 $a,b,c$, 当且仅当 $a+b+c \ge 2$ 时输出 $1$. 说明如何用若干个 $\text{NAND}$ 的组合来计算 $\text{MAJ}$. 
 ```
-```admonish solution collapsible=true
+```admonish solution collapsible=true title="对{{ref:exe:majbynand}}的解答"
 回想一下 {{eqref:eq:majandornot}} 给出的是: 
 $$
 \text{MAJ}(x_0,x_1,x_2) = \OR\bigl(\AND(x_0,x_1),\OR(\AND(x_1,x_2),\AND(x_0,x_2) )\bigr). 

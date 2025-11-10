@@ -142,7 +142,7 @@ $$
 说明对每个函数$F:\{0,1\}^* \rightarrow \{0,1\}^*$，都有一个布尔函数$BF:\{0,1\}^* \rightarrow \{0,1\}$使得一个能够计算$BF$的Python程序可以被转移为一个计算$F$的程序，反之亦然. 
 ```
 
-```admonish solution collapsible=true title="解答6.1"
+```admonish solution collapsible=true title="对{{ref:exe:booleanize}}的解答"
 对每个函数$F:\{0,1\}^* \rightarrow \{0,1\}^*$, 可以定义. 
 
 $$
@@ -309,7 +309,7 @@ F(x) = \begin{cases}
 $$
 ```
 
-```admonish solution collapsible=true title="解答6.2"
+```admonish solution collapsible=true title="对{{ref:exe:DFAzeroone}}的解答"
 当要求构造一个DFA时，可以首先通过更加一般的、形式化的方式，来构造一个单遍常数内存算法，这通常是有效的. (例如使用伪代码或者一个python程序). 一旦得到了这样一个算法，就可以机械式地将其翻译为一个DFA. 
 以下是计算$F$的一个简单Python程序: 
 
@@ -554,7 +554,7 @@ $$
 给出一个匹配空串的算法. 该算法输入为正则表达式$e$，且满足当且仅当$\Phi_e(\texttt{""})=1$时输出$1$
 ```
 
-```admonish solution collapsible=true title="解答6.3"
+```admonish solution collapsible=true title="对{{ref:exe:emptymatch}}的解答"
 可以通过以下观察结果给出这样一个递归算法
 1. 具有形式 $\texttt{""}$或$(e')^*$的表达式总是匹配空串
 2. 具有形式 $\sigma$，其中$\sigma\in\Sigma$是一个字母，不匹配空串
@@ -972,7 +972,7 @@ $\overline{F}$也是正则的. $\square$
 ( **回文** 函数定义时一般不需要一个显式的分隔符$\;$，但带有分隔符的版本更加简洁，因为我们在此处使用它. 这并没有什么影响，因为分隔符可以很容易地用一个特殊的二进制串编码). 
 ```
 
-```admonish solution collapsible=true,title="解答 6.4"
+```admonish solution collapsible=true,title="对{{ref:exe:palindromenotreg}}的解答"
 此处采用泵引理. 
 为了使用反证法，假设有一个正则表达式$e$计算$PAL$，令$n_0$为泵引理({{ref:thm:pumping}})中的数. 考虑串$w = 0^{n_0};0^{n_0}$. 因为全部由零组成的串的反转仍为全部由零组成的串，所以$PAL(w)=1$. 
 现在，根据选择引理，如果$PAL$被$e$计算，则可以写下$w=xyz$使得$|xy| \leq n_0$，$|y|\geq 1$且对每个$k\in \N$有$PAL(xy^kz)=1$. 特别地，$PAL(xz)=1$一定成立，但这就导致了矛盾，因为$xz=0^{n_0-|y|};0^{n_0}$，所以其两部分并不一样长，所以并不是另一者的反转.  $\square$
