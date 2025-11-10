@@ -235,7 +235,7 @@ $$
 若$S,T$是非空集合且$F:S\to T$是单射, 则存在满射函数$G:T\to S$, 使得对每个$s\in S$均有$G(F(s))=s$. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:onetooneimpliesonto}}的证明"
 选择某个$s_0\in S$. 我们将定义函数$G:T\to S$如下: 对每个$t\in T$, 若存在某个$s\in S$使得$F(s)=t$, 则令$G(t)=s$(由于$F$的单射性质, 不可能有两个不同的$s,s'$同时映射到$t$, 因此$s$的选择是无歧义的). 否则, 令$G(t)=s_0$. 现在对于每个$s\in S$, 根据$G$的定义, 若$t=F(s)$, 则$G(F(s))=s$. 此外, 这也表示$G$是满射, 因为这意味着对每个$s\in S$都存在某个$t$(即$t=F(s)$)使得$G(t)=s$. 
 ```
 
@@ -544,7 +544,7 @@ Kun的著作([Kun, 2018](https://scholar.google.com/scholar?hl=en&q=Kun+A+progra
 不存在自然数$a,b$使得$\sqrt{2}=\tfrac{a}{b}$. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:C1S5L1}}的证明"
 假设, 为了得出矛盾, 上述引理为假. 令$a\in\N$为满足$\sqrt{2}=\tfrac{a}{b}$的最小自然数(其中$b\in\N$). 对此等式两侧平方有$2=a^2/b^2$, 即$a^2=2b^2$ $(*)$. 此式表明$a^2$为**偶数**. 由于两个奇数之积亦为奇数, 这表明$a$必须是偶数, 即存在$a'\in\N$使得$a=2a'$. 将此式代入$(*)$有$4a'^2=2b^2$, 即$b^2=2a'^2$, 且这表明$b^2$亦为为偶数. 与$a$类似, 我们亦可得到$b$为偶数. 因此, $a/2$与$b/2$为两个满足$\tfrac{a/2}{b/2}=\sqrt{2}$的自然数, 这与$a$的最小性相矛盾. 
 ```
 
@@ -556,7 +556,7 @@ Kun的著作([Kun, 2018](https://scholar.google.com/scholar?hl=en&q=Kun+A+progra
 对于任意自然数$n\in\N$, $n$和$n+1$中必有一个是偶数. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{lem:C1S5L2}}的证明"
 证明: 设$n\in\N$为任意自然数. 若$n/2$为整数, 则$n=2(n/2)$, 因此$n$是偶数, 证毕. 否则, $n/2+1/2$是整数, 因此$2(n/2+1/2)=n+1$是偶数. 
 ```
 
@@ -568,7 +568,7 @@ Kun的著作([Kun, 2018](https://scholar.google.com/scholar?hl=en&q=Kun+A+progra
 如果$b^2\ge4ac$, 则二次方程$ax^2+bx+c=0$有解. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:C1S5L3}}的证明"
 证明: 假设$b^2\ge4ac$. 则$d=b^2-4ac$是一个非负数, 因此存在平方根$s$. 于是$x=(-b+s)/(2a)$满足: 
 
 $$
@@ -652,7 +652,7 @@ Lamport格式的优点在于, 证明中每个句子的作用非常清晰. 此外
 
 要证明{{ref:thm:toposort}}, 则需同时证明{{ref:lem:acyclictosort}}和{{ref:lem:sorttoacyclic}}. {{ref:lem:sorttoacyclic}}的证明实际上并不困难: 直观上, 若$G$包含环, 则环上所有边的层数不可能全程递增—因为沿着环行进时必然会回到起点. 形式化证明如下: 
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:sorttoacyclic}}的证明"
 证明: 设$G=(V,E)$为有向图, $f:V\to\N$是符合{{ref:def:daglayer}}的分层函数. 用反证法假设$G$不是无环图, 即存在环$u_0,u_1,\dots,u_k$满足$u_0=u_k$, 且对每个$i\in[k]$都有边$u_i\to u_{i+1}$属于$G$. 由于$f$是分层函数, 对每个$i\in[k]$有$f(u_i)<f(u_{i+1})$, 这意味着: 
 $$
 f(u_0)<f(u_1)<\dots<f(u_k)
@@ -707,7 +707,7 @@ $$
 
 以上是{{ref:lem:acyclictosort}}证明的直观思路. 但在撰写正式证明时, 我们将基于后见之明进行优化, 将原本曲折的推理过程转化为从"证明: "开始到"证毕(QED{{footnote: QED即拉丁文quod erat demonstrandum", 意为"这被证明了"}})"(或符号$\blacksquare$)结束的线性化逻辑流. 讨论、示例和旁注虽颇具启发性, 但应该置于这两个标记界定的空间之外——正如优秀的指南所述, 此空间内"每个句子都必须承担论证功能". 如同编程, 我们可以将证明分解为小型"子程序"或"函数"(数学中称为**引理**或**断言**), 即通过辅助性小命题来证明主要结论. 但证明结构必须确保读者能清晰把握论证阶段, 理解每个句子的作用及所属部分. 现正式证明{{ref:lem:acyclictosort}}. 
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:acyclictosort}}的证明"
 证明: 设$G=(V,E)$为有向无环图, $n=|V|$为其顶点数. 采用对$n$归纳法证明. 基础情形$n=0$时命题显然成立. 当$n>0$时, 归纳假设为: 所有顶点数不超过$n−1$的有向无环图$G′$均存在分层. 
 
 首先建立如下断言: 
@@ -756,7 +756,7 @@ $$
 
 *证明思路*: 对层数进行归纳. 若$f$和$g$都是最小分层, 则它们必然在源点处取值一致(因为都必须将源点分配至$0$层). 接着可证明: 若$f$和$g$在第$i−1$层及以下取值一致, 则最小性性质要求它们在第$i$层也必须一致. 实际证明中使用了一个简化表述的技巧: 不直接证明$f=g$(即对每个$v\in V$有$f(v)=g(v)$), 而是证明较弱的命题—对每个$v\in V$有$f(v)le g(v)$(该条件弱于相等条件, 因为$f(v)=g(v)$必然蕴含$f(v)\le g(v)$). 由于$f$和$g$只是两个最小分层的标注符号, 通过互换符号标签即可用相同证明得到对每个$v\in V$有$g(v)\le f(v)$, 从而证得$f=g$.
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:thm:minilayerunique}}的证明"
 设$G=(V,E)$为有向无环图, $f,g:V\to\N$是其两个最小有效分层. 我们将通过对$i=f(v)$的归纳证明: 对每个$v\in V$有$f(v)\le g(v)$. 由于除最小性外未对$f,g$作任何假设, 该证明同样可推出对每个$v\in V$有$g(v)\le f(v)$, 故而对每个$v\in V$有$f(v)=g(v)$, 此即所需结论. 
 
 当$i=0$时显然成立: 此时$f(v)=0$, 故$g(v)$至少等于$f(v)$. 当$i>0$时, 根据$f$的最小性, 若$f(v)=i$则必存在某个入邻居$u$满足$f(u)=i−1$. 由归纳假设得$g(u)\ge i−1$, 而由于$g$是有效分层, 必有$g(v)>g(u)$, 这意味着$g(v)≥i=f(v)$. 

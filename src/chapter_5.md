@@ -103,7 +103,7 @@ Y[0] = NAND(temp_1,temp_2)
 这意味着最多存在$2^{O(s\log s)}$个函数可由不超过$s$行的NAND-CIRC程序计算. {{footnote: 其中$O(\cdot)$表示法中的隐常数小于10. 也就是说, 对于所有足够大的$s$, $|SIZ_{n,m}(s)<2^{10s\log s}|$, 详见{{ref:rem:efficientrepresentation}}. 如[1.7节](chapter_1.md#notationsec)所述, 我们采用10这个界限值仅仅是因为它是个整数. }}
 ```
 
-```admonish proof collapsible=true title="证明"
+```admonish proof collapsible=true title="对{{ref:thm:program-count}}的证明"
 对于任意$n,m\in\N$, 我们将构造一个从$SIZE_{n,m}(s)$到长度为$cs\log s$的字符串集合的单射映射$E$(其中$c$为常数). 这将完成证明, 因为该证明表明$|SIZE_{n,m}(s)|$小于长度至多为$\ell=cs\log s$的所有字符串集合的规模. 根据等比数列求和公式, 后一个集合的规模为$1+2+4+\cdots+2^\ell=2^{\ell+1}-1$. 
 
 映射$E$将简单地把函数$f$映射到计算$f$的最小程序表示. 由于$f\in SIZE_{n,m}(s)$, 根据{{ref:thm:asciirepprogram}}, 存在一个最多$s$行的程序$P$, 其字符串表示长度不超过$cs\log s$. 此外, 映射$f\mapsto E(f)$是单射, 因为对于任意不同的函数$f,f':\{0,1\}^n\to\{0,1\}^m$, 必然存在某个输入为$x\in\{0,1\}^n$使得$f(x)\ne f'(x)$. 这意味着分别计算$f$和$f'$的程序不可能完全相同. 
@@ -117,7 +117,7 @@ Y[0] = NAND(temp_1,temp_2)
 存在常数$\delta>0$, 使得对于所有足够大的$n$, 必然存在函数$f:\{0,1\}^n\to\{0,1\}$满足$f\notin SIZE_n\left(\tfrac{\delta 2^n}{n}\right)$. 也就是说, 计算$f$的最短NAND-CIRC程序需要超过$\delta\cdot 2^n/n$行. {{footnote: 常数$\delta$至少为0.1, 实际上, 可以通过{{ref:pro:efficientlb}}将其进一步缩小为任意接近$1/2$的值. }}
 ```
 
-```admonish proof collapsible=true title="证明"
+```admonish proof collapsible=true title="对{{ref:thm:counting-lb}}的证明"
 证明相当简单. 令$c$为满足$|SIZE_n(s)|\le 2^{cs\log s}$的常数, 且设$\delta=1/c$, 则当$s=\delta 2^n/n$时, 有: 
 $$
 |SIZE_n(\tfrac{\delta 2^n}{n})| \leq 2^{c \tfrac{\delta 2^n}{n} \log s} < 2^{c \delta 2^n} = 2^{2^n}
@@ -159,7 +159,7 @@ SIZE_n(s)\subsetneq SIZE_n(s+10n)
 $$
 ```
 
-```admonish proof collapsible=true title="证明思路"
+```admonish proof collapsible=true title="对{{ref:thm:sizehiearchy}}的证明思路"
 为了证明这个定理, 我们需要找到一个函数$f:\{0,1\}^n\to\{0,1\}$, 使得该函数 **可以** 由$s+10n$个门的电路计算, 但**不能**被$s$个门的电路计算. 为此, 我们将构筑一个函数序列$f_0,f_1,f_2,\dots,f_N$, 其满足以下性质: __(1)__ $f_0$最多 **可以** 用$10n$个门的电路计算; __(2)__ $f_N$ **无法** 用$0.1\cdot 2^n/n$个门的电路计算;(3) 对每个$i\in\{0,\dots,N\}$, 若$f_i$可用规模为$s$的电路计算, 则$f_{i+1}$最多可用规模为$s+10n$的电路计算. 
 这些性质共同表明: 若令$i$是满足$f_i\notin SIZE_n(s)$的最小下标, 则由于$f_{i-1}\in SIZE_n(s)$, 必然有$f_i\in SIZE_n(s+10n)$, 这正是我们需要证明的结论. 示意图见[图5.4](#hierarchyprooffig). 
 ```
@@ -171,7 +171,7 @@ $$
 {{pic}} 我们通过构造函数列表$f_0,\ldots,f_{2^n}$来证明{{ref:thm:sizehiearchy}}, 其中$f_0$是全零函数, $f_{2^n}$是(由{{ref:thm:counting-lb}}得到的)不在$SIZE_n(0.1\cdot 2^n/n)$中的函数, 且满足$f_{i-1}$与$f_i$最多在一个输入上存在差异. 可以证明: 对每个$i$, 计算$f_i$所需的门数最多比计算$f_{i-1}$多$10n$个. 因此若令$i$是满足$f_i \not\in SIZE_n(s)$的最小下标, 则$f_i \in SIZE_n(s+10n)$
 ```
 
-```admonish proof collapsible=true title="证明"
+```admonish proof collapsible=true title="对{{ref:thm:sizehiearchy}}的证明"
 设$f^*:\{0,1\}^n\to\{0,1\}$是由{{ref:thm:counting-lb}}保证存在的函数, 且满足$f^*\notin SIZE_n(0.1\cdot 2^n/n)$. 我们定义函数序列$f_0,f_1,\dots,f_{2^n}:\{0,1\}^n\to\{0,1\}$如下: 对任意$x\in\{0,1\}^n$, 若$lex(x)\in\{0,1,\dots,2^n-1\}$是$x$在字典序中的编号, 则
 $$
 f_i(x) = \begin{cases} f^*(x) & lex(x)< i  \\ 0 & \text{otherwise} \end{cases}
@@ -286,7 +286,7 @@ $$
 
 也就是说, NAND-CIRC程序$U_{s,n,m}$能够接受**任何其他NAND-CIRC程序**(需满足特定长度和输入/输出要求)的描述以及**任意输入**$x$, 并计算程序$P$在输入$x$下的结果. 根据NAND-CIRC程序与布尔电路的等价性, 我们也可以将$U_{s,n,m}$视为一个接受其他电路描述及其输入, 并返回其求值结果的电路(参见[图5.6](#universalcircfig)). 我们将这个计算 、$EVAL_{s,n,m}$的NAND-CIRC程序$U_{s,n,m}$称为**有界通用程序**(或**通用电路**, 参见[图5.6](#universalcircfig)). “通用”意味着这是一个可以执行**任意**代码的**单一**程序, 而“有界”表示$U_{s,n,m}$仅能评估有限规模的程序. 当然这种限制是NAND-CIRC编程语言固有的, 因为一个$s$行的程序(或等效的$s$个门的电路)最多只能接受$2s$个输入. 后续在[第7章](./chapter_7.md)中, 我们将引入**循环**的概念(以及**图灵机模型**), 从而突破这一限制. 
 
-```admonish proof collapsible=true title="证明"
+```admonish proof collapsible=true title="对{{ref:thm:bounded-univ}}的证明"
 {{ref:thm:bounded-univ}}是一个重要结果, 但其证明实际上并不困难. 具体而言, 由于$EVAL_{s,n,m}$是一个有限函数, {{ref:thm:bounded-univ}}是{{ref:thm:NAND-univ}}的直接推论, 后者表明 **每个** 有限函数都可以由 **某个** NAND-CIRC程序计算. 
 ```
 

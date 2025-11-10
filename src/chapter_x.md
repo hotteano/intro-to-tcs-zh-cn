@@ -146,7 +146,7 @@ $$
 根据标准的分配律 $a \cdot (b+c) = a \cdot b + a \cdot c$, 因此前者表达式为真当且仅当后者表达式为真. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对[{ref:id}]的证明"
 对于任意 $a,b$, 有 $\XOR(a,b)=1$ 当且仅当 $a$ 与 $b$ 不同. 
 令 $w1 = \AND(a,b)$, $w2 = \NOT(\AND(a,b))$, $w3 = \OR(a,b)$. 则在输入 $a,b \in \{0,1\}$ 时, {{ref:alg:XORfromAON}} 输出  
 $$

@@ -255,10 +255,10 @@ $
 ```
 ```admonish quote title=""
 {{lemc}}{lem:alganalaysis}
-对于每个 $a,b \in \{0,1\}$, 在输入 $a,b$ 时, {{ref: alg:XORfromAON}} 输出 $a + b \mod 2$. 
+对于每个 $a,b \in \{0,1\}$, 在输入 $a,b$ 时, {{ref:alg:XORfromAON}} 输出 $a + b \mod 2$. 
 ```
 
-```admonish proof collapsible=true, title = "证明"
+```admonish proof collapsible=true, title = "对{{ref:lem:alganalaysis}}的证明"
 对于任意 $a,b$, 有 $\XOR(a,b)=1$ 当且仅当 $a$ 与 $b$ 不同. 
 令 $w1 = \AND(a,b)$, $w2 = \NOT(\AND(a,b))$, $w3 = \OR(a,b)$. 则在输入 $a,b \in \{0,1\}$ 时, {{ref: alg:XORfromAON}} 输出  
 $$
@@ -625,7 +625,7 @@ Y[0] = OR(temp_2,temp_6)
 我们的 [GitHub 仓库](https://github.com/boazbk/tcscode) 中提供了 {{ref:thm:slcircuitequiv}} 的"Python 证明": 实现了 `circuit2prog` 和 `prog2circuits` 函数, 用于在布尔电路和 AON-CIRC 程序之间互相转换. 
 ```
 
-```admonish proof collapsible=true
+```admonish proof collapsible=true title="对{{ref:thm:slcircuitequiv}}的证明"
 设 $f:\{0,1\}^n \rightarrow \{0,1\}^m$. 由于该定理是**"当且仅当"**的命题, 要证明它, 我们需要展示两个方向:   
 1. 将计算 $f$ 的 AON-CIRC 程序转换为计算 $f$ 的布尔电路;   
 2. 将计算 $f$ 的布尔电路转换为计算 $f$ 的 AON-CIRC 程序.   
@@ -833,7 +833,7 @@ $$\NAND(a,b) = \begin{cases} 0 & a=b=1 \\ 1 & \text{否则} \end{cases}\;.$$
 {{thmc}}{thm:univnandone}[用$\NAND$构造$\AND/\OR/\NOT$]
 我们可以通过仅组合 $\NAND$ 来计算 $\AND$, $\OR$, 和 $\NOT$.
 ```
-```admonish proof collapsible=true
+```admonish proof collapsible=true title="对{{ref:thm:univnandone}}的证明"
 我们从以下观察开始. 对于每个 $a \in \{0,1\}$, 有 $\AND(a,a) = a$.   
 因此, $\NAND(a,a) = \NOT(\AND(a,a)) = \NOT(a)$.   
 
@@ -913,10 +913,10 @@ $$同样的公式也可以表示为由 $\NAND$ 门组成的电路, 见[图3.27](
 {{thmc}}{thm:NANDuniversam}[$\NAND$可作为通用逻辑门]
 对于任意包含 $s$ 个逻辑门的布尔电路 $C$, 都存在一个至多包含 $3s$ 个逻辑门的 $\NAND$ 电路 $C'$, 其计算结果与 $C$ 相同. 
 ```
-```admonish idea title="证明思路"
+```admonish proof collapsible=true title="对{{ref:thm:NANDuniversam}}的证明思路"
 该证明的思路是: 按照 {{ref:thm:univnandone}} 的证明方法, 将每一个 $\AND$、$\OR$ 和 $\NOT$ 门替换为它们对应的 $\NAND$ 实现. 
 ```
-```admonish proof collapsible=true
+```admonish proof collapsible=true title="对{{ref:thm:NANDuniversam}}的证明"
 如果 $C$ 是一个布尔电路, 那么由于我们在 {{ref:thm:univnandone}} 的证明中已经看到, 对于任意 $a,b \in \{0,1\}$ 有: 
 
 * $\AND(a,b) = \NAND(\NAND(a,b),\NAND(a,b))$  
@@ -1104,7 +1104,7 @@ Y[0] = NAND(v,w)
 这里的"$O(s)$"表示上界最多为 $c \cdot s$, 其中 $c$ 是与 $n$ 无关的常数. 例如, 如果 $f$ 可以由 $s$ 个门的布尔电路计算, 那么它可以由最多 $3s$ 行的 NAND-CIRC 程序计算; 如果 $f$ 可以由 $s$ 个门的 NAND 电路计算, 那么它可以由最多 $2s$ 行的 AON-CIRC 程序计算. 
 ```
 
-```admonish proof collapsible=true, title="证明思路"
+```admonish proof collapsible=true, title="对{{ref:thm:equivalencemodels}}的证明思路"
 我们省略正式证明, 该证明可通过结合 {{ref:thm:slcircuitequiv}}、{{ref:thm:NANDuniversam}} 和 {{ref:thm:NANDcircslequiv}} 得出. 关键观察是: 我们看到的结果允许我们将一个在上述模型之一中计算 $f$ 的程序/电路, 转换为在另一模型中计算 $f$ 的程序/电路, 其行数或门数最多增加一个常数因子 (实际上该常数因子最多为 $3$) .   
 ```
 
