@@ -34,11 +34,10 @@ Lewis Carroll, **爱丽丝镜中奇遇**
 * 前缀无关编码.
 * Cantor定理: 实数无法被有限长字符串精确表示.
 
-<!-- 图2.1 -->
-```admonish pic id = 'input_output'
-![input_output](./images/chapter2/input_output.png)
+```admonish pic id = 'input_output_fig'
+![input_output_fig](./images/chapter2/input_output.png)
 
-{{pic}} 我们对计算最基本的理解, 是把它看作一种将输入转化为输出的过程.
+{{pic}}{fig:input_output} 我们对计算最基本的理解, 是把它看作一种将输入转化为输出的过程.
 ```
 
 从初步的角度看, **计算** 是一个将 **输入** 映射为 **输出** 的过程.
@@ -51,11 +50,10 @@ Lewis Carroll, **爱丽丝镜中奇遇**
 
 我们将尝试把所有这些对象表示为 **由 0 和 1 组成的字符串**, 也就是诸如 $0011101$, $1011$, 或任意有限个 $0$ 与 $1$ 组成的序列. (当然, 这样的选择只是出于方便, 0 和 1 并非 "神圣" 而不可替代: 我们完全可以用任何其他有限集合的符号来表示.)
 
-<!-- 图2.2 -->
 ```admonish pic id = 'zeroes-onesfig'
 ![zeroes-onesfig](./images/chapter2/zeroes-ones.jpg)
 
-{{pic}} 我们用由 0 和 1 组成的字符串来表示数字, 文本, 图像, 网络以及许多其他对象. 当然, 将这些 0 和 1 本身以绿色字体写在黑色背景上也是可选的.
+{{pic}}{fig:zeroes-ones} 我们用由 0 和 1 组成的字符串来表示数字, 文本, 图像, 网络以及许多其他对象. 当然, 将这些 0 和 1 本身以绿色字体写在黑色背景上也是可选的.
 ```
 
 如今, 我们已经对数字化的表示习以为常, 因而并不会对这种编码的存在感到惊讶, 但这实际上是一个深刻的结果, 并带来了许多重要的影响.
@@ -93,7 +91,7 @@ Lewis Carroll, **爱丽丝镜中奇遇**
 ### 2.1.1 表示自然数 { #naturalnumsec }
 
 现在我们来展示如何将自然数表示为二进制字符串.  
-多年来, 人们已经尝试了各种方式来表示数字, 包括绳结计数, 雅玛数字, 罗马数字, 我们熟悉的十进制, 以及许多其它方法. 我们当然可以使用其中任意一种将一个数字表示为字符串 (参见 [图2.3](#digitsbitmapfig)), 然而, 出于计算上的方便, 我们采用 **二进制基** 作为默认的自然数字符串表示法.  
+多年来, 人们已经尝试了各种方式来表示数字, 包括绳结计数, 雅玛数字, 罗马数字, 我们熟悉的十进制, 以及许多其它方法. 我们当然可以使用其中任意一种将一个数字表示为字符串 (参见 {{ref:fig:digitsbitmap}}), 然而, 出于计算上的方便, 我们采用 **二进制基** 作为默认的自然数字符串表示法.  
 
 例如, 我们将数字 6 表示为字符串 $110$, 因为 $1\cdot 2^{2} + 1 \cdot 2^1 + 0 \cdot 2^0 = 6$.
 
@@ -101,12 +99,10 @@ Lewis Carroll, **爱丽丝镜中奇遇**
 
 更多示例见下表.  
 
-
-<!-- 图2.3 -->
 ```admonish pic id = 'digitsbitmapfig'
 ![digitsbitmapfig](./images/chapter2/digitsbitmap.png)
 
-{{pic}} 将数字 0, 1, 2, ..., 9 的每个数字表示为一个 12×8 的位图图像, 该图像可以被视为属于 $\{0,1\}^\{96\}$ 的一个字符串. 使用这个方案, 我们可以把具有 $n$ 位十进制数字的自然数 $x$ 表示为属于 $\{0,1\}^\{96n\}$ 的一个字符串. 图片来源: [A. C. Andersen 的博客文章](http://blog.andersen.im/2010/12/autonomous-neural-development-and-pruning/).
+{{pic}}{fig:digitsbitmap} 将数字 0, 1, 2, ..., 9 的每个数字表示为一个 12×8 的位图图像, 该图像可以被视为属于 $\{0,1\}^\{96\}$ 的一个字符串. 使用这个方案, 我们可以把具有 $n$ 位十进制数字的自然数 $x$ 表示为属于 $\{0,1\}^\{96n\}$ 的一个字符串. 图片来源: [A. C. Andersen 的博客文章](http://blog.andersen.im/2010/12/autonomous-neural-development-and-pruning/).
 ```
 
 
@@ -259,18 +255,17 @@ $$
 如果 $k$ 是大于或等于 $-2^n$ 的负数, 那么 $2^{n+1}+k$ 是一个位于 $2^n$ 和 $2^{n+1}-1$ 之间的数字.  
 因此, 该数字 $k$ 的二进制补码表示是长度为 $n+1$ 的字符串, 其首位为 $1$.  
 
-换句话说, 我们将一个可能为负的数字 $k \in \{ -2^n,\ldots, 2^n-1 \}$ 表示为非负数 $k \mod 2^{n+1}$ (参见 [图2.4](#twoscomplementfig)).  
+换句话说, 我们将一个可能为负的数字 $k \in \{ -2^n,\ldots, 2^n-1 \}$ 表示为非负数 $k \mod 2^{n+1}$ (参见 {{ref:fig:twoscomplement}}).  
 这意味着, 如果两个可能为负的数字 $k$ 和 $k'$ 不太大 (即 $ k + k' \in \{ -2^n,\ldots, 2^n-1 \}$), 那么我们可以通过将 $k$ 和 $k'$ 的表示当作非负整数来进行模 $2^{n+1}$ 加法, 从而得到 $k+k'$ 的表示.  
 二进制补码表示的这一特性是其主要优势, 因为根据微处理器的架构, 它们通常可以非常高效地执行模 $2^w$ 的算术运算(对于某些 $w$ 值, 如 32 或 64).  
 
 许多系统将检查值是否过大留给程序员, 无论数字大小如何, 系统都会执行这种模运算.  
-因此, 在某些系统中, 两个大的正数相加可能得到一个 **负数** (例如, 将 $2^n-100$ 与 $2^n-200$ 相加可能得到 $-300$, 因为 $(2^{n+1}-300) \mod 2^{n+1} = -300$, 参见 [图2.4](#twoscomplementfig)).  
+因此, 在某些系统中, 两个大的正数相加可能得到一个 **负数** (例如, 将 $2^n-100$ 与 $2^n-200$ 相加可能得到 $-300$, 因为 $(2^{n+1}-300) \mod 2^{n+1} = -300$, 参见 {{ref:fig:twoscomplement}}).  
 
-<!--图2.4-->
 ```admonish pic id='twoscomplementfig'
 ![twoscomplementfig](./images/chapter2/twoscomplement.png)
 
-{{pic}} 在 **二进制补码表示法** 中, 我们将可能为负的整数 $k \in \{ -2^n ,\ldots, 2^n-1 \}$ 表示为长度为 $n+1$ 的二进制字符串, 该字符串对应整数 $k \mod 2^{n+1}$ 的二进制形式. 左侧图示展示了 $n=3$ 时的表示情况(红色整数表示由蓝色二进制字符串所对应的数值). 若微处理器未进行溢出检查, 将两个正整数 $6$ 和 $5$ 相加可能得到负数 $-5$, 因为 $-5 \mod 16 = 11$. 右侧是一个 `C` 语言程序示例, 在某些 $32$ 位架构下执行该程序时, 两个正数相加后可能输出负数. (`C` 语言中的整数溢出被视为_未定义行为_, 这意味着该程序的运行结果——包括是否会正常运行或崩溃——可能因架构、编译器甚至编译器选项和版本的不同而存在差异. )
+{{pic}}{fig:twoscomplement} 在 **二进制补码表示法** 中, 我们将可能为负的整数 $k \in \{ -2^n ,\ldots, 2^n-1 \}$ 表示为长度为 $n+1$ 的二进制字符串, 该字符串对应整数 $k \mod 2^{n+1}$ 的二进制形式. 左侧图示展示了 $n=3$ 时的表示情况(红色整数表示由蓝色二进制字符串所对应的数值). 若微处理器未进行溢出检查, 将两个正整数 $6$ 和 $5$ 相加可能得到负数 $-5$, 因为 $-5 \mod 16 = 11$. 右侧是一个 `C` 语言程序示例, 在某些 $32$ 位架构下执行该程序时, 两个正数相加后可能输出负数. (`C` 语言中的整数溢出被视为_未定义行为_, 这意味着该程序的运行结果——包括是否会正常运行或崩溃——可能因架构、编译器甚至编译器选项和版本的不同而存在差异. )
 ```
 
 
@@ -322,16 +317,15 @@ $$
 每个实数都可以用有理数近似, 因此我们可以用一个接近 $x$ 的有理数 $a/b$ 来表示实数 $x$.  
 例如, 我们可以用 $22/7$ 来表示 $\pi$, 误差约为 $10^{-3}$. 若希望误差更小(例如约 $10^{-4}$), 可以使用 $311/99$, 以此类推.  
 
-<!--图2.5-->
 ```admonish pic id='floatingpointfig'
-![floatingpoint](./images/chapter2/floatingpoint.png)
+![floatingpointfig](./images/chapter2/floatingpoint.png)
 
-{{pic}} 实数 $x\in \R$ 的浮点表示
+{{pic}}{fig:floatingpoint} 实数 $x\in \R$ 的浮点表示
 ```
 
 实数通过近似有理数来表示是一个可行的表示方案.  
 
-然而, 在计算机应用中, 通常更常用 **浮点表示法** (参见 [图2.5](#floatingpointfig)) 来表示实数.  
+然而, 在计算机应用中, 通常更常用 **浮点表示法** (参见 {{ref:fig:floatingpoint}}) 来表示实数.  
 在浮点表示法中, 我们用一对 $(b,e)$ 表示 $x \in \R$, 其中 $b$ 和 $e$ 是某些规定长度的(可能为正或负的)整数, 并且 $b \times 2^{e}$ 最接近 $x$.  
 浮点表示是 [科学计数法](https://goo.gl/MUJnVE) 的二进制版本, 即将一个数字 $y \in \R$ 表示为 $b \times 10^e$ 的近似.  
 称之为"浮点"是因为可以将 $b$ 看作指定一串二进制数字, $e$ 描述这串数字中"二进制小数点"的位置.  
@@ -339,11 +333,10 @@ $$
 正是浮点表示的使用, 导致许多编程系统中, 表达式 `0.1+0.2` 的输出为 `0.30000000000000004` 而不是 `0.3`.  
 更多信息可见: [这里](http://floating-point-gui.de/), [这里](https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html), [这里](https://randomascii.wordpress.com/2012/04/05/floating-point-complexities/).  
 
-<!--图2.6-->
 ```admonish pic id='e_to_the_pi_minus_pifig'
 ![e_to_the_pi_minus_pifig](./images/chapter2/e_to_the_pi_minus_pi.png)
 
-{{pic}} XKCD上关于浮点数运算的漫画.实数 $x\in \R$ 的浮点表示
+{{pic}}{fig:e_to_the_pi_minus_pi} XKCD上关于浮点数运算的漫画.实数 $x\in \R$ 的浮点表示
 ```
 
 读者可能会(合理地)担心, 浮点表示法(或有理数表示法)只能 **近似** 表示实数.  
@@ -435,23 +428,21 @@ $C(0), C(1), C(2), \ldots$.
 因此, 根据假设, 由于两个一一函数的复合仍是一一函数(见 {{ref:pro:onetoonecomp}}),  
 函数 $FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$ 定义为 $FtS(f)=RtS(FtR(f))$ 将是一一函数,  
 这与 {{ref:lem:sequencestostrings}} 矛盾.  
-参见 [图2.7](#proofofcantorfig) 获取该论证的图示说明.
+参见 {{ref:fig:proofofcantor}} 获取该论证的图示说明.
 
-<!--图2.7-->
 ```admonish pic id='proofofcantorfig'
 ![proofofcantorfig](./images/chapter2/proofofcantor.png)
 
-{{pic}} 我们通过结合 {{ref:lem:sequencestostrings}} 与 {{ref:lem:sequencestoreals}} 来证明 {{ref:thm:cantor}}. {{ref:lem:sequencestoreals}}使用了标准微积分的方法, 说明了从集合$\{0,1\}^\infty$到实数集的一一映射$FtR$的存在性. 因此, 如果一个假设的一一映射$RtS:\R \rightarrow \{0,1\}^*$存在, 我们就能够通过组合他们得到一个一一映射$FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$. 而这与{{ref:lem:sequencestostrings}} - 证明的核心 - 矛盾, 排除了这种映射存在的可能.
+{{pic}}{fig:proofofcantor} 我们通过结合 {{ref:lem:sequencestostrings}} 与 {{ref:lem:sequencestoreals}} 来证明 {{ref:thm:cantor}}. {{ref:lem:sequencestoreals}}使用了标准微积分的方法, 说明了从集合$\{0,1\}^\infty$到实数集的一一映射$FtR$的存在性. 因此, 如果一个假设的一一映射$RtS:\R \rightarrow \{0,1\}^*$存在, 我们就能够通过组合他们得到一个一一映射$FtS:\{0,1\}^\infty \rightarrow \{0,1\}^*$. 而这与{{ref:lem:sequencestostrings}} - 证明的核心 - 矛盾, 排除了这种映射存在的可能.
 ```
 
 现在只剩下证明这两个引理.
 我们先从证明 {{ref:lem:sequencestostrings}} 开始, 这实际上是 {{ref:thm:cantor}} 的核心部分.
 
-<!--图2.8-->
 ```admonish pic id='diagrealsfig'
 ![diagrealsfig](./images/chapter2/diagonalization.png)
 
-{{pic}} 我们通过确保对于每个按字典序 $n(x)$ 排列的 $x\in {0,1}^*$, 都有 $\overline{d}(n(x)) \neq StF(x)(n(x))$, 来构造一个函数 $\overline{d}$, 使得对于所有 $x\in {0,1}^*$ 都满足 $\overline{d} \neq StF(x)$.我们可以将这理解为构建一个表格: 其中列对应自然数 $m\in \N$, 行对应按 $n(x)$ 排序的 $x\in {0,1}^*$.若第 $x$ 行第 $m$ 列的条目对应 $g(m)$(其中 $g=StF(x)$), 则通过遍历该表格的"对角线"元素(即第 $x$ 行与第 $n(x)$ 列相交的条目)并确保 $\overline{d}(n(x)) \neq StF(x)(n(x))$, 即可得到函数 $\overline{d}$.
+{{pic}}{fig:diagreals} 我们通过确保对于每个按字典序 $n(x)$ 排列的 $x\in {0,1}^*$, 都有 $\overline{d}(n(x)) \neq StF(x)(n(x))$, 来构造一个函数 $\overline{d}$, 使得对于所有 $x\in {0,1}^*$ 都满足 $\overline{d} \neq StF(x)$.我们可以将这理解为构建一个表格: 其中列对应自然数 $m\in \N$, 行对应按 $n(x)$ 排序的 $x\in {0,1}^*$.若第 $x$ 行第 $m$ 列的条目对应 $g(m)$(其中 $g=StF(x)$), 则通过遍历该表格的"对角线"元素(即第 $x$ 行与第 $n(x)$ 列相交的条目)并确保 $\overline{d}(n(x)) \neq StF(x)(n(x))$, 即可得到函数 $\overline{d}$.
 ```
 
 __热身运动: "Cantor定理青春版".__ {{ref:lem:sequencestostrings}} 的证明相当微妙. 一种获得对该证明的直觉的方法是考虑以下有限版本的陈述: "不存在一个满射函数 $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$". 当然我们知道这是正确的, 因为集合 $\{0,1\}^{100}$ 比集合 $[100]$ 更大, 但让我们来看一个不太直接的证明: 对于任意 $f:\{0,\ldots,99\} \rightarrow \{0,1\}^{100}$, 我们可以定义字符串 $\overline{d} \in \{0,1\}^{100}$ 如下: $\overline{d} = (1-f(0)_0, 1-f(1)_1 , \ldots, 1-f(99)_{99})$. 如果 $f$ 是满射, 那么必然存在某个 $n\in [100]$ 使得 $f(n) =\overline{d}$, 但我们声称不存在这样的 $n$. 实际上, 如果存在这样的 $n$, 那么 $\overline{d}$ 的第 $n$ 个分量应当等于 $f(n)_n$, 但根据定义这个分量等于 $1-f(n)_n$. 另见此陈述的 ["proof by code"](https://trinket.io/python/4cff7e58f4).
@@ -462,7 +453,7 @@ __热身运动: "Cantor定理青春版".__ {{ref:lem:sequencestostrings}} 的证
 我们将证明不存在一个 **满射** 函数 $StF:\{0,1\}^* \rightarrow \{0,1\}^\infty$.  
 这将推出该引理, 因为对于任意两个集合 $A$ 和 $B$, 当且仅当存在一个从 $B$ 到 $A$ 的一一映射时, 才存在一个从 $A$ 到 $B$ 的满射 (见 {{ref:lem:onetooneimpliesonto}}).  
 
-这个证明技巧被称为 "diagonal argument" (对角线论证), 详情可见 [图2.8](#diagrealsfig).  
+这个证明技巧被称为 "diagonal argument" (对角线论证), 详情可见 {{ref:fig:diagreals}}.  
 为了得到矛盾, 我们假设存在这样一个函数 $StF:\{0,1\}^* \rightarrow \{0,1\}^\infty$. 然后我们通过构造一个函数 $\overline{d}\in \{0,1\}^\infty$, 使得对每个 $x\in \{0,1\}^*$ 都有 $\overline{d} \neq StF(x)$, 来证明 $StF$ 不是满射.
 
 考虑二进制字符串的字典序排列 (即 "", $0$, $1$, $00$, $01$, $\ldots$).  
@@ -712,10 +703,10 @@ $$
 {{ref:thm:prefixfree}} 可能有点难以理解, 但一旦你理解了它的含义, 实际上证明起来相当直接.  
 因此, 我强烈建议你在此处停下来, 确保你理解了该定理的陈述. 你也应该尝试自己证明它, 然后再继续阅读.
 
-<!-- 图2.9 -->
 ```admonish pic id="repres_listfig"
 ![repres_listfig](./images/chapter2/repres_list.png)
-{{pic}}如果我们拥有每个对象的无前缀表示, 那么我们可以将 $k$ 个对象的表示拼接起来, 从而获得元组 $(o_0,\ldots,o_{k-1})$ 的表示.
+
+{{pic}}{fig:repres_list}如果我们拥有每个对象的无前缀表示, 那么我们可以将 $k$ 个对象的表示拼接起来, 从而获得元组 $(o_0,\ldots,o_{k-1})$ 的表示.
 ```
 
 证明的思路很简单.  
@@ -909,15 +900,15 @@ StL(LtS([234,12,5]))
 
 <!-- (For example, the UTF-8 encoding for the "confused face" emoji 😕 is `11110000100111111001100010010101`) -->
 
-<!-- 图2.10 -->
 ```admonish pic id="braillefig"
 ![braillefig](./images/chapter2/braille.png)
-{{pic}}Braille盲文
+
+{{pic}}{fig:braille}Braille盲文
 ```
 
 ~~~admonish example title=""
 {{exac}}{exa:braille}[Braille 编码(盲文)]
-**Braille 编码**(盲文) 是另一种将字母和其他符号编码为二进制字符串的方法. 具体来说, 在盲文中, 每个字母被编码为一个属于 $\{0,1\}^6$ 的字符串, 该字符串通过排列成两列三行的凸起点来书写, 参见 [ 图2.10](#braillefig).  
+**Braille 编码**(盲文) 是另一种将字母和其他符号编码为二进制字符串的方法. 具体来说, 在盲文中, 每个字母被编码为一个属于 $\{0,1\}^6$ 的字符串, 该字符串通过排列成两列三行的凸起点来书写, 参见 {{ref:fig:braille}}.  
 (一些符号需要用超过一个六位字符串来编码, 因此盲文使用了更通用的前缀无关编码.)
 
 [Louis Braille](https://goo.gl/Y2BkEe) 是一个法国男孩, 因事故在 5 岁时失明. 盲文由 Braille 于 1821 年发明, 当时他只有 12 岁 (尽管他在一生中不断改进和完善它). 
@@ -971,10 +962,9 @@ double   132.0: 00000000 00000000 00000000 00000000 00000000 10000000 01100000 0
 另一种图的表示方法是 **邻接表** 表示. 也就是说, 我们将图的顶点集合 $V$ 与集合 $[n]$ 对应, 其中 $n=|V|$, 并将图 $G=(V,E)$ 表示为 $n$ 个列表组成的列表, 其中第 $i$ 个列表包含顶点 $i$ 的出邻居.  
 对于某些应用, 这些表示方法之间的差异可能很大, 虽然对于我们而言通常无关紧要.
 
-<!-- 图2.11 -->
 ```admonish pic id="representing_graphsfig"
 ![representing_graphsfig](./images/chapter2/representing_graphs.png)
-{{pic}}用邻接矩阵与邻接表表示图$G=(\{0,1,2,3,4\},\{ (1,0),(4,0),(1,4),(4,1),(2,1),(3,2),(4,3) \})$
+{{pic}}{fig:representing_graphs} 用邻接矩阵与邻接表表示图$G=(\{0,1,2,3,4\},\{ (1,0),(4,0),(1,4),(4,1),(2,1),(3,2),(4,3) \})$
 ```
 
 ### 2.5.8 列表和嵌套列表的表示
@@ -1036,11 +1026,9 @@ double   132.0: 00000000 00000000 00000000 00000000 00000000 10000000 01100000 0
 给定任意函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 和 $x \in \{0,1\}^*$, 计算 $F(x)$ 的任务对应于判定 $x$ 是否属于集合 $L$, 其中 $L = \{ x : F(x)=1 \}$ 被称为与函数 $F$ 对应的 **语言**.(语言这个术语源于计算理论与诺姆·乔姆斯基发展的形式语言学之间的历史联系.)  
 因此, 许多文献将这类计算任务称为 **判定一个语言**.
 
-
-<!-- 图2.12 -->
 ```admonish pic id="booleanfuncfig"
 ![booleanfuncfig](./images/chapter2/booleanfunc.png)
-{{pic}}子集 $L \subseteq \{0,1\}^*$ 可等价于一个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$, 其中若 $x\in L$ 则 $F(x)=1$, 若 $x\not\in L$ 则 $F(x)=0$. 这种输出为单比特的函数称为**布尔函数**, 而字符串的子集则称为**语言**. 上述讨论表明, 二者本质上是同一对象, 我们可以将判定 $L$ 中成员资格的任务(在文献中称为**判定一个语言**)与计算函数 $F$ 的任务视作同一问题. 
+{{pic}}{fig:booleanfunc} 子集 $L \subseteq \{0,1\}^*$ 可等价于一个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$, 其中若 $x\in L$ 则 $F(x)=1$, 若 $x\not\in L$ 则 $F(x)=0$. 这种输出为单比特的函数称为**布尔函数**, 而字符串的子集则称为**语言**. 上述讨论表明, 二者本质上是同一对象, 我们可以将判定 $L$ 中成员资格的任务(在文献中称为**判定一个语言**)与计算函数 $F$ 的任务视作同一问题. 
 ```
 
 对于每一个特定函数 $F$, 可能存在多种 **算法** 来计算 $F$.  
@@ -1090,13 +1078,12 @@ print(mult2(12,7))
 无论是 `mult1` 还是 `mult2`, 给定相同的自然数输入对, 都会产生相同的输出.  
 (不过当数字变大时, `mult1` 所需时间会长得多.)  
 因此, 尽管它们是两个不同的 **程序**, 它们计算的是相同的 **数学函数**.  
-区分 **程序或算法** $A$ 与 $A$ **计算的函数** $F$ 对本课程至关重要 (参见 [图2.13](#functionornotfig)).
+区分 **程序或算法** $A$ 与 $A$ **计算的函数** $F$ 对本课程至关重要 (参见 {{ref:fig:functionornot}}).
 
 
-<!-- 图2.13 -->
 ```admonish pic id="functionornotfig"
 ![functionornotfig](./images/chapter2/functionornot.png)
-{{pic}} 函数是输入到输出的映射. 程序是一组关于如何根据输入获取输出的指令. 程序可以计算一个函数, 但它本身并不等同于函数 - 尽管主流编程语言的术语中常常混用这两个概念. 
+{{pic}}{fig:functionornot} 函数是输入到输出的映射. 程序是一组关于如何根据输入获取输出的指令. 程序可以计算一个函数, 但它本身并不等同于函数 - 尽管主流编程语言的术语中常常混用这两个概念. 
 ```
 
 ```admonish bigidea id="functionprogram"

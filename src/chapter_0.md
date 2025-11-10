@@ -108,13 +108,12 @@ $$
 
 一旦你想到标准的逐位相乘乘法, 它似乎是"显然最优"的数字相乘方式. 1960年, 著名数学家安德雷·柯尔莫哥洛夫(Andrey Kolmogorov)在莫斯科国立大学组织了一场研讨会, 他在会上提出猜想: 任何两个$n$位数相乘的算法都需要执行与$n^2$成正比的基本操作次数(用第一章定义的大$O$符号表示为$\Omega(n^2)$次操作). 换言之, 柯尔莫哥洛夫认为在任何乘法算法中, 相乘的数字位数翻倍会导致所需基本操作次数变为四倍. 当时听众中有一位名叫阿纳托利·卡拉楚巴(Anatoly Karatsuba), 他在一周内就推翻了柯尔莫哥洛夫的猜想—他发现了一种仅需$Cn^{1.6}$次操作($C$为常数)的算法. 随着$n$增大, 这个数字会远小于$n^2$, 因此对于大数而言, 卡拉楚巴算法优于小学算法. (例如[Python在处理](https://svn.python.org/projects/python/trunk/Objects/longobject.c)1000比特及以上的数字时, 会从小学算法切换至卡拉楚巴算法. )虽然$O(n^{1.6})$与$O(n^2)$算法之间的差异有时在实践中至关重要(参见下文的[0.3节](#algsbeyondarithmetic)), 但本书将基本忽略这类区别. 不过我们仍会在下文介绍卡拉楚巴算法, 因为它完美展现了算法往往出人意料的特性, 同时也体现了算法分析的重要性—这正是本书乃至整个理论计算机科学的核心所在. 
 
-卡拉楚巴算法基于一种两位数字之间的更快的相乘算法. 假设$x,y\in[100]=\{0,\ldots,99\}$是一对两位数字. 我们使用$\overline x$表示$x$的十位上数字, $\underline x$表示个位上的数字, 所以$x$可以表示为$x=10\overline x+\underline x$, $y$亦可写成$y=10\overline y+\underline y$, 这里$\overline x,\underline x,\overline y,\underline y\in[10]$. [图0.1](#gradeschoolmultfig)展示了两位数字的小学乘法. 
+卡拉楚巴算法基于一种两位数字之间的更快的相乘算法. 假设$x,y\in[100]=\{0,\ldots,99\}$是一对两位数字. 我们使用$\overline x$表示$x$的十位上数字, $\underline x$表示个位上的数字, 所以$x$可以表示为$x=10\overline x+\underline x$, $y$亦可写成$y=10\overline y+\underline y$, 这里$\overline x,\underline x,\overline y,\underline y\in[10]$. {{ref:fig:gradeschoolmult}}展示了两位数字的小学乘法. 
 
-<!-- 图0.1 -->
 ```admonish pic id = "gradeschoolmultfig"
 ![gradeschoolmultfig](./images/chapter0/gradeschoolmult.png)
 
-{{pic}} 小学乘法示例, 演示如何计算$x=10\overline x+\underline x$与$y=10\overline y+\underline y$的乘积. 其使用的公式为: $(10\overline x+\underline x)\times(10\overline y+\underline y)=100\overline x\overline y+10(\overline x\underline y+\underline x+\overline y)+\underline x\underline y$
+{{pic}}{fig:gradeschoolmult} 小学乘法示例, 演示如何计算$x=10\overline x+\underline x$与$y=10\overline y+\underline y$的乘积. 其使用的公式为: $(10\overline x+\underline x)\times(10\overline y+\underline y)=100\overline x\overline y+10(\overline x\underline y+\underline x+\overline y)+\underline x\underline y$
 ```
 
 小学乘法的算法可以看作一个将两位数字相乘的任务转化为**四个**单位数字相乘的过程: 
@@ -133,18 +132,16 @@ $$
 
 上述内容是卡拉楚巴算法背后的直观思想, 但尚不足以完整描述该算法. 一个算法的完整描述需要包含其操作步骤的精确说明以及算法分析: 即证明该算法确实能实现预设任务. 卡拉楚巴算法的具体操作步骤见{{ref:alg:karatsuba}}, 其数学分析则包含在{{ref: lem:kara_correctness}}和{{ref: lem:kara_complexity}}中. 
 
-<!-- 图0.2 -->
 ```admonish pic id = "karatsubatwodigitfig"
 ![karatsubatwodigitfig](./images/chapter0/karatsubatwodigit.png)
 
-{{pic}} 卡拉楚巴乘法算法示例, 演示如何计算$x=10\overline x+\underline x$与$y=10\overline y+\underline y$的乘积. 我们先计算橙色、绿色和紫色三项乘积$\underline x\underline y$、$\overline x\overline y$及$(\overline x+\underline x)(\overline y+\underline y)$, 再通过加减运算得到最终结果
+{{pic}}{fig:karatsubatwodigit} 卡拉楚巴乘法算法示例, 演示如何计算$x=10\overline x+\underline x$与$y=10\overline y+\underline y$的乘积. 我们先计算橙色、绿色和紫色三项乘积$\underline x\underline y$、$\overline x\overline y$及$(\overline x+\underline x)(\overline y+\underline y)$, 再通过加减运算得到最终结果
 ```
 
-<!-- 图0.3 -->
 ```admonish pic id = "karastubavsgschoolv2fig"
 ![karastubavsgschoolv2fig](./images/chapter0/karastubavsgschoolv2.png)
 
-{{pic}} 卡拉楚巴算法与小学算法的运行时间对比(在线提供Python实现). 需注意存在"分界长度": 当输入规模足够大时, 卡拉楚巴算法会变得比小学算法更高效. 具体分界点因实现方式和平台细节而异, 但最终必然会出现
+{{pic}}{fig:karastubavsgschoolv2} 卡拉楚巴算法与小学算法的运行时间对比(在线提供Python实现). 需注意存在"分界长度": 当输入规模足够大时, 卡拉楚巴算法会变得比小学算法更高效. 具体分界点因实现方式和平台细节而异, 但最终必然会出现
 ```
 
 ```admonish quote title=""
@@ -200,7 +197,7 @@ $$
 ```
 
 ~~~admonish proof collapsible=true, title = "对{{ref:lem:kara_complexity}}的证明"
-[图0.2](#karatsubatwodigitfig)展示了证明的核心思路, 此处我们只做概要说明, 完整的证明留作习题0.4. 本次证明同样采用归纳法: 定义$T(n)$为{{ref:alg:karatsuba}}在处理长度不超过$n$的输入时所需的最大执行步数. 当基本情况即$n\le 4$时, {{ref:alg:karatsuba}}{{footnote: 原文此处的内容为"Exercise 0.4", 疑为作者笔误}}只需执行常数次计算, 因此存在常数$c$使得$T(4)\le c$; 而当$n>4$时, 递归关系满足不等式
+{{ref:fig:karatsubatwodigit}}展示了证明的核心思路, 此处我们只做概要说明, 完整的证明留作习题0.4. 本次证明同样采用归纳法: 定义$T(n)$为{{ref:alg:karatsuba}}在处理长度不超过$n$的输入时所需的最大执行步数. 当基本情况即$n\le 4$时, {{ref:alg:karatsuba}}{{footnote: 原文此处的内容为"Exercise 0.4", 疑为作者笔误}}只需执行常数次计算, 因此存在常数$c$使得$T(4)\le c$; 而当$n>4$时, 递归关系满足不等式
 
 $$
 T(n)\le 3T(\floor{n/2}+1)+c'n {{numeq}}{eq:karatsubarecursion}
@@ -210,11 +207,10 @@ $$
 递归不等式{{eqref:eq:karatsubarecursion}}的解为$O(n^{log_2 3})$. 图2直观展示了该复杂度形成的原理, 这也是所谓"[主定理](https://en.wikipedia.org/wiki/Master_theorem_(analysis_of_algorithms))"关于递归关系的推论. 如前文所述, 我们将完整证明留作习题0.4. 
 ~~~
 
-<!-- 图0.4 -->
 ```admonish pic id = "karatsuba_analysis2fig"
 ![karatsuba_analysis2fig](./images/chapter0/karatsuba_analysis2.png)
 
-{{pic}} 卡拉楚巴算法将$n$位乘法分解为三个$n/2$位乘法, 这些乘法又可继续分解为九个$n/4$位乘法, 依此类推. 我们可用深度为$\log_2 n$的三叉树表示所有乘法的计算成本: 根节点处额外成本为$cn$次操作, 第一层额外成本为$c(n/2)$次操作, 第$i$层每个节点的额外成本为 $c(n/2^i)$(该层共有$3^i$个节点). 根据几何级数求和公式, 总成本为$cn\sum_{i=0}^{\log⁡_2n}(3/2)^i\le10cn\log⁡_23$
+{{pic}}{fig:karatsuba_analysis2} 卡拉楚巴算法将$n$位乘法分解为三个$n/2$位乘法, 这些乘法又可继续分解为九个$n/4$位乘法, 依此类推. 我们可用深度为$\log_2 n$的三叉树表示所有乘法的计算成本: 根节点处额外成本为$cn$次操作, 第一层额外成本为$c(n/2)$次操作, 第$i$层每个节点的额外成本为 $c(n/2^i)$(该层共有$3^i$个节点). 根据几何级数求和公式, 总成本为$cn\sum_{i=0}^{\log⁡_2n}(3/2)^i\le10cn\log⁡_23$
 ```
 
 卡拉楚巴算法远非乘法算法的终点. 20世纪60年代, 图姆(Toom)和库克(Cook)扩展了卡拉楚巴的思想, 提出了时间复杂度为$O(n\log_⁡k(2k−1))$($k$为常数)的乘法算法. 1971年, 舍恩哈格(Schönhage)和施特拉森(Strassen)利用**快速傅里叶变换**实现了更优的算法——其核心思想是将整数视为"信号", 通过转换到傅里叶域来更高效地完成乘法运算(**傅里叶变换**是数学和工程学的核心工具, 应用极其广泛; 若您尚未接触过, 很可能在后续学习中会遇到). 此后多年间, 研究者们不断改进算法, 直到最近哈维(Harvery)和范德霍芬(Van Der Hoeven)才成功实现了时间复杂度为$O(n\log⁡ n)$的乘法算法(不过该算法仅在处理真正天文级别的数字时才开始超越舍恩哈格-施特拉森算法). 然而, 尽管取得了这些进展, 我们至今仍未知晓是否存在能在$O(n)$时间内完成两个$n$位数乘法的算法! 
@@ -293,7 +289,6 @@ $$
 - **第五部分: 高级专题**
   密码学、证明与算法(交互式证明与零知识证明、Curry-Howard对应关系)、量子计算
 
-<!-- 图0.5 -->
 ~~~admonish pic id = "structureofthisbook"
 ```mermaid
 %%{init: {'theme':'dark'}}%%
@@ -317,7 +312,7 @@ graph TD;
     p4==>p5;
 ```
 
-{{pic}} 不同部分之间的依赖结构. 第一部分介绍布尔电路模型, 用以研究有限函数, 重点讨论定量问题(计算一个函数需要多少个逻辑门). 第二部分介绍图灵机模型, 用以研究输入长度无界的函数, 重点讨论定性问题(函数是否可计算). 第二部分多数内容不依赖于第一部分, 因为图灵机可作为首个计算模型引入. 第三部分同时依赖于前两部分, 因其对输入长度无界的函数展开定量研究. 更进阶的第四部分(随机计算)和第五部分(高级专题)则依赖于前三部分的内容体系
+{{pic}}{fig:structureofthisbook} 不同部分之间的依赖结构. 第一部分介绍布尔电路模型, 用以研究有限函数, 重点讨论定量问题(计算一个函数需要多少个逻辑门). 第二部分介绍图灵机模型, 用以研究输入长度无界的函数, 重点讨论定性问题(函数是否可计算). 第二部分多数内容不依赖于第一部分, 因为图灵机可作为首个计算模型引入. 第三部分同时依赖于前两部分, 因其对输入长度无界的函数展开定量研究. 更进阶的第四部分(随机计算)和第五部分(高级专题)则依赖于前三部分的内容体系
 ~~~
 
 本书主要采用线性叙事结构, 各章节内容环环相扣, 但以下例外情况请注意: 
