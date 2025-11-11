@@ -142,7 +142,7 @@ $$
 说明对每个函数$F:\{0,1\}^* \rightarrow \{0,1\}^*$，都有一个布尔函数$BF:\{0,1\}^* \rightarrow \{0,1\}$使得一个能够计算$BF$的Python程序可以被转移为一个计算$F$的程序，反之亦然. 
 ```
 
-```admonish solution collapsible=true title="解答6.1"
+```admonish solution collapsible=true title="对{{ref:exe:booleanize}}的解答"
 对每个函数$F:\{0,1\}^* \rightarrow \{0,1\}^*$, 可以定义. 
 
 $$
@@ -194,7 +194,7 @@ def F(x):
 
 ```admonish proof collapsible=true, title = "对{{ref:thm:computeallinfinitefunc}}的证明"
 这是布尔电路通用性的一个立即推论. 
-事实上，因为$F$把$\{0,1\}^n$映射到$\{0,1\}$，定理4.15表明一定有一个布尔函数$C_n$来计算它. 
+事实上，因为$F$把$\{0,1\}^n$映射到$\{0,1\}$，定理{{ref:thm:NAND-univ-improved}}表明一定有一个布尔函数$C_n$来计算它. 
 事实上，这个电路的大小为至多$c \cdot 2^n / n$个门，其中$c \leq 10$为常数. $\square$
 ```
 
@@ -268,7 +268,7 @@ def XOR(X):
 形式化地讲，一个DFA由 **(1)** $C \cdot 2$条规则构成的表格，该表格用 **转移函数** $T$表示. $T$将状态$s \in [C]$和位$\sigma \in \{0,1\}$映射到状态$s' \in [C]$. DFA将会在输入$\sigma$下从状态$s$转移到$s'$; 和 **(2)** 接受状态集$\mathcal{S}$
 
 ```admonish quote title=""
-{{def}}{def:DFA}[确定性有穷自动机] 
+{{defc}}{def:DFA}[确定性有穷自动机] 
 
 一个在$\{0,1\}$上定义的$C$个状态的确定性有穷自动机是一个对$(T, \mathcal{S})$. 其中$T:[C]\times \{0,1\} \rightarrow [C]$ 而 $\mathcal{S} \subseteq [C]$. 
 有限函数$T$称为DFA的 **转移函数** . 集合$\mathcal{S}$称为 **接受状态** 集. 
@@ -309,7 +309,7 @@ F(x) = \begin{cases}
 $$
 ```
 
-```admonish solution collapsible=true title="解答6.2"
+```admonish solution collapsible=true title="对{{ref:exe:DFAzeroone}}的解答"
 当要求构造一个DFA时，可以首先通过更加一般的、形式化的方式，来构造一个单遍常数内存算法，这通常是有效的. (例如使用伪代码或者一个python程序). 一旦得到了这样一个算法，就可以机械式地将其翻译为一个DFA. 
 以下是计算$F$的一个简单Python程序: 
 
@@ -439,7 +439,7 @@ $$
 形式化地说，正则表达式由以下递归定义所定义: 
 
 ```admonish quote title=""
-{{def}}{def:regexp}[正则表达式] 
+{{defc}}{def:regexp}[正则表达式] 
 字母表$\Sigma$上定义的 **正则表达式** $e$是$\Sigma \cup \{ (,),|,*,\emptyset, \texttt{""} \}$上的一个串，并具有下列形式之一
 1. $e = \sigma$，其中$\sigma \in \Sigma$
 2. $e = (e' | e'')$，其中$e', e''$为正则表达式
@@ -459,7 +459,7 @@ $\Phi_{e}$的形式化定义是那种写比掌握麻烦的类型. 因此第一�
 ```
 
 ```admonish quote title=""
-{{def}}{def:matchingregexp}[匹配正则表达式] 
+{{defc}}{def:matchingregexp}[匹配正则表达式] 
 令$e$为字母表$\Sigma$上的正则表达式
 函数$\Phi_{e}:\Sigma^* \rightarrow \{0,1\}$ 定义如下:
 1. 若$e = \sigma$，则当且仅当$x=\sigma$时$\Phi_{e}(x)=1$. 
@@ -477,7 +477,7 @@ $\Phi_{e}$的形式化定义是那种写比掌握麻烦的类型. 因此第一�
 若一个布尔函数在输出$1$时，所有的输入串都能够被某些正则表达式匹配，就说这个布尔函数是"正则的". 
 
 ```admonish quote title=""
-{{def}}{def:regularfunctions}[定义6.8] 正则函数/语言
+{{defc}}{def:regularfunctions}[定义6.8] 正则函数/语言
 令$\Sigma$为一个有限集，而$F:\Sigma^*\rightarrow \{0,1\}$为一个布尔函数. 若存在某个正则表达式$e$，$F=\Phi_{e}$，就称$F$是 **正则** 的. 
 类似的，对每个形式语言$L \subseteq \Sigma^*$，称$L$是正则的当且仅当存在某个正则表达式$e$使得$x\in L$当且仅当$e$匹配$x$. 
 ```
@@ -554,7 +554,7 @@ $$
 给出一个匹配空串的算法. 该算法输入为正则表达式$e$，且满足当且仅当$\Phi_e(\texttt{""})=1$时输出$1$
 ```
 
-```admonish solution collapsible=true title="解答6.3"
+```admonish solution collapsible=true title="对{{ref:exe:emptymatch}}的解答"
 可以通过以下观察结果给出这样一个递归算法
 1. 具有形式 $\texttt{""}$或$(e')^*$的表达式总是匹配空串
 2. 具有形式 $\sigma$，其中$\sigma\in\Sigma$是一个字母，不匹配空串
@@ -867,7 +867,7 @@ $\overline{F}$也是正则的. $\square$
 ```
 
 ```admonish proof collapsible=true, title = "对{{ref:thm:closurereg}}的证明"
-这是正则函数在或运算和非运算(因此也有与运算)下的封闭性，与{{ref:thm:circuit-univ}}(注:定理4.13)——其声明每个$f$都可以被一个布尔电路计算(其只不过是与、或、非运算的结合)——结合的直接结果. $\square$
+这是正则函数在或运算和非运算(因此也有与运算)下的封闭性，与{{ref:thm:circuit-univ}}——其声明每个$f$都可以被一个布尔电路计算(其只不过是与、或、非运算的结合)——结合的直接结果. $\square$
 ```
 
 ## 6.5 正则表达式的限制与泵引理 
@@ -972,7 +972,7 @@ $\overline{F}$也是正则的. $\square$
 ( **回文** 函数定义时一般不需要一个显式的分隔符$\;$，但带有分隔符的版本更加简洁，因为我们在此处使用它. 这并没有什么影响，因为分隔符可以很容易地用一个特殊的二进制串编码). 
 ```
 
-```admonish solution collapsible=true,title="解答 6.4"
+```admonish solution collapsible=true,title="对{{ref:exe:palindromenotreg}}的解答"
 此处采用泵引理. 
 为了使用反证法，假设有一个正则表达式$e$计算$PAL$，令$n_0$为泵引理({{ref:thm:pumping}})中的数. 考虑串$w = 0^{n_0};0^{n_0}$. 因为全部由零组成的串的反转仍为全部由零组成的串，所以$PAL(w)=1$. 
 现在，根据选择引理，如果$PAL$被$e$计算，则可以写下$w=xyz$使得$|xy| \leq n_0$，$|y|\geq 1$且对每个$k\in \N$有$PAL(xy^kz)=1$. 特别地，$PAL(xz)=1$一定成立，但这就导致了矛盾，因为$xz=0^{n_0-|y|};0^{n_0}$，所以其两部分并不一样长，所以并不是另一者的反转.  $\square$
