@@ -436,59 +436,45 @@ $L(k) \leq 2\cdot 4 (2^{k-1}-1) + 4 = 4(2^k - 1)$, 这正是我们想要证明�
 
 ## 4.4 **通用** 函数计算 { #seccomputeallfunctions }
 
-At this point we know the following facts about NAND-CIRC programs (and so equivalently about Boolean circuits and our other equivalent models):
+此时, 关于 NAND-CIRC 程序(以及等价的布尔电路和其他等效模型), 我们知道以下事实:
 
-1. They can compute at least some non-trivial functions.
+1. 它们至少可以计算一些非平凡函数.
+2. 为各种函数想出 NAND-CIRC 程序是一项非常繁琐的任务.
 
-2. Coming up with NAND-CIRC programs for various functions is a very tedious task.
-
-Thus I would not blame the reader if they were not particularly looking forward to a long sequence of examples of functions that can be computed by NAND-CIRC programs.
-However, it turns out we are not going to need this, as we can show in one fell swoop that NAND-CIRC programs can compute _every_ finite function:
+因此, 如果读者并不特别期待一长串可以由 NAND-CIRC 程序计算的函数示例, 这也是无可指摘的.
+然而, 事实证明我们并不需要这样做, 因为我们可以一举证明 NAND-CIRC 程序可以计算 **每一个** 有限函数:
 
 ```admonish quote title=""
-{{thmc}}{thm:NAND-univ}[Universality of NAND]
-There exists some constant $c>0$ such that for every $n,m>0$ and function $f: \{0,1\}^n\rightarrow \{0,1\}^m$, there is a NAND-CIRC program  with at most $c \cdot m 2^n$ lines that computes the function $f$ .
+{{thmc}}{thm:NAND-univ}[NAND 的通用性]
+存在某个常数 $c>0$ , 使得对于每个 $n,m>0$ 和函数 $f: \{0,1\}^n\rightarrow \{0,1\}^m$ , 都有一个最多 $c \cdot m 2^n$ 行的 NAND-CIRC 程序计算函数 $f$ .
 ```
 
-By {{ref:thm:equivalencemodels}},  the models of NAND circuits, NAND-CIRC programs, AON-CIRC programs, and Boolean circuits, are all equivalent to one another, and hence {{ref:thm:NAND-univ}} holds for all these models.
-In particular, the following theorem is equivalent to {{ref:thm:NAND-univ}}:
-
+根据 {{ref:thm:equivalencemodels}}, NAND 电路, NAND-CIRC 程序, AON-CIRC 程序和布尔电路的模型都是彼此等价的, 因此 {{ref:thm:NAND-univ}} 对所有这些模型都成立.
+特别地, 以下定理等价于 {{ref:thm:NAND-univ}}:
 
 ```admonish quote title=""
-{{thmc}}{thm:circuit-univ}[Universality of Boolean circuits]
-There exists some constant $c>0$ such that for every $n,m>0$ and function $f: \{0,1\}^n\rightarrow \{0,1\}^m$, there is a Boolean circuit with at most $c \cdot m 2^n$ gates that computes the function $f$ .
+{{thmc}}{thm:circuit-univ}[布尔电路的通用性]
+存在某个常数 $c>0$ , 使得对于每个 $n,m>0$ 和函数 $f: \{0,1\}^n\rightarrow \{0,1\}^m$ , 都有一个最多 $c \cdot m 2^n$ 个门的布尔电路计算函数 $f$ .
 ```
 
 ```admonish bigidea
 {{idec}}{ide:finitecomputation}
-_Every_ finite function can be computed by a large enough Boolean circuit.
+**每个** 有限函数都能被一个足够大的布尔电路计算.
 ```
 
-
-
-
-
-
-_Improved bounds._ Though it will not be of great importance to us, it is possible to improve on the proof of
-{{ref:thm:NAND-univ}}  and shave an extra factor of $n$, as well as optimize the constant $c$, and so prove that
-for every $\epsilon>0$, $m\in \N$ and sufficiently large $n$, if $f:\{0,1\}^n \rightarrow \{0,1\}^m$ then $f$ can be computed by a NAND circuit of at most
-$(1+\epsilon)\tfrac{m\cdot 2^n}{n}$ gates.
-The proof of this result is beyond the scope of this book, but we do discuss how to obtain a bound of the form $O(\tfrac{m \cdot 2^n}{n})$ in [第4.4.2节](chapter_4.md#tight-upper-bound); see also the biographical notes.
-
-
-
-
+**改进上界** 尽管对我们不是特别重要, 但仍有可能改进{{ref:thm:NAND-univ}}的证明, 将其削弱$n$倍, 同时优化常数$c$, 从而证明对每个$\epsilon > 0$, $m \in \N$ 和足够大的 $n$, 若$f:\{0, 1\}^n \rightarrow \{0, 1\}^m$, 则$f$能被一个最多有$(1+\epsilon)\tfrac{m\cdot 2^n}{n}$个门电路的NAND电路计算.
+该结果的证明超出了本书的范畴, 但我们确实会讨论如何得到具有形式$O(\tfrac{m \cdot 2^n}{n})$的上界. 参见[第4.4.2节](chapter_4.md#tight-upper-bound)和[杂记](chapter4_md#computeeveryfunctionbibnotes)
 
 ### 4.4.1 NAND通用性的证明
 
-To prove {{ref:thm:NAND-univ}}, we need to give a NAND circuit, or equivalently a NAND-CIRC program,  for _every_ possible function.
-We will restrict our attention to the case of Boolean functions (i.e., $m=1$).
-{{ref:pro:mult-bit}} asks you  to extend the proof for all values of $m$.
-A function $F: \{0,1\}^n\rightarrow \{0,1\}$ can be specified by a table of its values for each one of the $2^n$ inputs.
-For example, the table below describes one particular function $G: \{0,1\}^4 \rightarrow \{0,1\}$:{{footnote:In case you are curious, this is the function on input $i\in \{0,1\}^4$ (which we interpret as a number in $[16]$), that outputs the $i$-th digit of $\pi$ in the binary basis.}}
+为了证明 {{ref:thm:NAND-univ}}, 我们需要为 **每一个** 可能的函数给出一个 NAND 电路, 或等价的 NAND-CIRC 程序.  
+我们将注意力限制在布尔函数的情况 (即 $m=1$).  
+{{ref:pro:mult-bit}} 要求你扩展证明, 使其对 $m$ 的所有值成立.  
+一个函数 $F: \{0,1\}^n\rightarrow \{0,1\}$ 可以通过一个表来指定, 该表列出了它对每个 $2^n$ 输入的值.  
+例如, 下表描述了一个特定的函数 $G: \{0,1\}^4 \rightarrow \{0,1\}$:{{footnote:如果你好奇的话, 该函数的作用是, 在输入 $i\in \{0,1\}^4$ (我们将其解释为 $[16]$ 中的一个数字) 时, 输出 $\pi$ 在二进制下的第 $i$ 位.}}  
 
 
-| Input ($x$) | Output ($G(x)$) |
+| 输入   ($x$)|   输出 ($G(x)$) |
 |:------------|:----------------|
 | $0000$      | 1               |
 | $0001$      | 1               |
@@ -508,12 +494,9 @@ For example, the table below describes one particular function $G: \{0,1\}^4 \ri
 | $1111$      | 1               |
 
 
-Table: An example of a function $G:\{0,1\}^4 \rightarrow \{0,1\}$. 
+表格: 函数 $G:\{0,1\}^4 \rightarrow \{0,1\}$ 的一个示例.
 
-
-
-
-For every $x\in \{0,1\}^4$, $G(x)=LOOKUP_4(1100100100001111,x)$, and so the following is NAND-CIRC "pseudocode"  to compute $G$ using syntactic sugar for the `LOOKUP_4` procedure.
+对每个 $x \in \{0, 1\}^4$, $G(x)=LOOKUP_4(1100100100001111,x)$, 而下列则是使用`LOOKUP_4`过程语法糖来计算$G$的NAND-CIRC "伪代码".
 
 
 ```python
@@ -527,82 +510,63 @@ Y[0] = LOOKUP_4(G0000,G1000,...,G1111,
                 X[0],X[1],X[2],X[3])
 ```
 
+我们可以通过添加三行代码来定义初始化为 $0$ 和 $1$ 的变量 `zero` 和 `one`, 从而将这些伪代码转换为实际的 NAND-CIRC 程序, 然后将诸如 `Gxxx = 0` 的语句替换为 `Gxxx = NAND(one,one)`, 并将诸如 `Gxxx = 1` 的语句替换为 `Gxxx = NAND(zero,zero)`. 对 `LOOKUP_4` 的调用将被替换为计算 $LOOKUP_4$ 的 NAND-CIRC 程序, 并插入相应的输入.
+上述推理中没有任何部分是特定于上述函数 $G$ 的. 对于 **每一个** 函数 $F: \{0,1\}^n \rightarrow \{0,1\}$, 我们都可以编写一个 NAND-CIRC 程序来执行以下操作:
 
-We can translate this pseudocode into an actual NAND-CIRC program by adding three lines to define variables `zero` and `one` that are initialized to $0$ and $1$ respectively,
-and then replacing a statement such as `Gxxx = 0` with `Gxxx = NAND(one,one)` and a statement such as `Gxxx = 1` with `Gxxx = NAND(zero,zero)`.
-The call to `LOOKUP_4` will be replaced by the NAND-CIRC program that computes $LOOKUP_4$, plugging in the appropriate inputs.
-
-There was nothing about the above reasoning that was particular to the function $G$ above.
-Given _every_ function $F: \{0,1\}^n \rightarrow \{0,1\}$, we can write a NAND-CIRC program that does the following:
-
-1. Initialize $2^n$ variables of the form `F00...0` till `F11...1` so that for every $z\in\{0,1\}^n$,  the variable corresponding to $z$ is assigned the value $F(z)$.
-
-2. Compute $LOOKUP_n$ on the $2^n$ variables initialized in the previous step, with the index variable being the input variables `X[`$0$ `]`,...,`X[`$n-1$ `]`. That is, just like in the pseudocode for `G` above, we use `Y[0] = LOOKUP(F00..00,...,F11..1,X[0],..,X[`$n-1$`])`
-
-The total number of lines in the resulting program is $3+2^n$ lines for initializing the variables plus the $4\cdot 2^n$ lines that we pay for computing $LOOKUP_n$.
-This completes the proof of {{ref:thm:NAND-univ}}.
-
-
+1. 初始化 $2^n$ 个变量, 从 `F00...0` 到 `F11...1`, 使得对于每个 $z\in\{0,1\}^n$, 与 $z$ 对应的变量被赋值为 $F(z)$.
+2. 在上一步初始化的 $2^n$ 个变量上计算 $LOOKUP_n$, 索引变量是输入变量 `X[`$0$ `]`,...,`X[`$n-1$ `]`. 也就是说, 就像上面 `G` 的伪代码一样, 我们使用 `Y[0] = LOOKUP(F00..00,...,F11..1,X[0],..,X[`$n-1$`])`
+3. 
+所得程序的总行数用于初始化变量的 $3+2^n$ 行代码, 加上我们为计算 $LOOKUP_n$ 所使用的 $4\cdot 2^n$ 行. 这就完成了 {{ref:thm:NAND-univ}} 的证明.
 
 ```admonish info
-{{remc}}{rem:discusscomputation}[Result in perspective]
-While {{ref:thm:NAND-univ}} seems striking at first, in retrospect, it is perhaps not that surprising that every finite function can be computed with a NAND-CIRC program. After all, a finite function $F: \{0,1\}^n \rightarrow \{0,1\}^m$ can be represented by simply the list of its outputs for each one of the $2^n$ input values.
-So it makes sense that we could write a NAND-CIRC program of similar size to compute it.
-What is more interesting is that _some_ functions, such as addition and multiplication,  have a much more efficient representation: one that only requires $O(n^2)$ or even fewer lines.
+{{remc}}{rem:discusscomputation}[对结果的观察]
+虽然 {{ref:thm:NAND-univ}} 起初看起来令人惊讶, 但回想起来, 每个有限函数都可以用 NAND-CIRC 程序计算可能并不那么令人吃惊. 毕竟, 一个有限函数 $F: \{0,1\}^n \rightarrow \{0,1\}^m$ 可以通过简单地列出其每个 $2^n$ 输入值的输出值来表示. 因此, 我们可以编写一个类似大小的 NAND-CIRC 程序来计算它, 这是合理的. 更有趣的是, **一些** 函数, 比如加法和乘法, 具有更高效的表示: 只需要 $O(n^2)$ 或更少的行.
 ```
 
+### 4.4.2 改进因子 $n$ (选读) {#tight-upper-bound}
 
-### 4.4.2 Improving by a factor of $n$ (optional) {#tight-upper-bound}
-
-By being a little more careful, we can improve the bound of {{ref:thm:NAND-univ}} and show that every function $F:\{0,1\}^n \rightarrow \{0,1\}^m$ can be computed by a NAND-CIRC program of at most $O(m 2^n/n)$ lines.
-In other words, we can prove  the following improved version:
+通过更加仔细的处理, 我们可以改进 {{ref:thm:NAND-univ}} 的上界, 并证明每个函数 $F:\{0,1\}^n \rightarrow \{0,1\}^m$ 都可以由一个最多 $O(m 2^n/n)$ 行的 NAND-CIRC 程序计算. 换句话说, 我们可以证明以下改进版本:
 
 ```admonish quote title=""
-{{thmc}}{thm:NAND-univ-improved}[Universality of NAND circuits, improved bound]
-There exists a constant $c>0$ such that for every $n,m>0$ and function $f: \{0,1\}^n\rightarrow \{0,1\}^m$, there is a NAND-CIRC program  with at most $c \cdot m 2^n / n$ lines that computes the function $f$.{{footnote:The constant $c$ in this theorem is at most $10$ and in fact can be arbitrarily close to $1$, see [杂记](#computeeveryfunctionbibnotes).}}
+{{thmc}}{thm:NAND-univ-improved}[NAND 电路的普遍性, 改进上界]
+存在一个常数 $c>0$, 使得对于每个 $n,m>0$ 和函数 $f: \{0,1\}^n\rightarrow \{0,1\}^m$, 都有一个最多 $c \cdot m 2^n / n$ 行的 NAND-CIRC 程序计算函数 $f$.{{footnote:这个定理中的常数 $c$ 最多为 $10$ 并且实际上可以任意接近 $1$, 参见[杂记](#computeeveryfunctionbibnotes).}}
 ```
 
-
 ```admonish proof collapsible=true, title = "对{{ref:thm:NAND-univ-improved}}的证明"
-As before, it is enough to prove the case that $m=1$.
-Hence we let $f:\{0,1\}^n \rightarrow \{0,1\}$, and our goal is to prove that there exists a NAND-CIRC program of $O(2^n/n)$ lines (or equivalently a Boolean circuit of $O(2^n/n)$ gates) that computes $f$.
+和之前一样, 证明 $m=1$ 的情况就足够了.
+因此, 我们令 $f:\{0,1\}^n \rightarrow \{0,1\}$, 我们的目标是证明存在一个 $O(2^n/n)$ 行的 NAND-CIRC 程序(或等价地, 一个 $O(2^n/n)$ 门的布尔电路)来计算 $f$.
 
-We let $k= \log(n-2\log n)$ (the reasoning behind this choice will become clear later on).
-We define the function $g:\{0,1\}^k \rightarrow \{0,1\}^{2^{n-k}}$ as follows:
+我们令 $k= \log(n-2\log n)$(这个选择背后的原因稍后会变得清晰).
+我们定义函数 $g:\{0,1\}^k \rightarrow \{0,1\}^{2^{n-k}}$ 如下:
 $$
 g(a) = f(a0^{n-k})f(a0^{n-k-1}1) \cdots f(a1^{n-k}) \;.
 $$
-In other words, if we use the usual binary representation to identify the numbers $\{0,\ldots, 2^{n-k}-1 \}$ with the strings $\{0,1\}^{n-k}$, then for every $a\in \{0,1\}^k$ and $b\in \{0,1\}^{n-k}$
+
+换句话说, 如果我们使用通常的二进制表示将数字 $\{0,\ldots, 2^{n-k}-1 \}$ 等同于字符串 $\{0,1\}^{n-k}$ , 那么对于每个 $a\in \{0,1\}^k$ 和 $b\in \{0,1\}^{n-k}$, 有
 $$
-g(a)_b = f(ab) \;. \label{eqcomputefusinggeffcircuit}
+g(a)_b = f(ab) \;. {{numeq}}{eq:computefusinggeffcircuit}
 $$
 
-[eqcomputefusinggeffcircuit](){.eqref} means that for every $x\in \{0,1\}^n$, if we write
-$x=ab$ with $a\in \{0,1\}^k$ and $b\in \{0,1\}^{n-k}$ then we can compute $f(x)$ by
-first computing the string  $T=g(a)$  of length $2^{n-k}$, and then computing $LOOKUP_{n-k}(T\;,\; b)$ to retrieve the
-element of $T$ at the position corresponding to $b$ (see {{ref:fig:efficient_circuit_allfunc}}).
-The cost to compute the $LOOKUP_{n-k}$ is $O(2^{n-k})$ lines/gates and the cost in NAND-CIRC lines (or Boolean gates) to compute  $f$ is at most
+{{eqref:eq:computefusinggeffcircuit}} 意味着对于每个 $x\in \{0,1\}^n$, 如果我们写成 $x=ab$, 其中 $a\in \{0,1\}^k$ 和 $b\in \{0,1\}^{n-k}$, 那么我们可以通过首先计算长度为 $2^{n-k}$ 的字符串 $T=g(a)$, 然后计算 $LOOKUP_{n-k}(T\;,\; b)$ 来检索 $T$ 中对应于 $b$ 位置的元素(参见 {{ref:fig:efficient_circuit_allfunc}}).
+计算 $LOOKUP_{n-k}$ 的成本是 $O(2^{n-k})$ 行/门, 而计算 $f$ 的 NAND-CIRC 行(或布尔门)成本最多为
 $$
-cost(g) + O(2^{n-k}) \;, \label{eqcostcomputefusingg}
+cost(g) + O(2^{n-k}) \;, {{numeq}}{eq:costcomputefusingg}
 $$
-where $cost(g)$ is the number of operations (i.e., lines of NAND-CIRC programs or gates in a circuit) needed to compute $g$.
+其中 $cost(g)$ 是计算 $g$ 所需的操作数(即 NAND-CIRC 程序的行数或电路中的逻辑门数).
 
-To complete the proof we need to give a  bound on  $cost(g)$.
-Since $g$ is a function mapping $\{0,1\}^k$ to $\{0,1\}^{2^{n-k}}$, we can also think of it as a
-collection of $2^{n-k}$ functions $g_0,\ldots, g_{2^{n-k}-1}: \{0,1\}^k \rightarrow \{0,1\}$, where
-$g_i(x) = g(a)_i$ for every $a\in \{0,1\}^k$ and $i\in [2^{n-k}]$. (That is, $g_i(a)$ is the $i$-th bit of $g(a)$.)
-Naively, we could use  {{ref:thm:NAND-univ}}  to compute each $g_i$ in $O(2^k)$ lines, but then
-the total cost is $O(2^{n-k} \cdot 2^k) = O(2^n)$ which does not save us anything.
-However, the crucial observation is that there are only $2^{2^k}$ _distinct functions_ mapping
-$\{0,1\}^k$ to $\{0,1\}$.
-For example, if $g_{17}$ is an identical function to $g_{67}$ that means that if we already computed $g_{17}(a)$ then we can compute $g_{67}(a)$ using only a constant number of operations: simply copy the same value!
-In general, if you have a collection of $N$ functions $g_0,\ldots,g_{N-1}$ mapping $\{0,1\}^k$ to $\{0,1\}$, of which at most $S$ are distinct then for every value $a\in \{0,1\}^k$ we can compute the $N$ values $g_0(a),\ldots,g_{N-1}(a)$ using at most $O(S\cdot 2^k + N)$ operations (see {{ref:fig:computemanyfunctions}}).
+为了完成证明, 我们需要给出 $cost(g)$ 的一个界.
+由于 $g$ 是一个将 $\{0,1\}^k$ 映射到 $\{0,1\}^{2^{n-k}}$ 的函数, 我们也可以将其视为 $2^{n-k}$ 个函数 $g_0,\ldots, g_{2^{n-k}-1}: \{0,1\}^k \rightarrow \{0,1\}$ 的集合, 其中对于每个 $a\in \{0,1\}^k$ 和 $i\in [2^{n-k}]$, 有 $g_i(x) = g(a)_i$. (即 $g_i(a)$ 是 $g(a)$ 的第 $i$ 位.)
+一个不成熟的想法是, 我们可以使用 {{ref:thm:NAND-univ}} 以 $O(2^k)$ 行计算每个 $g_i$, 但总行数为 $O(2^{n-k} \cdot 2^k) = O(2^n)$, 这并没有什么优化.
+然而, 关键是观察到只有 $2^{2^k}$ 个不同的函数将 $\{0,1\}^k$ 映射到 $\{0,1\}$.
+例如, 如果 $g_{17}$ 与 $g_{67}$ 是相同的函数, 那意味着如果我们已经计算了 $g_{17}(a)$, 那么我们可以仅用常数次操作计算 $g_{67}(a)$: 只需复制相同的值!
+一般来说, 如果你有一个包含 $N$ 个函数 $g_0,\ldots,g_{N-1}$ 的集合, 每个函数将 $\{0,1\}^k$ 映射到 $\{0,1\}$, 其中最多有 $S$ 个不同的函数, 那么对于每个值 $a\in \{0,1\}^k$, 我们可以使用最多 $O(S\cdot 2^k + N)$ 次操作计算所有 $N$ 个值 $g_0(a),\ldots,g_{N-1}(a)$(参见 {{ref:fig:computemanyfunctions}}).
 
-In our case, because there are at most $2^{2^k}$ distinct functions mapping $\{0,1\}^k$ to $\{0,1\}$, we can compute the function $g$ (and hence by [eqcomputefusinggeffcircuit](){.eqref}  also $f$) using at most  
-$$O(2^{2^k} \cdot 2^k + 2^{n-k}) \label{eqboundoncostg}$$
-operations.
-Now all that is left is to plug  into [eqboundoncostg](){.eqref} our choice of $k = \log (n-2\log n)$.
-By definition, $2^k = n-2\log n$, which means that   [eqboundoncostg](){.eqref} can be bounded
+在我们的情况下, 由于最多有 $2^{2^k}$ 个不同的函数将 $\{0,1\}^k$ 映射到 $\{0,1\}$, 我们可以使用最多  
+$$O(2^{2^k} \cdot 2^k + 2^{n-k}) {{numeq}}{eq:boundoncostg}$$
+次操作计算函数 $g$(因此通过 {{eqref:eq:computefusinggeffcircuit}} 计算出 $f$).
+
+现在剩下的就是将我们选择的 $k = \log (n-2\log n)$ 代入 {{eqref:eq:boundoncostg}}.
+根据定义, $2^k = n-2\log n$, 这意味着 {{eqref:eq:boundoncostg}} 可以被限制在某个上界内
 $$
 O\left(2^{n-2\log n} \cdot (n-2\log n) +  2^{n-\log(n-2\log n)}\right) \leq
 $$
@@ -612,219 +576,200 @@ O\left(\tfrac{2^n}{n^2} \cdot n + \tfrac{2^n}{n-2\log n} \right)
 \leq
 O\left(\tfrac{2^n}{n}  + \tfrac{2^n}{0.5n} \right)  = O\left( \tfrac{2^n}{n} \right)
 $$
-which is what we wanted to prove. (We used above the fact that $n - 2\log n \geq 0.5 \log n$ for sufficiently large $n$.)
+这正是我们想要证明的. (我们在上面使用了对于足够大的 $n$, 有 $n - 2\log n \geq 0.5 \log n$ 的事实.)
 ```
 
 ```admonish pic id="computemanyfunctionsfig"
 ![computemanyfunctionsfig](./images/chapter4/computemanyfunctions.png)
 
-{{pic}}{fig:computemanyfunctions} If $g_0,\ldots, g_{N-1}$ is a collection of functions each mapping $\{0,1\}^k$ to $\{0,1\}$ such that at most $S$ of them are distinct then for every $a\in \{0,1\}^k$, we can compute all the values $g_0(a),\ldots,g_{N-1}(a)$ using at most $O(S \cdot 2^k + N)$ operations by first computing the distinct functions and then copying the resulting values.
+{{pic}}{fig:computemanyfunctions} 若 $g_0,\ldots, g_{N-1}$ 是一族从 $\{0,1\}^k$ 到 $\{0,1\}$ 的映射, 使得其中最多有$S$个是互不相同的, 则对每个$a\in \{0,1\}^k$, 我们可以使用至多 $O(S \cdot 2^k + N)$ 操作来计算所有 $g_0(a),\ldots,g_{N-1}(a)$ 的值. 方法首先计算那些不同的函数, 再将结果值复制.
 ```
 
 ```admonish pic id="efficient_circuit_allfuncfig"
 ![efficient_circuit_allfuncfig](./images/chapter4/efficient_circuit_allfunc.png)
 
-{{pic}}{fig:efficient_circuit_allfunc} We can compute $f:\{0,1\}^n \rightarrow \{0,1\}$ on input $x=ab$ where $a\in \{0,1\}^k$ and $b\in \{0,1\}^{n-k}$ by first computing the $2^{n-k}$ long string $g(a)$  that corresponds to all $f$'s values on inputs that begin with $a$, and then outputting the $b$-th coordinate of this string.
+{{pic}}{fig:efficient_circuit_allfunc} 我们可以计算函数 $f:\{0,1\}^n \rightarrow \{0,1\}$ 在输入 $x=ab$ 上的值, 其中 $a\in \{0,1\}^k$ 且 $b\in \{0,1\}^{n-k}$, 方法是先计算长度为 $2^{n-k}$ 的字符串 $g(a)$, 该字符串对应于所有以 $a$ 开头的输入上 $f$ 的值, 再输出该字符串的第 $b$ 个坐标.
 ```
 
-Using the connection between NAND-CIRC programs and Boolean circuits, an immediate corollary of  {{ref:thm:NAND-univ-improved}} is the following improvement to  {{ref:thm:circuit-univ}}:
+利用 NAND-CIRC 程序与布尔电路之间的联系, {{ref:thm:NAND-univ-improved}} 的一个直接推论是以下对 {{ref:thm:circuit-univ}} 的改进:
 
 ```admonish quote title=""
-{{thmc}}{thm:circuit-univ-improved}[Universality of Boolean circuits,  improved bound]
-There exists some constant $c>0$ such that for every $n,m>0$ and function $f: \{0,1\}^n\rightarrow \{0,1\}^m$, there is a Boolean circuit with at most $c \cdot m 2^n / n$ gates that computes the function $f$ .
+{{thmc}}{thm:circuit-univ-improved}[布尔电路的普遍性, 改进界限]
+存在某个常数 $c>0$, 使得对于每个 $n,m>0$ 和函数 $f: \{0,1\}^n\rightarrow \{0,1\}^m$, 都存在一个最多具有 $c \cdot m 2^n / n$ 个门的布尔电路计算函数 $f$.
 ```
-
 
 ## 4.5 **通用** 函数计算: 一个替代的证明 {#seccomputalternative }
 
-{{ref:thm:circuit-univ}} is a fundamental result in the theory (and practice!) of computation.
-In this section, we present an alternative proof of this basic fact that Boolean circuits can compute every finite function.
-This alternative proof gives a somewhat worse quantitative bound on the number of gates but it has the advantage of being simpler, working directly with circuits and avoiding the usage of all the syntactic sugar machinery.
-(However, that machinery is useful in its own right, and will find other applications later on.)
-
+{{ref:thm:circuit-univ}} 是计算理论(和实践!)中的一个基本结果. 在本节中,我们将提出布尔电路可以计算每个有限函数这一基本事实的另一种证明. 这种替代证明在门数量上给出了稍差一些的定量界限, 但它的优点是更简单, 直接使用电路并避免了所有语法糖机制的使用. (然而,该机制本身是有用的,并将在以后找到其他应用.)
 
 ```admonish quote title=""
-{{thmc}}{thm:circuit-univ-alt}[Universality of Boolean circuits (alternative phrasing)]
-There exists some constant $c>0$ such that for every $n,m>0$ and function $f: \{0,1\}^n\rightarrow \{0,1\}^m$, there is a Boolean circuit with at most $c \cdot m\cdot n 2^n$ gates that computes the function $f$ .
+{{thmc}}{thm:circuit-univ-alt}[布尔电路的普遍性(替代表述)]
+存在某个常数 $c>0$,使得对于每个 $n,m>0$ 和函数 $f: \{0,1\}^n\rightarrow \{0,1\}^m$,都存在一个最多具有 $c \cdot m\cdot n 2^n$ 个门的布尔电路计算函数 $f$ .
 ```
 
 ```admonish pic id="computeallfuncaltfig"
 ![computeallfuncaltfig](./images/chapter4/computeallfunctionalt.png)
 
-{{pic}}{fig:computeallfuncalt} Given a function $f:\{0,1\}^n \rightarrow \{0,1\}$, we let $\{ x_0, x_1, \ldots, x_{N-1} \} \subseteq \{0,1\}^n$ be the set of inputs such that $f(x_i)=1$, and note that $N \leq 2^n$. We can express $f$ as the OR of $\delta_{x_i}$ for $i\in [N]$ where the function $\delta_\alpha:\{0,1\}^n \rightarrow \{0,1\}$ (for $\alpha \in \{0,1\}^n$) is defined as follows:  $\delta_\alpha(x)=1$ iff $x=\alpha$. We can compute the OR of $N$ values using $N$ two-input OR gates. Therefore if we have a circuit of size $O(n)$ to compute $\delta_\alpha$ for every $\alpha \in \{0,1\}^n$, we can compute $f$ using a circuit of size $O(n \cdot N) = O(n \cdot 2^n)$.
+{{pic}}{fig:computeallfuncalt} 给定一个函数 $f:\{0,1\}^n \rightarrow \{0,1\}$,我们令 $\{ x_0, x_1, \ldots, x_{N-1} \} \subseteq \{0,1\}^n$ 是满足 $f(x_i)=1$ 的输入集合, 并要求 $N \leq 2^n$. 我们可以将 $f$ 表示为 $\delta_{x_i}$ 对于 $i\in [N]$ 的 OR,其中函数 $\delta_\alpha:\{0,1\}^n \rightarrow \{0,1\}$(对于 $\alpha \in \{0,1\}^n$)定义如下: $\delta_\alpha(x)=1$ 当且仅当 $x=\alpha$. 我们可以使用 $N$ 个二输入 OR 门来计算 $N$ 个值的 OR. 因此,如果我们有一个大小为 $O(n)$ 的电路来计算每个 $\alpha \in \{0,1\}^n$ 的 $\delta_\alpha$ 值, 那么我们可以使用大小为 $O(n \cdot N) = O(n \cdot 2^n)$ 的电路来计算 $f$.
 ```
 
-
-
 ```admonish proof collapsible=true, title = "对{{ref:thm:circuit-univ-alt}}的证明思路"
-The idea of the proof is illustrated in {{ref:fig:computeallfuncalt}}. As before, it is enough to focus on the case that $m=1$ (the function $f$ has a single output), since we can always extend this to the case of $m>1$ by looking at the composition of $m$ circuits each computing a different output bit of the function $f$.
-We start by showing that for every $\alpha \in \{0,1\}^n$, there is an $O(n)$-sized circuit that computes the function $\delta_\alpha:\{0,1\}^n \rightarrow \{0,1\}$ defined as follows: $\delta_\alpha(x)=1$ iff $x=\alpha$ (that is, $\delta_\alpha$ outputs $0$ on all inputs except the input $\alpha$). We can then write any function $f:\{0,1\}^n \rightarrow \{0,1\}$ as the OR of at most $2^n$ functions $\delta_\alpha$ for the $\alpha$'s on which $f(\alpha)=1$.
+证明思路如 {{ref:fig:computeallfuncalt}} 所示. 如前所述, 关注 $m=1$ 的情况(函数 $f$ 有单个输出)就足够了, 因为我们可以通过组合 $m$ 个电路(每个计算函数 $f$ 的不同输出位)来扩展到 $m>1$ 的情况.
+我们首先证明, 对于每个 $\alpha \in \{0,1\}^n$, 存在一个大小为 $O(n)$ 的电路来计算函数 $\delta_\alpha:\{0,1\}^n \rightarrow \{0,1\}$,定义如下: $\delta_\alpha(x)=1$ 当且仅当 $x=\alpha$ (即 $\delta_\alpha$ 对除了$\alpha$以外的所有输入, 其输出为 $0$). 然后,我们可以将任何函数 $f:\{0,1\}^n \rightarrow \{0,1\}$ 写为最多 $2^n$ 个函数 $\delta_\alpha$ 的 OR,其中 $\alpha$ 满足 $f(\alpha)=1$.
 ```
 
 ```admonish proof collapsible=true, title = "对{{ref:thm:circuit-univ-alt}}的证明"
-We prove the theorem for the case $m=1$. The result can be extended for $m>1$ as before (see also {{ref:pro:mult-bit}}).
-Let $f:\{0,1\}^n \rightarrow \{0,1\}$.
-We will prove that there is an $O(n\cdot 2^n)$-sized Boolean circuit to compute $f$ in the following steps:
+我们针对 $m=1$ 的情况证明这个定理. 结果可以像之前一样扩展到 $m>1$ 的情况(另见 {{ref:pro:mult-bit}}).
+令 $f:\{0,1\}^n \rightarrow \{0,1\}$.
+我们将通过以下步骤证明存在一个 $O(n\cdot 2^n)$ 大小的布尔电路来计算 $f$:
 
-1. We show that for every $\alpha\in \{0,1\}^n$, there is an $O(n)$-sized circuit that computes the function $\delta_\alpha:\{0,1\}^n \rightarrow \{0,1\}$, where $\delta_\alpha(x)=1$ iff $x=\alpha$.
+1. 我们证明对于每个 $\alpha\in \{0,1\}^n$, 存在一个 $O(n)$ 大小的电路来计算函数 $\delta_\alpha:\{0,1\}^n \rightarrow \{0,1\}$, 其中 $\delta_\alpha(x)=1$ 当且仅当 $x=\alpha$.
 
-2. We then show that this implies the existence of an $O(n\cdot 2^n)$-sized circuit that computes $f$, by writing $f(x)$ as the OR of $\delta_\alpha(x)$ for all  $\alpha\in \{0,1\}^n$ such that $f(\alpha)=1$. (If  $f$ is the constant zero function and hence there is no such $\alpha$, then we can use the circuit $f(x) = x_0 \wedge \overline{x}_0$.)
+2. 然后我们证明这说明了存在一个 $O(n\cdot 2^n)$ 大小的电路来计算 $f$, 通过将 $f(x)$ 写为所有使得 $f(\alpha)=1$ 的 $\alpha\in \{0,1\}^n$ 的 $\delta_\alpha(x)$ 的 OR. (如果 $f$ 是恒零函数, 因此没有这样的 $\alpha$, 那么我们可以使用电路 $f(x) = x_0 \wedge \overline{x}_0$.)
 
-We start with Step 1:
+我们从步骤 1 开始:
 
-__CLAIM:__ For $\alpha \in \{0,1\}^n$, define $\delta_\alpha:\{0,1\}^n$ as follows:
+__断言:__ 对于 $\alpha \in \{0,1\}^n$, 定义 $\delta_\alpha:\{0,1\}^n$ 如下:
+
+$$
+\delta_\alpha(x) = \begin{cases}1 & x=\alpha \\ 0 & \text{否则} \end{cases} \;.
+$$
 $$
 \delta_\alpha(x) = \begin{cases}1 & x=\alpha \\ 0 & \text{otherwise} \end{cases} \;.
 $$
-then there is a Boolean circuit using at most $2n$ gates that computes $\delta_\alpha$.
 
-__PROOF OF CLAIM:__ The proof is illustrated in {{ref:fig:deltafunc}}.
-As an example, consider the function $\delta_{011}:\{0,1\}^3 \rightarrow \{0,1\}$.
-This function outputs $1$ on $x$ if and only if $x_0=0$, $x_1=1$ and $x_2=1$, and so we can write $\delta_{011}(x) = \overline{x_0} \wedge x_1 \wedge x_2$, which translates into a Boolean circuit with one NOT gate and two AND gates.
-More generally, for every $\alpha \in \{0,1\}^n$, we can express $\delta_{\alpha}(x)$  as $(x_0 = \alpha_0) \wedge (x_1 = \alpha_1) \wedge \cdots \wedge (x_{n-1} = \alpha_{n-1})$, where if $\alpha_i=0$ we replace $x_i = \alpha_i$ with $\overline{x_i}$ and if $\alpha_i=1$ we replace $x_i=\alpha_i$ by simply $x_i$.
-This yields a circuit that computes $\delta_\alpha$ using $n$ AND gates and at most $n$ NOT gates, so a total of at most $2n$ gates.
+那么存在一个使用最多 $2n$ 个门的布尔电路来计算 $\delta_\alpha$.
 
-Now for every function $f:\{0,1\}^n \rightarrow \{0,1\}$, we can write
+
+__断言证明:__ 证明如 {{ref:fig:deltafunc}} 所示.
+例如, 考虑函数 $\delta_{011}:\{0,1\}^3 \rightarrow \{0,1\}$.
+这个函数在 $x$ 上输出 $1$ 当且仅当 $x_0=0$, $x_1=1$ 且 $x_2=1$, 因此我们可以写 $\delta_{011}(x) = \overline{x_0} \wedge x_1 \wedge x_2$, 这转化为一个有一个 NOT 门和两个 AND 门的布尔电路.
+更一般地, 对于每个 $\alpha \in \{0,1\}^n$, 我们可以将 $\delta_{\alpha}(x)$ 表示为 $(x_0 = \alpha_0) \wedge (x_1 = \alpha_1) \wedge \cdots \wedge (x_{n-1} = \alpha_{n-1})$, 其中如果 $\alpha_i=0$ 我们将 $x_i = \alpha_i$ 替换为 $\overline{x_i}$, 如果 $\alpha_i=1$ 我们将 $x_i=\alpha_i$ 替换为简单的 $x_i$.
+
+这产生一个使用 $n$ 个 AND 门和最多 $n$ 个 NOT 门来计算 $\delta_\alpha$的电路, 因此总共最多需要 $2n$ 个门.
+现在对于每个函数 $f:\{0,1\}^n \rightarrow \{0,1\}$, 我们可以写出
 
 $$
-f(x) = \delta_{x_0}(x) \vee \delta_{x_1}(x) \vee \cdots \vee \delta_{x_{N-1}}(x) \label{eqorofdeltafunc}
+f(x) = \delta_{x_0}(x) \vee \delta_{x_1}(x) \vee \cdots \vee \delta_{x_{N-1}}(x) {{numeq}}{eq:orofdeltafunc}
 $$
 
-where $S=\{ x_0 ,\ldots, x_{N-1}\}$ is the set of inputs on which $f$ outputs $1$.
-(To see this, you can verify that the right-hand side of [eqorofdeltafunc](){.eqref} evaluates to $1$ on $x\in \{0,1\}^n$ if and only if $x$ is in the set $S$.)
+其中 $S=\{ x_0 ,\ldots, x_{N-1}\}$ 是 $f$ 输出 $1$ 的输入集合.
 
-Therefore we can compute $f$ using a Boolean circuit of at most $2n$ gates for each of the $N$ functions $\delta_{x_i}$ and combine that with at most $N$ OR gates, thus obtaining a circuit of at most $2n\cdot N + N$ gates.
-Since $S \subseteq \{0,1\}^n$, its size $N$ is at most $2^n$ and hence the total number of gates in this circuit is $O(n\cdot 2^n)$.
+(要观察到这一点, 你可以验证 {{eqref:eq:orofdeltafunc}} 的右边在 $x\in \{0,1\}^n$ 上求值为 $1$ 当且仅当 $x$ 在集合 $S$ 中.)
+因此, 我们可以使用最多 $2n$ 个门的布尔电路来计算每个 $N$ 个函数 $\delta_{x_i}$, 并结合最多 $N$ 个 OR 门, 从而获得一个最多 $2n\cdot N + N$ 个门的电路.
+由于 $S \subseteq \{0,1\}^n$, 其大小 $N$ 最多为 $2^n$, 因此这个电路中门的总数是 $O(n\cdot 2^n)$.
 ```
-
-
 
 ```admonish pic id="deltafuncfig"
 ![deltafuncfig](./images/chapter4/deltafunc.png)
 
-{{pic}}{fig:deltafunc} For every string $\alpha\in \{0,1\}^n$, there is a Boolean circuit of $O(n)$ gates to compute the function $\delta_\alpha:\{0,1\}^n \rightarrow \{0,1\}$ such that $\delta_\alpha(x)=1$ if and only if $x=\alpha$. The circuit is very simple. Given input $x_0,\ldots,x_{n-1}$ we compute the  AND of $z_0,\ldots,z_{n-1}$ where $z_i=x_i$ if $\alpha_i=1$ and $z_i = NOT(x_i)$ if $\alpha_i=0$. While formally Boolean circuits only have a gate for computing the AND of two inputs, we can implement an AND of $n$ inputs by composing $n$ two-input ANDs.
+{{pic}}{fig:deltafunc} 对每个字符串 $\alpha\in \{0,1\}^n$ , 均有一个有着 $O(n)$ 个门的布尔电路可以计算函数 $\delta_\alpha:\{0,1\}^n \rightarrow \{0,1\}$, 其满足 $\delta_\alpha(x)=1$ 当且仅当 $x=\alpha$. 这样一个电路非常简单. 给定输入 $x_0,\ldots,x_{n-1}$ ,我们计算$z_0,\ldots,z_{n-1}$的AND, 其中当$\alpha_i = 1$ 时 $z_i = x_i$, $\alpha_i=0$ 时 $z_i = NOT(x_i)$ . 虽然形式化的布尔电路只允许有两个输入计算 AND 函数的逻辑门, 我们可以通过组合 $n$ 个具有两个输入的 AND 门来获得具有 $n$个输入的 AND 门.
 ```
 
 
 ## 4.6 $SIZE_{n,m}(s)$类 {#secdefinesizeclasses }
 
+我们已经看到, **每个** 函数 $f:\{0,1\}^n \rightarrow \{0,1\}^m$ 都可以由一个大小为 $O(m\cdot 2^n)$ 的电路计算, 并且 **一些** 函数(如加法和乘法)可以由更小的电路计算.
 
-We have seen that _every_ function $f:\{0,1\}^n \rightarrow \{0,1\}^m$ can be computed by a circuit of size $O(m\cdot 2^n)$, and _some_ functions (such as addition and multiplication) can be computed by much smaller circuits.
-We define $SIZE_{n,m}(s)$ to be the set of functions mapping $n$ bits to $m$ bits that can be computed by NAND circuits of at most $s$ gates (or equivalently, by NAND-CIRC programs of at most $s$ lines).
-Formally, the definition is as follows:
+我们定义 $SIZE_{n,m}(s)$ 为映射 $n$ 位到 $m$ 位的函数的集合, 这些函数可以由最多 $s$ 个门的 NAND 电路计算(或者等价地, 由最多 $s$ 行的 NAND-CIRC 程序计算).
+形式化地, 其定义如下:
 
 ```admonish quote title=""
-{{defc}}{def:size}[Size class of functions]
-For all natural numbers $n,m,s$, let $SIZE_{n,m}(s)$ denote the set of all functions $f:\{0,1\}^n \rightarrow \{0,1\}^m$ such that there exists a NAND circuit of at most $s$ gates computing $f$.
-We denote by $SIZE_n(s)$ the set $SIZE_{n,1}(s)$.
-For every integer $s \geq 1$, we let $SIZE(s) = \cup_{n,m} SIZE_{n,m}(s)$ be the set of all functions $f$ for which there exists a NAND circuit of at most $s$ gates that compute $f$.
+{{defc}}{def:size}[函数的规模类]
+对于所有自然数 $n,m,s$, 令 $SIZE_{n,m}(s)$ 表示所有函数 $f:\{0,1\}^n \rightarrow \{0,1\}^m$ 的集合, 使得存在一个最多 $s$ 个门的 NAND 电路计算 $f$.
+我们用 $SIZE_n(s)$ 表示集合 $SIZE_{n,1}(s)$.
+对于每个整数 $s \geq 1$, 我们令 $SIZE(s) = \cup_{n,m} SIZE_{n,m}(s)$ 为所有函数 $f$ 的集合, 对于这些函数存在一个最多 $s$ 个门的 NAND 电路计算 $f$.
 ```
 
+{{ref:fig:funcvscirc}} 描绘了集合 $SIZE_{n,1}(s)$.
+注意 $SIZE_{n,m}(s)$ 是 **函数** 的集合, 而不是 **程序** 的集合! 就像 {{ref:fig:cucumber}} 所示的那样, 询问一个程序或电路是否是 $SIZE_{n,m}(s)$ 的成员是一种 **类别错误**!
 
-{{ref:fig:funcvscirc}} depicts the set $SIZE_{n,1}(s)$.
-Note that $SIZE_{n,m}(s)$ is a set of _functions_, not of _programs!_ Asking if a program or a circuit is a member of $SIZE_{n,m}(s)$ is a _category error_ as in the sense of  {{ref:fig:cucumber}}.
-As we discussed in [3.7.2节](./chapter_3.md#specvsimplrem) (and  [第2.6.1节](chapter_2.md#secimplvsspec)), the distinction between _programs_ and _functions_ is absolutely crucial.
-You should always remember that while a program _computes_ a function, it is not _equal_ to a function.
-In particular, as we've seen, there can be more than one program to compute the same function.
-
-
+正如我们在[3.7.2节](./chapter_3.md#specvsimplrem)(和[第2.6.1节](chapter_2.md#secimplvsspec))中讨论的, **程序** 和 **函数** 之间的区别是绝对关键的.
+你应该始终记住, 虽然一个程序能 **计算** 一个函数, 但它并不 **等于** 一个函数.
+特别是, 如我们所见, 可以有多个程序计算同一个函数.
 
 ```admonish pic id="funcvscircfig"
 ![funcvscircfig](./images/chapter4/funcvscircs.png)
 
-{{pic}}{fig:funcvscirc} There are $2^{2^n}$ functions mapping $\{0,1\}^n$ to $\{0,1\}$, and an infinite number of circuits with $n$ bit inputs and a single bit of output. Every circuit computes one function, but every function can be computed by many circuits. We say that $f \in SIZE_{n,1}(s)$ if the smallest circuit that computes $f$ has $s$ or fewer gates. For example $XOR_n \in SIZE_{n,1}(4n)$. {{ref:thm:NAND-univ}} shows that _every_ function $g$ is computable by some circuit of at most $c\cdot 2^n/n$ gates, and hence $SIZE_{n,1}(c\cdot 2^n/n)$ corresponds to the set of _all_ functions from $\{0,1\}^n$ to $\{0,1\}$.
+{{pic}}{fig:funcvscirc} 有 $2^{2^n}$ 个函数映射 $\{0,1\}^n$ 到 $\{0,1\}$, 以及无限多个具有 $n$ 位输入和单比特输出的电路. 每个电路计算一个函数, 但每个函数可以由许多电路计算. 如果计算 $f$ 的最小电路有 $s$ 个或更少的门, 我们说 $f \in SIZE_{n,1}(s)$. 例如 $XOR_n \in SIZE_{n,1}(4n)$. {{ref:thm:NAND-univ}} 表明_每个_函数 $g$ 都可以由某个最多 $c\cdot 2^n/n$ 个门的电路计算, 因此 $SIZE_{n,1}(c\cdot 2^n/n)$ 对应于从 $\{0,1\}^n$ 到 $\{0,1\}$ 的 **所有** 函数的集合.
 ```
 
-
-While we defined $SIZE_n(s)$ with respect to NAND gates, we would get essentially the same class if we defined it with respect to AND/OR/NOT gates:
+虽然我们针对NAND门定义了$SIZE_n(s)$, 但如果我们针对AND/OR/NOT门定义它, 我们基本上会得到相同的类:
 
 ```admonish quote title=""
 {{lemc}}{lem:nandaonsize}
-Let $SIZE^{AON}_{n,m}(s)$ denote the set of all functions $f:\{0,1\}^n \rightarrow \{0,1\}^m$ that can be computed by an AND/OR/NOT Boolean circuit of at most $s$ gates.
-Then,
+令 $SIZE^{AON}_{n,m}(s)$ 表示所有函数 $f:\{0,1\}^n \rightarrow \{0,1\}^m$ 的集合, 这些函数可以由最多 $s$ 个门的AND/OR/NOT布尔电路计算.
+那么,
 $$
 SIZE_{n,m}(s/2) \subseteq SIZE^{AON}_{n,m}(s) \subseteq SIZE_{n,m}(3s)
 $$
 ```
 
 ```admonish proof collapsible=true, title = "对{{ref:lem:nandaonsize}}的证明"
-If $f$ can be computed by a NAND circuit of at most $s/2$ gates, then by replacing each NAND with the two gates NOT and AND, we can obtain an AND/OR/NOT Boolean circuit of at most $s$ gates that computes $f$.
-On the other hand, if $f$ can be computed by a Boolean AND/OR/NOT circuit of at most $s$ gates, then by {{ref:thm:NANDuniversam}} it can be computed by a NAND circuit of at most $3s$ gates.
+如果 $f$ 可以由最多 $s/2$ 个门的NAND电路计算, 那么通过用NOT和AND两个门替换每个NAND门, 我们可以获得一个最多 $s$ 个门的AND/OR/NOT布尔电路来计算 $f$.
+另一方面, 如果 $f$ 可以由最多 $s$ 个门的布尔AND/OR/NOT电路计算, 那么根据 {{ref:thm:NANDuniversam}} , 它可以由最多 $3s$ 个门的NAND电路计算.
 ```
-
-
-
 
 ```admonish pic id="cucumberfig"
 ![cucumberfig](./images/chapter4/cucumber.png)
 
-{{pic}}{fig:cucumber} A "category error" is a question such as "is a cucumber even or odd?" which does not even make sense. In this book one type of category error you should watch out for is confusing _functions_ and _programs_ (i.e., confusing _specifications_ and _implementations_). If $C$ is a circuit or program, then asking if $C \in SIZE_{n,1}(s)$ is a category error, since $SIZE_{n,1}(s)$ is a set of _functions_ and not programs or circuits.
+{{pic}}{fig:cucumber} "类别错误"是指诸如"黄瓜是偶数还是奇数?"这样甚至没有意义的问题. 在本书中, 您需要警惕的一种类别错误是混淆 **函数** 和 **程序** (即混淆 **规范** 和 **实现** ). 如果 $C$ 是一个电路或程序, 那么询问 $C \in SIZE_{n,1}(s)$ 是一个类别错误, 因为 $SIZE_{n,1}(s)$ 是一个 **函数** 的集合, 而不是程序或电路的集合.
 ```
 
-
-The results we have seen in this chapter can be phrased as showing that $ADD_n \in SIZE_{2n,n+1}(100 n)$
-and $MULT_n \in SIZE_{2n,2n}(10000 n^{\log_2 3})$.
-{{ref:thm:NAND-univ}} shows that  for some constant $c$, $SIZE_{n,m}(c m 2^n)$ is equal to the set of all functions from $\{0,1\}^n$ to $\{0,1\}^m$.
-
-
-
+我们在本章中所见到的结果可以被表述为证明 $ADD_n \in SIZE_{2n,n+1}(100 n)$ 与 $MULT_n \in SIZE_{2n,2n}(10000 n^{\log_2 3})$.
+{{ref:thm:NAND-univ}} 说明对于某个常数 $c$, $SIZE_{n,m}(c m 2^n)$ 等于从 $\{0,1\}^n$ 到 $\{0,1\}^m$ 的所有函数的集合.
 
 ```admonish info
-{{remc}}{rem:infinitefunc}[Finite vs infinite functions]
-Unlike programming languages such as _Python_, _C_ or _JavaScript_, the NAND-CIRC and AON-CIRC programming language do not have _arrays_. 
-A NAND-CIRC program $P$ has some fixed number $n$ and $m$ of inputs and output variable. Hence, for example, there is no single NAND-CIRC program that can compute the increment function $INC:\{0,1\}^* \rightarrow \{0,1\}^*$ that maps a string $x$ (which we identify with a number via the binary representation) to the string that represents $x+1$. Rather for every $n>0$, there is a NAND-CIRC program $P_n$ that computes the restriction $INC_n$ of the function $INC$ to inputs of length $n$. Since it can be shown that for every $n>0$ such a program $P_n$ exists of length at most $10n$, $INC_n \in SIZE_{n,n+1}(10n)$ for every $n>0$.
+{{remc}}{rem:infinitefunc}[有限与无限函数]
+与诸如 **Python** 、**C** 或 **JavaScript** 等编程语言不同, NAND-CIRC 和 AON-CIRC 编程语言中没有 **数组**. 
+一个 NAND-CIRC 程序 $P$ 有固定数量的输入和输出变量 $n$ 和 $m$. 因此, 例如, 没有单个 NAND-CIRC 程序可以计算增量函数 $INC:\{0,1\}^* \rightarrow \{0,1\}^*$, 该函数将字符串 $x$(我们通过二进制表示将其视为数字)映射到表示 $x+1$ 的字符串. 相反, 对于每个 $n>0$, 存在一个 NAND-CIRC 程序 $P_n$, 它计算函数 $INC$ 限制到长度为 $n$ 的输入 $INC_n$. 由于可以证明对于每个 $n>0$, 这样的程序 $P_n$ 存在且长度最多为 $10n$, 因此对于每个 $n>0$, $INC_n \in SIZE_{n,n+1}(10n)$. 
 
-For the time being, our focus will be on _finite_ functions, but we will discuss how to extend the definition of size complexity to functions with unbounded input lengths later on in [第13.6节](chapter_13.md#nonuniformcompsec).
+目前, 我们的重心将放在 **有限** 函数上, 但我们将在后面的 [第13.6节](chapter_13.md#nonuniformcompsec) 中讨论如何将大小复杂度的定义扩展到具有无界输入长度的函数. 
 ```
 
-
 ```admonish question
-{{exec}}{exe:sizeclosundercomp}[$SIZE$ closed under complement.]
+{{exec}}{exe:sizeclosundercomp}[$SIZE$ 在补集下封闭]
 
-In this exercise we prove a certain "closure property" of the class $SIZE_n(s)$.
-That is, we show that if $f$ is in this class then (up to some small additive term) so is the complement of $f$, which is the function $g(x)=1-f(x)$.
+在这个练习中, 我们证明规模类 $SIZE_n(s)$ 的一个"闭包性质". 
+也就是说, 我们证明如果 $f$ 在这个类中, 那么(至多有某个小的加法项)$f$ 的补集也在该类中, 其中补集函数是 $g(x)=1-f(x)$. 
 
-Prove that there is a constant $c$ such that for every $f:\{0,1\}^n \rightarrow \{0,1\}$ and $s\in \N$, if $f \in SIZE_n(s)$  then $1-f \in SIZE_n(s+c)$.
+证明存在一个常数 $c$, 使得对于每个 $f:\{0,1\}^n \rightarrow \{0,1\}$ 和 $s\in \N$, 如果 $f \in SIZE_n(s)$ 则 $1-f \in SIZE_n(s+c)$. 
 ```
 
 ```admonish solution collapsible=true title="对{{ref:exe:sizeclosundercomp}}的解答"
-If $f\in SIZE_n(s)$ then there is an $s$-line NAND-CIRC program $P$ that computes $f$.
-We can rename the variable `Y[0]` in $P$ to a variable `temp` and add the line
+如果 $f\in SIZE_n(s)$, 那么存在一个 $s$ 行 NAND-CIRC 程序 $P$ 计算 $f$. 
+我们可以将 $P$ 中的变量 `Y[0]` 重命名为 `temp`, 并在最后添加一行
 
 ~~~python
 Y[0] = NAND(temp,temp)
 ~~~
 
-at the very end to obtain a program $P'$ that computes $1-f$.
+来获得一个计算 $1-f$ 的程序 $P'$. 
 ```
 
-
-
 ```admonish hint title="本章回顾"
-* We can define the notion of computing a function via a simplified "programming language", where computing a function $F$ in $T$ steps would correspond to having a $T$-line NAND-CIRC program that computes $F$.
-* While the NAND-CIRC programming only has one operation, other operations such as functions and conditional execution can be implemented using it.
-* Every function $f:\{0,1\}^n \rightarrow \{0,1\}^m$ can be computed by a circuit of at most $O(m 2^n)$ gates (and in fact at most $O(m 2^n/n)$ gates).
-* Sometimes (or maybe always?) we can translate an _efficient_ algorithm to compute $f$ into a circuit that computes $f$  with a number of gates comparable to the number of steps in this algorithm.
+* 我们可以通过一个简化的"编程语言"来定义计算函数的概念, 其中在 $T$ 步内计算函数 $F$ 对应于拥有一个 $T$ 行的 NAND-CIRC 程序来计算 $F$.  
+* 虽然 NAND-CIRC 编程只有一种操作, 但其他操作如函数和条件执行可以使用它来实现.  
+* 每个函数 $f:\{0,1\}^n \rightarrow \{0,1\}^m$ 都可以由一个最多 $O(m 2^n)$ 个门的电路计算(实际上最多 $O(m 2^n/n)$ 个门).  
+* 我们有时(或者总是?)可以将计算 $f$ 的 **高效** 算法翻译成一个电路, 该电路计算 $f$ 的门数量与算法中的步数相当.  
 ```
 
 ## 4.7 习题
 
+```admonish question
+{{proc}}{pro:embedtuples}[配对]
+本练习要求你给出一个从 $\N^2$ 到 $\N$ 的一一映射. 这可以在只有一维数组的编程语言中实现二维数组作为"语法糖".
 
+1. 证明映射 $F(x,y)=2^x3^y$ 是一个从 $\N^2$ 到 $\N$ 的一一映射.
 
-```admonish question title=""
-{{proc}}{pro:embedtuples}[Pairing]
-This exercise asks you to give a one-to-one map from $\N^2$ to $\N$. This can be useful to implement two-dimensional arrays as "syntactic sugar" in programming languages that only have one-dimensional arrays.
+2. 证明存在一个一一映射 $F:\N^2 \rightarrow \N$ , 使得对于每个 $x,y$ , 有 $F(x,y) \leq 100\cdot \max\{x,y\}^2+100$ .
 
-1. Prove that the map $F(x,y)=2^x3^y$ is a one-to-one map from $\N^2$ to $\N$.
-
-2. Show that there is a one-to-one map $F:\N^2 \rightarrow \N$ such that for every $x,y$, $F(x,y) \leq 100\cdot \max\{x,y\}^2+100$.
-
-3. For every $k$, show that there is a one-to-one map $F:\N^k \rightarrow \N$ such that for every $x_0,\ldots,x_{k-1} \in \N$, $F(x_0,\ldots,x_{k-1}) \leq 100 \cdot (x_0+x_1+\ldots+x_{k-1}+100k)^k$.
+3. 对于每个 $k$ , 证明存在一个一一映射 $F:\N^k \rightarrow \N$ , 使得对于每个 $x_0,\ldots,x_{k-1} \in \N$ , 有 $F(x_0,\ldots,x_{k-1}) \leq 100 \cdot (x_0+x_1+\ldots+x_{k-1}+100k)^k$ .
 ```
 
-```admonish question title=""
-{{proc}}{pro:mux}[Computing MUX]
-Prove that the NAND-CIRC program below computes the function $MUX$ (or $LOOKUP_1$) where $MUX(a,b,c)$ equals $a$ if $c=0$ and equals $b$ if $c=1$:
+```admonish question
+{{proc}}{pro:mux}[计算 MUX]
+证明下面的 NAND-CIRC 程序计算函数 $MUX$ (或 $LOOKUP_1$ ), 其中 $MUX(a,b,c)$ 在 $c=0$ 时等于 $a$ , 在 $c=1$ 时等于 $b$ :
 
 ~~~python
 t = NAND(X[2],X[2])
@@ -834,69 +779,61 @@ Y[0] = NAND(u,v)
 ~~~
 ```
 
+```admonish question
+{{proc}}{pro:atleasttwo}[至少两个/多数]
+给出一个最多 6 行的 NAND-CIRC 程序来计算函数 $MAJ:\{0,1\}^3 \rightarrow \{0,1\}$ , 其中 $MAJ(a,b,c) = 1$ 当且仅当 $a+b+c \geq 2$ .
+```
 
-```admonish question title=""
-{{proc}}{pro:atleasttwo}[At least two / Majority]
-Give a NAND-CIRC program of at most 6 lines to compute the function  $MAJ:\{0,1\}^3 \rightarrow \{0,1\}$
-where $MAJ(a,b,c) = 1$ iff $a+b+c \geq 2$.
+```admonish question
+{{proc}}{pro:conditionalsugar}[条件语句]
+在这个练习中, 我们将探索 {{ref:thm:conditionalsugar}} : 将使用诸如 `if .. then .. else ..` 代码的 NAND-CIRC-IF 程序转换为标准的 NAND-CIRC 程序.
+
+1. 给出 {{ref:thm:conditionalsugar}} 的"代码证明": 用你选择的编程语言编写一个程序, 将 NAND-CIRC-IF 程序 $P$ 转换为一个"无糖"的 NAND-CIRC 程序 $P'$ , 计算相同的函数. 参见脚注提示.{{footnote:你可以先从将 $P$ 转换为使用过程语句的 NAND-CIRC-PROC 程序开始, 然后使用 {{ref:exa:desugarcode}} 的代码将后者转换为"无糖"的 NAND-CIRC 程序.}}
+
+2. 证明以下陈述, 这是 {{ref:thm:conditionalsugar}} 的核心: 假设存在一个 $s$ 行 NAND-CIRC 程序计算 $f:\{0,1\}^n \rightarrow \{0,1\}$ 和一个 $s'$ 行 NAND-CIRC 程序计算 $g:\{0,1\}^n \rightarrow \{0,1\}$ .
+证明存在一个最多 $s+s'+10$ 行的 NAND-CIRC 程序计算函数 $h:\{0,1\}^{n+1} \rightarrow \{0,1\}$ , 其中 $h(x_0,\ldots,x_{n-1},x_n)$ 在 $x_n=0$ 时等于 $f(x_0,\ldots,x_{n-1})$ , 否则等于 $g(x_0,\ldots,x_{n-1})$ . (本项中的所有程序都是标准的"无糖" NAND-CIRC 程序.)
+```
+
+```admonish question
+{{proc}}{pro:halffulladder}[半加器和全加器]
+1. 一个 **半加器** 是对应于两个二进制位相加的函数 $HA:\{0,1\}^2 :\rightarrow \{0,1\}^2$, 也就是说, 对于每个 $a,b \in \{0,1\}$ , $HA(a,b)= (e,f)$ 其中 $2e+f = a+b$ . 证明存在一个最多五个 NAND 门的 NAND 电路计算 $HA$ .
+
+2. 一个 **全加器** 是函数 $FA:\{0,1\}^3 \rightarrow \{0,1\}^{2}$ , 它接受两个位和一个"进位"位, 并输出它们的和. 也就是说, 对于每个 $a,b,c \in \{0,1\}$ , $FA(a,b,c) = (e,f)$ 使得 $2e+f = a+b+c$ . 证明存在一个最多九个 NAND 门的 NAND 电路计算 $FA$ .
+
+3. 证明如果有一个 $c$ 门 NAND 电路计算 $FA$ , 那么有一个 $cn$ 门电路计算 $ADD_n$ , 其中(如 {{ref:thm:addition}}) $ADD_n:\{0,1\}^{2n} \rightarrow \{0,1\}^{n+1}$ 是输出两个输入 $n$ 位数字加法的函数. 参见脚注提示.{{footnote:使用一个逐位相加的"级联", 从最低有效位开始, 就像小学算法一样.}}
+
+4. 证明对于每个 $n$ , 有一个最多 $9n$ 行的 NAND-CIRC 程序计算 $ADD_n$ .
 ```
 
 ```admonish question title=""
-{{proc}}{pro:conditionalsugar}[Conditional statements]
-In this exercise we will explore {{ref:thm:conditionalsugar}}: transforming NAND-CIRC-IF programs that use code such as `if .. then .. else ..` to standard NAND-CIRC programs.
-
-1. Give a "proof by code" of {{ref:thm:conditionalsugar}}: a program in a programming language of your choice that transforms a NAND-CIRC-IF program $P$ into a "sugar-free" NAND-CIRC program $P'$ that computes the same function. See footnote for hint.{{footnote:You can start by transforming $P$ into a NAND-CIRC-PROC program that uses procedure statements, and then use the code of {{ref:exa:desugarcode}} to transform the latter into a "sugar-free" NAND-CIRC program.}}
-
-2. Prove the following statement, which is the heart of  {{ref:thm:conditionalsugar}}: suppose that there exists an $s$-line NAND-CIRC program to compute $f:\{0,1\}^n \rightarrow \{0,1\}$ and an $s'$-line NAND-CIRC program to compute $g:\{0,1\}^n \rightarrow \{0,1\}$.
-Prove that there exist a NAND-CIRC program of at most $s+s'+10$ lines to compute the function $h:\{0,1\}^{n+1} \rightarrow \{0,1\}$ where $h(x_0,\ldots,x_{n-1},x_n)$ equals $f(x_0,\ldots,x_{n-1})$ if $x_n=0$ and equals $g(x_0,\ldots,x_{n-1})$ otherwise. (All programs in this item are standard "sugar-free" NAND-CIRC programs.)
-```
-
-
-
-```admonish question title=""
-{{proc}}{pro:halffulladder}[Half and full adders]
-1. A _half adder_ is the function $HA:\{0,1\}^2 :\rightarrow \{0,1\}^2$ that corresponds to adding two binary bits. That is, for every $a,b \in \{0,1\}$, $HA(a,b)= (e,f)$ where $2e+f = a+b$. Prove that there is a NAND circuit of at most five NAND gates that computes $HA$.
-
-2. A _full adder_ is the function $FA:\{0,1\}^3 \rightarrow \{0,1\}^{2}$ that takes in two bits and a "carry" bit and outputs their sum. That is, for every $a,b,c \in \{0,1\}$, $FA(a,b,c) = (e,f)$ such that $2e+f = a+b+c$. Prove that there is a NAND circuit of at most nine NAND gates that computes $FA$.
-
-3. Prove that if there is a NAND circuit of $c$ gates that computes $FA$, then there is a circuit of $cn$ gates that computes $ADD_n$ where (as in {{ref:thm:addition}}) $ADD_n:\{0,1\}^{2n} \rightarrow \{0,1\}^{n+1}$ is the function that outputs the addition of two input $n$-bit numbers. See footnote for hint.{{footnote:Use a "cascade" of adding the bits one after the other, starting with the least significant digit, just like in the elementary-school algorithm.}}
-
-4. Show that for every $n$ there is a NAND-CIRC program to compute $ADD_n$ with at most $9n$ lines.
-```
-
-
-```admonish question title=""
-{{proc}}{pro:addition}[Addition]
-Write a program using your favorite programming language that on input of an integer $n$, outputs a NAND-CIRC program that computes $ADD_n$. Can you ensure that the program it outputs for $ADD_n$ has fewer than $10n$ lines?
+{{proc}}{pro:addition}[加法]
+使用你最喜欢的编程语言编写一个程序,该程序在输入整数 $n$ 时,输出一个计算 $ADD_n$ 的 NAND-CIRC 程序.你能确保它为 $ADD_n$ 输出的程序少于 $10n$ 行吗?
 ```
 
 ```admonish question title=""
-{{proc}}{pro:multiplication}[Multiplication]
-Write a program using your favorite programming language that on input of an integer $n$, outputs a NAND-CIRC program that computes $MULT_n$. Can you ensure that the program it outputs for $MULT_n$ has fewer than $1000\cdot n^2$ lines?
+{{proc}}{pro:multiplication}[乘法]
+使用你最喜欢的编程语言编写一个程序,该程序在输入整数 $n$ 时,输出一个计算 $MULT_n$ 的 NAND-CIRC 程序.你能确保它为 $MULT_n$ 输出的程序少于 $1000\cdot n^2$ 行吗?
 ```
 
 ```admonish question title=""
-{{proc}}{pro:eff-multiplication}[Efficient multiplication (challenge)]
-Write a program using your favorite programming language that on input of an integer $n$, outputs a NAND-CIRC program that computes $MULT_n$ and has at most $10000 n^{1.9}$ lines.{{footnote:__Hint:__ Use Karatsuba's algorithm.}} What is the smallest number of lines you can use to multiply two 2048 bit numbers?
+{{proc}}{pro:eff-multiplication}[高效乘法 (挑战)]
+使用你最喜欢的编程语言编写一个程序,该程序在输入整数 $n$ 时,输出一个计算 $MULT_n$ 的 NAND-CIRC 程序,并且最多有 $10000 n^{1.9}$ 行.{{footnote: **提示:** 使用 Karatsuba 算法.}} 你能用多少行来相乘两个 2048 位数字?
 ```
 
-
 ```admonish question title=""
-{{proc}}{pro:mult-bit}[Multibit function]
-In the text {{ref:thm:NAND-univ}} is only proven for the case $m=1$.
-In this exercise you will extend the proof for every $m$.
+{{proc}}{pro:mult-bit}[多比特函数]
+在文本 {{ref:thm:NAND-univ}} 中,只证明了 $m=1$ 的情况.
+在这个练习中,你将扩展证明到每个 $m$.
 
-Prove that
+证明:
 
-1. If there is an $s$-line NAND-CIRC program to compute $f:\{0,1\}^n \rightarrow \{0,1\}$ and an $s'$-line NAND-CIRC program to compute $f':\{0,1\}^n \rightarrow \{0,1\}$ then there is an $s+s'$-line program to compute the function $g:\{0,1\}^n \rightarrow \{0,1\}^2$ such that $g(x)=(f(x),f'(x))$.
-
-2. For every function $f:\{0,1\}^n \rightarrow \{0,1\}^m$, there is a NAND-CIRC program of at most $10m\cdot 2^n$ lines that computes $f$. (You can use the $m=1$ case of {{ref:thm:NAND-univ}}, as well as Item 1.)
+1. 如果有一个 $s$ 行 NAND-CIRC 程序计算 $f:\{0,1\}^n \rightarrow \{0,1\}$ 和一个 $s'$ 行 NAND-CIRC 程序计算 $f':\{0,1\}^n \rightarrow \{0,1\}$,那么有一个 $s+s'$ 行程序计算函数 $g:\{0,1\}^n \rightarrow \{0,1\}^2$,使得 $g(x)=(f(x),f'(x))$.
+2. 对于每个函数 $f:\{0,1\}^n \rightarrow \{0,1\}^m$,有一个最多 $10m\cdot 2^n$ 行的 NAND-CIRC 程序计算 $f$.(你可以使用 {{ref:thm:NAND-univ}} 在 $m=1$ 的情况与第1.题)
 ```
 
-
 ```admonish question title=""
-{{proc}}{pro:usesugar}[Simplifying using syntactic sugar]
-Let $P$ be the following NAND-CIRC program:
+{{proc}}{pro:usesugar}[使用语法糖简化]
+设 $P$ 为以下 NAND-CIRC 程序:
 
 ~~~python
 Temp[0] = NAND(X[0],X[0])
@@ -910,52 +847,46 @@ Temp[7] = NAND(Temp[5],Temp[5])
 Y[0] = NAND(Temp[6],Temp[7])
 ~~~
 
-1. Write a program $P'$ with at most three lines of code that uses both `NAND` as well as the syntactic sugar `OR` that computes the same function as $P$.
+1. 编写一个程序 $P'$,最多三行代码,使用 `NAND` 以及语法糖 `OR`,计算与 $P$ 相同的函数.
 
-2. Draw a circuit that computes the same function as $P$ and uses only $AND$ and $NOT$ gates.
+2. 绘制一个电路,计算与 $P$ 相同的函数,并仅使用 $AND$ 和 $NOT$ 门.
 ```
 
+在以下练习中,要求你比较每对编程语言的 **表达能力**.
+当我们说 "比较" 两个编程语言 $X$ 和 $Y$ 的 "表达能力" 时, 我们指的是确定分别使用 $X$ 和 $Y$ 中的程序可计算的函数集之间的关系. 也就是说, 要回答该问题, 你需要同时完成以下两项:
 
+1. **要么** 证明对于 $X$ 中的每个程序 $P$,都有 $Y$ 中的一个程序 $P'$ 计算与 $P$ 相同的函数, **要么** 给出一个函数示例,该函数可由 $X$-程序计算但不可由 $Y$-程序计算.
 
-In the following exercises you are asked to compare the _power_ of pairs of programming languages.
-By "comparing the power" of two programming languages $X$ and $Y$ we mean determining the relation between the set of functions that are computable using programs in  $X$ and $Y$ respectively. That is, to answer such a question you need to do both of the following:
+**和**
 
-1. Either prove that for every program $P$ in $X$ there is a program $P'$ in $Y$ that computes the same function as $P$, _or_ give an example for a function that is computable by an $X$-program but not computable by a $Y$-program.
+2. 要么证明对于 $Y$ 中的每个程序 $P$,都有 $X$ 中的一个程序 $P'$ 计算与 $P$ 相同的函数, **要么** 给出一个函数示例,该函数可由 $Y$-程序计算但不可由 $X$-程序计算.
 
-_and_
-
-2. Either prove that for every program $P$ in $Y$ there is a program $P'$ in $X$ that computes the same function as $P$, _or_ give an example for a function that is computable by a $Y$-program but not computable by an $X$-program.
-
-When you give an example as above of a function that is computable in one programming language but not the other, you need to _prove_ that the function you showed is _(1)_ computable in the first programming language and _(2)_ _not computable_ in the second programming language.
+当你给出上述示例,即一个函数在一种编程语言中可计算但在另一种中不可计算时,你需要 **证明** 你展示的函数 **(1)** 在第一种编程语言中可计算,并且 **(2)** 在第二种编程语言中 **不可计算**.
 
 ```admonish question title=""
-{{proc}}{pro:compareif}[Compare IF and NAND]
-Let IF-CIRC be the programming language where we have the following operations `foo = 0`, `foo = 1`, `foo = IF(cond,yes,no)`  (that is, we can use the constants $0$ and $1$, and the $IF:\{0,1\}^3 \rightarrow \{0,1\}$ function such that $IF(a,b,c)$ equals $b$ if $a=1$ and equals $c$ if $a=0$). Compare the power of the NAND-CIRC programming language and the IF-CIRC programming language.
+{{proc}}{pro:compareif}[比较 IF 和 NAND]
+设 IF-CIRC 为编程语言,其中有以下操作 `foo = 0`, `foo = 1`, `foo = IF(cond,yes,no)` (即,我们可以使用常量 $0$ 和 $1$,以及函数 $IF:\{0,1\}^3 \rightarrow \{0,1\}$,使得如果 $a=1$ 则 $IF(a,b,c)$ 等于 $b$,如果 $a=0$ 则等于 $c$).比较 NAND-CIRC 编程语言和 IF-CIRC 编程语言的表达能力.
 ```
 
 ```admonish question title=""
-{{proc}}{pro:comparexor}[Compare XOR and NAND]
-Let XOR-CIRC be the programming language where we have the following operations `foo = XOR(bar,blah)`, `foo = 1` and `bar = 0` (that is, we can use the constants $0$, $1$ and the $XOR$ function that maps $a,b \in \{0,1\}^2$ to $a+b \mod 2$). Compare the power of the NAND-CIRC programming language and the XOR-CIRC programming language. See footnote for hint.{{footnote:You can use the fact that $(a+b)+c \mod 2 = a+b+c \mod 2$. In particular it means that if you have the lines `d = XOR(a,b)` and `e = XOR(d,c)` then `e` gets the sum modulo $2$ of the variable `a`, `b` and `c`.}}
+{{proc}}{pro:comparexor}[比较 XOR 和 NAND]
+设 XOR-CIRC 为编程语言,其中有以下操作 `foo = XOR(bar,blah)`, `foo = 1` 和 `bar = 0` (即,我们可以使用常量 $0$, $1$ 和函数 $XOR$,它将 $a,b \in \{0,1\}^2$ 映射到 $a+b \mod 2$).比较 NAND-CIRC 编程语言和 XOR-CIRC 编程语言的表达能力.参见脚注中的提示.{{footnote:你可以使用以下事实: $(a+b)+c \mod 2 = a+b+c \mod 2$.特别地,这意味着如果你有行 `d = XOR(a,b)` 和 `e = XOR(d,c)`,那么 `e` 得到变量 `a`, `b` 和 `c` 在模 $2$ 意义下的和.}}
 ```
 
 ```admonish question title=""
-{{proc}}{pro:majasymp}[Circuits for majority]
-Prove that there is some constant $c$ such that for every $n>1$, $MAJ_n \in SIZE_n(cn)$ where $MAJ_n:\{0,1\}^n \rightarrow \{0,1\}$ is the majority function on $n$ input bits. That is $MAJ_n(x)=1$ iff $\sum_{i=0}^{n-1}x_i > n/2$. See footnote for hint.{{footnote:One approach to solve this is using recursion and the  so-called [Master Theorem](https://en.wikipedia.org/wiki/Master%5Ftheorem%5F(analysis%5Fof%5Falgorithms)).}}
+{{proc}}{pro:majasymp}[多数函数的电路]
+证明存在某个常数 $c$,使得对于每个 $n>1$, $MAJ_n \in SIZE_n(cn)$,其中 $MAJ_n:\{0,1\}^n \rightarrow \{0,1\}$ 是 $n$ 个输入比特上的多数函数.即 $MAJ_n(x)=1$ 当且仅当 $\sum_{i=0}^{n-1}x_i > n/2$. 参见脚注中的提示.{{footnote:解决这个问题的一种方法是使用递归和所谓的 [主定理](https://en.wikipedia.org/wiki/Master%5Ftheorem%5F(analysis%5Fof%5Falgorithms)).}}
 ```
-
 
 ```admonish question title=""
-{{proc}}{pro:thresholdcirc}[Circuits for threshold]
-Prove that there is some constant $c$ such that for every $n>1$, and integers $a_0,\ldots,a_{n-1},b \in \{-2^n,-2^n+1,\ldots,-1,0,+1,\ldots,2^n\}$, there is a NAND circuit with at most $n^c$ gates that computes the _threshold_ function $f_{a_0,\ldots,a_{n-1},b}:\{0,1\}^n \rightarrow \{0,1\}$ that on input $x\in \{0,1\}^n$ outputs $1$ if and only if $\sum_{i=0}^{n-1} a_i x_i > b$.
+{{proc}}{pro:thresholdcirc}[阈值函数的电路]
+证明存在某个常数 $c$,使得对于每个 $n>1$,和整数 $a_0,\ldots,a_{n-1},b \in \{-2^n,-2^n+1,\ldots,-1,0,+1,\ldots,2^n\}$,有一个最多 $n^c$ 个门的 NAND 电路计算 **阈值** 函数 $f_{a_0,\ldots,a_{n-1},b}:\{0,1\}^n \rightarrow \{0,1\}$,该函数在输入 $x\in \{0,1\}^n$ 时输出 $1$ 当且仅当 $\sum_{i=0}^{n-1} a_i x_i > b$.
 ```
-
-
 
 ## 4.8 杂记 { #computeeveryfunctionbibnotes  }
 
+关于电路的更广泛讨论, 请参阅 Jukna 和 Wegener 的著作 [Jukna, 2012](https://scholar.google.com/scholar?hl=en&q=Jukna+Boolean+function+complexity:+advances+and+frontiers), [Wegener, 1987](https://scholar.google.com/scholar?hl=en&q=Wegener+The+complexity+of+Boolean+functions).
+Shannon 证明了每个布尔函数都可以由指数级大小的电路计算 [Shannon, 1938](https://scholar.google.com/scholar?hl=en&q=Shannon+A+symbolic+analysis+of+relay+and+switching+circuits). 改进的 $c \cdot 2^n/n$ 界(对于许多基, $c$ 是最优值)归功于 Lupanov [Lupanov, 1958](https://scholar.google.com/scholar?hl=en&q=Lupanov+A+circuit+synthesis+method). 关于 NAND 情况(其中 $c=1$)的阐述可以在他的著作 [Lupanov, 1984](https://scholar.google.com/scholar?hl=en&q=Lupanov+Asymptotic+complexity+bounds+for+control+circuits) 的第 4 章中找到.
+(感谢 Sasha Golovnev 追踪到这个参考文献!)
 
-See Jukna's and Wegener's books [@Jukna12, @wegener1987complexity] for much more extensive discussion on circuits.
-Shannon showed that every Boolean function can be computed by a circuit of exponential size [@Shannon1938]. The improved bound of $c \cdot 2^n/n$ (with the optimal value of $c$ for many bases) is due to Lupanov [@Lupanov1958]. An exposition of this for the case of NAND (where $c=1$) is given in Chapter 4 of his book [@lupanov1984].
-(Thanks to Sasha Golovnev for tracking down this reference!)
-
-The concept of "syntactic sugar" is also known as "macros" or "meta-programming" and is sometimes implemented via a preprocessor or macro language in a programming language or a text editor. One modern example is the [Babel](https://babeljs.io/) JavaScript syntax transformer, that converts JavaScript programs written using the latest features into a format that older Browsers can accept. It even has a [plug-in](https://babeljs.io/docs/plugins/) architecture, that allows users to add their own syntactic sugar to the language.
+"语法糖"的概念也称为"宏"或"元编程", 有时通过编程语言或文本编辑器中的预处理器或宏语言实现. 一个现代例子是 [Babel](https://babeljs.io/) JavaScript 语法转换器, 它将使用最新特性编写的 JavaScript 程序转换为旧版浏览器可以接受的格式. 它甚至有一个 [插件](https://babeljs.io/docs/plugins/) 架构, 允许用户将自己的语法糖添加到语言中.
