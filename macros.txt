@@ -23,3 +23,13 @@
 \NOT:{\text{NOT}}
 \XOR:{\text{XOR}}
 \NAND:{\text{NAND}}
+\IF:{\text{IF}}
+\PAIR:{\text{PAIR}}
+\NIL:{\text{NIL}}
+\HEAD:{\text{HEAD}}
+\TAIL:{\text{TAIL}}
+\ISEMPTY:{\text{ISEMPTY}}
+\MAP:{\text{MAP}}
+\REDUCE:{\text{REDUCE}}
+\FILTER:{\text{FILTER}}
+\RECURSE:{\text{RECURSE}}

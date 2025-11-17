@@ -590,6 +590,86 @@ $$
 
 ## 8.6 增强λ演算
 
+我们现在将λ演算作为一种计算模型进行讨论. 我们将从描述一个"增强"版本的λ演算开始, 它包含一些"冗余特性", 但更易于理解. 我们将首先展示增强λ演算在计算能力上如何等价于图灵机. 然后, 我们将展示如何将"增强λ演算"的所有特性实现为"纯"(即非增强)λ演算之上的"语法糖". 因此, 纯λ演算在计算能力上等价于图灵机(因此也等价于RAM机器和其他所有图灵等价模型).
+
+增强λ演算包括以下对象和操作:
+- **布尔常量和IF函数**: 存在λ表达式$0$, $1$和$\IF$, 满足以下条件: 对于每个λ表达式$e$和$f$, $\IF\; 1\;e\;f = e$且$\IF\;0\;e\;f = f$. 也就是说, $\IF$是一个函数, 接受三个参数$a,e,f$, 当$a=1$时输出$e$, 当$a=0$时输出$f$.
+- **二元组**: 存在一个λ表达式$\PAIR$, 我们将其视为*配对*函数. 对于每个λ表达式$e,f$, $\PAIR\; e\; f$是二元对$\langle e,f \rangle$, 其中$e$是其第一个成员, $f$是其第二个成员. 我们还有λ表达式$\HEAD$和$\TAIL$, 分别提取二元组的第一个和第二个成员. 因此, 对于每个λ表达式$e,f$, $\HEAD\; (\PAIR \; e\; f) = e$且$\TAIL \; (\PAIR \; e\; f) = f$. (在Lisp中, $\PAIR$, $\HEAD$和$\TAIL$函数[传统上称为](https://goo.gl/BLRd6S)`cons`, `car`和`cdr`)
+- **列表和字符串**: 存在λ表达式$\NIL$, 对应*空列表*, 我们也用 $\langle \bot \rangle$ 表示. 使用$\PAIR$和$\NIL$, 我们可以构造*列表*. 思路是, 如果$L$是一个$k$元素列表, 形式为$\langle e_1, e_2, \ldots, e_k, \bot \rangle$, 那么对于每个λ表达式$e_0$, 我们可以使用表达式$\PAIR\; e_0 \; L$获得$k+1$元素列表$\langle e_0,e_1, e_2, \ldots, e_k, \bot \rangle$. 例如, 对于任意三个λ表达式$e,f,g$, 以下对应三元素列表$\langle e,f,g,\bot \rangle$:
+
+$$
+\PAIR \; e \; \left(\PAIR\; f \; \left( \PAIR\; g \; \NIL \right) \right) \;.
+$$
+
+λ表达式$\ISEMPTY$在$\NIL$上返回$1$, 在其他任何列表上返回$0$. 字符串就是由比特组成的列表.
+
+- **列表操作**: 增强λ演算还包含*列表处理函数*$\MAP$, $\REDUCE$和$\FILTER$. 给定列表$L= \langle x_0,\ldots,x_{n-1}, \bot \rangle$和函数$f$, $\MAP\; L \; f$将$f$应用于列表的每个成员, 得到新列表$L'= \langle f(x_0),\ldots,f(x_{n-1}), \bot \rangle$. 给定列表$L$和输出为$0$或$1$的表达式$f$, $\FILTER\; L\; f$返回列表$\langle x_i \rangle_{f\; x_i = 1}$, 包含所有$f$输出$1$的$L$的元素. 函数$\REDUCE$对列表应用"组合"操作. 例如, $\REDUCE\; L \; + \; 0$将返回列表$L$中所有元素的和. 更一般地, $\REDUCE$接受列表$L$, 操作$f$(我们视其为接受两个参数)和λ表达式$z$(我们视其为操作$f$的"中性元", 例如加法为$0$, 乘法为 $1$). 输出通过以下方式定义:
+
+$$\REDUCE\;L\;f\;z = \begin{cases}z & L=\NIL \\ f\;(\HEAD\; L) \; (\REDUCE\;(\TAIL\; L)\;f\;z)  & \text{otherwise}\end{cases}\;.$$
+
+关于三个列表操作操作的图示, 请参见{{ref:fig:reducemapfilter}}.
+
+- **递归**: 最后, 我们希望能够执行*递归函数*. 由于在λ演算中函数是匿名的, 我们不能编写形式为$f(x) = blah$ 的定义, 其中$blah$包含对$f$的调用. 相反, 我们使用函数$f$, 它接受一个额外输入$me$作为参数. 运算符$\RECURSE$将接受这样的函数$f$作为输入, 并返回$f$的"递归版本", 其中所有对$me$的调用都替换为对此函数的递归调用. 也就是说, 如果我们有一个函数$F$, 接受两个参数$me$和$x$, 那么$\RECURSE\; F$将是函数$f$, 接受一个参数$x$, 使得对于每个$x$, $f(x) = F(f,x)$.
+
+```admonish question
+{{exec}}{exe:NANDlambdaex}[使用λ演算计算NAND]
+
+证明以下两个表达式$e$和$f$是等价的:
+
+给出一个λ表达式$N$, 使得对于每个$x,y \in {0,1}$, $N\;x\;y = \NAND(x,y)$.
+```
+
+```admonish solution collapsible=true title="对{{ref:exe:NANDlambdaex}}的解答"
+$x,y$的$\NAND$等于$1$, 除非$x=y=1$. 因此
+$$
+N = \lambda x,y.\IF(x,\IF(y,0,1),1)
+$$
+```
+
+```admonish question
+{{exec}}{exe:XORlambdaex}[使用λ演算计算XOR]
+
+给出一个λ表达式$\XOR$, 使得对于每个列表$L=\langle x_0, \ldots, x_{n-1}, \bot \rangle$, 其中$x_i \in {0,1}$对于$i\in [n]$, $\XOR L$等价于$\sum x_i \mod 2$.
+```
+
+```admonish solution collapsible=true title="对{{ref:exe:XORlambdaex}}的解答"
+首先, 我们注意到我们可以计算两个比特的XOR如下:
+$$
+NOT = \lambda a. \IF(a,0,1) {{numeq}}{eq:lambdanot}
+$$
+和
+$$
+XOR_2 = \lambda a,b. \IF(b,\NOT(a),a) {{numeq}}{eq:lambdaxor}
+$$
+(我们在这里使用了一些语法糖来描述函数. 为了获得XOR的λ表达式, 我们只需将{{eqref:eq:lambdanot}}代入{{eqref:eq:lambdaxor}}) 现在我们可以递归地定义列表的XOR如下:
+$$
+\XOR(L) = \begin{cases} 0 & \text{$L$ is empty} \\
+\XOR_2(\HEAD(L),\XOR(\TAIL(L))) & \text{otherwise}
+\end{cases}
+$$
+这意味着$\XOR$等于
+
+$$
+\RECURSE \;  \bigl(\lambda me,L. \IF(\ISEMPTY(L),0,\XOR_2(\HEAD\;L\;\;,\;\;me(\TAIL \; L)))\bigr) \;.
+$$
+
+也就是说, $\XOR$是通过将$\RECURSE$运算符应用于函数而得到的, 该函数在输入$me$, $L$时, 如果$\ISEMPTY(L)$则返回$0$, 否则返回$\XOR_2$应用于$\HEAD(L)$和$me(\TAIL(L))$的结果.
+
+我们也可以使用$\REDUCE$操作计算$\XOR$, 我们将此作为练习留给读者.
+```
+
+```admonish pic id="lambdalistfig"
+![](./images/chapter8/lambdalist.png)
+
+{{pic}}{fig:lambdalist} λ演算中的列表$\langle x_0,x_1,x_2 \rangle$是从尾部向前构造的, 先构建二元组$\langle x_2,\NIL\rangle$, 然后是$\langle x_1, \langle x_2,\NIL\rangle \rangle$, 最后是$\langle x_0,\langle x_1,\langle x_2,\NIL \rangle\rangle\rangle$. 也就是说, 列表是一个二元组, 二元组的第一个元素是列表的第一个元素, 第二个元素是列表的其余部分. 上图展示了这种"对中含对"的构造, 但通常将列表视为"链"更容易理解, 如右图所示, 其中每个对的第二个元素被视为列表其余部分的链接指针或引用.
+```
+
+```admonish pic id="reducemapfilterfig"
+![](./images/chapter8/reducemapfilter.png)
+
+{{pic}}{fig:reducemapfilter} $\MAP$, $\FILTER$和$\REDUCE$操作的图示.
+```
+
 ### 8.6.1 增强λ演算中的函数计算
 
 ### 8.6.2 增强λ演算的图灵完备性
