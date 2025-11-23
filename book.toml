@@ -34,6 +34,7 @@ trust = true
 renderer = ["html"]
 
 [preprocessor.mermaid]
+command = "mdbook-mermaid"
 
 [preprocessor.numthm]
 prefix = true
