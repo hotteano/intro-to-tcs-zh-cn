@@ -47,7 +47,7 @@ jobs:
           cargo install mdbook-mathpunc
           cargo install mdbook-numeq
           cargo install mdbook-toc
-          mdbook-mermaid install path/to/your/book
+          mdbook-mermaid install .
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v4
