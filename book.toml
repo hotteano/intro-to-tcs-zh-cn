@@ -37,21 +37,21 @@ renderer = ["html"]
 
 [preprocessor.numthm]
 prefix = true
-custom_environments = [
-  ["eq", "式", "**"],
-  ["eqc", "式", "**"],
-  ["thmc", "定理", "**"],
-  ["lemc", "引理", "**"],
-  ["algc", "算法", "**"],
-  ["defc", "定义", "**"],
-  ["exec", "练习", "**"],
-  ["proc", "习题", "**"],
-  ["remc", "备注", "**"],
-  ["idec", "重要提示", "**"],
-  ["exac", "样例", "**"],
-  ["pic", "图", "**"],
-  ["wip", "未完成引用", "**"]
-]
+
+[preprocessor.numthm.environments]
+eq = {name = "式", emph = "**"}
+eqc = {name = "式", emph = "**"}
+thmc = {name = "定理", emph = "**"}
+lemc = {name = "引理", emph = "**"}
+algc = {name = "算法", emph = "**"}
+defc = {name = "定义", emph = "**"}
+exec = {name = "练习", emph = "**"}
+proc = {name = "习题", emph = "**"}
+remc = {name = "备注", emph = "**"}
+idec = {name = "重要提示", emph = "**"}
+exac = {name = "样例", emph = "**"}
+pic = {name = "图", emph = "**"}
+wip = {name = "未完成引用", emph = "**"}
 
 [preprocessor.numeq]
 prefix = true
