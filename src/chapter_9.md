@@ -24,7 +24,7 @@
 *——Alan Turing, 1948年*
 ```
 
-我们在布尔电路(或等价的直线程序)研究中取得的最重要成果之一即是*通用性*(universality)这一概念: 存在可运行所有其他电路的单一电路. 然而该结论存在重要限制:运行包含$s$个门电路的电路时, 通用电路所需门电路数量必须大于$s$. 事实证明, 图灵机或NAND-TM程序等均匀计算模型能帮助我们"突破此循环", 并真正实现能运行所有其他机器的*通用图灵机*(universal turing machine)$U$, 其甚至能处理比$U$自身更复杂(如具备更多状态)的机器. (同理, 存在能运行所有NAND-TM程序的*通用NAND-TM程序*(universial NAND-TM program)$U'$, 包括那些比$U'$具有更多代码行的程序)
+我们在布尔电路(或等价的直线程序)研究中取得的最重要成果之一即是*通用性*(universality)这一概念: 存在可运行所有其他电路的单一电路. 然而该结论存在重要限制:运行包含$s$个门电路的电路时, 通用电路所需门电路数量必须大于$s$. 事实证明, 图灵机或NAND-TM程序等均匀计算模型能帮助我们"突破此循环", 并真正实现能运行所有其他机器的*通用图灵机*(universal turing machine)$U$, 其甚至能处理比$U$自身更复杂(如具备更多状态)的机器. (同理, 存在能运行所有NAND-TM程序的*通用NAND-TM程序*(universialNAND-TMprogram)$U'$, 包括那些比$U'$具有更多代码行的程序)
 
 可以毫不夸张地说, 此类通用程序/机器的存在奠定了二十世纪后半叶(并持续至今)的信息技术革命根基. 在此之前的漫长历史中, 人类虽创造了诸如算盘, 计算尺及各类三角级数计算装置等专用计算设备, 但正如图灵(或许是最早洞见通用性的深远影响的思想家)所指出的, 通用计算机具有更强大的潜力. 当我们构建出能计算单一通用函数的设备后, 便获得了通过软件扩展其实现任意计算的能力. 例如要模拟新图灵机$M$时, 无需重新构建实体机器, 只需将$M$表示为字符串(即代码)并输入至通用机器$U$即可. 
 
@@ -199,49 +199,49 @@ def EVAL(δ,x):
 
 ## 9.3 停机问题 {#haltingsec }
 
-{{ref:thm:uncomputable-func}}表明存在*某个*无法计算的函数。但是，这个函数是否等同于"森林中无人听闻其倒下的树"呢? 也就是说，它或许是一个实际上没有人*想要*计算的函数。事实证明，确实存在一些自然的不可计算函数：
+{{ref:thm:uncomputable-func}}表明存在*某个*无法计算的函数. 但是, 这个函数是否等同于"森林中无人听闻其倒下的树"呢? 也就是说, 它或许是一个实际上没有人*想要*计算的函数. 事实证明, 确实存在一些自然的不可计算函数：
 
 ```admonish quote title=""
 {{thmc}}{thm:halt-thm}[停机函数的不可计算性]
 
-令$\HALT:\{0,1\}^* \rightarrow \{0,1\}$为如下函数：对于每个字符串$M\in \{0,1\}^*$，如果图灵机$M$在输入$x$上停机，则$\HALT(M,x)=1$; 否则$\HALT(M,x)=0$。那么$\HALT$是不可计算的。
+令$\HALT:\{0,1\}^* \rightarrow \{0,1\}$为如下函数：对于每个字符串$M\in \{0,1\}^*$, 如果图灵机$M$在输入$x$上停机, 则$\HALT(M,x)=1$; 否则$\HALT(M,x)=0$. 那么$\HALT$是不可计算的. 
 ```
 
-在着手证明{{ref:thm:halt-thm}}之前，我们注意到$\HALT$是一个非常自然, 人们会想要计算的函数。例如，可以将$\HALT$视为管理"应用商店"任务的一个特例。也就是说，给定某个应用程序的代码，商店的守门员需要决定此代码是否足够安全以允许进入商店。至少，我们似乎应该验证该代码不会进入无限循环。
+在着手证明{{ref:thm:halt-thm}}之前, 我们注意到$\HALT$是一个非常自然, 人们会想要计算的函数. 例如, 可以将$\HALT$视为管理"应用商店"任务的一个特例. 也就是说, 给定某个应用程序的代码, 商店的守门员需要决定此代码是否足够安全以允许进入商店. 至少, 我们似乎应该验证该代码不会进入无限循环. 
 
 ```admonish proof collapsible=true title="{{ref:thm:halt-thm}}的证明思路"
 理解此证明的一种方式如下：
 $$
 \text{$F^*$的不可计算性} \;+\; \text{通用性} \;=\; \text{$\HALT$的不可计算性}
 $$
-也就是说，我们将使用计算$\EVAL$的通用图灵机，从{{ref:thm:uncomputable-func}}所证明的$F^*$的不可计算性，推导出$\HALT$的不可计算性。具体来说，我们将采用反证法进行证明。即，我们将为了引出矛盾而假设$\HALT$是可计算的，然后利用该假设，连同{{ref:thm:universaltmthm}}中的通用图灵机，推导出$F^*$是可计算的，这将与{{ref:thm:uncomputable-func}}相矛盾。
+也就是说, 我们将使用计算$\EVAL$的通用图灵机, 从{{ref:thm:uncomputable-func}}所证明的$F^*$的不可计算性, 推导出$\HALT$的不可计算性. 具体来说, 我们将采用反证法进行证明. 即, 我们将为了引出矛盾而假设$\HALT$是可计算的, 然后利用该假设, 连同{{ref:thm:universaltmthm}}中的通用图灵机, 推导出$F^*$是可计算的, 这将与{{ref:thm:uncomputable-func}}相矛盾. 
 ```
 
 ```admonish bigidea
 {{idec}}{ide:reductionuncomputeidea}
 
-如果一个函数$F$是不可计算的，我们可以通过给出一种将计算$F$的任务*归约*到计算$H$的方法，来证明另一个函数$H$也是不可计算的。
+如果一个函数$F$是不可计算的, 我们可以通过给出一种将计算$F$的任务*归约*到计算$H$的方法, 来证明另一个函数$H$也是不可计算的. 
 ```
 
 ```admonish proof collapsible=true title="{{ref:thm:halt-thm}}的证明"
-该证明将使用先前已建立的结果{{ref:thm:uncomputable-func}}。回顾{{ref:thm:uncomputable-func}}表明以下函数$F^*: \{0,1\}^* \rightarrow \{0,1\}$是不可计算的：
+该证明将使用先前已建立的结果{{ref:thm:uncomputable-func}}. 回顾{{ref:thm:uncomputable-func}}表明以下函数$F^*: \{0,1\}^* \rightarrow \{0,1\}$是不可计算的：
 
 $$
 F^*(x) = \begin{cases}0 & x(x)=1 \\ 1 & \text{其他情况} \end{cases}
 $$
-其中$x(x)$表示由字符串$x$描述的图灵机在输入$x$上的输出（按照通常约定，如果此计算不停机，则$x(x)=\bot$）。
+其中$x(x)$表示由字符串$x$描述的图灵机在输入$x$上的输出(按照通常约定, 如果此计算不停机, 则$x(x)=\bot$). 
 
-我们将证明$F^*$的不可计算性意味着$\HALT$的不可计算性。具体来说，我们将为了引出矛盾而假设存在一个能够计算$\HALT$函数的图灵机$M$，并利用它来得到一个计算函数$F^*$的图灵机$M'$。（这被称为_归约_证明，因为我们将计算$F^*$的任务归约到了计算$\HALT$的任务。根据逆否命题，这意味着$F^*$的不可计算性蕴含着$\HALT$的不可计算性。）
+我们将证明$F^*$的不可计算性意味着$\HALT$的不可计算性. 具体来说, 我们将为了引出矛盾而假设存在一个能够计算$\HALT$函数的图灵机$M$, 并利用它来得到一个计算函数$F^*$的图灵机$M'$. (这被称为_归约_证明, 因为我们将计算$F^*$的任务归约到了计算$\HALT$的任务. 根据逆否命题, 这意味着$F^*$的不可计算性蕴含着$\HALT$的不可计算性)
 
-确实，假设$M$是一个计算$\HALT$的图灵机。{{ref:alg:halttof}}描述了一个计算$F^*$的图灵机$M'$。（我们使用图灵机的"高层次"描述，援引"鱼与熊掌兼得"范式，见[核心思想10](./chapter_8.md#ide:eatandhavecake)。）
+确实, 假设$M$是一个计算$\HALT$的图灵机. {{ref:alg:halttof}}描述了一个计算$F^*$的图灵机$M'$. (我们使用图灵机的"高层次"描述, 援引"鱼与熊掌兼得"范式, 见[核心思想10](./chapter_8.md#ide:eatandhavecake))
 
-我们断言{{ref:alg:halttof}}计算了函数$F^*$。确实，假设$x(x)=1$（因此$F^*(x)=0$）。在这种情况下，$\HALT(x,x)=1$，因此在我们假设$M(x,x)=\HALT(x,x)$的条件下，值$z$将等于$1$，因此{{ref:alg:halttof}}将设定$y=x(x)=1$，并输出正确的值$0$。
+我们断言{{ref:alg:halttof}}计算了函数$F^*$. 确实, 假设$x(x)=1$(因此$F^*(x)=0$). 在这种情况下, $\HALT(x,x)=1$, 因此在我们假设$M(x,x)=\HALT(x,x)$的条件下, 值$z$将等于$1$, 因此{{ref:alg:halttof}}将设定$y=x(x)=1$, 并输出正确的值$0$. 
 
-假设否则$x(x) \neq 1$（因此$F^*(x)=1$）。在这种情况下，有两种可能性：
-* **情况1：**: 由$x$描述的机器在输入$x$上不停机（因此$F^*(x)=1$）。在这种情况下，$\HALT(x,x)=0$。由于我们假设$M$计算$\HALT$，这意味着在输入$x,x$上，机器$M$必须停机并输出值$0$。这意味着{{ref:alg:halttof}}将设定$z=0$并输出$1$。
-* **情况2：**: 由$x$描述的机器在输入$x$上停机并输出某个$y' \neq 1$（因此$F^*(x)=0$）。在这种情况下，由于$\HALT(x,x)=1$，根据我们的假设，{{ref:alg:halttof}}将设定$y=y' \neq 1$，从而输出$1$。
+假设否则$x(x) \neq 1$(因此$F^*(x)=1$). 在这种情况下, 有两种可能性：
+* **情况1：**: 由$x$描述的机器在输入$x$上不停机(因此$F^*(x)=1$). 在这种情况下, $\HALT(x,x)=0$. 由于我们假设$M$计算$\HALT$, 这意味着在输入$x,x$上, 机器$M$必须停机并输出值$0$. 这意味着{{ref:alg:halttof}}将设定$z=0$并输出$1$. 
+* **情况2：**: 由$x$描述的机器在输入$x$上停机并输出某个$y' \neq 1$(因此$F^*(x)=0$). 在这种情况下, 由于$\HALT(x,x)=1$, 根据我们的假设, {{ref:alg:halttof}}将设定$y=y' \neq 1$, 从而输出$1$. 
 
-我们看到在所有情况下，$M'(x)=F^*(x)$，这与$F^*$不可计算的事实相矛盾。因此，我们对我们最初关于$M$计算$\HALT$的假设得出了矛盾。
+我们看到在所有情况下, $M'(x)=F^*(x)$, 这与$F^*$不可计算的事实相矛盾. 因此, 我们对我们最初关于$M$计算$\HALT$的假设得出了矛盾. 
 ```
 
 ```admonish quote title=""
@@ -265,7 +265,7 @@ $$
 ```
 
 ```admonish pause title="暂停一下"
-这又是一个值得多次阅读的证明。停机问题的不可计算性是计算机科学的基本定理之一，并且是我们后续将看到的许多研究的起点。更好地理解{{ref:thm:halt-thm}}的一个极好方法是仔细阅读[9.3.2节](#haltalternativesec)，该节给出了同一结果的另一种证明。
+这又是一个值得多次阅读的证明. 停机问题的不可计算性是计算机科学的基本定理之一, 并且是我们后续将看到的许多研究的起点. 更好地理解{{ref:thm:halt-thm}}的一个极好方法是仔细阅读[9.3.2节](#haltalternativesec), 该节给出了同一结果的另一种证明. 
 ```
 
 ### 9.3.1 停机问题真的困难吗? (讨论)
@@ -339,7 +339,7 @@ C. Strachey
 ```python
 def CantSolveMe(T):
     """
-    接受一个声称能解决停机问题的函数T。
+    接受一个声称能解决停机问题的函数T. 
     返回一个由代码和输入组成的二元组(P,x)使
     T(P,x) ≠ HALT(x)
     """
@@ -355,7 +355,7 @@ def CantSolveMe(T):
 
 ```python
 def T(f,x):
-    """粗略的停机测试器——如果程序含包含循环，则判定其不停机"""
+    """粗略的停机测试器——如果程序含包含循环, 则判定其不停机"""
     import inspect
     source = inspect.getsource(f)
     if source.find("while"): return False
@@ -549,7 +549,7 @@ int Second(int n) {
 ```admonish quote title=""
 {{defc}}{def:semanticpropdef}[语义性质]
 
-如果对于每个$x\in \{0,1\}^*$, 都有$M(x)=M'(x)$, 则称一对图灵机$M$和$M'$是*功能等价的*(functionally equivalent). (特别地, 对于所有$x$,$M(x)=\bot$当且仅当$M'(x)=\bot$. )
+如果对于每个$x\in \{0,1\}^*$, 都有$M(x)=M'(x)$, 则称一对图灵机$M$和$M'$是*功能等价的*(functionally equivalent). (特别地, 对于所有$x$,$M(x)=\bot$当且仅当$M'(x)=\bot$)
 
 一个函数$F:\{0,1\}^* \rightarrow \{0,1\}$是*语义的*, 如果对于每一对表示功能等价图灵机的字符串$M,M'$, 都有$F(M)=F(M')$. (回想一下, 我们假设每个字符串都表示*某个*图灵机, 参见{{ref:rem:TMrepremark}})
 ```
@@ -599,7 +599,7 @@ int Second(int n) {
     - 构造以下机器$M$: "对于输入$z\in \{0,1\}^*$, 执行: **(a)** 运行$N(0)$, **(b)** 返回$\text{PAR}(z)$". 
     - 返回$1-A(M)$. 
 
-为了完成证明, 我们需要证明, 在我们假设$A$计算$\text{MONOTONE}$的前提下,$B$输出了正确答案. 换句话说, 我们需要证明$\text{HALTONZERO}(N)=1-\text{MONOTONE}(M)$. 假设$N$在输入 0 上*不*停机. 在这种情况下, 算法$B$构造的程序$M$在步骤 **(a)** 进入无限循环, 并且永远不会到达步骤 **(b)**. 因此, 在这种情况下,$N$功能等价于$\text{INF}$. (机器$N$与$\text{INF}$不是同一个机器: 它的描述或*代码*不同. 但它的输入/输出行为(在这种情况下)确实相同, 即在任何输入上都不停机. 另外, 虽然程序$M$将在每个输入上进入无限循环, 但算法$B$从未实际运行$M$: 它只生成其代码并将其提供给$A$. 因此, 即使在这种情况下, 算法$B$也*不会*进入无限循环. )所以在这种情况下,$\text{MONOTONE}(M)=\text{MONOTONE}(\text{INF})=1$. 
+为了完成证明, 我们需要证明, 在我们假设$A$计算$\text{MONOTONE}$的前提下,$B$输出了正确答案. 换句话说, 我们需要证明$\text{HALTONZERO}(N)=1-\text{MONOTONE}(M)$. 假设$N$在输入 0 上*不*停机. 在这种情况下, 算法$B$构造的程序$M$在步骤 **(a)** 进入无限循环, 并且永远不会到达步骤 **(b)**. 因此, 在这种情况下,$N$功能等价于$\text{INF}$. (机器$N$与$\text{INF}$不是同一个机器: 它的描述或*代码*不同. 但它的输入/输出行为(在这种情况下)确实相同, 即在任何输入上都不停机. 另外, 虽然程序$M$将在每个输入上进入无限循环, 但算法$B$从未实际运行$M$: 它只生成其代码并将其提供给$A$. 因此, 即使在这种情况下, 算法$B$也*不会*进入无限循环)所以在这种情况下,$\text{MONOTONE}(M)=\text{MONOTONE}(\text{INF})=1$. 
 
 如果$N$在输入0上*确实*停机, 那么$M$中的步骤**(a)** 最终将结束, 并且$M$的输出将由步骤**(b)** 决定, 即它简单地输出其输入的奇偶性. 因此, 在这种情况下,$M$计算的是非单调的奇偶性函数(即功能等价于$\text{PAR}$), 所以我们得到$\text{MONOTONE}(M)=\text{MONOTONE}(\text{PAR})=0$. 在这两种情况下, $\text{MONOTONE}(M)=1-HALTONZERO(N)$, 这正是我们想要证明的. 
 
@@ -611,7 +611,7 @@ int Second(int n) {
 
 Rice定理非常强大, 并且是证明不可计算性的一种流行方法, 以至于人们有时会感到困惑, 认为它是证明不可计算性的*唯一*方法. 特别地, 一个常见的误解是, 如果一个函数$F$*不*是语义的, 那么它就是*可计算的*. 这完全不是事实. 
 
-例如, 考虑以下函数$\text{HALTNOYALE}:\{0,1\}^* \rightarrow \{0,1\}$. 这个函数在输入一个表示 NAND-TM 程序$P$的字符串时, 输出$1$当且仅当 **(i)**$P$在输入$0$上停机, 并且 **(ii)** 程序$P$不包含标识符为`Yale`的变量. 函数$\text{HALTNOYALE}$显然不是语义的, 因为当输入以下两个功能等价程序之一时, 它将输出两个不同的值: 
+例如, 考虑以下函数$\text{HALTNOYALE}:\{0,1\}^* \rightarrow \{0,1\}$. 这个函数在输入一个表示NAND-TM程序$P$的字符串时, 输出$1$当且仅当 **(i)**$P$在输入$0$上停机, 并且 **(ii)** 程序$P$不包含标识符为`Yale`的变量. 函数$\text{HALTNOYALE}$显然不是语义的, 因为当输入以下两个功能等价程序之一时, 它将输出两个不同的值: 
 
 ~~~python
 Yale[0] = NAND(X[0],X[0])
@@ -632,7 +632,7 @@ Y[0] = NAND(X[0],Harvard[0])
 
 ### 9.5.2 其他图灵完备模型的停机问题与Rice定理
 
-正如我们之前所见, 许多自然计算模型被证明是彼此*等价*的, 因为我们可以将一个模型的"程序"(例如$\lambda$表达式, 或生命游戏的格局)转换成另一个模型(例如NAND-TM程序). 这种等价性意味着, 我们可以将 NAND-TM 程序的停机问题的不可计算性转化为其他模型中停机问题的不可计算性. 例如: 
+正如我们之前所见, 许多自然计算模型被证明是彼此*等价*的, 因为我们可以将一个模型的"程序"(例如$\lambda$表达式, 或生命游戏的格局)转换成另一个模型(例如NAND-TM程序). 这种等价性意味着, 我们可以将NAND-TM程序的停机问题的不可计算性转化为其他模型中停机问题的不可计算性. 例如: 
 
 ```admonish quote title=""
 {{thmc}}{thm:halt-tm}[NAND-TM机器停机问题]
@@ -650,15 +650,15 @@ Y[0] = NAND(X[0],Harvard[0])
 从[定理7.11]()的证明中获得的变换$M \mapsto P_M$是*构造性的*(constructive). 也就是说, 该证明提供了一种*计算*映射$M \mapsto P_M$的方法. 这意味着该证明产生了一个从计算$HALT$的任务到计算$\text{NANDTMHALT}$的任务的*归约*, 由于$HALT$是不可计算的, 所以$\text{NANDTMHALT}$也是不可计算的. 
 ```
 
-同样的证明也适用于其他计算模型, 如*$\lambda$演算*、*二维*(甚至一维)*自动机*等. 因此, 例如, 没有算法可以判定一个$\lambda$表达式是否计算恒等函数, 也没有算法可以判定生命游戏的初始格局最终是否会将单元格$(0,0)$染成黑色. 
+同样的证明也适用于其他计算模型, 如*$\lambda$演算*, *二维*(甚至一维)*自动机*等. 因此, 例如, 没有算法可以判定一个$\lambda$表达式是否计算恒等函数, 也没有算法可以判定生命游戏的初始格局最终是否会将单元格$(0,0)$染成黑色. 
 
-事实上, 我们可以将Rice定理推广到所有这些模型. 例如, 如果$F:\{0,1\}^* \rightarrow \{0,1\}$是一个非平凡函数, 使得对于每对功能等价的NAND-TM程序$P,P'$都有$F(P)=F(P')$, 那么$F$是不可计算的, 这对于NAND-RAM程序、$\lambda$表达式以及所有其他图灵完备模型(如[定义8.5](./chapter_8.md#def:turingcompletedef)所定义)同样成立, 另见{{ref:pro:ricegeneralex}}. 
+事实上, 我们可以将Rice定理推广到所有这些模型. 例如, 如果$F:\{0,1\}^* \rightarrow \{0,1\}$是一个非平凡函数, 使得对于每对功能等价的NAND-TM程序$P,P'$都有$F(P)=F(P')$, 那么$F$是不可计算的, 这对于NAND-RAM程序, $\lambda$表达式以及所有其他图灵完备模型(如[定义8.5](./chapter_8.md#def:turingcompletedef)所定义)同样成立, 另见{{ref:pro:ricegeneralex}}. 
 
 ### 9.5.3 软件验证被摧毁了吗? (讨论)
 
-程序正越来越多地用于关键任务, 无论是运行我们的银行系统、驾驶飞机还是监控核反应堆. 如果我们甚至无法提供一个认证算法来证明一个程序正确计算了奇偶校验函数, 那么我们怎么能确信一个程序做了它应该做的事情呢？关键见解是, 虽然不可能认证一个*通用*程序符合规约, 但可以在最初编写程序时采用一种使其更容易认证的方式. 举个简单的例子, 如果你编写一个没有循环的程序, 那么你可以证明它会停机. 此外, 虽然可能无法认证一个*任意*程序计算了奇偶校验函数, 但完全可以编写一个特定的程序$P$, 我们可以从数学上*证明*$P$计算了奇偶校验. 事实上, 编写程序或算法并提供其正确性证明, 正是我们在算法研究中一直在做的事情. 
+程序正越来越多地用于关键任务, 无论是运行我们的银行系统, 驾驶飞机还是监控核反应堆. 如果我们甚至无法提供一个认证算法来证明一个程序正确计算了奇偶校验函数, 那么我们怎么能确信一个程序做了它应该做的事情呢？关键见解是, 虽然不可能认证一个*通用*程序符合规约, 但可以在最初编写程序时采用一种使其更容易认证的方式. 举个简单的例子, 如果你编写一个没有循环的程序, 那么你可以证明它会停机. 此外, 虽然可能无法认证一个*任意*程序计算了奇偶校验函数, 但完全可以编写一个特定的程序$P$, 我们可以从数学上*证明*$P$计算了奇偶校验. 事实上, 编写程序或算法并提供其正确性证明, 正是我们在算法研究中一直在做的事情. 
 
-*软件验证*(software verification)领域关注的是验证给定程序是否满足某些条件. 这些条件可以是程序计算了某个函数、永远不会写入危险的内存位置、遵守某些不变量等等. 虽然验证这些任务的一般性问题可能是不可计算的, 但研究人员已经成功地对许多有趣的案例进行了验证, 特别是如果程序最初就是用一种使验证更容易的形式化方法或编程语言编写的. 尽管如此, 验证, 尤其是大型复杂程序的验证, 在实践中仍然是一项极具挑战性的任务, 并且已被形式化证明正确的程序数量仍然很少. 此外, 即使是提出要证明的正确定理(即规约)本身, 也常常是一项非常重要的任务. 
+*软件验证*(software verification)领域关注的是验证给定程序是否满足某些条件. 这些条件可以是程序计算了某个函数, 永远不会写入危险的内存位置, 遵守某些不变量等等. 虽然验证这些任务的一般性问题可能是不可计算的, 但研究人员已经成功地对许多有趣的案例进行了验证, 特别是如果程序最初就是用一种使验证更容易的形式化方法或编程语言编写的. 尽管如此, 验证, 尤其是大型复杂程序的验证, 在实践中仍然是一项极具挑战性的任务, 并且已被形式化证明正确的程序数量仍然很少. 此外, 即使是提出要证明的正确定理(即规约)本身, 也常常是一项非常重要的任务. 
 
 ```admonish pic id="inclusionuncomputablefig"
 ![inclusionuncomputablefig](./images/chapter9/inclusion_noncomputable.png)
@@ -675,4 +675,126 @@ Y[0] = NAND(X[0],Harvard[0])
 
 ## 9.6 习题
 
+```admonish question title=""
+{{proc}}{pro:NANDRAMHalt}[NAND-RAM停机问题]
+
+设函数$\text{NANDRAMHALT}:\{0,1\}^* \rightarrow \{0,1\}$满足: 对于输入$(P, x)$, 其中$P$表示一个NAND-RAM程序, $\text{NANDRAMHALT}(P,x)=1$当且仅当程序$P$在输入$x$上停机. 证明$\text{NANDRAMHALT}$是不可计算的. 
+```
+
+```admonish question title=""
+{{proc}}{pro:timedhalt}[时限停机问题]
+
+设函数$\text{TIMEDHALT}:\{0,1\}^* \rightarrow \{0,1\}$满足: 对于输入(表示三元组$(M, x, T)$的)字符串, $\text{TIMEDHALT}(M,x,T)=1$当且仅当图灵机$M$在输入$x$上至多在$T$步内停机(其中一步定义为从纸带读取符号, 更新状态, 写入新符号以及(可能)移动读写头的一个完整操作序列). 证明$\text{TIMEDHALT}$是*可计算的*. 
+```
+
+```admonish question title=""
+{{proc}}{pro:spacehalting}[空间停机问题(挑战)]
+
+设函数$\text{SPACEHALT}:\{0,1\}^* \rightarrow \{0,1\}$满足: 对于输入(表示三元组$(M, x, T)$的)字符串, $\text{SPACEHALT}(M,x,T)=1$当且仅当图灵机$M$在输入$x$上, 在其读写头到达其纸带的第$T$个位置*之前*停机. (我们不关心$M$执行了多少步, 只要读写头始终保持在位置$\{0,\ldots,T-1\}$内即可)证明$\text{SPACEHALT}$是*可计算的*. 提示见脚注{{footnote: 一台字母表为$\Sigma$的机器, 其纸带前$T$个位置的内容最多有$|\Sigma|^T$种可能. 如果机器重复了之前出现过的配置(即纸带内容, 读写头位置和当前状态都与之前某个执行状态完全相同), 会发生什么? }}
+```
+
+```admonish question title=""
+{{proc}}{pro:necessarilyuncomputableex}[可计算函数的组合]
+
+假设$F:\{0,1\}^* \rightarrow \{0,1\}$和$G:\{0,1\}^* \rightarrow \{0,1\}$是可计算函数. 对于下列每个函数$H$, 要么证明$H$*必定是可计算的*, 要么给出一对可计算函数$F$和$G$使得$H$不可计算. 证明你的论断. 
+
+1. $H(x)=1$当且仅当$F(x)=1$**或**$G(x)=1$. 
+2. $H(x)=1$当且仅当存在两个非空字符串$u,v \in \{0,1\}^*$使得$x=uv$(即$x$是$u$和$v$的连接), 并且$F(u)=1$且$G(v)=1$. 
+3. $H(x)=1$当且仅当存在一个非空字符串的列表$u_0,\ldots,u_{t-1}$, 使得对每个$i\in [t]$都有$F(u_i)=1$且$x=u_0u_1\cdots u_{t-1}$. 
+4. $H(x)=1$当且仅当$x$是NAND++程序$P$的一个有效字符串表示, 并且满足对于每个$z\in \{0,1\}^*$, 程序$P$在输入$z$上的输出都是$F(z)$. 
+5. $H(x)=1$当且仅当$x$是NAND++程序$P$的一个有效字符串表示, 并且程序$P$在输入$x$上输出$F(x)$. 
+6. $H(x)=1$当且仅当$x$是NAND++程序$P$的一个有效字符串表示, 并且程序$P$在输入$x$上执行至多$100\cdot |x|^2$行后输出$F(x)$. 
+```
+
+```admonish question title=""
+{{proc}}{pro:finiteuncompex}
+
+证明下列函数$\text{FINITE}:\{0,1\}^* \rightarrow \{0,1\}$是不可计算的. 对于输入$P\in \{0,1\}^*$, 我们定义$\text{FINITE}(P)=1$当且仅当$P$是一个表示NAND++程序的字符串, 并且只有有限个输入$x\in \{0,1\}^*$满足$P(x)=1$. {{footnote: 提示: 你可以使用Rice定理. }}
+```
+
+```admonish question title=""
+{{proc}}{pro:paritythmex}[计算奇偶性]
+
+不使用Rice定理证明{{ref:thm:parity-thm}}. 
+```
+
+```admonish question title=""
+{{proc}}{pro:TMequivex}[图灵机等价性]
+
+定义函数$\text{EQ}:\{0,1\}^* :\rightarrow \{0,1\}$如下: 给定一个表示图灵机对$(M,M')$的字符串, $\text{EQ}(M,M')=1$当且仅当$M$和$M'$根据{{ref:def:semanticpropdef}}是功能等价的. 证明$\text{EQ}$是不可计算的. 
+
+注意, 你*不能*直接使用Rice定理, 因为该定理只处理以单个图灵机作为输入的函数, 而$\text{EQ}$接收两个机器作为输入. 
+```
+
+```admonish question title=""
+{{proc}}{pro:salil-ex}
+
+对于以下两个函数, 分别说明它们是否可计算: 
+1.  给定一个NAND-TM程序$P$, 一个输入$x$和一个数$k$, 当我们运行$P$于$x$时, 索引变量`i`是否曾达到$k$? 
+2.  给定一个NAND-TM程序$P$, 一个输入$x$和一个数$k$, 当我们运行$P$于$x$时, $P$是否曾对数组索引$k$的位置进行写操作? 
+```
+
+```admonish question title=""
+{{proc}}{pro:ricetmnandram}
+
+设$F:\{0,1\}^* \rightarrow \{0,1\}$为如下定义的函数. 对于输入一个表示NAND-RAM程序的字符串$P$和一个表示图灵机的字符串$M$, $F(P,M)=1$当且仅当存在某个输入$x$使得$P$在$x$上停机而$M$在$x$上不停机. 证明$F$是不可计算的. 提示见脚注. {{footnote: *提示:* 虽然不能直接应用, 但稍作"调整"后, 你可以使用Rice定理来证明这一点. }}
+```
+
+```admonish question title=""
+{{proc}}{pro:recursiveenumerableex}[递归可枚举性]
+
+定义一个函数$F:\{0,1\}^* :\rightarrow \{0,1\}$是*递归可枚举的*, 如果存在一台图灵机$M$满足: 对于每个$x\in \{0,1\}^*$, 如果$F(x)=1$则$M(x)=1$；如果$F(x)=0$则$M(x)=\bot$. (即, 如果$F(x)=0$则$M$在$x$上不停机)
+
+1.  证明每个可计算的$F$也是递归可枚举的. 
+2.  证明存在一个函数$F$, 它不是可计算的, 但是递归可枚举的. 提示见脚注. {{footnote:$\HALT$具有此性质. }}
+3.  证明存在一个函数$F:\{0,1\}^* \rightarrow \{0,1\}$, 它不是递归可枚举的. 提示见脚注. {{footnote: 你可以使用对角化方法直接证明, 或者证明所有递归可枚举函数的集合是*可数的*. }}
+4.  证明存在一个函数$F:\{0,1\}^* \rightarrow \{0,1\}$, 它是递归可枚举的, 但由$\overline{F}(x)=1-F(x)$定义的函数$\overline{F}$*不是*递归可枚举的. 提示见脚注. {{footnote: $\HALT$具有此性质: 证明如果$\HALT$和$\overline{\HALT}$都是递归可枚举的, 那么$\HALT$实际上将是可计算的. }}
+```
+
+```admonish question title=""
+{{proc}}{pro:ricestandardex}[Rice定理: 标准形式]
+
+在本练习中, 我们将证明文献中通常形式的Rice定理. 
+
+对于一台图灵机$M$, 定义$L(M) \subseteq \{0,1\}^*$为所有满足$M$在输入$x$上停机并输出$1$的$x\in \{0,1\}^*$的集合. (集合$L(M)$在文献中称为*由$M$识别的语言*. 注意, 对于不在$L(M)$中的输入$x$, $M$可能输出非$1$的值或者根本不停机)
+
+1.  证明对于每台图灵机$M$, 如果我们定义函数$F_M:\{0,1\}^* \rightarrow \{0,1\}$满足$F_M(x)=1$当且仅当$x\in L(M)$, 那么$F_M$是如{{ref:pro:recursiveenumerableex}}所定义的*递归可枚举*函数. 
+2.  使用{{ref:thm:rice-thm}}证明, 对于每个函数$G:\{0,1\}^* \rightarrow \{0,1\}$, 如果 **(a)** $G$既不是恒等于$0$也不是恒等于$1$的函数, 并且 **(b)** 对于每对满足$L(M)=L(M')$的$M, M'$都有$G(M)=G(M')$, 那么$G$是不可计算的. 提示见脚注. {{footnote: 证明任何满足 **(b)** 的$G$都必须是语义的. }}
+```
+
+```admonish question title=""
+{{proc}}{pro:ricegeneralex}[适用于通用图灵等价模型的Rice定理(可选)]
+
+设$\mathcal{F}$为所有从$\{0,1\}^*$到$\{0,1\}$的部分函数的集合, $\mathcal{M}:\{0,1\}^* \rightarrow \mathcal{F}$是[定义8.5](./chapter_8.md#def:turingcompletedef)中定义的图灵等价模型. 我们称一个函数$F:\{0,1\}^* \rightarrow \{0,1\}$是*$\mathcal{M}$-语义的*, 如果存在某个$\mathcal{G}:\mathcal{F} \rightarrow \{0,1\}$使得对于每个$P\in \{0,1\}^*$都有$F(P) = \mathcal{G}(\mathcal{M}(P))$. 
+
+证明对于每个既非常数$1$也非常数$0$的$\mathcal{M}$-语义函数$F:\{0,1\}^* \rightarrow \{0,1\}$, $F$是不可计算的. 
+```
+
+```admonish question title=""
+{{proc}}{pro:beaverex}[忙碌海狸]
+
+本题中我们定义忙碌海狸函数的NAND-TM变体(参见Aaronson于[1999年的论文](https://www.scottaaronson.com/writings/bignumbers.html), [2017年的博客文章](https://www.scottaaronson.com/blog/?p=3445)和2020年的综述([Aaronson, 2020](https://scholar.google.com/scholar?hl=en&q=Aaronson+The+Busy+Beaver+Frontier)); 另见Tao关于文明科学进步如何通过我们能理解的量来衡量的[演讲](https://terrytao.wordpress.com/2020/10/10/climbing-the-cosmic-distance-ladder-book-announcement/)). 
+
+1. 定义$T_{BB}:\{0,1\}^* \rightarrow \mathbb{N}$如下: 对于每个字符串$P\in \{0,1\}^*$, 如果$P$表示一个NAND-TM程序, 并且当$P$在输入$0$上执行时在$M$步内停机, 则$T_{BB}(P)=M$. 否则(如果$P$不代表一个NAND-TM程序, 或者它是一个在$0$上不停机的程序), $T_{BB}(P)=0$. 证明$T_{BB}$是不可计算的. 
+2. 令$TOWER(n)$表示数$\underbrace{2^{\cdot^{\cdot^{\cdot^2}}}}_{n\text{ 次}}$(即高度为$n$的“二的幂塔”). 为了体会这个函数增长有多快, $TOWER(1)=2$, $TOWER(2)=2^2=4$, $TOWER(3)=2^{2^2}=16$, $TOWER(4) = 2^{16} = 65536$, 而$TOWER(5) = 2^{65536}$大约是$10^{20000}$. $TOWER(6)$已经是一个即使用科学记数法也难以书写的巨大数字. 定义$NBB:\mathbb{N} \rightarrow \mathbb{N}$(代表"NAND-TM Busy Beaver")为函数$NBB(n) = \max_{P\in \{0,1\}^n} T_{BB}(P)$, 其中$T_{BB}$如问题6.1所定义. 证明$NBB$的增长速度*快于*$TOWER$, 即$TOWER(n) = o(NBB(n))$. 提示见脚注{{footnote: 在本练习中, 你不需要使用$TOWER$函数非常具体的性质. 例如, $NBB(n)$的增长也快于[Ackerman函数](https://en.wikipedia.org/wiki/Ackermann_function). }}
+```
+
 ## 5.9 参考书目 {#uncomputablebibnotes }
+
+{{ref:fig:universalchapoverview}}中关于停机问题的漫画取自[Charles Cooper的网站](https://www.coopertoons.com/education/haltingproblem/haltingproblem.html), 版权归2019年Charles F. Cooper所有. 
+
+([Moore与Mertens, 2011年](https://scholar.google.com/scholar?hl=en&q=Moore,+Mertens+The+nature+of+computation))第7.2节对不可计算性作了高度推荐的概述. 《Gödel, Escher, Bach》([Hofstadter, 1999年](https://scholar.google.com/scholar?hl=en&q=Hofstadter+Go%CC%88del,+Escher,+Bach+:+an+eternal+golden+braid))是一本经典科普著作, 涉及不可计算性, 不可证明性, 特别是我们将在[第11章](./chapter_11.md)看到的哥德尔定理. 亦可参考Holt的新书([Holt, 2018年](https://scholar.google.com/scholar?hl=en&q=Holt+When+Einstein+walked+with+Go%CC%88del+:+excursions+to+the+edge+of+thought)). 
+
+函数定义的历史与数学作为一个领域的发展交织在一起. 多年以来, 函数被(依照上述Euler的表述)视为从输入计算输出的方法. 19世纪, 随着Fourier级数的发明以及对连续性和可微性的系统研究, 人们开始关注更一般的函数类型, 但将函数定义为任意映射的现代定义尚未被普遍接受. 例如, Poincare在1899年写道：*"我们见到大量奇异的函数, 它们似乎被迫尽可能不像那些有实际用途的正当函数...这些函数被特意构造出来, 只为证明我们先辈的推理存在缺陷, 除此之外我们从中得不到任何东西"*部分精彩的历史论述可参阅([Grabiner, 1983](https://scholar.google.com/scholar?hl=en&q=Grabiner+Who+gave+you+the+epsilon?+Cauchy+and+the+origins+of+rigorous+calculus))([Kleiner, 1991](https://scholar.google.com/scholar?hl=en&q=Kleiner+Rigor+and+Proof+in+Mathematics:+A+Historical+Perspective))([Lützen, 2002](https://scholar.google.com/scholar?hl=en&q=L%C3%BCtzen+Between+Rigor+and+Applications:+Developments+in+the+Concept+of+Function+in+Mathematical+Analysis))([Grabiner, 2005](https://scholar.google.com/scholar?hl=en&q=Grabiner+The+origins+of+Cauchy%27s+rigorous+calculus)). 
+
+通用图灵机的存在以及$\HALT$的不可计算性最早由Turing在其开创性论文([Turing, 1937](https://scholar.google.com/scholar?hl=en&q=Turing+On+computable+numbers,+with+an+application+to+the+Entscheidungsproblem))中证明, 但Church在前一年已证明了密切相关的结论. 这些工作建立在Gödel1931年的*不完备性定理*基础上, 我们将在[第11章](./chapter_11.md)讨论该定理. 
+
+([Rogozhin, 1996](https://scholar.google.com/scholar?hl=en&q=Rogozhin+Small+universal+Turing+machines))给出了一些字母表和状态数较小的通用图灵机, 包括采用二进制字母表且状态数少于$25$的单带通用图灵机；亦可参阅综述(Woods与Neary, 2009). Adam Yedidia开发了辅助生成较少状态灵机的[软件](https://github.com/adamyedidia/parsimony). 这与["代码高尔夫"](https://codegolf.stackexchange.com/)这种娱乐活动相关, 旨在用尽可能短的程序解决特定计算任务. 寻找"高度复杂"的小型图灵机也与"忙碌海狸"问题有关, 参见{{ref:pro:beaverex}}及综述(A[aronson, 2020](https://scholar.google.com/scholar?hl=en&q=Aaronson+The+Busy+Beaver+Frontier)). 
+
+用于证明$F^*$不可计算性的对角线论证法源于[第2章](./chapter_2.md)讨论的康托尔关于实数不可数的论证. 
+
+Christopher Strachey是英国计算机科学家, CPL编程语言的发明者. 他也是早期人工智能领域的先驱, 在1950年代初期就编程使计算机能下跳棋甚至写情书, 详见[《纽约客》文章](https://www.newyorker.com/tech/elements/christopher-stracheys-nineteen-fifties-love-machine)与此[网站](http://www.alpha60.de/art/love_letters/). 
+
+Rice定理在([Rice, 1953](https://scholar.google.com/scholar?hl=en&q=Rice+Classes+of+recursively+enumerable+sets+and+their+decision+problems))中被证明. 其常见表述形式与我们所采用的略有不同, 参见{{ref:pro:ricestandardex}}. 
+
+本章未讨论*递归可枚举*语言的概念, 但{{ref:pro:recursiveenumerableex}}简要涉及了该内容. 我们照例使用函数记法而非语言记法. 
