@@ -34,3 +34,5 @@
 \REDUCE:{\text{REDUCE}}
 \FILTER:{\text{FILTER}}
 \RECURSE:{\text{RECURSE}}
+\HALT:{\text{HALT}}
+\EVAL:{\text{EVAL}}
