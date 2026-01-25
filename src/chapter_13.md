@@ -6,345 +6,344 @@
 
 ## 学习目标
 * 形式化的建模程序的运行时间, 特别是诸如 $O(n)$ 或 $O(n^3)$ 时间算法的概念 \
-* 分别对多项式时间和指数时间进行建模的复杂性类 $\mathbf{P}$ 和 $\mathbf{EXP}$。 \
-* 了解时间层级定理, 即对于任意 $k \geq 1$ 都存在我们可以在 $O(n^{k+1})$ 时间计算但不能在 $O(n^k)$ 时间计算的函数。
-* 代表非一致性计算 $\mathbf{P_{/poly}}$ 的复杂性类，及 $\mathbf{P} \subseteq \mathbf{P_{/poly}}$ 这一结论。
+* 分别对多项式时间和指数时间进行建模的复杂性类 $\mathbf{P}$ 和 $\mathbf{EXP}$.  \
+* 了解时间层级定理, 即对于任意 $k \geq 1$ 都存在我们可以在 $O(n^{k+1})$ 时间计算但不能在 $O(n^k)$ 时间计算的函数. 
+* 代表非一致性计算 $\mathbf{P_{/poly}}$ 的复杂性类, 及 $\mathbf{P} \subseteq \mathbf{P_{/poly}}$ 这一结论. 
 
+```admonish quote
+当问题规模的度量标准合理, 且当规模取值任意大时, 对算法难度的阶进行渐近估计在理论上具有重要意义. 这种估计无法被操纵——即无法通过人为地使算法在较小规模下变得困难而扭曲结果. 
 
->"When the measure of the problem-size is reasonable and when the sizes assume values arbitrarily large, an asymptotic estimate of ... the order of difficulty of [an] algorithm .. is theoretically important. It cannot be rigged by making the algorithm artificially difficult for smaller sizes", Jack Edmonds, "Paths, Trees, and Flowers", 1963
-
-
-```admonish quote title=""
-_Max Newman:_ It is all very well to say that a machine could ... do this or that, but ... what about the time it would take to do it? 
-
-_Alan Turing:_ To my mind this time factor is the one question which will involve all the real technical difficulty.
-
-BBC radio panel on "Can automatic Calculating Machines Be Said to Think?", 1952
+*-杰克·埃德蒙兹, "Paths, Trees, and Flowers", 1963.*
 ```
 
-在 [第十二章](chapter_12.md) 中，我们介绍了一些高效的算法，并且对他们的运行时间做了一些假设，不过并未对这些算法的运行时间进行精确数学定义。我们将在本章节中借助我们之前已经介绍过的图灵机和 RAM（或等价的 NAND-TM 和 NAND-RAM）机完成这一工作。
-任何非平凡的算法都会在更大规模的输入上运行更长的时间，因此算法的运行时间并不能用一个确定的数字来表示。
-因此，我们想要确定的是算法需要运行的步数和输入长度的关系。
-我们特别关注以下两者之间的区别，那些最多只需多项式时间（即对于某个常数 $c$，时间为 $O(n^c)$）的算法，与那些任何算法都至少需要指数时间（即对于某个 $c$，时间为 $\Omega(2^{n^c})$）的问题。
-正如 [第十二章](chapter_12.md) 中 Edmonds 的引言所提到的，这两者之间的差异，有时与可计算和不可计算之间的差异一样重要。
+```admonish quote
+*马克斯·纽曼*: “声称机器‘能够’做这做那固然很好, 但是……它做这些事情究竟需要花费多少时间呢？”
 
-```admonish pic id = 'picoverview'
+*艾伦·图灵*: “在我看来, 这个时间因素正是所有真正的技术难点所在. ”
+
+*-BBC 广播座谈节目 "我们可以说计算机会思考吗？", 1952.*
+```
+
+在 [第12章](chapter_12.md) 中, 我们介绍了一些高效的算法, 并且对他们的运行时间做了一些假设, 不过并未对这些算法的运行时间进行精确数学定义. 我们将在本章节中借助我们之前已经介绍过的图灵机和 RAM（或等价的 NAND-TM 和 NAND-RAM）机完成这一工作. 
+任何非平凡的算法都会在更大规模的输入上运行更长的时间, 因此算法的运行时间并不能用一个确定的数字来表示. 
+因此, 我们想要确定的是算法需要运行的步数和输入长度的关系. 
+我们特别关注以下两者之间的区别, 那些最多只需多项式时间（即对于某个常数 $c$, 时间为 $O(n^c)$）的算法, 与那些任何算法都至少需要指数时间（即对于某个 $c$, 时间为 $\Omega(2^{n^c})$）的问题. 
+正如 [第12章](chapter_12.md) 中 Edmonds 的引言所提到的, 这两者之间的差异, 有时与可计算和不可计算之间的差异一样重要. 
+
+```admonish pic id = 'picoverviewfig'
 ![overview](./images/chapter13/runtimeoverview.png)
 
 {{pic}}{fig:picoverview} 本章得到结果的概览
 ```
 
 ```admonish info title = "本章：一个直观的概述"
-在这一章中我们形式化的定义一个函数可以被在确定的步数下计算意味着什么。
-正如在 [第十二章](chapter_12.md) 中所说的那样，运行时间并不是一个数字，我们关心的是随着输入规模增大，算法运行步数会以怎样的规模增长。
+在这一章中我们形式化的定义一个函数可以被在确定的步数下计算意味着什么. 
+正如在 [第12章](chapter_12.md) 中所说的那样, 运行时间并不是一个数字, 我们关心的是随着输入规模增大, 算法运行步数会以怎样的规模增长. 
 我们可以用图灵机或 RAM 机来给出一个形式化定义 - 事实上模型的选择并不影响这个问题的核心解决方案
-本章我们将给出几个重要定义并证明一些重要的定理。
-我们将定义本书中使用的主要时间复杂性类，并展示时间层级定理，该定理表明：如果给予更多的资源（即针对每个输入规模允许更多的执行步数），我们就能够计算更多的函数
+本章我们将给出几个重要定义并证明一些重要的定理. 
+我们将定义本书中使用的主要时间复杂性类, 并展示时间层级定理, 该定理表明：如果给予更多的资源（即针对每个输入规模允许更多的执行步数）, 我们就能够计算更多的函数
 ```
 
-要将这一切用不那么数学化的语言表述出来，我们将定义能在 $T(n)$ 步内将函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 计算出来的含义，其中 $T$ 是一个将输入长度 $n$ 映射到计算所需的步数的函数。
-使用这些定义，我们将做以下事情（可参考 {{ref: picoverview}}）
+要将这一切用不那么数学化的语言表述出来, 我们将定义能在 $T(n)$ 步内将函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 计算出来的含义, 其中 $T$ 是一个将输入长度 $n$ 映射到计算所需的步数的函数. 
+使用这些定义, 我们将做以下事情（可参考 {{ref:fig:picoverview}}）
 
-* 我们定义复杂性类 $\mathbf{P}$ 为可以在多项式时间内计算的布尔函数的集合，复杂性类 $\mathbf{EXP}$ 为可以在指数时间内计算的函数的集合. 注意 $\mathbf{P} \subseteq \mathbf{EXP}$, 即如果我们能在多项式时间内计算一个函数, 那么当然也能在指数时间内计算他. 
+* 我们定义复杂性类 $\mathbf{P}$ 为可以在多项式时间内计算的布尔函数的集合, 复杂性类 $\mathbf{EXP}$ 为可以在指数时间内计算的函数的集合. 注意 $\mathbf{P} \subseteq \mathbf{EXP}$, 即如果我们能在多项式时间内计算一个函数, 那么当然也能在指数时间内计算他. 
 
-* 我们证明，用图灵机和RAM机计算一个函数所需的时间是多项式相关的。这意味着，无论使用图灵机还是 RAM 机（或 NAND-RAM 机）来定义, $\mathbf{P}$ 和 $\mathbf{EXP}$ 总是相同. 
+* 我们证明, 用图灵机和RAM机计算一个函数所需的时间是多项式相关的. 这意味着, 无论使用图灵机还是 RAM 机（或 NAND-RAM 机）来定义, $\mathbf{P}$ 和 $\mathbf{EXP}$ 总是相同. 
 
-* 我们给出一个高效且通用的 NAND-RAM 程序，并使用它建立时间层级定理，该定理意味着 $\mathbf{P}$ 是 $\mathbf{EXP}$ 的真子集。
+* 我们给出一个高效且通用的 NAND-RAM 程序, 并使用它建立时间层级定理, 该定理意味着 $\mathbf{P}$ 是 $\mathbf{EXP}$ 的真子集. 
 
-* 我们将此处定义的概念与 [第三章](chapter_3.md) 中定义的布尔电路和 NAND-CIRC 程序等非一致性模型联系起来。我们将 $\mathbf{P_{/poly}}$ 定义为可以由一系列多项式大小的电路所计算的函数类。我们证明了 $\mathbf{P} \subseteq \mathbf{P_{/poly}}$，且 $\mathbf{P_{/poly}}$ 包含不可计算函数。
+* 我们将此处定义的概念与 [第3章](chapter_3.md) 中定义的布尔电路和 NAND-CIRC 程序等非一致性模型联系起来. 我们将 $\mathbf{P_{/poly}}$ 定义为可以由一系列多项式大小的电路所计算的函数类. 我们证明了 $\mathbf{P} \subseteq \mathbf{P_{/poly}}$, 且 $\mathbf{P_{/poly}}$ 包含不可计算函数. 
 
-## 12.1 形式化的定义运行时间
+## 13.1 形式化的定义运行时间
 
-我们的计算模型（图灵机，NAND-TM 和 NAND-RAM 程序等）都是通过其运作方式都是对输入逐步执行一系列指令。
-我们可以通过测量算法 $M$ 在输入 $x$ 上执行的步数，并将其表示为输入长度 $|x|$ 的函数，从而定义算法 $M$ 在这些模型下的运行时间。
+我们的计算模型（图灵机, NAND-TM 和 NAND-RAM 程序等）都是通过其运作方式都是对输入逐步执行一系列指令. 
+我们可以通过测量算法 $M$ 在输入 $x$ 上执行的步数, 并将其表示为输入长度 $|x|$ 的函数, 从而定义算法 $M$ 在这些模型下的运行时间. 
 我们首先定义基于图灵机的运行时间：
 
 ```admonish quote title=""
 {{defc}}{def:time_tm_def}[运行时间（图灵机）] 
 
-令 $T:\N \rightarrow \N$ 为某个实数到实数的映射。
-如果存在一台图灵机 $M$，使得对于每一个充分大的 $n$ 和每一个 $x\in \{0,1\}^n$，当给定输入 $x$ 时，机器 $M$ 在执行最多 $T(n)$ 步后停机并输出 $F(x)$，那么我们称函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 是在 $T(n)$ 图灵机时间（简称 TM 时间）内可计算的。
-我们定义 $TIME_{\mathsf{TM}}(T(n))$ 为所有在 $T(n)$ 图灵机时间内可计算的布尔函数（即映射 $\{0,1\}^*$ 到 $\{0,1\}$ 的函数）的集合。
+令 $T:\N \rightarrow \N$ 为某个实数到实数的映射. 
+如果存在一台图灵机 $M$, 使得对于每一个充分大的 $n$ 和每一个 $x\in \{0,1\}^n$, 当给定输入 $x$ 时, 机器 $M$ 在执行最多 $T(n)$ 步后停机并输出 $F(x)$, 那么我们称函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 是在 $T(n)$ 图灵机时间（Turing Machine Time, 简称 TM 时间）内可计算的. 
+我们定义 $TIME_{\mathsf{TM}}(T(n))$ 为所有在 $T(n)$ 图灵机时间内可计算的布尔函数（即映射 $\{0,1\}^*$ 到 $\{0,1\}$ 的函数）的集合. 
 ```
 
-
-::: { .bigidea #formaldefinetime}
-For a function $F:\{0,1\}^* \rightarrow \{0,1\}$ and $T:\N  \rightarrow \N$, we can formally define what it means for $F$ to be computable in time at most $T(n)$ where $n$ is the size of the input.
-:::
+```admonish bigidea
+{{idec}}{ide:formaldefinetime}
+对于函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 和 $T:\N  \rightarrow \N$, 我们可以形式化的定义 $F$ 能在至多 $T(n)$ 的时间内计算意味着什么, 其中 $n$ 为输入规模. 
+```
 
 ```admonish pause title = "暂停一下"
-{{ref: time_tm_def}}  is not very complicated but is one of the most important definitions of this book. As usual,   $TIME_{\mathsf{TM}}(T(n))$ is  a class of _functions_, not of _machines_. If $M$ is a Turing machine then a statement such as "$M$ is a member of $TIME_{\mathsf{TM}}(n^2)$" does not make sense.
-The concept of TM-time as defined here is sometimes known as "single-tape Turing machine time" in the literature, since some texts consider Turing machines with more than one working tape.
+{{ref:def:time_tm_def}} 并不复杂, 但这是本书中最为重要的定义之一. 照例, $TIME_{\mathsf{TM}}(T(n))$ 代表一类函数, 而不是机器类. 若 $M$ 是图灵机, 则像 “$M$ 属于 $TIME_{\mathsf{TM}}(n^2)$” 这样的表述并不正确. 
+此处定义的 TM 时间（图灵机时间）概念在文献中有时被称为“单带图灵时间”（single-tape Turing machine time）, 这是因为有些文献会考虑拥有多条工作带的图灵机. 
 ```
 
-The relaxation of considering only "sufficiently large" $n$'s is not very important but it is convenient since it allows us to avoid dealing explicitly with un-interesting "edge cases".
+放宽条件只考虑充分大的 $n$ 虽然本质上并不是很重要, 但却非常便利, 因为这使我们能够避免讨论一些无趣的边界情况. 
+尽管“函数的运行时间”这一概念可以在任意函数上定义, 但在定义 $TIME_{\mathsf{TM}}(T(n))$ 类时, 我们只考虑布尔函数, 即那些只有一个 bit 输出的函数. 
+这一选择并不重要, 是为了后续讨论的简洁与便利而做出的. 
+事实上, 任何一个非布尔函数都有一个与之计算等价的布尔变体, 参见 {{ref:exe:boolex}}
 
-While the notion of being computable within a certain running time can be defined for every function, the class $TIME_{\mathsf{TM}}(T(n))$ is a class of _Boolean functions_ that have a single bit of output.
-This choice is not very important, but is made for simplicity and convenience later on.
-In fact, every non-Boolean function has a computationally equivalent Boolean variant, see [boolex](){.ref}.
+```admonish quote title=""
+{{exec}}{exe:timeboundexample}[时间界限的示例] 
+证明 $TIME_{\mathsf{TM}}(10\cdot n^3) \subseteq TIME_{\mathsf{TM}}(2^n)$. 
+```
 
+```admonish pic id = 'examplefimeboundsfig'
+![exampletimebounds](./images/chapter13/exampletimebounds.png)
 
+{{pic}}{fig:examplefimebounds} 将 $T(n)=10n^3$ 和 $T'(n) = 2^n$ 比较（右图的 Y 轴采用对数标度）. 因为对于足够大的 $n$, $T'(n) \geq T(n)$, 则 $TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{TM}}(T'(n))$. 
+```
 
-::: {.solvedexercise title="Example of time bounds" #timeboundexample}
-Prove that $TIME_{\mathsf{TM}}(10\cdot n^3) \subseteq TIME_{\mathsf{TM}}(2^n)$.
-:::
+```admonish solution collapsible=true, title = "对 {{ref:exe:timeboundexample}} 的解答" 
+证明其实已经在 {{ref:fig:examplefimebounds}} 中展示了. 
+假设 $F\in TIME_{\mathsf{TM}}(10\cdot n^3)$, 则存在数 $N_0$ 和计算模型 $M$, 满足对于任意 $n > N_0$, $x\in \{0,1\}^*$, 都有 $M(x)$ 会在最多 $10\cdot n^3$ 步内输出 $F(x)$ 的结果. 
+因为 $10\cdot n^3 = o(2^n)$, 一定存在数 $N_1$ 满足对于任意 $n > N_1$, 都有 $10 \cdot n^3 < 2^n$. 
+则对于任意 $n > \max\{ N_0, N_1 \}$, $M(x)$ 会在至多 $2^n$ 步内输出 $F(x)$ 的结果, 即证明了 $F \in TIME_{\mathsf{TM}}(2^n)$. 
+```
 
-![Comparing $T(n)=10n^3$ with $T'(n) = 2^n$ (on the right figure the Y axis is in log scale). Since for every large enough $n$, $T'(n) \geq T(n)$, $TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{TM}}(T'(n))$.](../figure/exampletimebounds.png){#examplefimeboundsfig .margin}
+### 13.1.1 多项式时间和指数时间
 
-::: {.solution data-ref="timeboundexample"}
-The proof is illustrated in [examplefimeboundsfig](){.ref}.
-Suppose that $F\in TIME_{\mathsf{TM}}(10\cdot n^3)$ and hence there exists some number $N_0$ and a machine $M$ such that for every $n> N_0$,  and $x\in \{0,1\}^*$, $M(x)$ outputs $F(x)$ within at most $10\cdot n^3$ steps.
-Since $10\cdot n^3 = o(2^n)$, there is some number $N_1$ such that for every $n>N_1$, $10\cdot n^3 < 2^n$.
-Hence for every $n > \max\{ N_0, N_1 \}$, $M(x)$ will output $F(x)$ within at most $2^n$ steps, demonstrating that $F \in TIME_{\mathsf{TM}}(2^n)$.
-:::
+与可计算性的概念不同, 精确的运行时间可能会取决于我们所使用的计算模型. 然而, 事实上, 如果我们只关心“足够粗糙”的尺度（大部分情况下都是如此）, 那么模型的选择——无论是图灵机、RAM 机、NAND-TM/NAND-RAM 程序, 还是 C/Python 程序——都无关紧要了. 
+这就是所谓的*扩展*Church-Turing论题 (*extended* Church-Turing Thesis). 
+具体来说, 我们主要关心的是多项式时间与指数时间之前的区别. 
 
+我们将关注以下两个主要的时间复杂性类:
 
-### Polynomial and Exponential Time
+* __多项式时间:__ 如果一个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 属于类 $\mathbf{P} = \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$, 则称其是 __多项式时间可计算__ 的. 也就是说, 若 $F\in \mathbf{P}$, 则存在一个计算 $F$ 的算法, 其运行时间关于输入长度至多是多项式的（换言之, 对于某个常数 $c$, 至多 $n^c$）. 
 
-Unlike the notion of computability, the exact running time can be a function of the model we use. However, it turns out that if we only care about "coarse enough" resolution (as will most often be the case) then the choice of the model, whether  Turing machines, RAM machines, NAND-TM/NAND-RAM programs, or C/Python programs, does not matter. 
-This is known as the _extended_ Church-Turing Thesis.
-Specifically we will mostly care about the difference between _polynomial_ and _exponential_ time.
+* __指数时间:__ 如果一个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 属于类 $\mathbf{EXP} = \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(2^{n^c})$, 则称其是 __指数时间可计算__ 的. 也就是说, 若 $F\in \mathbf{EXP}$, 则存在一个计算 $F$ 的算法, 其运行时间关于输入长度至多是指数的（换言之, 对于某个常数 $c$, 至多 $2^{n^c}$）. 
 
+形式化的说, 他们是如下定义的. 
 
-The two main time complexity classes we will be interested in are the following:
+```admonish quote title=""
+{{defc}}{def:PandEXP}[$\mathbf{P}$ 和 $\mathbf{EXP}$] 
 
-* __Polynomial time:__ A function $F:\{0,1\}^* \rightarrow \{0,1\}$ is _computable in polynomial time_ if it is in the class $\mathbf{P} = \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$. That is, $F\in \mathbf{P}$ if there is an algorithm to compute $F$ that runs in time at most _polynomial_ (i.e.,  at most $n^c$ for some constant $c$) in the length of the input.
+设函数 $F:\{0,1\}^* \rightarrow \{0,1\}$. 
 
-* __Exponential time:__ A function $F:\{0,1\}^* \rightarrow \{0,1\}$ is _computable in exponential time_ if it is in the class $\mathbf{EXP} = \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(2^{n^c})$. That is, $F\in \mathbf{EXP}$ if there is an algorithm to compute $F$ that runs in time at most _exponential_ (i.e., at most $2^{n^c}$ for some constant $c$) in the length of the input.
+若存在一个多项式 $p:\N \rightarrow \R$, 和一个图灵机 $M$, 满足对于任意 $x\in \{0,1\}^*$, 当给出输入 $x$ 时, 图灵机将在至多 $p(|x|)$ 步内停机并输出 $F(x)$, 则我们称 $F\in \mathbf{P}$. 
 
-In other words, these are defined as follows:
+若存在一个多项式 $p:\N \rightarrow \R$, 和一个图灵机 $M$, 满足对于任意 $x\in \{0,1\}^*$, 当给出输入 $x$ 时, 图灵机将在至多 $2^{p(|x|)}$ 步内停机并输出 $F(x)$, 则我们称 $F\in \mathbf{EXP}$. 
+```
 
-::: {.definition title="$\mathbf{P}$ and $\mathbf{EXP}$" #PandEXPdef}
-Let $F:\{0,1\}^* \rightarrow \{0,1\}$. We say that $F\in \mathbf{P}$ if there is a polynomial $p:\N \rightarrow \R$ and a Turing machine $M$ such that for every $x\in \{0,1\}^*$, 
-when given input $x$, the Turing machine halts within at most $p(|x|)$ steps and outputs $F(x)$.
+```admonish pause title = "暂停一下"
+请务必花点时间, 确保你透彻理解了这些定义.
+特别需要注意的是, 学生们有时会误以为 $\mathbf{EXP}$ 类指的是那些不在 $\mathbf{P}$ 中的函数.
+然而, 事实并非如此. 如果 $F$ 属于 $\mathbf{EXP}$, 这意味着它能够在指数时间内被计算出来.
+这并不意味着它不能同时在多项式时间内被计算.
+```
 
-We say that $F\in \mathbf{EXP}$ if there is a polynomial $p:\N \rightarrow \R$ and a Turing machine $M$ such that for every $x\in \{0,1\}^*$, when given input $x$, $M$ halts within at most $2^{p(|x|)}$ steps and outputs $F(x)$.
-:::
+```admonish quote title=""
+{{exec}}{exe:diffdefofP}[$\mathbf{P}$ 的另一定义] 
 
-::: { .pause }
-Please take the time to make sure you understand these definitions.
-In particular, sometimes students think of the class $\mathbf{EXP}$ as corresponding to functions that are _not_ in $\mathbf{P}$.
-However, this is not the case. If $F$ is in $\mathbf{EXP}$ then it _can_ be computed in exponential time.
-This does not mean that it cannot be computed in polynomial time as well.
-:::
+证明 {{ref:def:PandEXP}} 中定义的 $\mathbf{P}$ 与 $\cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$ 等价. 
+```
 
+```admonish solution collapsible=true, title = "对 {{ref:exe:diffdefofP}} 的解答" 
+为了证明这两个集合相等, 我们可证明 $\mathbf{P} \subseteq \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$ 以及 $\cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c) \subseteq \mathbf{P}$. 
 
-::: {.solvedexercise title="Differerent definitions of $\mathbf{P}$" #diffdefofP}
-Prove that $\mathbf{P}$ as defined in [PandEXPdef](){.ref} is equal to  $\cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$
-:::
+我们从前一个包含关系开始. 假设 $F \in \mathbf{P}$. 那么存在某个多项式 $p:\N \rightarrow \R$ 和一台图灵机 $M$, 使得 $M$ 能计算 $F$, 并且对于每一个输入 $x$, $M$ 都在至多 $p(|x|)$ 步内停机. 我们可以将多项式 $p:\N \rightarrow \R$ 写成 $p(n) = \sum_{i=0}^d a_i n^i$ 的形式, 其中 $a_0,\ldots,a_d \in \R$, 并且我们假设 $a_d$ 非零（否则我们就让 $d$ 对应使得 $a_d$ 非零的最大数）. 这个 $d$ 即为 $p$ 的次数（degree）. 由于 $n^d = o(n^{d+1})$, 无论系数 $a_d$ 是多少, 对于足够大的 $n$, 都有 $p(n) < n^{d+1}$. 这意味着图灵机 $M$ 在处理长度为 $n$ 的输入时, 会在少于 $n^{d+1}$ 步内停机, 因此 $F \in TIME_{\mathsf{TM}}(n^{d+1}) \subseteq \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$. 
 
-::: {.solution data-ref="diffdefofP"}
-To show these two sets are equal we need to show that $\mathbf{P} \subseteq \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$ and $\cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c) \subseteq \mathbf{P}$. 
-We start with the former inclusion.
-Suppose that $F \in \mathbf{P}$. Then there is some polynomial $p:\N \rightarrow \R$ and a Turing machine $M$ such that $M$ computes $F$ and $M$ halts on every input $x$ within at most $p(|x|)$ steps.
-We can write the  polynomial $p:\N \rightarrow \R$ in  the form $p(n) = \sum_{i=0}^d a_i n^i$ where $a_0,\ldots,a_d \in \R$, and we assume that $a_d$ is non-zero (or otherwise we just let $d$ correspond to the largest number such that $a_d$
-is non-zero). The _degree_ of $p$ is the number $d$.
-Since $n^d = o(n^{d+1})$, no matter what the coefficient $a_d$ is, for large enough $n$, $p(n) < n^{d+1}$ which means that the Turing machine $M$ will halt on inputs of length $n$ within fewer than $n^{d+1}$ steps, and hence
-$F \in TIME_{\mathsf{TM}}(n^{d+1}) \subseteq \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$.
-
-For the second inclusion, suppose that $F \in \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$.
-Then there is some positive $c \in \N$ such that $F \in TIME_{\mathsf{TM}}(n^c)$ which means that there is a Turing machine $M$ and some number $N_0$ such that $M$ computes $F$ and for every $n>N_0$, 
-$M$ halts on length $n$ inputs within at most $n^c$ steps.
-Let $T_0$ be the maximum number of steps that $M$ takes on inputs of length at most $N_0$.
-Then if we define the polynomial $p(n) = n^c + T_0$ then we see that $M$ halts on every input $x$ within at most $p(|x|)$ steps and hence the existence of $M$ demonstrates that $F\in \mathbf{P}$.
-:::
+对于第二个包含关系, 假设 $F \in \cup_{c\in \{1,2,3,\ldots \}} TIME_{\mathsf{TM}}(n^c)$. 那么存在某个正整数 $c \in \N$ 使得 $F \in TIME_{\mathsf{TM}}(n^c)$, 这意味着存在一台图灵机 $M$ 和某个数值 $N_0$, 使得 $M$ 能计算 $F$, 并且对于每一个 $n>N_0$, $M$ 在处理长度为 $n$ 的输入时, 都在至多 $n^c$ 步内停机. 设 $T_0$ 为 $M$ 在处理长度至多为 $N_0$ 的输入时所花费的最大步数. 那么, 如果我们定义多项式 $p(n) = n^c + T_0$, 我们就会发现 $M$ 在处理每一个输入 $x$ 时都在至多 $p(|x|)$ 步内停机, 因此 $M$ 的存在证明了 $F\in \mathbf{P}$. 
+```
 
 
+因为指数时间比多项式时间大得多, $\mathbf{P}\subseteq \mathbf{EXP}$ 类.
+我们在 [第12章](chapter_12.md) 中列出的所有问题都属于 $\mathbf{EXP}$, 不过如我们所见, 对于他们中的一些问题存在更高效的算法，这证明了他们实际上属于更小的 $\mathbf{P}$ 类.
 
-Since exponential time is much larger than polynomial time,  $\mathbf{P}\subseteq \mathbf{EXP}$.
-All of the  problems we listed in [chapefficient](){.ref} are in $\mathbf{EXP}$, but as we've seen, for some of them there are much better algorithms that demonstrate that they are in fact in the smaller class $\mathbf{P}$. 
 
-
-| $\mathbf{P}$             | $\mathbf{EXP}$ (but not known to be in $\mathbf{P}$) |
+```admonish table title=""
+| $\mathbf{P}$             | $\mathbf{EXP}$ (但目前不知道属于 $\mathbf{P}$) |
 |--------------------------|---------------------------|
-| Shortest path            | Longest Path              |
-| Min cut                  | Max cut                   |
+| 最短路            | 最长路              |
+| 最小割                  | 最大割                   |
 | 2SAT                     | 3SAT                      |
-| Linear eqs               | Quad. eqs                 |
-| Zerosum                  | Nash                      |
-| Determinant              | Permanent                 |
-| Primality                | Factoring                 |
+| 解线性方程组               | 解二次方程组                 |
+| 零和博弈                  | 纳什均衡                      |
+| 行列式              | 积和式                 |
+| 素数判定                | 整数分解                 |
 
-Table : A table of the examples from [chapefficient](){.ref}. All these problems are in $\mathbf{EXP}$ but only the ones on the left column are currently known to be in $\mathbf{P}$ as well (i.e., they have a polynomial-time algorithm). See also [PvsEXPfig](){.ref}.
+这是一个来自 [第12章](chapter_12.md) 的表格. 表格中的所有问题都属于 $\mathbf{EXP}$ 类但只有左列中的问题目前已知属于 $\mathbf{P}$ 类. (换言之, 他们有多项式时间的算法). 参见 {{ref:fig:PvsEXP}}.
+```
 
+```admonish pic id = 'PvsEXPfig'
+![PvsEXPfig](./images/chapter13/PvsEXP.png)
 
-![Some examples of problems that are known to be in $\mathbf{P}$ and problems that are known to be in $\mathbf{EXP}$ but not known whether or not they are in $\mathbf{P}$. Since both $\mathbf{P}$ and $\mathbf{EXP}$ are classes of Boolean functions, in this figure we always refer to the _Boolean_ (i.e., Yes/No) variant of the problems.](../figure/PvsEXP.png){#PvsEXPfig .margin}
+{{pic}}{fig:PvsEXP} 一些在 $\mathbf{P}$ 类中的问题和一些在 $\mathbf{EXP}$ 类中但不知道在不在 $\mathbf{P}$ 类中的问题的例子. 因为 $\mathbf{P}$ 和 $\mathbf{EXP}$ 都是布尔函数的类, 在此图中，我们始终指的是这些问题的布尔变体 (即只关心是/否).
+```
 
-::: {.remark title="Boolean versions of problems" #booleanversion}
-Many of the problems defined in [chapefficient](){.ref} correspond to _non-Boolean_ functions (functions with more than one bit of output) while $\mathbf{P}$ and $\mathbf{EXP}$ are sets of Boolean functions.
-However, for every non-Boolean function $F$ we can always define a computationally-equivalent Boolean function $G$ by letting $G(x,i)$ be the $i$-th bit of $F(x)$ (see [boolex](){.ref}).
-Hence the table above, as well as [PvsEXPfig](){.ref}, refer to the computationally-equivalent Boolean variants of these problems.
-:::
-
-
-
-
-## Modeling running time using RAM Machines / NAND-RAM
-
-Turing machines are a clean theoretical model of computation, but do not closely correspond to real-world computing architectures.
-The discrepancy between Turing machines and actual computers does not matter much when we consider the question of which functions are _computable_, but can make a difference in the context of _efficiency_.
-Even a basic staple of undergraduate algorithms such as  "merge sort" cannot be implemented on a Turing machine in $O(n\log n)$ time (see [bibnotesrunningtime](){.ref}).
-_RAM machines_ (or equivalently, NAND-RAM programs) match more closely actual computing architecture and what we mean when we say $O(n)$ or $O(n \log n)$ algorithms in algorithms courses or whiteboard coding interviews.
-We can define running time with respect to NAND-RAM programs just as we did for Turing machines.
+```admonish remark title="问题的布尔版本"
+{{remc}}{rem:booleanversion}
+[第12章](chapter_12.md) 中定义的许多问题都对应于非布尔函数 (即输出超过一个 bit 的函数), 而 $\mathbf{P}$ 和 $\mathbf{EXP}$ 是布尔函数的集合.
+然而, 对于每一个非布尔函数 $F$, 我们总是可以通过定义 $G(x,i)$ 为 $F(x)$ 的第 $i$ 个比特, 来定义一个与之等价的布尔函数 $G$ (参见 {{ref:exe:boolex}}).
+因此, 上表以及 {{ref:fig:PvsEXP}} 中所指的, 都是这些问题的计算等价布尔变体.
+```
 
 
+## 13.2 使用 RAM 机 / NAND-RAM 建模运行时间
 
-::: {.definition title="Running time (RAM)" #time-def}
-Let $T:\N \rightarrow \N$ be some function mapping natural numbers to natural numbers.
-We say that a function $F:\{0,1\}^* \rightarrow \{0,1\}^*$ is _computable in $T(n)$ RAM  time (RAM-time for short)_ 
-if there exists a NAND-RAM program $P$ such that for every sufficiently large $n$ and every $x\in \{0,1\}^n$, when given input $x$, the program $P$ halts after executing at most $T(n)$ lines and outputs $F(x)$.
-
-We define  $TIME_{\mathsf{RAM}}(T(n))$ to be the set of Boolean functions (functions mapping $\{0,1\}^*$ to $\{0,1\}$) that are computable in $T(n)$ RAM time.
-:::
-
-Because NAND-RAM programs correspond more closely to our natural notions of running time, we will use NAND-RAM as our "default" model of running time, and hence use $TIME(T(n))$ (without any subscript) to denote $TIME_{\mathsf{RAM}}(T(n))$.
-However, it turns out that as long as we only care about the difference between exponential and polynomial time,  this does not make much difference.
-The reason is that Turing machines can simulate NAND-RAM programs with at most a polynomial overhead (see also [RAMTMsimulationfig](){.ref}):
+图灵机虽然是一种简洁的理论计算模型, 但它与现实世界的计算架构并不十分吻合. 当我们考虑哪些函数是"可计算的"这一问题时, 图灵机与实际计算机之间的这种差异关系不大; 但在涉及"效率"的语境下, 这种差异就会产生影响. 甚至是本科算法课程中的基础内容——如"归并排序", 也无法在图灵机上以 $O(n\log n)$ 的时间实现 (参见 {{ref:bibnotesrunningtime}}). RAM 机 (或等价的 NAND-RAM 程序) 更接近实际的计算架构, 也更符合我们在算法课程或白板编程面试中所说的 $O(n)$ 或 $O(n \log n)$ 算法的含义. 我们可以像定义图灵机那样, 定义针对 NAND-RAM 程序的运行时间.
 
 
-::: {.theorem title="Relating RAM and Turing machines" #polyRAMTM-thm}
-Let $T:\N \rightarrow \N$ be a function such that $T(n) \geq n$ for every $n$ and the map $n \mapsto T(n)$ can be computed by a Turing machine in time $O(T(n))$.
-Then 
+
+```admonish quote title=""
+{{defc}}{def:time_def}[运行时间 (RAM)] 
+
+设 $T:\N \rightarrow \N$ 是某个将自然数映射到自然数的函数.
+我们称函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 是 **在 $T(n)$ RAM 时间内可计算的** (简称 RAM 时间), 如果存在一个 NAND-RAM 程序 $P$, 使得对于每一个足够大的 $n$ 和每一个 $x\in \{0,1\}^n$, 当给定输入 $x$ 时, 程序 $P$ 在执行至多 $T(n)$ 行指令后停机, 并输出 $F(x)$.
+
+我们定义 $TIME_{\mathsf{RAM}}(T(n))$ 为在 $T(n)$ RAM 时间内可计算的布尔函数 (即映射 $\{0,1\}^*$ 到 $\{0,1\}$ 的函数) 的集合.
+```
+
+因为 NAND-RAM 程序更加符合我们对运行时间的直观理解, 我们将把 NAND-RAM 作为我们讨论运行时间的默认模型, 并因此使用不带任何下标的 $TIME(T(n))$ 来表示 $TIME_{\mathsf{RAM}}(T(n))$.
+然而, 事实证明, 只要我们只关心指数时间和多项式时间之间的区别, 模型的选择并没有太大影响.
+原因是图灵机可以模拟 NAND-RAM 程序, 且其开销至多是多项式级别的 (参见 {{ref:fig:RAMTMsimulation}}):
+
+
+```admonish quote title=""
+{{thmc}}{thm:polyRAMTM}[连接图灵机和 RAM 机]
+
+$T:\N \rightarrow \N$ 为一个函数, 满足对任意 $n$ 都有 $T(n) \geq n$, 且映射 $n \mapsto T(n)$ 可以由一台图灵机在 $O(T(n))$ 时间内计算得出.
+那么: 
+
 $$
-TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{RAM}}(10\cdot T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4) \;.  \label{eqtmrambisimulation}
+TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{RAM}}(10\cdot T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4). {{numeq}}{eq:tmrambisimulation}
 $$
-:::
+```
 
 
+```admonish pause title = "暂停一下"
+{{ref:thm:polyRAMTM}} 中的一些技术细节并不重要, 如要求 $n \mapsto T(n)$ 可以在 $O(T(n))$ 时间内被计算出来的条件, 或者 {{ref:eq:tmrambisimulation}} 中的常数 $10$ 和 $4$ (这些常数并非紧致的, 是可以被改进的)
+特别的, 我们在实践中遇到的所有非病态的时间界限函数, 如 $T(n)=n$, $T(n)=n\log n$, $T(n)=2^n$ 等, 都满足 {{ref:thm:polyRAMTM}} 的条件 (另见 {{ref:rem:nicefunctions}})
 
-::: { .pause }
-The technical details of [polyRAMTM-thm](){.ref}, such as the condition that $n \mapsto T(n)$ is computable in $O(T(n))$ time or the  constants $10$ and $4$ in [eqtmrambisimulation](){.eqref} (which are not tight and can be improved), are not very important.
-In particular, all non-pathological time bound functions we encounter in practice such as $T(n)=n$, $T(n)=n\log n$, $T(n)=2^n$ etc. will satisfy the conditions of  [polyRAMTM-thm](){.ref}, see also [nicefunctionsrem](){.ref}.
-
-The main message of the  theorem is Turing machines and RAM machines are "roughly equivalent" in the sense that one can simulate the other with polynomial overhead.
-Similarly, while the proof involves some technical details, it's not very deep or hard, and merely follows the simulation of RAM machines with Turing machines we saw in [RAMTMequivalencethm](){.ref} with more careful "book keeping".
-:::
+该定理的核心信息是: 图灵机和 RAM 机是"大致等价"的, 在这个意义上, 其中一个可以模拟另一个, 且只产生多项式级别的开销.
+同样地, 虽然证明过程涉及一些技术细节, 但它并不深奥也不困难, 仅仅是沿用了我们在 [定理8.1](./chapter_8.md#thm:RAMTMequivalencethm) 中看到的用图灵机模拟 RAM 机的方法, 只是做了更仔细的"簿记" (即状态维护) 工作.
+```
 
 
-![The proof of [polyRAMTM-thm](){.ref} shows that we can simulate $T$ steps of a Turing machine with $T$ steps of a NAND-RAM program, and can simulate $T$ steps of a NAND-RAM program with $o(T^4)$ steps of a Turing machine. Hence $TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{RAM}}(10\cdot T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4)$.](../figure/RAMTMsimulation.png){#RAMTMsimulationfig .margin}
+```admonish pic id = 'RAMTMsimulationfig'
+![RAMTMsimulationfig](./images/chapter13/RAMTMsimulation.png)
 
-For example, by instantiating  [polyRAMTM-thm](){.ref} with $T(n)=n^a$ and using the fact that $10n^a = o(n^{a+1})$, we see that  $TIME_{\mathsf{TM}}(n^a) \subseteq TIME_{\mathsf{RAM}}(n^{a+1}) \subseteq TIME_{\mathsf{TM}}(n^{4a+4})$ which means that  (by [diffdefofP](){.ref})
+{{pic}}{fig:RAMTMsimulation} {{ref:thm:polyRAMTM}} 的证明表明, 我们可以用 $T$ 步的 NAND-RAM 程序来模拟 $T$ 步的图灵机, 并且可以用 $o(T^4)$ 步的图灵机来模拟 $T$ 步的 NAND-RAM 程序.
+因此, $TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{RAM}}(10\cdot T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4)$.
+```
+
+
+例如, 通过将 $T(n)=n^a$ 代入 {{ref:thm:polyRAMTM}}, 并利用 $10n^a = o(n^{a+1})$ 这一事实, 我们看到 $TIME_{\mathsf{TM}}(n^a) \subseteq TIME_{\mathsf{RAM}}(n^{a+1}) \subseteq TIME_{\mathsf{TM}}(n^{4a+4})$. 这意味着 (根据 {{ref:exe:diffdefofP}}): 
 $$
 \mathbf{P} = \cup_{a = 1,2,\ldots} TIME_{\mathsf{TM}}(n^a) = \cup_{a = 1,2,\ldots} TIME_{\mathsf{RAM}}(n^a) \;.
 $$
-That is, we could have equally well defined $\mathbf{P}$ as the class of functions computable by _NAND-RAM programs_ (instead of Turing machines) that run in time polynomial in the length of the input. 
-Similarly, by instantiating [polyRAMTM-thm](){.ref} with $T(n)=2^{n^a}$ we see that the class $\mathbf{EXP}$ can also be defined as the set of functions computable by NAND-RAM programs in time at most $2^{p(n)}$ where $p$ is some polynomial.
-Similar equivalence results are known for many models including cellular automata, C/Python/Javascript programs, parallel computers,   and a great many other models, which justifies the choice of $\mathbf{P}$ as capturing a technology-independent notion of tractability.
-(See  [#ECTTsec](){.ref} for more discussion of this issue.)
-This equivalence between Turing machines and NAND-RAM  (as well as other models) allows us to pick our favorite model depending on the task at hand (i.e., "have our cake and eat it too") even when we study questions of efficiency, as long as we only care about the gap between _polynomial_ and _exponential_ time.
-When we want to _design_ an algorithm, we can use the extra power and convenience afforded by NAND-RAM.
-When we want to _analyze_ a program or prove a _negative result_, we can restrict our attention to Turing machines.
+也就是说, 我们完全可以将 $\mathbf{P}$ 定义为由 *NAND-RAM 程序* (而不是图灵机) 在输入长度的多项式时间内计算的函数类. 同样地, 通过将 $T(n)=2^{n^a}$ 代入 {{ref:thm:polyRAMTM}}, 我们看到 $\mathbf{EXP}$ 类也可以定义为由 NAND-RAM 程序在至多 $2^{p(n)}$ 时间内计算的函数集, 其中 $p$ 为某个多项式. 对于许多其他模型, 包括元胞自动机, C/Python/Javascript 程序, 并行计算机以及许多其他模型, 已知都存在类似的等价结果. 这证明了选择 $\mathbf{P}$ 作为捕捉独立于技术的"易处理性"概念是合理的 (参见 {{ref:ECTTsec}} 关于此问题的更多讨论). 图灵机和 NAND-RAM (以及其他模型) 之间的这种等价性, 允许我们根据手头的任务选择我们最喜欢的模型 (即"鱼与熊掌兼得"), 即使在研究效率问题时也是如此---只要我们只关心*多项式时间*和*指数时间*之间的差距. 当我们想要*设计*一个算法时, 我们可以利用 NAND-RAM 提供的额外能力和便利. 当我们想要*分析*一个程序或证明一个*否定性结果*时, 我们可以将注意力局限于图灵机.
 
 
 
 
+```admonish bigidea
+{{idec}}{ide:polyvsnot} 
+
+只要我们仅关注**多项式时间**与**指数时间**之间的区别, 所有 "合理的" 计算模型都是等价的.
+```
 
 
-::: { .bigidea #polyvsnot}
-All "reasonable" computational models are equivalent if we only care about the distinction between  polynomial and exponential.
-:::
-
-The adjective "reasonable" above refers to all scalable computational models that have been implemented, with the possible exception of  _quantum computers_, see [#ECTTsec](){.ref} and [quantumchap](){.ref}.
+上文中的形容词 **"合理的"** 指的是所有已实现的、可扩展的计算模型, 而 **量子计算机** 可能是唯一的例外. 参见 {{ref:ECTTsec}} 和 [第23章](chapter_23.md).
 
 
+```admonish proof collapsible=true title="{{ref:thm:polyRAMTM}}的证明思路"
+证明 $TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{RAM}}(10 \cdot T(n))$ 这一方向并不困难, 因为 NAND-RAM 程序 $P$ 可以通过在数组中存储图灵机 $M$ 的状态转移表（如 [定理9.1](./chapter_9.md#thm:universaltmthm) 的证明中所做的那样）, 以常数级的开销模拟 $M$. 模拟图灵机的每一步都可以在常数 $c$ 步 RAM 操作内完成, 且可以证明这个常数 $c$ 小于 $10$.
 
-> ### {.proofidea data-ref="polyRAMTM-thm"}
-The direction $TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{RAM}}(10 \cdot T(n))$ is not hard to show, since a NAND-RAM program  $P$ can simulate a Turing machine $M$ with constant overhead by storing the transition table of $M$ in an array (as is done in the proof of [universaltmthm](){.ref}). Simulating every step of the Turing machine can be done in a constant number $c$ of steps of RAM, and it can be shown this constant $c$ is smaller than $10$.
-Thus the heart of the theorem is to prove that $TIME_{\mathsf{RAM}}(T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4)$. This proof closely follows the proof of  [RAMTMequivalencethm](){.ref}, where we have shown that every function $F$ that is computable by a NAND-RAM program $P$ is computable by a Turing machine (or equivalently a NAND-TM program) $M$.  To prove [polyRAMTM-thm](){.ref}, we follow the exact same proof but just check that the overhead of the simulation of $P$ by $M$ is polynomial.
-The proof has many details, but is not deep. It is therefore much more important that you understand the _statement_ of this theorem than its proof.
+因此, 该定理的核心在于证明 $TIME_{\mathsf{RAM}}(T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4)$. 这一证明紧随 [定理8.1](./chapter_8.md#thm:RAMTMequivalencethm) 的证明思路, 在那里我们已经证明了任何由 NAND-RAM 程序 $P$ 可计算的函数 $F$, 同样可以由图灵机（或等价的 NAND-TM 程序）$M$ 来计算. 为了证明 {{ref:thm:polyRAMTM}}, 我们沿用完全相同的证明过程, 只需核实 $M$ 模拟 $P$ 的开销是多项式级别的即可.
 
-::: {.proof data-ref="polyRAMTM-thm"}
-We only focus on the non-trivial direction $TIME_{\mathsf{RAM}}(T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4)$.
-Let $F\in TIME_{\mathsf{RAM}}(T(n))$. 
-$F$ can be computed in time $T(n)$ by some NAND-RAM program $P$ and we need to show that it can also be computed in time $T(n)^4$ by a Turing machine $M$.
-This will follow from showing  that $F$ can be computed in time $T(n)^4$ by a NAND-TM program, since for every NAND-TM program $Q$ there is a Turing machine $M$ simulating it such that each iteration of $Q$ corresponds to a single step of $M$.
+该证明包含许多细节, 但并不深奥. 因此, 相比于证明过程, 理解该定理的 **陈述** 要重要得多.
+```
 
-
-As mentioned above, we follow the proof of [RAMTMequivalencethm](){.ref} (simulation of NAND-RAM programs using NAND-TM programs) and use the exact same simulation, but with a more careful accounting of the number of steps that the simulation costs.
-Recall, that the simulation of NAND-RAM works by "peeling off" features of NAND-RAM one by one, until we are left with NAND-TM.
-
-We will not provide the full details but will present the main ideas used in showing that every feature of NAND-RAM can be simulated by NAND-TM with at most a polynomial overhead:
-
-1. Recall that every NAND-RAM variable or array element can contain an integer between $0$ and $T$ where $T$ is the number of lines that have been executed so far. Therefore if  $P$ is a NAND-RAM program that computes $F$ in $T(n)$ time, then on inputs of length $n$, all integers used by $P$ are of magnitude at most $T(n)$. This means that the largest value `i` can ever reach is at most $T(n)$ and so each one of $P$'s variables can be thought of as an array of at most $T(n)$ indices, each of which holds a natural number of magnitude at most $T(n)$. We let $\ell = \ceil{\log T(n)}$ be the number of bits needed to encode such numbers. (We can start off the simulation by computing $T(n)$ and $\ell$.) 
+```admonish proof collapsible=true title="{{ref:thm:polyRAMTM}}的证明"
+我们仅关注非平凡方向的 $TIME_{\mathsf{RAM}}(T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4)$.
+令 $F\in TIME_{\mathsf{RAM}}(T(n))$.
+$F$ 可由某个 NAND-RAM 程序 $P$ 在 $T(n)$ 的时间内计算, 且我们需要证明它同样可以被一个图灵机 $M$ 在 $T(n)^4$ 的时间内被计算.
+这等价于证明 $F$ 可以被一个 NAND-TM 程序在 $T(n)^4$ 时间内被计算, 因为对于任意 NAND-TM 程序 $Q$, 都存在一台模拟它的图灵机 $M$, 使得 $Q$ 的每一次迭代都对应 $M$ 的一个单步操作.
 
 
-2. We can encode a NAND-RAM array of length $\leq T(n)$ containing numbers in $\{0,\ldots, T(n)-1 \}$ as an Boolean (i.e., NAND-TM) array of  $T(n)\ell =O(T(n)\log T(n))$ bits, which we can also think of as a _two dimensional array_ as we did in the proof of [RAMTMequivalencethm](){.ref}. We encode a NAND-RAM scalar containing a number in $\{0,\ldots, T(n)-1 \}$ simply by a shorter NAND-TM array of $\ell$ bits. 
+如前文所述, 我们沿用 [定理8.1](./chapter_8.md#thm:RAMTMequivalencethm) 的证明方法 (使用 NAND-TM 程序模拟 NAND-RAM 程序), 并且使用一样的模拟方法, 但更仔细地核算每步模拟所需要消耗的步数.
+回想一下, NAND-RAM 的模拟是通过"剥离"其特性, 直到只剩下 NAND-TM 为止.
 
-3. We can simulate the two dimensional arrays  using one-dimensional arrays of length $T(n)\ell = O(T(n) \log T(n))$.  All the arithmetic operations on integers use the grade-school algorithms, that take time that is polynomial in the number $\ell$ of bits of the integers, which is  $poly(\log T(n))$ in our case.  Hence we can simulate $T(n)$ steps of NAND-RAM with $O(T(n)poly(\log T(n))$ steps of a model that uses random access memory but only _Boolean-valued_ one-dimensional arrays.
+我们不会提供所有证明的细节, 但将展示证明 NAND-RAM 的每个特性都能以至多多项式开销被 NAND-TM 模拟的核心思路:
 
-4. The most expensive step is to translate from random access memory to the sequential memory model of NAND-TM/Turing machines. As we did in the proof of [RAMTMequivalencethm](){.ref} (see [nandtmgorydetailssec](){.ref}), we can simulate accessing an array `Foo` at some location encoded in an array `Bar` by:
+1. 回想一下, 每个 NAND-RAM 变量或数组元素包含的整数范围在 0 到 T 之间, 其中 T 是目前已经执行的行数.
+因此, 如果 P 是一个在 $T(n)$ 时间内计算 $F$ 的 NAND-RAM 程序, 那么在长度为 $n$ 的输入下, P 所使用的所有整数的大小至多为 $T(n)$.
+这意味着索引 `i` 能到达的最大值至多是 $T(n)$, 因此 $P$ 的每个变量都可以看作是一个拥有至多 $T(n)$ 个索引的数组, 每个索引存放一个大小至多为 $T(n)$ 的自然数.
+令 $\ell = \ceil{\log T(n)}$ 为编码此类数字所需要的对比特数 (我们可以在模拟开始时先计算出 $T(n)$ 和 $\ell$).
+2. 我们可以将一个长度 $\leq T(n)$, 包含范围在 $\{0,\ldots, T(n)-1 \}$ 内数字的 NAND-RAM 数组, 编码为一个包含 $T(n)\ell =O(T(n)\log T(n))$ 个比特的布尔 (即 NAND-TM) 数组.
+我们也可以像 [定理8.1](./chapter_8.md#thm:RAMTMequivalencethm) 的证明那样, 将其视为一个*二维数组*.
+一个包含数字的 NAND-RAM 标量则简单地编码为一个长度为 $\ell$ 的较短 NAND-TM 数组.
+3. 我们可以使用长度为 $T(n)\ell = O(T(n) \log T(n))$ 的一维数组来模拟二维数组.
+所有关于整数的算术运算都是用"小学数学算法", 其耗时是整数比特数 $\ell$ 的多项式级别的, 在本例中即为 $poly(\log T(n))$.
+因此, 我们可以用一个使用随机访问内存但仅有*布尔值*的一维数组, 在 $O(T(n)poly(\log T(n)))$ 步内模拟 $T(n)$ 步的 NAND-RAM 模型.
+4. 最昂贵的步骤是将随机访问内存转化为 NAND-TM/图灵机 的顺序内存模型.
+正如我们在 [定理8.1](./chapter_8.md#thm:RAMTMequivalencethm) 证明中所做的, 我们可以通过以下步骤模拟访问数组 `Foo` 中由数组 `Bar` 编码的某个位置:
 
-   a. Copying `Bar` to some temporary array `Temp`
-   b. Having an array `Index`  which is initially all zeros except $1$ at the first location.
-   c. Repeating the following until `Temp` encodes the number $0$: _(Number of repetitions is at most $T(n)$.)_
-	  - Decrease the number encoded temp by $1$. _(Takes number of steps polynomial in $\ell = \ceil{\log T(n)}$.)_
-	  - Decrease `i` until it is equal to $0$. _(Takes $O(T(n))$ steps.)_
-	  - Scan `Index` until we reach the point in which it equals $1$ and then change this $1$ to $0$ and go one step further and write $1$ in this location. _(Takes $O(T(n))$ steps.)_
-   d. When we are done we know that if we  scan `Index` until we reach the point in which `Index[i]`$=1$ then `i` contains the value that was encoded by `Bar` _(Takes $O(T(n))$ steps.)_
+   1. 将 `Bar` 复制到某个临时数组 `Temp`
+   2. 维护一个数组 `Index`, 其初始除第一位为 $1$ 外其余位置为 $0$.
+   3. 重复以下步骤直到 `Temp` 编码了数字 $0$: _(最多重复 $T(n)$ 次)_
+	  - 将 `Temp` 编码的数值减 $1$. _(消耗步数为 $\ell = \ceil{\log T(n)}$ 的多项式级)_
+	  - 减小 `i` 直到其等于 $0$. _(消耗 $O(T(n))$ 步)_
+	  - 扫描 `Index` 直到直到值为 $1$ 的位置, 将其改成 $0$, 向后移动一步并写下 $1$. _(消耗 $O(T(n))$ 步)_
+   4. 完成后, 如果我们扫描 `Index` 直到找到 `Index[i]`$=1$ 的点, 那么 `i` 就包含了原先由 `Bar` 编码的值. _(消耗 $O(T(n))$ 步)_
 
-  The total cost for each such operation is $O(T(n)^2 + T(n)poly(\log T(n))) = O(T(n)^2)$ steps.
+   每次此类操作的总代价为 $O(T(n)^2 + T(n)poly(\log T(n))) = O(T(n)^2)$ 步.
 
-In sum, we simulate a single step of NAND-RAM using $O(T(n)^2 poly(\log T(n)))$ steps of NAND-TM, and hence the total simulation time is $O(T(n)^3 poly(\log T(n)))$ which is smaller than $T(n)^4$ for sufficiently large $n$.
-:::
-
-
-
-
-
-
-
-
-
-
-::: {.remark title="Nice time bounds" #nicefunctionsrem}
-When considering general time bounds we need to make sure to rule out some "pathological" cases such as functions $T$ that don't give enough time for the algorithm to read the input, or functions where the time bound itself is uncomputable. We say that a function $T:\N \rightarrow \N$ is a  _nice time bound function_ (or nice function for short) if for every $n\in \N$, $T(n) \geq n$ (i.e., $T$ allows enough time to read the input), for every $n' \geq n$, $T(n') \geq T(n)$ (i.e., $T$ allows more time on longer inputs), and the map $F(x) = 1^{T(|x|)}$  (i.e., mapping a string of length $n$ to a sequence of $T(n)$ ones) can be computed by a NAND-RAM program in $O(T(n))$ time.
-
-All the "normal" time complexity bounds we encounter in applications such as $T(n)= 100 n$, $T(n) =  n^2 \log n$,$T(n) = 2^{\sqrt{n}}$, etc.  are "nice".
-Hence from now on we will only care about the class $TIME(T(n))$   when $T$ is a "nice" function.
-The computability condition is in particular typically easily satisfied.
-For example, for arithmetic functions such as $T(n) = n^3$, we can typically compute the binary representation of $T(n)$ in time polynomial _in the number of bits_ of $T(n)$ and hence poly-logarithmic in $T(n)$.
-Hence the time to write the string $1^{T(n)}$ in such cases will be $T(n) + poly(\log T(n)) = O(T(n))$.
-:::
-
-
-## Extended Church-Turing Thesis (discussion) { #ECTTsec }
-
-[polyRAMTM-thm](){.ref} shows that the computational models of _Turing machines_ and _RAM machines / NAND-RAM programs_ are equivalent up to polynomial factors in the running time.
-Other examples of polynomially equivalent models include:
-
-* All standard programming languages, including C/Python/JavaScript/Lisp/etc.
-
-* The $\lambda$ calculus (see also [bibnotesrunningtime](){.ref}).
-
-* Cellular automata
-
-* Parallel computers
-
-* Biological computing devices such as DNA-based computers.
-
-
-The _Extended Church Turing Thesis_ is the statement that this is true for all physically realizable computing models. 
-In other words, the extended Church Turing thesis says that for every _scalable computing device_ $C$ (which has a finite description but can be in principle used to run computation on arbitrarily large inputs),  there is some constant $a$  such that for every function $F:\{0,1\}^* \rightarrow \{0,1\}$ that $C$ can compute on $n$ length inputs using an $S(n)$ amount of physical resources, $F$ is in $TIME(S(n)^a)$.
-This is a strengthening of the ("plain") Church-Turing Thesis, discussed in [churchturingdiscussionsec](){.ref}, which states that the set of computable functions is the same for all physically realizable models, but without requiring the overhead in the simulation between different models to be at most polynomial.
-
-All the current constructions of scalable computational models and programming languages conform to the Extended Church-Turing Thesis, in the sense that they can be simulated with polynomial overhead by Turing machines (and hence also by NAND-TM or NAND-RAM programs).
-Consequently, the classes $\mathbf{P}$ and $\mathbf{EXP}$ are robust to the choice of model, and we can use the programming language of our choice, or high level descriptions of an algorithm, to determine whether or not a problem is in $\mathbf{P}$.
-
-Like the Church-Turing thesis itself, the extended Church-Turing thesis is in the asymptotic setting and does not directly yield an experimentally testable prediction.
-However, it can be instantiated with more concrete bounds on the overhead, yielding experimentally-testable predictions such as the _Physical Extended Church-Turing Thesis_   we mentioned in [PECTTsec](){.ref}.
-
-In the last hundred+ years of studying and mechanizing computation, no one has yet constructed a scalable computing device that violates the extended Church Turing Thesis.
-However,    _quantum computing_, if realized, will pose a serious challenge to the extended Church-Turing Thesis (see [quantumchap](){.ref}).
-However, even if the promises of quantum computing are fully realized, the extended Church-Turing thesis is  "morally" correct, in the sense that, while we do need to adapt the thesis to account for the possibility of quantum computing, its broad outline remains unchanged.
-We are still able to model computation mathematically, we can still treat programs as strings and have a universal program,   we still have time hierarchy and uncomputability results, and there is still no reason to doubt the ("plain") Church-Turing thesis.
-Moreover,  the prospect of quantum computing does not seem to make a difference for the time complexity of many  (though not all!) of the concrete problems that we care about.
-In particular, as far as we know, out of all the example problems mentioned in [chapefficient](){.ref}  the complexity of only one--- integer factoring--- is affected by modifying our model to include quantum computers as well.
+综上所述，我们使用 $O(T(n)^2 poly(\log T(n)))$ 步 NAND-TM 来模拟 NAND-RAM 的**单步**操作，因此总模拟时间为 $O(T(n)^3 poly(\log T(n)))$。对于足够大的 $n$，这个值小于 $T(n)^4$.
+```
 
 
 
+```admonish info
+{{remc}}{rem:nicefunctions}[好的时间界限]
+
+在讨论一般的时间界限时, 我们需要确保排除掉一些"病态"的情况, 比如函数 $T$ 没有给算法留足够读取输入的时间, 或者时间界限函数本身就是不可计算的.
+
+我们称函数 $T:\N \rightarrow \N$ 是一个 *好的时间界限函数* (或简称为好函数), 如果它满足以下条件:
++ 对于任意 $n\in \N$, 都有 $T(n) \geq n$ (即 $T$ 预留了足够的读入时间)
++ 对于任意 $n' \geq n$, 都有 $T(n') \geq T(n)$ (即 $T$ 允许在更长的输入上花费更长的时间)
++ 映射 $F(x) = 1^{T(|x|)}$ (即把长度为 $n$ 的字符串映射为长度为 $T(n)$ 的全 $1$ 序列) 可以被一个 NAND-RAM 程序在 $O(T(n))$ 时间内计算出来.
+
+我们在应用中遇到所有"正常的"时间复杂度界限, 如 $T(n)= 100 n$, $T(n) =  n^2 \log n$,$T(n) = 2^{\sqrt{n}}$ 等, 都是好的.
+因此, 从现在起, 我们只关心当 $T(n)$ 是"好函数"时的复杂性类 $TIME(T(n))$.
+可计算性的条件一般是很容易被满足的.
+比如, 对于像 $T(n) = n^3$ 这样的代数函数, 我们可以在关于 $T(n)$ 的比特数的多项式时间内 (即关于 $T(n)$ 的对数多项式级) 计算出 $T(n)$ 的二进制表示.
+因此, 在这种情况下, 写出字符串 $1^{T(n)}$ 的时间将会是 $T(n) + poly(\log T(n)) = O(T(n))$.
+```
 
 
+## 13.3 扩展Church-Turing论题 (讨论) { #ECTTsec }
 
+{{ref:thm:polyRAMTM}} 表明, 图灵机和 RAM 机/ NAND-RAM 程序这几个计算模型在运行时间上是多项式等价的.
+其他多项式等价模型的例子有:
+
+* 所有标准的编程语言, 包括 C/Python/JavaScript/Lisp/等.
+* $\lambda$ 算子 (参见 {{ref:bibnotesrunningtime}})
+* 元胞自动机
+* 并行计算机
+* 生物计算设备, 如基于 DNA 的计算机.
+
+*扩展Church-Turing论题* 指出, 这一表述对于所有物理上可实现的计算模型均成立.
+换言之, 扩展Church-Turing论题认为, 对于任意一个可以*扩展的计算设备* $C$ (该设备具有有限的描述, 但原则上可以用于处理任意长度的输入), 都存在某个常数 $a$, 使得对于 $C$ 在长度为 $n$ 的输入上使用 $S(n)$ 量的物理资源所能计算的每一个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$, $F$ 都属于 $TIME(S(n)^a)$.
+这是对一般的Church-Turing论题 (在 [第 8.8 节](./chapter_8.md#churchturingdiscussionsec) 中被讨论) 的加强.
+普通论题仅指出所有物理上可实现模型的"可计算函数集"是相同的, 但不要求不同模型之间模拟的开销至多为多项式级别.
+
+目前所有关于可扩展计算模型和编程语言的构建都遵循扩展Church-Turing论题, 即它们都可以被图灵机 (以及 NAND-TM 或 NAND-RAM 程序) 以多项式级开销进行模拟.
+因此, $\mathbf{P}$ 和 $\mathbf{EXP}$ 类对于模型的选择具有鲁棒性.
+我们可以使用任何我们喜欢的编程语言, 或者算法的高层描述, 来确定一个问题是否属于 $\mathbf{P}$.
+
+与Church-Turing论题本身一样, 扩展Church-Turing论题也处于渐近设定之下, 并不直接产生可实验验证的预测.
+然而, 它可以用更具体的开销界限来实例化, 从而产生可实验验证的预测, 例如我们在 {{ref:PECTTsec}} 中提到的*物理扩展Church-Turing论题*.
+
+在过去一百多年对计算的研究和机械化进程中, 尚未有人制造出能违反扩展Church-Turing论题的可扩展计算设备.
+然而, *量子计算* (如果得以实现) 将对扩展丘奇-图灵论题提出严峻挑战 (见 [第23章](./chapter_23.md)).
+但是, 即便量子计算的愿景完全实现, 扩展Church-Turing论题在"精神层面"上依然是正确的: 
+虽然我们需要修正该论题以纳入量子计算的可能性, 但其宏观框架保持不变.
+我们依然能够对计算进行数学建模; 依然可以将程序视为字符串并拥有通用程序; 依然拥有时间层级和不可计算性结果; 并且依然没有理由怀疑 ("普通") Church-Turing论题.
+此外, 量子计算的前景似乎并不会改变我们所关心的许多 (虽非全部!) 具体问题的运行时间复杂度.
+特别是, 就我们目前所知, 在 [第12章](chapter_12.md) 提到的所有示例问题中, 只有*整数分解*这一个问题的复杂度, 会因为将模型修改为包含量子计算机而受到影响.
 
 
 
