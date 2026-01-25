@@ -201,7 +201,7 @@
 
 
 ```admonish quote title=""
-{{thmc}}{thm:polyRAMTM}[连接图灵机和 RAM 机]
+{{thmc}}{thm:polyRAMTM}[图灵机和 RAM 机的联系]
 
 $T:\N \rightarrow \N$ 为一个函数, 满足对任意 $n$ 都有 $T(n) \geq n$, 且映射 $n \mapsto T(n)$ 可以由一台图灵机在 $O(T(n))$ 时间内计算得出.
 那么: 
@@ -346,80 +346,97 @@ $F$ 可由某个 NAND-RAM 程序 $P$ 在 $T(n)$ 的时间内计算, 且我们需
 特别是, 就我们目前所知, 在 [第12章](chapter_12.md) 提到的所有示例问题中, 只有*整数分解*这一个问题的复杂度, 会因为将模型修改为包含量子计算机而受到影响.
 
 
+## 13.4 高效的通用机器: 在 NAND-RAM 中的 NAND-RAM 解释器
+
+我们已经在 [定理9.1](./chapter_9.md#thm:universaltmthm) 中见过了 "通用图灵机".
+审视其证明, 并结合 {{ref:thm:polyRAMTM}} , 我们可以看到程序 $U$ 具有*多项式*开销, 即它可以在 $O(T^4)$ 步内模拟给定 NAND-TM (或 NAND-RAM) 程序 $P$ 在输入 $x$ 上运行 $T$ 步.
+但事实上, 通过直接模拟 NAND-RAM 程序, 我们可以做的更好, 仅需*常数*倍的乘法开销.
+也就是说, 存在一个*通用 NAND-RAM 程序* $U$, 使得对于每一个 NAND-RAM 程序 $P$, $U$ 仅需要 $O(T)$ 步就能模拟 $P$ 的 $T$ 步. ($O$ 记号中隐含的常数可能取决于程序 $P$, 但不依赖输入的长度.)
+
+```admonish quote title=""
+{{thmc}}{thm:univ-nandpp}[NAND-RAM 的高效通用性]
+
+存在一个 NAND-RAM 程序 $U$ 满足以下性质:
+
+1. *($U$ 是一个通用的 NAND-RAM 程序)* 对于任意 NAND-RAM 程序 $P$ 和输入 $x$,  $U(P, x) = P(x)$, 其中 $U(P, x)$ 表示 $U$ 在一个编码 $(P, x)$ 的字符串上的输出.
+
+2. *($U$ 是高效的)* 存在一个常数 $a, b$, 使得对于每一个 NAND-RAM 程序 $P$, 如果 $P$ 在输入 $x$ 后运行至多 $T$ 步后停机, 那么 $U(P, x)$ 在运行至多 $C\cdot T$ 步后停机, 其中 $C \leq a |P|^b$.
+```
+
+```admonish pause title="暂停一下"
+正如 {{ref:thm:polyRAMTM}} 的情况一样, {{ref:thm:univ-nandpp}} 的证明并不很深奥, 因此理解它的*陈述*更加重要.
+具体来说, 如果你明白如何使用像 Python 这样的现代语言写一个 NAND-RAM 解释器, 那么你就知道了关于该定理证明的一切.
+```
+
+```admonish pic id="universalrammachinefig"
+![universalrammachinefig](./images/chapter13/universalrammachine.png)
+
+{{pic}}{fig:universalrammachine}
+通用 NAND-RAM 程序 $U$ 通过将输入程序 $P$ 的所有变量存储在 $U$ 的单个数组 `Vars` 来模拟 $P$.
+如果 $P$ 有 $t$ 个变量, 那么 `Vars` 被划分为长度为 $t$ 的块, 其中第 $i$ 个块的第 $j$ 个坐标包含 $P$ 的第 $j$ 个数组的第 $i$ 个元素.
+如果 $P$ 的第 $j$ 个变量是标量, 那么我们只需将其值存储在 `Vars` 的第 $0$ 个块中.
+```
+
+```admonish proof collapsible=true title="{{ref:thm:univ-nandpp}}的证明"
+若要完整展示一个通用 NAND-RAM 程序, 我们需要描述一个精确的表示方案, 以及该程序的完整 NAND-RAM 指令.
+
+虽然这可以被完成, 但关注主要想法更为重要, 因此我们在这里仅概述证明.
+
+NAND-RAM 的规范在 [附录](http://tiny.cc/introtcsappendix) 中给出, 出于此模拟的目的, 我们可以简单地将 NAND-RAM 代码表示为 ASCII 字符串.
+
+程序 $U$ 接收一个 NAND-RAM 程序 $P$ 和一个输入 $x$ 作为输入, 并逐步模拟 $P$.
+
+为此, $U$ 执行以下操作:
+
+1. $U$ 维护变量 `program_counter` 和 `number_steps`, 分别用于表示待执行的当前行和迄今为止已执行的步数.
+
+2. $U$ 最初扫描 $P$ 的代码以找出 $P$ 使用的变量名的数量 $t$. $U$ 将把每个变量名转换为 $0$ 到 $t-1$ 之间的一个数字, 并使用一个数组 `Program` 来存储 $P$ 的代码, 其中对于每一行 $\ell$, `Program[`$\ell$`]` 将存储 $P$ 的第 $\ell$ 行, 其中的变量名已被转换为数字. (更具体地说, 我们将使用常数数量的数组来分别编码该行中使用的操作, 以及操作数的变量名和索引.)
+
+3. $U$ 维护一个数组 `Vars`, 其中包含 $P$ 的变量的所有值. 我们将 `Vars` 分割为长度为 $t$ 的块. 如果 $s$ 是对应于 $P$ 的数组变量 `Foo` 的数字, 那么我们将 `Foo[0]` 存储在 `Vars[`$s$`]` 中, 将 `Foo[1]` 存储在 `Vars[`$t+s$`]` 中, 将 `Foo[2]` 存储在 `Vars[`$2t + s$`]` 中, 依此类推 (参见 {{ref:fig:universalrammachine}}). 一般的, 如果 $P$ 的第 $s$ 个变量是标量变量, 那么它的值将被存储在位置 `Vars[`$s$`]` 中. 如果它是一个数组变量, 那么它的第 $i$ 个元素的值将被存储在位置 `Vars[`$t\cdot i + s$`]` 中.
+
+4. 为了模拟 $P$ 的一步, 程序 $U$ 从 `Program` 中获取对应于 `program_counter` 的行并执行它. 由于 NAND-RAM 具有常数数量的算术运算, 我们可以使用一连串常数数量的 if-then-else 来实现执行哪种运算的逻辑. 从 `Vars` 中检索每条指令的操作数的值可以使用常数数量的算术运算来完成.
+
+初始化阶段仅花费常数 (取决于 $|P|$ 而非输入 $x$) 数量的步骤.
+
+一旦我们完成了初始化, 为了模拟 $P$ 的单一步骤, 我们只需要获取相应的行, 并进行常数数量的 "if else" 和对 `Vars` 的访问来模拟它.
+
+因此, 当忽略依赖于程序 $P$ 的常数时, 模拟程序 $P$ 的 $T$ 个步骤的总运行时间至多为 $O(T)$.
+```
+
+### 13.4.1 限时通用图灵机
+
+高效通用机的一个推论如下.
+给定任意图灵机 $M$, 输入 $x$, 以及 "步数预算" $T$, 我们可以在关于 $T$ 的多项式时间内模拟 $M$ 执行 $T$ 步.
+形式化地, 我们定义一个函数 $TIMEDEVAL$, 它接受 $M$, $x$ 和时间预算这三个参数, 如果 $M$ 在至多 $T$ 步内停机, 则输出 $M(x)$, 否则输出 $0$.
+限时通用图灵机在多项式时间内计算 $TIMEDEVAL$ (见 {{ref:fig:timeduniversaltm}}). 
+(由于我们将时间作为输入长度的函数来度量, 我们将 $TIMEDEVAL$ 定义为接受以 _一元_ 表示的输入 $T$: 即由 $T$ 个 1 组成的字符串.)
+
+```admonish quote title=""
+{{thmc}}{thm:timeduniversalTM}[限时通用图灵机]
+
+设 $TIMEDEVAL:\{0,1\}^* \rightarrow \{0,1\}^*$ 为如下定义的函数
+$$TIMEDEVAL(M,x,1^T) = \begin{cases} M(x) & M \text{ 在 $x$ 上 $\leq T$ 步内停机} \\ 0 & \text{否则}\end{cases} \;.$$
+那么 $TIMEDEVAL \in \mathbf{P}$.
+```
 
 
+```admonish pic id="timeduniversaltmfig"
+![timeduniversaltmfig](./images/chapter13/timeduniversaltm.png)
 
+{{pic}}{fig:timeduniversaltm}
+_限时_ 通用图灵机接受图灵机 $M$, 输入 $x$ 和时间界限 $T$ 作为输入, 并在 $M$ 于至多 $T$ 步内停机时输出 $M(x)$. 
+{{ref:thm:timeduniversalTM}} 指出存在这样一台机器, 其运行时间是关于 $T$ 的多项式.
+```
 
-## Efficient universal machine: a NAND-RAM interpreter in NAND-RAM
+```admonish proof collapsible=true title="{{ref:thm:timeduniversalTM}}的证明"
+我们只给出证明概要, 因为该结果相当直接地由 {{ref:thm:polyRAMTM}} 和 {{ref:thm:univ-nandpp}} 推导得出.
+根据 {{ref:thm:polyRAMTM}}, 要证明 $TIMEDEVAL \in \mathbf{P}$, 只要给出一个计算 $TIMEDEVAL$ 的多项式时间 NAND-RAM 程序即可.
 
-We have seen in [universaltmthm](){.ref} the "universal Turing machine".
-Examining that proof, and combining it with  [polyRAMTM-thm](){.ref} , we can see that the program $U$ has a _polynomial_ overhead, in the sense that it can simulate $T$ steps of a given NAND-TM (or NAND-RAM) program $P$ on an input $x$ in $O(T^4)$ steps.
-But in fact, by directly simulating NAND-RAM programs we can do better with only a _constant_ multiplicative overhead.
-That is, there is a _universal NAND-RAM program_ $U$ such that for every NAND-RAM program $P$, $U$ simulates $T$ steps of $P$ using only $O(T)$ steps. (The implicit constant in the $O$ notation can depend on the program $P$ but does _not_ depend on the length of the input.)
-
-
-::: {.theorem title="Efficient universality of NAND-RAM" #univ-nandpp}
-There exists a NAND-RAM program $U$ satisfying the following:
-
-1. _($U$ is a universal NAND-RAM program.)_ For every NAND-RAM program $P$ and input $x$,  $U(P,x)=P(x)$ where by $U(P,x)$ we denote the output of $U$ on a string encoding the pair $(P,x)$.
-
-2. _($U$ is efficient.)_ There are some constants $a,b$ such that for every NAND-RAM program $P$, if $P$ halts on input $x$ after at most $T$ steps, then $U(P,x)$ halts after at most $C\cdot T$ steps where $C \leq a |P|^b$. 
-:::
-
-
-> ### { .pause }
-As in the case of [polyRAMTM-thm](){.ref}, the proof of [univ-nandpp](){.ref} is not very deep and so it is more important to understand its _statement_.
-Specifically, if you understand how you would go about writing an interpreter for NAND-RAM using a modern programming language such as Python, then you know everything you need to know about the proof of this theorem.
-
-
-![The universal NAND-RAM program $U$ simulates an input NAND-RAM program $P$ by storing all of $P$'s variables inside a single array `Vars` of $U$. If $P$ has $t$ variables, then the array `Vars` is divided into blocks of length $t$, where the $j$-th coordinate of the $i$-th block contains the $i$-th element of the $j$-th array of $P$. If the $j$-th variable of $P$ is scalar, then we just store its value in the zeroth block of `Vars`.](../figure/universalrammachine.png){#universalrammachinefig .margin}
-
-::: {.proof data-ref="univ-nandpp"}
-To present a universal NAND-RAM program in full we would need to describe a precise representation scheme, as well as the full NAND-RAM instructions for the program.
-While this can be done, it is more important to focus on the main ideas, and so we just sketch the proof here.
-A specification of NAND-RAM is given in the [appendix](http://tiny.cc/introtcsappendix), and for the purposes of this simulation, we can simply use the representation of the NAND-RAM code as an ASCII string.
-
-The program $U$ gets as input a NAND-RAM program $P$ and an input $x$ and simulates $P$ one step at a time.
-To do so, $U$ does the following:
-
-1. $U$ maintains variables  `program_counter`, and `number_steps` for the current line to be executed and the number of steps executed so far.
-
-2. $U$ initially scans the code of $P$ to find the number $t$ of unique variable names that $P$ uses. It will translate each variable name into a number between $0$ and $t-1$ and use an array `Program` to store $P$'s code where  for every line $\ell$, `Program[`$\ell$`]` will store the $\ell$-th line of $P$ where the variable names have been translated to numbers. (More concretely, we will use a constant number of arrays to separately encode the operation used in this line, and the variable names and indices of the operands.)
-
-
-3. $U$ maintains a single array `Vars` that contains all the values of $P$'s variables. We divide `Vars` into blocks of length $t$. If $s$ is a number corresponding to an array variable `Foo` of $P$, then we store `Foo[0]` in `Vars[`$s$`]`, we store `Foo[1]` in `Var_values[`$t+s$`]`, `Foo[2]` in `Vars[`$2t + s$`]` and so on and so forth (see [universalrammachinefig](){.ref}). Generally, if the $s$-th variable of $P$ is a scalar variable, then its value will be stored in location `Vars[`$s$`]`.
-If it is an array variable then the value of its $i$-th element will be stored in location `Vars[`$t\cdot i + s$`]`.
-
-4. To simulate a single step of $P$, the program $U$ recovers from `Program` the line corresponding to `program_counter`  and executes it. Since NAND-RAM has a constant number of arithmetic operations, we can implement the logic of which operation to execute using a sequence of a constant number of  if-then-else's.  Retrieving from `Vars` the values of the operands of each instruction can be done using a constant number of arithmetic operations. 
-
-The setup stages take only a constant (depending on $|P|$ but not on the input $x$) number of steps.
-Once we are done with the setup, to simulate a single step of $P$, we just need to retrieve the corresponding line and do a constant number of "if elses" and accesses to `Vars` to simulate it.
-Hence the total running time to simulate $T$ steps of the program $P$ is at most $O(T)$ when suppressing constants that depend on the program $P$.
-:::
-
-### Timed Universal Turing Machine
-
-One corollary of the efficient universal machine is the following.
-Given any Turing machine $M$, input $x$, and "step budget" $T$, we can simulate the execution of $M$ for $T$ steps in time that is polynomial in $T$.
-Formally, we define a function $TIMEDEVAL$ that takes the three parameters $M$, $x$, and the time budget, and outputs $M(x)$ if $M$ halts within at most $T$ steps, and outputs $0$ otherwise.
-The timed universal Turing machine computes $TIMEDEVAL$ in polynomial time (see [timeduniversaltmfig](){.ref}). 
-(Since we measure time as a function of the input length, we define $TIMEDEVAL$ as taking the input $T$ represented in _unary_: a string of $T$ ones.)
-
-> ### {.theorem title="Timed Universal Turing Machine" #timeduniversalTM}
-Let $TIMEDEVAL:\{0,1\}^* \rightarrow \{0,1\}^*$ be the function defined as 
-$$TIMEDEVAL(M,x,1^T) = \begin{cases} M(x) & M \text{ halts within $\leq T$ steps on $x$} \\ 0 & \text{otherwise}\end{cases} \;.$$
-Then $TIMEDEVAL \in \mathbf{P}$.
-
-![The _timed_ universal Turing machine takes as input a Turing machine $M$, an input $x$, and a time bound $T$, and outputs $M(x)$ if $M$ halts within at most $T$ steps. [timeduniversalTM](){.ref} states that there is such a machine that runs in time polynomial in $T$. ](../figure/timeduniversaltm.png){#timeduniversaltmfig  .margin }
-
-
-::: {.proof #proofoftimeduniversalTM data-ref="timeduniversalTM"}
-We only sketch the proof since the  result follows fairly directly from [polyRAMTM-thm](){.ref} and [univ-nandpp](){.ref}. By  [polyRAMTM-thm](){.ref}  to show that $TIMEDEVAL \in \mathbf{P}$, it suffices to give a polynomial-time NAND-RAM program to compute $TIMEDEVAL$.
-
-Such a program can be obtained as follows. Given a Turing machine $M$, by [polyRAMTM-thm](){.ref} we can transform it in time polynomial in its description into a functionally-equivalent NAND-RAM program $P$ such that the execution of $M$ on $T$ steps can be simulated by the execution of $P$ on $c\cdot T$ steps.
-We can then run the universal NAND-RAM machine of [univ-nandpp](){.ref} to simulate $P$ for $c\cdot T$ steps, using $O(T)$ time, and output $0$ if the execution did not halt within this budget.
-This shows that $TIMEDEVAL$ can be computed by a NAND-RAM program in time polynomial in $|M|$ and linear in $T$, which means $TIMEDEVAL \in \mathbf{P}$.
-:::
+这样的程序可以通过如下方式获得.
+给定图灵机 $M$, 根据 {{ref:thm:polyRAMTM}}, 我们可以在关于其描述长度的多项式时间内, 将其转换为功能等价的 NAND-RAM 程序 $P$, 使得 $M$ 执行 $T$ 步的过程可以由 $P$ 执行 $c\cdot T$ 步来模拟.
+然后我们可以运行 {{ref:thm:univ-nandpp}} 中的通用 NAND-RAM 机器来模拟 $P$ 执行 $c\cdot T$ 步, 耗时 $O(T)$, 如果执行在该预算内没有停机则输出 $0$.
+这表明 $TIMEDEVAL$ 可以由一个 NAND-RAM 程序在关于 $|M|$ 的多项式且关于 $T$ 的线性时间内计算出来, 这意味着 $TIMEDEVAL \in \mathbf{P}$.
+```
 
 
 ## The time hierarchy theorem
