@@ -439,131 +439,152 @@ _限时_ 通用图灵机接受图灵机 $M$, 输入 $x$ 和时间界限 $T$ 作�
 ```
 
 
-## The time hierarchy theorem
+## 13.5 时间层级定理 (Time Hierarchy Theorem)
 
-Some functions are _uncomputable_,  but are there functions that can be computed, but only at an exorbitant cost?
-For example, is there a function that _can_ be computed in time $2^n$, but _can not_ be computed in time $2^{0.9 n}$?
-It turns out that the answer is __Yes__:
+一些函数是*不可被计算的*, 但是否存在可被计算, 但只能以很高的代价计算的函数呢?
+比如说, 是否存在*能*在 $2^n$ 时间内被计算的, 但*不能*在 $2^{0.9 n}$ 时间内被计算的函数呢?
+事实证明, 这个问题的答案是*是*:
 
-> ### {.theorem title="Time Hierarchy Theorem" #time-hierarchy-thm}
-For every nice function $T:\N \rightarrow \N$, there is a function $F:\{0,1\}^* \rightarrow \{0,1\}$
-in $TIME(T(n)\log n) \setminus TIME(T(n))$.
+```admonish quote title=""
+{{thmc}}{thm:time-hierarchy}[时间层级定理]
 
-There is nothing special about $\log n$, and we could have used any other efficiently computable function that tends to infinity with $n$.
+对于任意一个好函数 (nice function) $T:\N \rightarrow \N$, 一定存在一个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 属于 $TIME(T(n)\log n) \setminus TIME(T(n))$.
+```
 
-::: { .bigidea #timehierarchy}
-If we have more time, we can compute more functions.
-:::
+这里出现 $\log n$ 并没有什么特殊的理由, 我们也可以用其他能被高效计算的, 且当 n 趋于无穷时也趋于无穷的函数来替代 $\log n$.
+
+```admonish bigidea
+{{idec}}{ide:timehierarchy}
+
+如果我们有更多的时间, 我们就能计算更多的函数
+```
+
+```admonish info
+{{remc}}{rem:hierarchytoy}[时间层级定理的简单推论]
+
+时间层级定理的普适性会让其证明读起来略显晦涩.
+如果你先尝试自己证明一个简单的命题 $\mathbf{P} \subsetneq \mathbf{EXP}$ 可能会让你更易理解该证明.
+
+你可以通过证明 $F:\{0,1\}^* :\rightarrow \{0,1\}$ 属于 $\mathbf{EXP} \setminus \mathbf{P}$ 来做到这一点:
+对于任意图灵机 $M$ 和输入 $x$, $F(M,x)=1$ 当且仅当 $M$ 在输入 $x$ 上运行最多 $|x|^{\log |x|}$ 步后停机.
+通过使用通用图灵机 (或 {{ref:thm:univ-nandpp}} 中的高效通用 NAND-RAM 程序), 可以证明 $F \in TIME(n^{O(\log n)}) \subseteq \mathbf{EXP}$.
+另一方面, 我们可以利用与 [9.3.2节](./chapter_9.md#haltalternativesec) 中用于证明 $HALT$ 不可计算性中类似的思路来证明 $F \not\in \mathbf{P}$.
+```
+
+```admonish pic id="timehierarchythmfig"
+![timehierarchythmfig](./images/chapter13/timehierarchythm.png)
+
+{{pic}}{fig:timehierarchythm} *时间层级定理* ({{ref:thm:time-hierarchy}}) 说明图中这些复杂性类是*不同*的.
+```
 
 
-::: {.remark title="Simpler corollary of the time hierarchy theorem" #hierarchytoyrem}
-The generality of the time hierarchy theorem can make its proof a little hard to read. 
-It might be easier to follow the proof if you first try to prove by yourself the easier statement $\mathbf{P} \subsetneq \mathbf{EXP}$.
-
-You can do so by showing that the following function $F:\{0,1\}^* :\rightarrow \{0,1\}$ is in $\mathbf{EXP} \setminus \mathbf{P}$: for every Turing machine $M$ and input $x$, $F(M,x)=1$ if and only if $M$ halts on $x$ within at most $|x|^{\log |x|}$ steps.
-One can show that $F \in TIME(n^{O(\log n)}) \subseteq \mathbf{EXP}$ using the universal Turing machine (or the efficient universal NAND-RAM program of [univ-nandpp](){.ref}). On the other hand, we can use similar ideas to those used to show the uncomputability of $HALT$ in [haltalternativesec](){.ref} to prove that $F \not\in \mathbf{P}$.
-:::
-
+```admonish proof collapsible=true title="{{ref:thm:time-hierarchy}} 的证明思路"
+在 [定理 9.3](./chapter_9.md#thm:halt-thm) (停机问题的不可计算性) 的证明中, 我们已经证明函数 $HALT$ 无法在任何有限时间内被计算.
+仔细审查该证明可以发现, 它实际上给出了更强的结论.
+具体来说, 该证明表明, 如果我们将计算预算固定为 $T$ 步, 那么我们不仅无法区分停机的程序和不停机的程序, 甚至无法区分那些在至多 $T'$ 步停机的程序与那些运行超过 $T'$ 步的程序 (其中 $T'$ 是某个由 $T$ 决定的数值).
+因此 {{ref:thm:time-hierarchy}} 的证明沿用了停机问题不可计算性证明的思路, 但对运行时间进行了更仔细地分析.
+```
 
 
-
-![The _Time Hierarchy Theorem_ ([time-hierarchy-thm](){.ref}) states that all of these classes are _distinct_.](../figure/timehierarchythm.png){#timehierarchythmfig}
-
-
-> ### {.proofidea data-ref="time-hierarchy-thm"}
-In the proof of [halt-thm](){.ref} (the uncomputability of the Halting problem), we have shown that the function $HALT$ cannot be computed in any finite time. An examination of the proof shows that it gives something stronger.
-Namely, the proof shows that if we fix our computational budget to be $T$ steps, then not only can we not distinguish between programs that halt and those that do not, but we cannot even distinguish between programs that halt within at most $T'$ steps and those that take more than that (where $T'$ is some number depending on $T$).
-Therefore, the proof of [time-hierarchy-thm](){.ref} follows the ideas of the uncomputability of the halting problem, but again with a more careful accounting of the running time.
-
-
-
-::: {.proof data-ref="time-hierarchy-thm"}
-Our proof is inspired by the proof of the uncomputability of the halting problem.
-Specifically, for every function $T$ as in the theorem's statement, we define the _Bounded Halting_ function $HALT_T$ as follows.
-The input to $HALT_T$ is a pair $(P,x)$ such that $|P| \leq \log \log |x|$ and $P$ encodes some NAND-RAM program.
-We define
+```admonish proof collapsible=true title="{{ref:thm:time-hierarchy}} 的证明"
+我们的证明灵感来源于停机问题不可计算性的证明.
+具体的, 对于定理中描述的每个函数 $T$, 我们定义 *有界停机* 函数 $HALT_T$.
+$HALT_T$ 的输入是二元组 $(P,x)$ 满足 $|P| \leq \log \log |x|$ 且 $P$ 编码着某个 NAND-RAM 程序.
+我们定义
 
 $$
-HALT_T(P,x) = \begin{cases}1, & P \text{ halts on } x \text{ within } \leq 100\cdot T(|P|+|x|) \text{ steps} \\
-0, & \text{otherwise} \end{cases} \;.
+HALT_T(P,x) = \begin{cases}1, & P \text{ 在 } \leq 100\cdot T(|P|+|x|) \text{ 步内于 } x \text{ 上停机} \\
+0, & \text{否则} \end{cases} \;.
 $$
-(The constant $100$ and the function $\log \log n$ are rather arbitrary, and are chosen for convenience in this proof.)
+(常数 $100$ 和函数 $\log \log n$ 实际上是为了证明的便捷性任意选择的.)
 
-[time-hierarchy-thm](){.ref} is an immediate consequence of the following two claims:
+{{ref:thm:time-hierarchy}} 是以下两个断言的直接推论:
 
-__Claim 1:__ $HALT_T \in TIME(T(n)\cdot \log n)$
+__断言 1:__ $HALT_T \in TIME(T(n)\cdot \log n)$
 
-and
+和
 
-__Claim 2:__ $HALT_T \not\in TIME(T(n))$.
+__断言 2:__ $HALT_T \not\in TIME(T(n))$.
 
-Please make sure you understand why indeed the theorem follows directly from the combination of these two claims. We now turn to proving them.
+请确保你明白为什么这两个断言能直接得出 {{ref:thm:time-hierarchy}}.
+接下来我们将转而证明这两个断言.
 
-__Proof of claim 1:__ We can easily check in linear time whether an input has the form $P,x$ where $|P| \leq \log\log |x|$.
-Since $T(\cdot)$ is a nice function, we can evaluate it in $O(T(n))$ time. Thus, we can compute $HALT_T(P,x)$ as follows:
+__断言 1 的证明:__ 
+我们可以轻松的在线性时间内检查是否输入具有 $P,x$ 的形式, 其中 $|P| \leq \log\log |x|$.
+因为 $T(\cdot)$ 是一个好函数, 我们可以在 $O(T(n))$ 内计算它的值.
+因此, 我们可以如下计算 $HALT_T(P,x)$:
 
-1. Compute $T_0=T(|P|+|x|)$ in $O(T_0)$ steps.
+1. 在 $O(T_0)$ 步内计算 $T_0=T(|P|+|x|)$.
 
-2. Use the universal NAND-RAM program of [univ-nandpp](){.ref} to simulate $100\cdot T_0$ steps of $P$ on the input $x$ using at most  $poly(|P|)T_0$ steps. (Recall that we use $poly(\ell)$ to denote a quantity that is bounded by $a\ell^b$ for some constants $a,b$.)
+2. 使用 {{ref:thm:univ-nandpp}} 中的通用 NAND-RAM 程序在至多 $poly(|P|)T_0$ 步内模拟 $P$ 在输入 $x$ 上运行 $100\cdot T_0$ 步. (回想一下, 我们用 $poly(\ell)$ 表示一个上界为 $a\ell^b$ 的量, 其中 $a, b$ 为某个常数.)
 
-3. If $P$ halts within these $100\cdot T_0$ steps then output $1$, else output $0$. 
+3. 如果 $P$ 在 $100\cdot T_0$ 步内停机则输出 $1$, 否则输出 $0$.
 
-The length of the input is $n=|P|+|x|$.
-Since $|x| \leq n$ and $(\log \log |x|)^b = o(\log |x|)$ for every $b$, the running time will be $o(T(|P|+|x|) \log n)$ and hence the above algorithm demonstrates that $HALT_T \in TIME(T(n)\cdot \log n)$, completing the proof of Claim 1. 
-
-
-__Proof of claim 2:__ This proof is the heart of [time-hierarchy-thm](){.ref}, and is very reminiscent of the proof that $HALT$ is not computable.
-Assume, for the sake of contradiction, that there is some NAND-RAM program $P^*$ that computes $HALT_T(P,x)$ within $T(|P|+|x|)$ steps. We are going to show a contradiction by creating a program $Q$ and showing that under our assumptions, if $Q$ runs for less than $T(n)$ steps when given (a padded version of)  its own code as input then it actually runs for more than $T(n)$ steps and vice versa. (It is worth re-reading the last sentence twice or thrice to make sure you understand this logic. It is very similar to the direct proof of the uncomputability of the halting problem where we obtained a contradiction by using an assumed "halting solver" to construct a program that, given its own code as input, halts if and only if it does not halt.)
-
-
-We will define $Q^*$ to be the program that on input a string $z$   does the following:
-
-1. If $z$ does not have the form $z=P1^m$ where $P$ represents a NAND-RAM program and $|P|< 0.1 \log\log m$ then return $0$. (Recall that $1^m$ denotes the string of $m$ ones.) 
-
-2. Compute $b= P^*(P,z)$ (at a cost of at most $T(|P|+|z|)$ steps, under our assumptions).
-
-3. If $b=1$ then $Q^*$ goes into an infinite loop, otherwise it halts.
-
-Let $\ell$ be the length description of $Q^*$ as a string, and let $m$ be larger than $2^{2^{1000 \ell}}$.
-We will reach a contradiction by splitting into cases according to whether or not $HALT_T(Q^*,Q^*1^m)$ equals $0$ or $1$.
+输入的长度为 $n=|P|+|x|$.
+因为 $|x| \leq n$ 且对于任意 $b$ 都有 $(\log \log |x|)^b = o(\log |x|)$, 程序的运行时间将会是 $o(T(|P|+|x|) \log n)$, 因此上述算法证明了 $HALT_T \in TIME(T(n)\cdot \log n)$, 从而完成了对 断言 1 的证明.
 
 
-On the one hand, if $HALT_T(Q^*,Q^*1^m)=1$, then under our assumption that $P^*$ computes $HALT_T$, $Q^*$ will go into an infinite loop on input $z=Q^*1^m$, and hence in particular $Q^*$ does _not_ halt within $100 T(|Q^*|+m)$ steps on the input $z$. But this contradicts our assumption that $HALT_T(Q^*,Q^*1^m)=1$.
+__断言 2 的证明:__ 
+这个证明是 {{ref:thm:time-hierarchy}} 的核心, 并且容易让人回想起 $HALT$ 不可计算性的证明.
+假设 (为了导出矛盾), 存在某个 NAND-RAM 程序 $P^*$ 可在 $T(|P|+|x|)$ 步内计算 $HALT_T(P,x)$.
+我们将通过构造一个程序 $Q$ 来导出矛盾.
+我们将证明, 在我们的假设下, 如果 $Q$ 在给定其自身代码 (的填充版本) 作为输入时运行少于 $T(n)$ 步, 那么它实际上会运行超过 $T(n)$ 步, 反之亦然.
+(这句话值得反复阅读二到三次以确保你理解其中的逻辑. 这与停机问题不可计算性的直接证明非常相似, 在那个证明中我们利用假设的 "停机求解器" 构造了一个程序, 那个程序在给定它自身代码作为输入时, 停机当且仅当自身不停机.)
 
-This means that it must hold that $HALT_T(Q^*,Q^*1^m)=0$. But in this case, since we assume $P^*$ computes $HALT_T$, $Q^*$ does not do anything in phase 3 of its computation, and so the only computation costs come in phases 1 and 2 of the computation.
-It is not hard to verify that Phase 1 can be done in linear and in fact less than $5|z|$ steps.
-Phase 2 involves executing $P^*$, which under our assumption requires $T(|Q^*|+m)$ steps.
-In total we can perform both phases in less than $10 T(|Q^*|+m)$ in steps, which by definition means that $HALT_T(Q^*,Q^*1^m)=1$, but this is of course a contradiction. This completes the proof of Claim 2 and hence of [time-hierarchy-thm](){.ref}.
-:::
+我们定义将程序 $Q^*$ 为: 当输入字符串 $z$ 时, 执行以下三个阶段的操作:
 
-::: {.solvedexercise title="$\mathbf{P}$ vs $\mathbf{EXP}$" #PvsEXPexercise}
-Prove that $\mathbf{P} \subsetneq \mathbf{EXP}$.
-:::
+1. 如果 $z$ 不具备 $z=P1^m$ 的形式, 其中 $P$ 表示一个 NAND-RAM 程序且 $|P|< 0.1 \log\log m$, 则返回 $0$. (回想一下, $1^m$ 表示有 $m$ 个 $1$ 的字符串.) 
 
-::: {.solution data-ref="PvsEXP"}
-This statement follows directly from the time hierarchy theorem, but it can be an instructive exercise to prove it directly, see [hierarchytoyrem](){.ref}.
-We need to show that there exists $F \in \mathbf{EXP} \setminus \mathbf{P}$.
-Let $T(n) = n^{\log n}$ and $T'(n) = n^{\log n / 2}$.
-Both are nice functions.
-Since $T(n)/T'(n) = \omega(\log n)$, by [time-hierarchy-thm](){.ref} there exists some $F$ in $TIME(T(n)) \setminus TIME(T'(n))$.
-Since for sufficiently large $n$, $2^n > n^{\log n}$,  $F \in TIME(2^n) \subseteq \mathbf{EXP}$.
-On the other hand, $F \not\in \mathbf{P}$. Indeed, suppose otherwise that there was a constant $c>0$ and a  Turing machine computing $F$ on $n$-length input in at most $n^c$ steps for all sufficiently large $n$. Then since for $n$ large enough $n^c < n^{\log n/2}$, it would have followed that $F \in TIME(n^{\log n /2})$ contradicting our choice of $F$.
-:::
+2. 计算 $b= P^*(P,z)$ (在我们的假设下以最多 $T(|P|+|z|)$ 步的代价).
 
+3. 如果 $b=1$ 则 $Q^*$ 进入无限循环, 否则停机.
 
+令 $\ell$ 为 $Q^*$ 作为字符串时描述的长度, 并令 $m \ge 2^{2^{1000 \ell}}$.
+我们将通过讨论 $HALT_T(Q^*,Q^*1^m)$ 等于 $0$ 还是 $1$ 来得出矛盾.
 
-The time hierarchy theorem tells us that there are functions we can compute in $O(n^2)$ time but not $O(n)$, in $2^n$ time, but not $2^{\sqrt{n}}$, etc..
-In particular there are most definitely functions that we can compute in time $2^n$ but not $O(n)$.
-We have seen that we have no shortage of natural functions for which the best _known_ algorithm requires roughly $2^n$ time, and that many people have invested significant effort in trying to improve that.
-However,  unlike in the finite vs. infinite case, for all of the examples above at the moment we do not know how to rule out even an $O(n)$ time algorithm.
-We will however see that there is a single unproven conjecture that would imply such a result for most of these problems.
+一方面, 如果 $HALT_T(Q^*,Q^*1^m)=1$, 则在我们 $P^*$ 计算 $HALT_T$ 的假设下, $Q^*$ 在输入 $z=Q^*1^m$ 上将进入无限循环, 因此 $Q^*$ 在输入为 $z=Q^*1^m$ 下*不会*在 $100 T(|Q^*|+m)$ 步内停机. 这与我们的假设 $HALT_T(Q^*,Q^*1^m)=1$ 矛盾.
 
-![Some complexity classes and some of the functions we know (or conjecture) to be contained in them.](../figure/time_complexity_map.png){#complexityclassinclusionfig .margin  }
+这意味着 $HALT_T(Q^*,Q^*1^m)=0$ 必然成立. 但在这个情况下, 由于我们假设了 $P^*$ 计算 $HALT_T$, $Q^*$ 在其计算的第 $3$ 阶段不会做任何事情, 因此计算的唯一开销来自第 $1$ 和第 $2$ 阶段.
+不难验证第 $1$ 阶段可以在线性时间内完成 (事实上少于 $5|z|$ 步).
+第 $2$ 阶段包括执行 $P^*$, 根据我们的假设, 这需要 $T(|Q^*|+m)$ 步.
+我们可以在总计少于 $10 T(|Q^*|+m)$ 步执行这两个阶段.
+根据定义, 这说明 $HALT_T(Q^*,Q^*1^m)=1$, 但这显然是一个矛盾, 完成了断言 2 的证明, 从而也完成了 {{ref:thm:time-hierarchy}} 的证明. 
+```
 
 
+```admonish quote title=""
+{{exec}}{exe:PvsEXP}[$\mathbf{P}$ vs $\mathbf{EXP}$]
 
-The time hierarchy theorem relies on the existence of an efficient universal NAND-RAM program, as proven in [univ-nandpp](){.ref}.
-For other models such as Turing machines we have similar time hierarchy results showing that there are functions computable in time $T(n)$ and not in time $T(n)/f(n)$ where $f(n)$ corresponds to the overhead in the corresponding universal machine. 
+证明 $\mathbf{P} \subsetneq \mathbf{EXP}$.
+```
+
+
+```admonish solution collapsible=true title="对 {{ref:exe:PvsEXP}} 的解答"
+这一陈述直接由时间层级定理得出, 但直接证明它也是一项有益的练习 (参见 {{ref:thm:time-hierarchy}}).
+我们需要证明存在 $F \in \mathbf{EXP} \setminus \mathbf{P}$.
+令 $T(n) = n^{\log n}$ 且 $T'(n) = n^{\log n / 2}$.
+两者都是良好的函数.
+由于 $T(n)/T'(n) = \omega(\log n)$, 根据 {{ref:thm:time-hierarchy}}, 存在某个 $F$ 属于 $TIME(T(n)) \setminus TIME(T'(n))$.
+由于对于充分大的 $n$, $2^n > n^{\log n}$, 故 $F \in TIME(2^n) \subseteq \mathbf{EXP}$.
+另一方面, $F \not\in \mathbf{P}$. 实际上, 假设反之, 存在常数 $c>0$ 以及一个图灵机, 对于所有充分大的 $n$, 它在至多 $n^c$ 步内对长度为 $n$ 的输入计算 $F$. 那么, 由于对于足够大的 $n$, 有 $n^c < n^{\log n/2}$, 这将推出 $F \in TIME(n^{\log n /2})$, 这与我们对 $F$ 的选择矛盾.
+```
+
+时间层级定理告诉我们, 存在一些函数我们能在 $O(n^2)$ 时间计算但不能在 $O(n)$ 时间计算, 能在 $2^n$ 时间计算但不能在 $2^{\sqrt{n}}$ 时间计算, 等等..
+特别的, 肯定存在一些函数我们能在 $2^n$ 时间计算但不能在 $O(n)$ 时间计算.
+我们已经见过了太多自然的函数, 其已知的最好算法需要大约 $2^n$ 的时间, 且已经有许多人投入了大量的时间与精力来尝试改进这些问题的算法.
+然而, 不像有穷对无穷那样, 上述的所有例子, 我们目前仍然不知道如何去排除有 $O(n)$ 时间的算法存在.   
+然而我们将看到, 存在一个未被证明的猜想表明大多数这类问题都有这样的结论.
+
+
+```admonish pic id="complexityclassinclusionfig"
+![complexityclassinclusionfig](./images/chapter13/time_complexity_map.png)
+
+{{pic}}{fig:complexityclassinclusion} 一些函数已知 (或猜想) 包含在某个复杂性类里面.
+```
+
+
+时间层级定理的存在依赖于高效通用 NAND-RAM 程序 (已在 {{ref:thm:univ-nandpp}} 被证明存在).
+对于其他模型, 如图灵机, 我们有类似的时间层级定理表明存在某个函数能在 $T(n)$ 时间内被计算但不能在 $T(n)/f(n)$ 时间内被计算, 其中 $f(n)$ 对应于相应通用机器的开销.
 
 
 ## Non-uniform computation {#nonuniformcompsec }
