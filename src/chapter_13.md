@@ -442,8 +442,8 @@ _限时_ 通用图灵机接受图灵机 $M$, 输入 $x$ 和时间界限 $T$ 作�
 ## 13.5 时间层级定理 (Time Hierarchy Theorem)
 
 一些函数是*不可被计算的*, 但是否存在可被计算, 但只能以很高的代价计算的函数呢?
-比如说, 是否存在*能*在 $2^n$ 时间内被计算的, 但*不能*在 $2^{0.9 n}$ 时间内被计算的函数呢?
-事实证明, 这个问题的答案是*是*:
+具体来说, 是否存在*能*在 $2^n$ 时间内被计算, 但*不能*在 $2^{0.9 n}$ 时间内被计算的函数呢?
+事实证明, 这个问题的答案为*是*.
 
 ```admonish quote title=""
 {{thmc}}{thm:time-hierarchy}[时间层级定理]
@@ -451,12 +451,12 @@ _限时_ 通用图灵机接受图灵机 $M$, 输入 $x$ 和时间界限 $T$ 作�
 对于任意一个好函数 (nice function) $T:\N \rightarrow \N$, 一定存在一个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 属于 $TIME(T(n)\log n) \setminus TIME(T(n))$.
 ```
 
-这里出现 $\log n$ 并没有什么特殊的理由, 我们也可以用其他能被高效计算的, 且当 n 趋于无穷时也趋于无穷的函数来替代 $\log n$.
+这里出现 $\log n$ 并没有什么特殊的理由, 我们也可以用其他能被高效计算, 且当 n 趋于无穷时也趋于无穷的函数来替代 $\log n$.
 
 ```admonish bigidea
 {{idec}}{ide:timehierarchy}
 
-如果我们有更多的时间, 我们就能计算更多的函数
+如果我们有更多的时间, 我们就能计算更多的函数.
 ```
 
 ```admonish info
@@ -474,7 +474,7 @@ _限时_ 通用图灵机接受图灵机 $M$, 输入 $x$ 和时间界限 $T$ 作�
 ```admonish pic id="timehierarchythmfig"
 ![timehierarchythmfig](./images/chapter13/timehierarchythm.png)
 
-{{pic}}{fig:timehierarchythm} *时间层级定理* ({{ref:thm:time-hierarchy}}) 说明图中这些复杂性类是*不同*的.
+{{pic}}{fig:timehierarchythm} *时间层级定理* ({{ref:thm:time-hierarchy}}) 说明图中这些复杂性类有*本质区别*.
 ```
 
 
@@ -584,7 +584,7 @@ __断言 2 的证明:__
 
 
 时间层级定理的存在依赖于高效通用 NAND-RAM 程序 (已在 {{ref:thm:univ-nandpp}} 被证明存在).
-对于其他模型, 如图灵机, 我们有类似的时间层级定理表明存在某个函数能在 $T(n)$ 时间内被计算但不能在 $T(n)/f(n)$ 时间内被计算, 其中 $f(n)$ 对应于相应通用机器的开销.
+对于其他计算模型, 如图灵机, 我们有类似的时间层级定理表明存在某个函数能在 $T(n)$ 时间内被计算但不能在 $T(n)/f(n)$ 时间内被计算, 其中 $f(n)$ 对应于相应通用机器的开销.
 
 
 ## Non-uniform computation {#nonuniformcompsec }
