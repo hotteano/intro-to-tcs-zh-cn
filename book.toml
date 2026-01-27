@@ -1,16 +1,16 @@
 [book]
-authors = ["TCS@SUSTech"]
+authors = ["SUSTech TCS Society"]
 language = "zh-cn"
 src = "src"
 title = "理论计算机科学导论"
 
 [output.html]
 site-url = "/intro-to-tcs-zh-cn"
-default-theme = "black"
+default-theme = "light"
 preferred-dark-theme = "black"
 git-repository-url = "https://github.com/sustech-tcs/intro-to-tcs-zh-cn"
 git-repository-icon = "fa-github"
-mathjax-support = true
+mathjax-support = false
 additional-js = ["mermaid.min.js", "mermaid-init.js"]
 smart-punctuation = true
 additional-css = ["mdbook-admonish.css", "mdbook-admonish-custom.css"]
@@ -22,32 +22,19 @@ level = 0
 [output.html.playground]
 editable = false
 
-[preprocessor.mathpunc]
-before = ["katex"]
+[preprocessor.mermaid]
+command = "mdbook-mermaid"
 
 [preprocessor.katex]
 after = ["links"]
 macros = "./macros.txt"
 trust = true
 
+[preprocessor.mathpunc]
+before = ["katex"]
+
 [preprocessor.toc]
 renderer = ["html"]
-
-[preprocessor.mermaid]
-
-[preprocessor.numthm]
-prefix = true
-custom_environments = [
-  ["eq", "式", "**"],
-  ["eqc", "式", "**"],
-  ["thmc", "定理", "**"],
-  ["lemc", "引理", "**"],
-  ["algc", "算法", "**"],
-  ["defc", "定义", "**"],
-  ["exec", "练习", "**"],
-  ["proc", "习题", "**"],
-  ["pic", "图", "**"]
-]
 
 [preprocessor.numeq]
 prefix = true
@@ -56,6 +43,7 @@ prefix = true
 after = ["numthm"]
 
 [preprocessor.admonish]
+after = ["links"]
 command = "mdbook-admonish"
 assets_version = "3.1.0" # do not edit: managed by `mdbook-admonish install`
 
@@ -88,3 +76,21 @@ directive = "pic"
 icon = "./src/images/icons/pic.svg"
 color = "#9e9e9e"
 title = ""
+
+[preprocessor.numthm]
+prefix = true
+
+[preprocessor.numthm.environments]
+eq = {name = "式", emph = "**"}
+eqc = {name = "式", emph = "**"}
+thmc = {name = "定理", emph = "**"}
+lemc = {name = "引理", emph = "**"}
+algc = {name = "算法", emph = "**"}
+defc = {name = "定义", emph = "**"}
+exec = {name = "练习", emph = "**"}
+proc = {name = "习题", emph = "**"}
+remc = {name = "备注", emph = "**"}
+idec = {name = "重要提示", emph = "**"}
+exac = {name = "样例", emph = "**"}
+pic = {name = "图", emph = "**"}
+wip = {name = "未完成引用", emph = "**"}

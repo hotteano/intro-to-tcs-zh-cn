@@ -16,6 +16,7 @@
 \proc:\textbf{procedure } \mathsf{#1}
 \endproc:\textbf{endproc}
 \return:\textbf{ return } #1
+\else:\textbf{else}
 \input:\textbf{输入：}
 \output:\textbf{输出：}
 \AND:{\text{AND}}
@@ -23,3 +24,15 @@
 \NOT:{\text{NOT}}
 \XOR:{\text{XOR}}
 \NAND:{\text{NAND}}
+\IF:{\text{IF}}
+\PAIR:{\text{PAIR}}
+\NIL:{\text{NIL}}
+\HEAD:{\text{HEAD}}
+\TAIL:{\text{TAIL}}
+\ISEMPTY:{\text{ISEMPTY}}
+\MAP:{\text{MAP}}
+\REDUCE:{\text{REDUCE}}
+\FILTER:{\text{FILTER}}
+\RECURSE:{\text{RECURSE}}
+\HALT:{\text{HALT}}
+\EVAL:{\text{EVAL}}
