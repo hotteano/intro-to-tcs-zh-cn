@@ -82,7 +82,7 @@
 放宽条件只考虑充分大的 $n$ 虽然本质上并不是很重要, 但却非常便利, 因为这使我们能够避免讨论一些无趣的边界情况. 
 尽管“函数的运行时间”这一概念可以在任意函数上定义, 但在定义 $TIME_{\mathsf{TM}}(T(n))$ 类时, 我们只考虑布尔函数, 即那些只有一个 bit 输出的函数. 
 这一选择并不重要, 是为了后续讨论的简洁与便利而做出的. 
-事实上, 任何一个非布尔函数都有一个与之计算等价的布尔变体, 参见 {{ref:exe:boolex}}
+事实上, 任何一个非布尔函数都有一个与之计算等价的布尔变体, 参见 {{ref:boolex}}
 
 ```admonish quote title=""
 {{exec}}{exe:timeboundexample}[时间界限的示例] 
@@ -175,7 +175,7 @@
 ```admonish remark title="问题的布尔版本"
 {{remc}}{rem:booleanversion}
 [第12章](chapter_12.md) 中定义的许多问题都对应于非布尔函数 (即输出超过一个 bit 的函数), 而 $\mathbf{P}$ 和 $\mathbf{EXP}$ 是布尔函数的集合.
-然而, 对于每一个非布尔函数 $F$, 我们总是可以通过定义 $G(x,i)$ 为 $F(x)$ 的第 $i$ 个比特, 来定义一个与之等价的布尔函数 $G$ (参见 {{ref:exe:boolex}}).
+然而, 对于每一个非布尔函数 $F$, 我们总是可以通过定义 $G(x,i)$ 为 $F(x)$ 的第 $i$ 个比特, 来定义一个与之等价的布尔函数 $G$ (参见 {{ref:boolex}}).
 因此, 上表以及 {{ref:fig:PvsEXP}} 中所指的, 都是这些问题的计算等价布尔变体.
 ```
 
@@ -245,10 +245,10 @@ $$
 ```
 
 
-上文中的形容词 **"合理的"** 指的是所有已实现的、可扩展的计算模型, 而 **量子计算机** 可能是唯一的例外. 参见 {{ref:ECTTsec}} 和 [第23章](chapter_23.md).
+上文中的形容词 **"合理的"** 指的是所有已实现的、可扩展的计算模型, 而 **量子计算机** 可能是唯一的例外. 参见 [13.3 节](#ECTTsec) 和 [第23章](chapter_23.md).
 
 
-```admonish proof collapsible=true title="{{ref:thm:polyRAMTM}}的证明思路"
+```admonish proof collapsible=true title="{{ref:thm:polyRAMTM}} 的证明思路"
 证明 $TIME_{\mathsf{TM}}(T(n)) \subseteq TIME_{\mathsf{RAM}}(10 \cdot T(n))$ 这一方向并不困难, 因为 NAND-RAM 程序 $P$ 可以通过在数组中存储图灵机 $M$ 的状态转移表（如 [定理9.1](./chapter_9.md#thm:universaltmthm) 的证明中所做的那样）, 以常数级的开销模拟 $M$. 模拟图灵机的每一步都可以在常数 $c$ 步 RAM 操作内完成, 且可以证明这个常数 $c$ 小于 $10$.
 
 因此, 该定理的核心在于证明 $TIME_{\mathsf{RAM}}(T(n)) \subseteq TIME_{\mathsf{TM}}(T(n)^4)$. 这一证明紧随 [定理8.1](./chapter_8.md#thm:RAMTMequivalencethm) 的证明思路, 在那里我们已经证明了任何由 NAND-RAM 程序 $P$ 可计算的函数 $F$, 同样可以由图灵机（或等价的 NAND-TM 程序）$M$ 来计算. 为了证明 {{ref:thm:polyRAMTM}}, 我们沿用完全相同的证明过程, 只需核实 $M$ 模拟 $P$ 的开销是多项式级别的即可.
@@ -272,13 +272,13 @@ $F$ 可由某个 NAND-RAM 程序 $P$ 在 $T(n)$ 的时间内计算, 且我们需
 因此, 如果 P 是一个在 $T(n)$ 时间内计算 $F$ 的 NAND-RAM 程序, 那么在长度为 $n$ 的输入下, P 所使用的所有整数的大小至多为 $T(n)$.
 这意味着索引 `i` 能到达的最大值至多是 $T(n)$, 因此 $P$ 的每个变量都可以看作是一个拥有至多 $T(n)$ 个索引的数组, 每个索引存放一个大小至多为 $T(n)$ 的自然数.
 令 $\ell = \ceil{\log T(n)}$ 为编码此类数字所需要的对比特数 (我们可以在模拟开始时先计算出 $T(n)$ 和 $\ell$).
-2. 我们可以将一个长度 $\leq T(n)$, 包含范围在 $\{0,\ldots, T(n)-1 \}$ 内数字的 NAND-RAM 数组, 编码为一个包含 $T(n)\ell =O(T(n)\log T(n))$ 个比特的布尔 (即 NAND-TM) 数组.
+1. 我们可以将一个长度 $\leq T(n)$, 包含范围在 $\{0,\ldots, T(n)-1 \}$ 内数字的 NAND-RAM 数组, 编码为一个包含 $T(n)\ell =O(T(n)\log T(n))$ 个比特的布尔 (即 NAND-TM) 数组.
 我们也可以像 [定理8.1](./chapter_8.md#thm:RAMTMequivalencethm) 的证明那样, 将其视为一个*二维数组*.
 一个包含数字的 NAND-RAM 标量则简单地编码为一个长度为 $\ell$ 的较短 NAND-TM 数组.
-3. 我们可以使用长度为 $T(n)\ell = O(T(n) \log T(n))$ 的一维数组来模拟二维数组.
+1. 我们可以使用长度为 $T(n)\ell = O(T(n) \log T(n))$ 的一维数组来模拟二维数组.
 所有关于整数的算术运算都是用"小学数学算法", 其耗时是整数比特数 $\ell$ 的多项式级别的, 在本例中即为 $poly(\log T(n))$.
 因此, 我们可以用一个使用随机访问内存但仅有*布尔值*的一维数组, 在 $O(T(n)poly(\log T(n)))$ 步内模拟 $T(n)$ 步的 NAND-RAM 模型.
-4. 最昂贵的步骤是将随机访问内存转化为 NAND-TM/图灵机 的顺序内存模型.
+1. 最昂贵的步骤是将随机访问内存转化为 NAND-TM/图灵机 的顺序内存模型.
 正如我们在 [定理8.1](./chapter_8.md#thm:RAMTMequivalencethm) 证明中所做的, 我们可以通过以下步骤模拟访问数组 `Foo` 中由数组 `Bar` 编码的某个位置:
 
    1. 将 `Bar` 复制到某个临时数组 `Temp`
@@ -320,7 +320,7 @@ $F$ 可由某个 NAND-RAM 程序 $P$ 在 $T(n)$ 的时间内计算, 且我们需
 其他多项式等价模型的例子有:
 
 * 所有标准的编程语言, 包括 C/Python/JavaScript/Lisp/等.
-* $\lambda$ 算子 (参见 {{ref:bibnotesrunningtime}})
+* $\lambda$ 算子 (参见 [13.8 节](#bibnotesrunningtime))
 * 元胞自动机
 * 并行计算机
 * 生物计算设备, 如基于 DNA 的计算机.
@@ -348,7 +348,7 @@ $F$ 可由某个 NAND-RAM 程序 $P$ 在 $T(n)$ 的时间内计算, 且我们需
 
 ## 13.4 高效的通用机器: 在 NAND-RAM 中的 NAND-RAM 解释器
 
-我们已经在 [定理9.1](./chapter_9.md#thm:universaltmthm) 中见过了 "通用图灵机".
+我们已经在 [定理 9.1](./chapter_9.md#thm:universaltmthm) 中见过了 "通用图灵机".
 审视其证明, 并结合 {{ref:thm:polyRAMTM}} , 我们可以看到程序 $U$ 具有*多项式*开销, 即它可以在 $O(T^4)$ 步内模拟给定 NAND-TM (或 NAND-RAM) 程序 $P$ 在输入 $x$ 上运行 $T$ 步.
 但事实上, 通过直接模拟 NAND-RAM 程序, 我们可以做的更好, 仅需*常数*倍的乘法开销.
 也就是说, 存在一个*通用 NAND-RAM 程序* $U$, 使得对于每一个 NAND-RAM 程序 $P$, $U$ 仅需要 $O(T)$ 步就能模拟 $P$ 的 $T$ 步. ($O$ 记号中隐含的常数可能取决于程序 $P$, 但不依赖输入的长度.)
@@ -377,7 +377,7 @@ $F$ 可由某个 NAND-RAM 程序 $P$ 在 $T(n)$ 的时间内计算, 且我们需
 如果 $P$ 的第 $j$ 个变量是标量, 那么我们只需将其值存储在 `Vars` 的第 $0$ 个块中.
 ```
 
-```admonish proof collapsible=true title="{{ref:thm:univ-nandpp}}的证明"
+```admonish proof collapsible=true title="{{ref:thm:univ-nandpp}} 的证明"
 若要完整展示一个通用 NAND-RAM 程序, 我们需要描述一个精确的表示方案, 以及该程序的完整 NAND-RAM 指令.
 
 虽然这可以被完成, 但关注主要想法更为重要, 因此我们在这里仅概述证明.
@@ -428,7 +428,7 @@ _限时_ 通用图灵机接受图灵机 $M$, 输入 $x$ 和时间界限 $T$ 作�
 {{ref:thm:timeduniversalTM}} 指出存在这样一台机器, 其运行时间是关于 $T$ 的多项式.
 ```
 
-```admonish proof collapsible=true title="{{ref:thm:timeduniversalTM}}的证明"
+```admonish proof collapsible=true title="{{ref:thm:timeduniversalTM}} 的证明"
 我们只给出证明概要, 因为该结果相当直接地由 {{ref:thm:polyRAMTM}} 和 {{ref:thm:univ-nandpp}} 推导得出.
 根据 {{ref:thm:polyRAMTM}}, 要证明 $TIMEDEVAL \in \mathbf{P}$, 只要给出一个计算 $TIMEDEVAL$ 的多项式时间 NAND-RAM 程序即可.
 
@@ -587,77 +587,89 @@ __断言 2 的证明:__
 对于其他计算模型, 如图灵机, 我们有类似的时间层级定理表明存在某个函数能在 $T(n)$ 时间内被计算但不能在 $T(n)/f(n)$ 时间内被计算, 其中 $f(n)$ 对应于相应通用机器的开销.
 
 
-## Non-uniform computation {#nonuniformcompsec }
+## 13.6 非一致性计算 {#nonuniformcompsec }
 
 
+我们现在已经了解过了两种 "计算代价" 的度量.
+在 [4.6 节](./chapter_4.md#secdefinesizeclasses) 中, 我们使用电路 / 直线式程序定义了计算*有限*函数的复杂性.
+具体来说, 对于有限函数 $g:\{0,1\}^n \rightarrow \{0,1\}$ 和数 $s\in \N$, 如果存在一个至多包含 $s$ 个与非门的电路 (或一个等价的 $s$ 行的 NAND-CIRC 程序) 来计算 $g$, 则 $g\in SIZE_n(s)$.
+为了将其与本章定义的类 $TIME(T(n))$ 联系起来, 我们首先需要将类 $SIZE_n(s)$ 扩展到具有无界输入长度的函数.  
 
-We have now seen two measures of "computation cost" for functions.
-In [secdefinesizeclasses](){.ref} we defined the complexity of computing _finite_ functions using circuits / straightline programs.
-Specifically,  for a finite function $g:\{0,1\}^n \rightarrow \{0,1\}$ and number $s\in \N$,  $g\in SIZE_n(s)$ if there is a circuit of at most $s$ NAND gates (or equivalently  an $s$-line NAND-CIRC program) that computes $g$.
-To relate this to the classes $TIME(T(n))$ defined in this chapter we first need to extend the class $SIZE_n(s)$ from finite functions to functions with unbounded input length.
+```admonish quote title=""
+{{defc}}{def:nonuniform}[非一致性计算]
 
-::: {.definition title="Non-uniform computation" #nonuniformdef}
-Let $F:\{0,1\}^* \rightarrow \{0,1\}$ and $T:\N \rightarrow \N$ be a nice time bound.
-For every $n\in \N$, define $F_{\upharpoonright n} : \{0,1\}^n \rightarrow \{0,1\}$ to be the _restriction_ of $F$ to inputs of size $n$. That is, $F_{\upharpoonright n}$ is the function mapping $\{0,1\}^n$ to $\{0,1\}$ such that for every $x\in \{0,1\}^n$, $F_{\upharpoonright n}(x)=F(x)$.
+设 $F:\{0,1\}^* \rightarrow \{0,1\}$ 且 $T:\N \rightarrow \N$ 为一个好的时间界限函数.
+对于任意 $n\in \N$, 定义 $F_{\upharpoonright n} : \{0,1\}^n \rightarrow \{0,1\}$ 为 $F$ 在大小为 $n$ 的输入上的 _限制_. 也就是说, $F_{\upharpoonright n}$ 是将 $\{0,1\}^n$ 映射到 $\{0,1\}$ 的函数, 使得对于任意 $x\in \{0,1\}^n$, $F_{\upharpoonright n}(x)=F(x)$.
 
-We say that $F$ is _non-uniformly computable in at most $T(n)$ size_, denoted by $F \in SIZE(T)$ if there exists a sequence $(C_0,C_1,C_2,\ldots)$ of NAND circuits such that:
+如果存在与非门电路序列 $(C_0,C_1,C_2,\ldots)$ 满足以下条件, 我们称 $F$ 是 _在至多 $T(n)$ 大小内非一致可计算的_, 记作 $F \in SIZE(T)$:
 
-* For every $n\in \N$, $C_n$ computes the function $F_{\upharpoonright n}$
+* 对于任意 $n\in \N$, $C_n$ 计算函数 $F_{\upharpoonright n}$
 
-* For every sufficiently large $n$, $C_n$ has at most $T(n)$ gates.
-:::
-
-In other words, $F \in SIZE(T)$ iff for every $n \in \N$, it holds that $F_{\upharpoonright n} \in SIZE_n(T(n))$.
-The non-uniform analog to the class $\mathbf{P}$ is the class $\mathbf{P_{/poly}}$ defined as 
-
-$$
-\mathbf{P_{/poly}} = \cup_{c\in \N} SIZE(n^c)  \; . \label{eqppolydef}
-$$
-There is a big difference between non-uniform computation and uniform complexity classes such as $TIME(T(n))$ or $\mathbf{P}$.
-The condition $F\in \mathbf{P}$ means that there is a _single_ Turing machine $M$ that computes $F$ on all inputs in polynomial time.
-The condition $F\in \mathbf{P_{/poly}}$ only means that for every input length $n$ there can be a _different_ circuit $C_n$ that computes $F$ using polynomially many gates on inputs of these lengths.
-As we will see, $F\in \mathbf{P_{/poly}}$ does not necessarily imply that $F\in \mathbf{P}$.
-However, the other direction is true:
-
-![We can think of an infinite function $F:\{0,1\}^* \rightarrow \{0,1\}$ as a collection of finite functions $F_0,F_1,F_2,\ldots$ where $F_{\upharpoonright n}:\{0,1\}^n \rightarrow \{0,1\}$ is the restriction of $F$ to inputs of length $n$. We say $F$ is in $\mathbf{P_{/poly}}$ if for every $n$, the function $F_{\upharpoonright n}$  is computable by a polynomial-size NAND-CIRC program, or equivalently, a polynomial-sized Boolean circuit.](../figure/Ppoly.png){#Ppolyfig .margin  }
-
-
-::: {.theorem title="Non-uniform computation contains uniform computation" #non-uniform-thm}
-There is some $a\in \N$ s.t. for every nice $T:\N \rightarrow \N$ and  $F:\{0,1\}^* \rightarrow \{0,1\}$,
-$$TIME(T(n)) \subseteq SIZE(T(n)^a)\;.$$
-:::
-
-In particular,  [non-uniform-thm](){.ref} shows that for every $c$, $TIME(n^c) \subseteq SIZE(n^{ca})$ and hence $\mathbf{P} \subseteq \mathbf{P_{/poly}}$.
-
-
-
-::: {.proofidea data-ref="non-uniform-thm"}
-The idea behind the proof is to "unroll the loop".
-Specifically, we will use the programming language variants of non-uniform and uniform computation: namely NAND-CIRC and NAND-TM. 
-The main difference between the two is that NAND-TM has _loops_. However, for every fixed $n$, if we know that a NAND-TM program runs in at most $T(n)$ steps, then we can replace its loop by simply "copying and pasting" its code $T(n)$ times, similar to how in Python we can replace code such as
-
-```python
-for i in range(4):
-	print(i)
+* 对于任意足够大的 $n$, $C_n$ 至多有 $T(n)$ 个门.
 ```
 
-with the "loop free" code
+换言之, $F \in SIZE(T)$ 当且仅当对于任意 $n \in \N$, $F_{\upharpoonright n} \in SIZE_n(T(n))$.
+类 $\mathbf{P}$ 在非一致性中的类似物是 $\mathbf{P_{/poly}}$, 其被定义为
 
-```python
+$$
+\mathbf{P_{/poly}} = \cup_{c\in \N} SIZE(n^c)  \; . {{numeq}}{eqppolydef}
+$$
+
+非一致性计算与一致性复杂性类 (如 $TIME(T(n))$ 或 $\mathbf{P}$) 之间存在巨大差异.
+$F\in \mathbf{P}$ 意味着存在一个*固定的* (不由输入改变) 图灵机 $M$ 满足在任意输入上, $M$ 都能以多项式时间计算 $F$ 的结果.
+而 $F\in \mathbf{P_{/poly}}$ 仅意味着, 对于每个输入长度 $n$, 存在一个*不同的* (可能由输入大小改变) 的电路, 使用多项式数量的门来计算该长度输入上的 $F$.
+正如我们所见, $F\in \mathbf{P_{/poly}}$ 并不意味着 $F\in \mathbf{P}$.
+然而, 这一陈述的反方向是成立的.
+
+```admonish pic id="Ppolyfig"
+![Ppolyfig](./images/chapter13/Ppoly.png) 
+
+{{pic}}{fig:Ppoly} 我们可以将无限函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 视为有限函数集合 $F_0,F_1,F_2,\ldots$, 其中 $F_{\upharpoonright n}:\{0,1\}^n \rightarrow \{0,1\}$ 是 $F$ 在长度为 $n$ 的输入上的限制. 如果对于任意 $n$, 函数 $F_{\upharpoonright n}$ 可由多项式大小的 NAND-CIRC 程序 (或等价地, 多项式大小的布尔电路) 计算, 我们就说 $F$ 属于 $\mathbf{P_{/poly}}$.
+```
+
+
+```admonish quote title=""
+{{thmc}}{thm:non-uniform}[非一致性计算包含一致性计算]
+
+存在某个 $a\in \N$, 使得对于每个好函数 $T:\N \rightarrow \N$ 和 $F:\{0,1\}^* \rightarrow \{0,1\}$, 都有
+
+$$
+TIME(T(n)) \subseteq SIZE(T(n)^a)\;.
+$$
+```
+
+特别的, {{ref:thm:non-uniform}} 表明对于每个 $c$, $TIME(n^c) \subseteq SIZE(n^{ca})$, 因此 $\mathbf{P} \subseteq \mathbf{P_{/poly}}$.
+
+
+```admonish proof collapsible=true title="{{ref:thm:non-uniform}} 的证明思路"
+证明的思路是 "循环展开".
+具体的, 我们将使用一致性计算和非一致性计算的编程语言变体, 即 NAND-CIRC 和 NAND-TM.
+两者之间的主要差别在于 NAND-TM 有*循环*.
+然而, 对于每个固定的 $n$, 如果我们知道一个 NAND-TM 程序最多运行 $T(n)$ 步, 那么我们就可以将这些循环用简单的"复制粘贴"代码 $T(n)$ 替代, 类似于在 Python 我们可以将
+
+~~~python
+for i in range(4):
+	print(i)
+~~~
+
+替换成没有循环的代码
+
+~~~python
 print(0)
 print(1)
 print(2)
 print(3)
+~~~
+
+为了将这一证明思路转化为实际的证明, 我们需要解决一个技术难点, 即确保 NAND-TM 程序是*非感知的*, 意思是说在循环的第 $j$ 次迭代中, 索引变量 `i` 的值仅取决于 `j`, 而不取决于输入的内容.
+我们将在 [13.6.1 节](#obliviousnandtm) 中暂时岔开话题来专门解决这一点, 随后完成 {{ref:thm:non-uniform}} 的证明.
 ```
 
-To make this idea into an actual proof we need to tackle one technical difficulty, and this is to ensure that the NAND-TM program is _oblivious_ in the sense that the value of the index variable `i`  in the $j$-th iteration of the loop will depend only on $j$ and not on the contents of the input. We make a digression to do just that in [obliviousnandtm](){.ref} and then complete the proof  of [non-uniform-thm](){.ref}.
-:::
 
+### 13.6.1 非感知的 NAND-TM 程序  {#obliviousnandtm}
 
-### Oblivious NAND-TM programs  {#obliviousnandtm }
-
-Our approach for proving [non-uniform-thm](){.ref} involves "unrolling the loop". 
-For example,  consider the following NAND-TM to compute the $XOR$ function on inputs of arbitrary length:
+我们证明 {{ref:thm:non-uniform}} 的方法涉及了 "循环展开".
+比如, 考虑下面这个用于计算任意输入长度 $XOR$ 函数的 NAND-TM 程序:
 
 ```python
 temp_0 = NAND(X[0],X[0])
@@ -669,7 +681,7 @@ Y[0] = NAND(temp_3,temp_4)
 MODANDJUMP(X_nonblank[i],X_nonblank[i])
 ```
 
-Setting (as an example) $n=3$, we can attempt to translate this NAND-TM program into a NAND-CIRC program for computing  $XOR_3:\{0,1\}^3 \rightarrow \{0,1\}$ by simply "copying and pasting" the loop three times (dropping the `MODANDJMP` line):
+举个例子, 若 $n = 3$, 我们可以尝试通过简单地把循环复制三遍 (删去 `MODANDJMP` 这行), 把这个 NAND-TM 程序翻译成用于计算 $XOR_3:\{0,1\}^3 \rightarrow \{0,1\}$ 的 NAND-CIRC 程序
 
 
 ```python
@@ -693,10 +705,10 @@ temp_4 = NAND(Y[0],temp_2)
 Y[0] = NAND(temp_3,temp_4)
 ```
 
-However, the above is still not a valid NAND-CIRC program since it contains references to the special variable `i`.
-To make it into a valid NAND-CIRC program, we replace references to `i` in the first iteration with $0$, references in the second iteration with $1$, and references in the third iteration with $2$.
-(We also create a variable `zero` and use it for the first time any variable is instantiated, as well as remove assignments to non-output variables that are never used later on.)
-The resulting program is a standard "loop free and index free" NAND-CIRC program that computes $XOR_3$ (see also [unrolledcircuitfig](){.ref}):
+然而, 上面这个仍然不是一个合法的 NAND-CIRC 程序, 因为它包含一个对特殊变量 `i` 的引用.
+我们可以通过将第一个迭代中的 `i` 替换为 $0$, 第二个迭代中的替换为 $1$, 第三个迭代中的替换为 $2$ 来把上述程序转化为一个合法的 NAND-CIRC 程序. (我们还创建了一个变量 `zero`, 并在任意变量第一次初始化时使用, 同时移除了那些后续不再使用的非输出变量的赋值)
+结果程序是一个标准的计算 $XOR_3$ 的 "无索引无循环" 的 NAND-CIRC 程序. (另见 {{ref:fig:unrolledcircuit}})
+
 
 ```python
 temp_0 = NAND(X[0],X[0])
@@ -716,13 +728,17 @@ temp_4 = NAND(Y[0],temp_2)
 Y[0] = NAND(temp_3,temp_4)
 ```
 
-![A NAND circuit for $XOR_3$ obtained by "unrolling the loop" of the NAND-TM program for computing $XOR$ three times.](../figure/unrolled_circuit.png){#unrolledcircuitfig .margin }
+```admonish pic id="unrolledcircuitfig"
+![unrolledcircuitfig](./images/chapter13/unrolled_circuit.png) 
+
+{{pic}}{fig:unrolledcircuit} 一个通过 "循环展开" 三次计算 $XOR$ 的 NAND-TM 程序得到的计算 $XOR_3$ 的 NAND 电路.
+```
 
 
+这种转换的关键在于, 在我们最初的 $XOR$ NAND-TM 程序中, 无论输入是 $011$, $100$ 还是任何其他字符串, 索引变量 i 都保证在第一次迭代中等于 $0$, 在第二次迭代中等于 $1$, 在第三次迭代中等于 $2$, 依此类推.
+特定的序列 $0,1,2,\ldots$ 并不重要: 关键属性在于 $XOR$ 的 NAND-TM 程序是 *非感知的*, 即在第 $j$ 次迭代中索引 `i` 的值仅取决于 $j$, 而不取决于输入的具体选择.
+幸运的是, 我们能够将每个 NAND-TM 程序转换为功能等效的非感知程序, 且其开销至多为二次方. (类似地, 我们可以将任何图灵机转换为功能等效的非感知图灵机, 参见 {{ref:oblivious-ex}})
 
-Key to this transformation was the fact that in our original NAND-TM program for $XOR$, regardless of whether the input is $011$, $100$, or any other string, the index variable `i` is guaranteed to equal $0$ in the first iteration, $1$ in the second iteration,  $2$ in the third iteration, and so on and so forth.
-The particular sequence $0,1,2,\ldots$ is immaterial: the crucial property is that the NAND-TM program for $XOR$ is  _oblivious_ in the sense that the value of the index `i` in the $j$-th iteration depends only on $j$ and does not depend on the particular choice of the input. 
-Luckily, it is possible to transform every NAND-TM program into a functionally equivalent oblivious program with at most quadratic overhead. (Similarly we can transform any Turing machine into a functionally equivalent oblivious Turing machine, see [oblivious-ex](){.ref}.)
 
 > ### {.theorem title="Making NAND-TM oblivious" #obliviousnandtmthm}
 Let $T:\N \rightarrow \N$ be a nice function and let $F\in TIME_{\mathsf{TM}}(T(n))$.
@@ -747,13 +763,13 @@ We construct an oblivious NAND-TM program $P$ for computing $F$ as follows (see 
 1. On input $x$, $P$ will compute $T=T(|x|)$ and set up arrays `Atstart` and `Atend` satisfying 
  `Atstart[`$0$`]`$=1$ and `Atstart[`$i$`]`$=0$ for $i>0$ and `Atend[`$T-1$`]`$=1$ and `Atend[`i`]`$=0$ for all $i \neq T-1$.  We can do this because $T$ is a nice function. Note that since this computation does not depend on $x$ but only on its length, it is oblivious. 
 
- 2. $P$ will also have a special array `Marker` initialized to all zeroes.
+ 1. $P$ will also have a special array `Marker` initialized to all zeroes.
 
-2. The index variable of $P$ will change direction of movement to the right whenever `Atstart[i]`$=1$ and to the left whenever `Atend[i]`$=1$. 
+1. The index variable of $P$ will change direction of movement to the right whenever `Atstart[i]`$=1$ and to the left whenever `Atend[i]`$=1$. 
 
-3. The program $P$  simulates the execution of $P'$. However, if the `MODANDJMP` instruction in $P'$ attempts to move to the right when $P$ is moving left (or vice versa) then $P$ will set `Marker[i]` to $1$ and  enter into a special "waiting mode". In this mode $P$ will wait until the next time in which `Marker[i]`$=1$ (at the next sweep) at which points $P$ zeroes `Marker[i]` and continues with the simulation. In the worst case this will take $2T(n)$ steps (if $P$ has to go all the way from one end to the other and back again.)
+2. The program $P$  simulates the execution of $P'$. However, if the `MODANDJMP` instruction in $P'$ attempts to move to the right when $P$ is moving left (or vice versa) then $P$ will set `Marker[i]` to $1$ and  enter into a special "waiting mode". In this mode $P$ will wait until the next time in which `Marker[i]`$=1$ (at the next sweep) at which points $P$ zeroes `Marker[i]` and continues with the simulation. In the worst case this will take $2T(n)$ steps (if $P$ has to go all the way from one end to the other and back again.)
    
-4. We also modify $P$ to ensure it ends the computation after simulating exactly $T(n)$ steps of $P'$, adding "dummy steps" if $P'$ ends early.
+3. We also modify $P$ to ensure it ends the computation after simulating exactly $T(n)$ steps of $P'$, adding "dummy steps" if $P'$ ends early.
 
 We see that $P$ simulates  the execution of $P'$ with an overhead of $O(T(n))$ steps of $P$ per one step of $P'$, hence completing the proof.
 :::
@@ -926,16 +942,18 @@ This means that non-uniform complexity is more useful to establish _hardness_ of
 :::
 
 
-## Exercises
+## 习题
 
+```admonish quote title=""
+{{proc}}{definitionofP}[Equivalence of different definitions of $\mathbf{P}$ and $\mathbf{EXP}$.]
 
-::: {.exercise title="Equivalence of different definitions of $\mathbf{P}$ and $\mathbf{EXP}$." #definitionofP}
 Prove that the classes $\mathbf{P}$ and $\mathbf{EXP}$ defined in [PandEXPdef](){.ref} are equal to $\cup_{c\in \{1,2,3,\ldots \}} TIME(n^c)$ and $\cup_{c\in \{1,2,3,\ldots \}} TIME(2^{n^c})$ respectively.
 (If $S_1,S_2,S_3,\ldots$ is a collection of sets then the set $S = \cup_{c\in \{1,2,3,\ldots \}} S_c$ is the set of all elements $e$ such that there exists some $c\in \{ 1,2,3,\ldots \}$ where $e\in S_c$.)
-:::
+```
 
+```admonish quote title=""
+{{proc}}{robsutrepresex}[Robustness to representation]
 
-::: {.exercise title="Robustness to representation" #robsutrepresex }
 [polyRAMTM-thm](){.ref} shows that the classes $\mathbf{P}$ and $\mathbf{EXP}$ are _robust_ with respect to variations in the choice of the computational model.
 This exercise shows that these classes are also robust with respect to our choice of the representation of the input.
 
@@ -949,11 +967,12 @@ Prove that $F' \in \mathbf{P}$ iff $F'' \in \mathbf{P}$.
 
 
 More generally, for every function $F:\{0,1\}^* \rightarrow \{0,1\}$, the answer to the question of whether $F\in \mathbf{P}$ (or whether $F\in \mathbf{EXP}$) is unchanged by switching representations, as long as transforming one representation to the other can be done in polynomial time (which essentially holds for all reasonable representations).
-:::
+```
 
 
+```admonish quote title=""
+{{proc}}{boolex}[Boolean functions]
 
-::: {.exercise title="Boolean functions" #boolex}
 For every function $F:\{0,1\}^* \rightarrow \{0,1\}^*$, define $Bool(F)$ to be the function mapping $\{0,1\}^*$ to $\{0,1\}$ such that on input a (string representation of a) triple $(x,i,\sigma)$ with $x\in \{0,1\}^*$, $i \in \N$ and $\sigma \in \{0,1\}$,
 
 $$
@@ -964,20 +983,28 @@ $$
 where $F(x)_i$ is the $i$-th bit of the string $F(x)$.
 
 Prove that for every $F:\{0,1\}^* \rightarrow \{0,1\}^*$, $Bool(F) \in \mathbf{P}$ if and only if there is a Turing Machine $M$ and a polynomial $p:\N \rightarrow \N$ such  that for every $x\in \{0,1\}^*$, on input $x$, $M$ halts within $\leq p(|x|)$ steps and outputs $F(x)$.
-:::
+```
 
+```admonish quote title=""
+{{proc}}{poly-time-comp-ex}[Composition of polynomial time]
 
-> ### {.exercise title="Composition of polynomial time" #poly-time-comp-ex}
 Say that a (possibly non-Boolean) function $F:\{0,1\}^* \rightarrow \{0,1\}^*$ is _computable in polynomial time_, if there is a Turing Machine $M$ and a polynomial $p:\N \rightarrow \N$ such  that for every $x\in \{0,1\}^*$, on input $x$, $M$ halts within $\leq p(|x|)$ steps and outputs $F(x)$.
 Prove that for every pair of functions  $F,G:\{0,1\}^* \rightarrow \{0,1\}^*$ computable in polynomial time, their _composition_ $F\circ G$, which is the function $H$ s.t. $H(x)=F(G(x))$, is also computable in polynomial time.
+```
 
 
-> ### {.exercise title="Non-composition of exponential time" #exp-time-comp-ex}
+
+```admonish quote title=""
+{{proc}}{exp-time-comp-ex}[Non-composition of exponential time]
+
 Say that a (possibly non-Boolean) function $F:\{0,1\}^* \rightarrow \{0,1\}^*$ is _computable in exponential  time_, if there is a Turing Machine $M$ and a polynomial $p:\N \rightarrow \N$ such  that for every $x\in \{0,1\}^*$, on input $x$, $M$ halts within $\leq 2^{p(|x|)}$ steps and outputs $F(x)$.
 Prove that there is some $F,G:\{0,1\}^* \rightarrow \{0,1\}^*$ s.t. both $F$ and $G$ are computable in exponential time, but $F\circ G$ is not computable in exponential time.
+```
 
 
-::: {.exercise title="Oblivious Turing Machines" #oblivious-ex}
+```admonish quote title=""
+{{proc}}{oblivious-ex}[Oblivious Turing Machines]
+
 We say that a Turing machine $M$ is _oblivious_ if there is some function $T:\N\times \N \rightarrow \Z$ such that for every input $x$ of length $n$, and $t\in \N$ it holds that:
 
 * If $M$ takes more than $t$ steps to halt on the input $x$, then in the $t$-th step $M$'s head will be in the position $T(n,t)$. (Note that this position depends only on the _length_ of $x$ and not its contents.)
@@ -985,27 +1012,35 @@ We say that a Turing machine $M$ is _oblivious_ if there is some function $T:\N\
 * If $M$ halts before the $t$-th step then $T(n,t) = -1$.
 
 Prove that if $F\in \mathbf{P}$ then there exists an _oblivious_ Turing machine $M$ that computes $F$ in polynomial time. See footnote for hint.^[_Hint:_ This is the Turing machine analog of [obliviousnandtmthm](){.ref}. We replace one step of the original TM $M'$ computing $F$ with a "sweep" of the obliviouss TM $M$ in which it goes $T$ steps to the right and then $T$ steps to the left.]
-:::
+```
 
 
-::: {.exercise  #graphedgeex}
+
+```admonish quote title=""
+{{proc}}{graphedgeex}
+
 Let $EDGE:\{0,1\}^* \rightarrow \{0,1\}$ be the function such that on input a string representing a triple $(L,i,j)$, where $L$ is the adjacency list representation of an $n$ vertex graph $G$, and $i$ and $j$ are numbers in $[n]$, $EDGE(L,i,j)=1$ if the edge $\{i,j \}$ is present in the graph. $EDGE$ outputs $0$ on all other inputs.
 
 1. Prove that $EDGE \in \mathbf{P}$.
 
 
 2. Let $PLANARMATRIX:\{0,1\}^* \rightarrow \{0,1\}$ be the function that on input an adjacency matrix $A$ outputs $1$ if and only if the graph represented by $A$ is _planar_ (that is, can be drawn on the plane without edges crossing one another). For this question, you can use without proof the fact that $PLANARMATRIX \in \mathbf{P}$. Prove that $PLANARLIST \in \mathbf{P}$ where $PLANARLIST:\{0,1\}^* \rightarrow \{0,1\}$ is the function that on input an adjacency list $L$ outputs $1$ if and only if $L$ represents a planar graph.
-:::
+```
 
 
-::: {.exercise title="Evaluate NAND circuits" #evalnandcircuit}
+```admonish quote title=""
+{{proc}}{evalnandcircuit}[Evaluate NAND circuits]
+
 Let $NANDEVAL:\{0,1\}^* \rightarrow \{0,1\}$ be the function such that for every string representing a pair $(Q,x)$ where $Q$ is an $n$-input $1$-output
 NAND-CIRC (not NAND-TM!) program  and $x\in \{0,1\}^n$, $NANDEVAL(Q,x)=Q(x)$.  On all other inputs $NANDEVAL$ outputs $0$.
 
 Prove that $NANDEVAL \in \mathbf{P}$.
-:::
+```
 
-::: {.exercise title="Find hard function" #hardfunc}
+
+```admonish quote title=""
+{{proc}}{hardfunc}[Find hard function]
+
 Let $NANDHARD:\{0,1\}^* \rightarrow \{0,1\}$ be the function such that on input a string representing a  pair $(f,s)$ where
 
 * $f \in \{0,1\}^{2^n}$ for some $n\in \mathbb{N}$
@@ -1017,13 +1052,13 @@ That is, $NANDHARD(f,s)=1$ if for every NAND-CIRC program $Q$ of at most $s$ lin
 1. Prove that $NANDHARD \in \mathbf{EXP}$.
 
 2. (Challenge) Prove that there is an algorithm $FINDHARD$ such that if $n$ is sufficiently large, then $FINDHARD(1^n)$ runs in time $2^{2^{O(n)}}$ and outputs a string $f \in \{0,1\}^{2^n}$ that is the truth table of a function that is not contained in  $SIZE(2^n/(1000n))$. (In other words, if $f$ is the string output by $FINDHARD(1^n)$ then if we let $F:\{0,1\}^n \rightarrow \{0,1\}$ be the function such that $F(x)$ outputs the $x$-th coordinate of $f$, then $F\not\in SIZE(2^n/(1000n))$.^[__Hint:__ Use Item 1, the existence of functions requiring exponentially hard NAND programs, and the fact that there are only finitely many functions mapping $\{0,1\}^n$ to $\{0,1\}$.]
-:::
+```
 
 
 
+```admonish quote title=""
+{{proc}}{scheduleprogex}
 
-
-::: {.exercise  #scheduleprogex}
 Suppose that you are in charge of scheduling courses  in computer science in University X. In University X, computer science students wake up late, and have to work on their startups in the afternoon, and take long weekends with their investors. So you only have two possible slots: you can schedule a course either Monday-Wednesday 11am-1pm or Tuesday-Thursday 11am-1pm.
 
 
@@ -1034,9 +1069,7 @@ More precisely, the list $L$ is a list of strings $(c_0,\ldots,c_{n-1})$ and the
 Prove that $SCHEDULE \in \mathbf{P}$.  As usual, you do not have to provide the full code to show that this is the case, and can describe operations as a high level, as well as appeal to any data structures or other results mentioned in the book or in lecture. Note that to show that a function $F$ is in $\mathbf{P}$ you need to both __(1)__ present an algorithm $A$ that computes $F$ in polynomial time, __(2)__ _prove_ that $A$ does indeed run in polynomial time, and does indeed compute the correct answer.
 
 Try to think whether or not your algorithm extends to the case where there are _three_ possible time slots.
-:::
-
-
+```
 
 
 ## Bibliographical notes {#bibnotesrunningtime }
