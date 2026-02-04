@@ -354,7 +354,7 @@ $$
 * *上下文无关文法*是一种表达能力更强、但仍非图灵完备的计算模型. 其停机问题是可判定的, 但等价性判定不可计算. 
 ```
 
-## Exercises
+## 习题
 
 ```admonish question title=""
 {{proc}}{pro:closurecfgex}[上下文无关函数的闭包性质]
