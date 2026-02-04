@@ -740,20 +740,28 @@ Y[0] = NAND(temp_3,temp_4)
 幸运的是, 我们能够将每个 NAND-TM 程序转换为功能等效的非感知程序, 且其开销至多为二次方. (类似地, 我们可以将任何图灵机转换为功能等效的非感知图灵机, 参见 {{ref:oblivious-ex}})
 
 
-> ### {.theorem title="Making NAND-TM oblivious" #obliviousnandtmthm}
-Let $T:\N \rightarrow \N$ be a nice function and let $F\in TIME_{\mathsf{TM}}(T(n))$.
-Then there is a NAND-TM program  $P$ that computes $F$ in $O(T(n)^2)$ steps and satisfying the following.
-For every $n\in \N$ there is  a sequence $i_0,i_1,\ldots, i_{m-1}$ such that for every $x\in \{0,1\}^n$, if $P$ is executed on input $x$ then in the  $j$-th iteration  the variable `i` is equal to $i_j$.
+```admonish quote title=""
+{{thmc}}{thm:obliviousnandtm}[使 NAND-TM 非感知]
 
-In other words, [obliviousnandtmthm](){.ref} implies that if we can compute $F$ in $T(n)$ steps, then we can compute it in $O(T(n)^2)$ steps with a program $P$ in which the position of `i` in the $j$-th iteration depends only on $j$ and the length of the input, and not on the contents of the input.
-Such a program can be easily translated into a NAND-CIRC program of $O(T(n)^2)$ lines by "unrolling the loop".
+令 $T:\N \rightarrow \N$ 为一个好函数, 且 $F\in TIME_{\mathsf{TM}}(T(n))$.
+则存在一个 NAND-TM 程序 $P$ 在 $O(T(n)^2)$ 内计算 $F$ 且满足下述条件:
+对于任意 $n\in \N$, 存在一个序列 $i_0,i_1,\ldots, i_{m-1}$, 满足对于任意 $x\in \{0,1\}^n$, 当 $P$ 在输入 $x$ 上执行时在第 $j$ 次迭代时变量 `i` 等于 $i_j$. 
+```
 
-> ### {.proofidea data-ref="obliviousnandtmthm"}
+换言之, {{ref:thm:obliviousnandtm}} 意味着如果我们能在 $T(n)$ 步内计算 $F$, 那么我们就能用一个程序 $P$ 在 $O(T(n)^2)$ 步内计算它, 且变量 `i` 在第 $j$ 次迭代中的值只取决于 $j$ 和输入的长度, 不依赖于输入的内容.
+这样的程序可以通过 "循环展开" 轻松的被转译成 $O(T(n)^2)$ 行的 NAND-CIRC 程序.
+
+```admonish proof collapsible=true title="{{ref:thm:obliviousnandtm}} 的证明思路"
 We can translate any NAND-TM program $P'$ into an oblivious program $P$ by making $P$ "sweep" its arrays. That is, the index `i` in $P$ will always move all the way from position $0$ to position $T(n)-1$ and back again.
 We can then simulate the program $P'$ with at most $T(n)$ overhead: if $P'$ wants to move `i` left when we are in a rightward sweep then we simply wait the at most $2T(n)$ steps until the next time we are back in the same position while sweeping to the left. 
+```
 
+```admonish pic id="obliviousnandtmfig"
+![obliviousnandtmfig](./images/chapter13/obliviousnandtm.png) 
 
-![We simulate a $T(n)$-time NAND-TM program $P'$ with an _oblivious_ NAND-TM program $P$ by adding special arrays `Atstart` and `Atend` to mark positions $0$ and $T-1$ respectively. The program $P$ will simply "sweep" its arrays from right to left and back again. If the original program $P'$ would have moved `i` in a different direction then we wait $O(T)$ steps until we reach the same point back again, and so $P$ runs in $O(T(n)^2)$ time.](../figure/obliviousnandtm.png){#obliviousnandtmfig  .margin }
+{{pic}}{fig:obliviousnandtm} We simulate a $T(n)$-time NAND-TM program $P'$ with an _oblivious_ NAND-TM program $P$ by adding special arrays `Atstart` and `Atend` to mark positions $0$ and $T-1$ respectively. The program $P$ will simply "sweep" its arrays from right to left and back again. If the original program $P'$ would have moved `i` in a different direction then we wait $O(T)$ steps until we reach the same point back again, and so $P$ runs in $O(T(n)^2)$ time.
+```
+
 
 
 ::: {.proof data-ref="obliviousnandtmthm"}
