@@ -752,35 +752,45 @@ Y[0] = NAND(temp_3,temp_4)
 这样的程序可以通过 "循环展开" 轻松的被转译成 $O(T(n)^2)$ 行的 NAND-CIRC 程序.
 
 ```admonish proof collapsible=true title="{{ref:thm:obliviousnandtm}} 的证明思路"
-We can translate any NAND-TM program $P'$ into an oblivious program $P$ by making $P$ "sweep" its arrays. That is, the index `i` in $P$ will always move all the way from position $0$ to position $T(n)-1$ and back again.
-We can then simulate the program $P'$ with at most $T(n)$ overhead: if $P'$ wants to move `i` left when we are in a rightward sweep then we simply wait the at most $2T(n)$ steps until the next time we are back in the same position while sweeping to the left. 
+我们可以通过让一个 NAND-TM 程序 $P$ 扫描它的数组来把任意 $P'$ 翻译成非感知的程序 $P$.
+换言之, $P$ 中的索引 `i` 将始终从 $0$ 一路移动到 $T(n) - 1$ 并不断重复.
+于是我们便可以用至多 $T(n)$ 的开销来模拟程序 $P'$: 如果 $P'$ 想要在一个向右的扫描中向左移动, 则我们可以简单的等待至多 $2T(n)$ 步直到下一次在向左移动的过程中回到原位置. 
 ```
 
 ```admonish pic id="obliviousnandtmfig"
 ![obliviousnandtmfig](./images/chapter13/obliviousnandtm.png) 
 
-{{pic}}{fig:obliviousnandtm} We simulate a $T(n)$-time NAND-TM program $P'$ with an _oblivious_ NAND-TM program $P$ by adding special arrays `Atstart` and `Atend` to mark positions $0$ and $T-1$ respectively. The program $P$ will simply "sweep" its arrays from right to left and back again. If the original program $P'$ would have moved `i` in a different direction then we wait $O(T)$ steps until we reach the same point back again, and so $P$ runs in $O(T(n)^2)$ time.
+{{pic}}{fig:obliviousnandtm} 
+通过添加两个特殊数组 `Atstart` 和 `Atend` 来分别标记 $0$ 和 $T-1$ 两个位置, 我们得已用一个*非感知*的 NAND-TM 程序 $P$ 来模拟一个 $T(n)$ 时间的 NAND-TM 程序 $P'$.
+程序 $P$ 会简单的从右到左反复扫描它的数组.
+如果原来的程序 $P'$ 想要向一个相反的方向移动 `i`, 那么我们会等待 $O(T)$ 步直到我们到达了相同的位置, 因此 $P$ 在 $O(T(n)^2)$ 时间运行.
 ```
 
 
+```admonish proof collapsible=true title="{{ref:thm:obliviousnandtm}} 的证明"
+令 $P'$ 为一个在 $T(n)$ 步内计算 $F$ 的 NAND-TM 程序.
+我们构造一个非感知的 NAND-TM 程序 $P$ 以如下过程计算 $F$ (另见 {{ref:fig:obliviousnandtm}}). 
 
-::: {.proof data-ref="obliviousnandtmthm"}
-Let $P'$ be a NAND-TM program computing $F$ in $T(n)$ steps.
-We construct an oblivious NAND-TM program $P$ for computing $F$ as follows (see also [obliviousnandtmfig](){.ref}).
-
+1. 在输入 $x$ 上, $P$ 会计算 $T=T(|x|)$ 并创建数组 `Atstart` 和 `Atend` 满足 `Atstart[`$0$`]`$=1$ 且对于 $i>0$, `Atstart[`$i$`]`$=0$ 和 `Atend[`$T-1$`]`$=1$ 且对于 $i \neq T-1$, `Atend[`i`]`$=0$.
+因为 $T$ 是一个好函数, 所以我们可以做到这一点.
+注意因为这步计算并不依赖于 $x$ 而只依赖于其长度, 因此这是非感知的.
 1. On input $x$, $P$ will compute $T=T(|x|)$ and set up arrays `Atstart` and `Atend` satisfying 
  `Atstart[`$0$`]`$=1$ and `Atstart[`$i$`]`$=0$ for $i>0$ and `Atend[`$T-1$`]`$=1$ and `Atend[`i`]`$=0$ for all $i \neq T-1$.  We can do this because $T$ is a nice function. Note that since this computation does not depend on $x$ but only on its length, it is oblivious. 
 
- 1. $P$ will also have a special array `Marker` initialized to all zeroes.
+2. $P$ 还会有一个初始化为全 $0$ 的特殊数组 `Marker`.
 
-1. The index variable of $P$ will change direction of movement to the right whenever `Atstart[i]`$=1$ and to the left whenever `Atend[i]`$=1$. 
+3. 当 `Atstart[i]`$=1$ 时, $P$ 的索引变量会会将其移动方向改为向右, 当 `Atend[i]`$=1$ 时, 会改为向左.
+
+4. 
+
 
 2. The program $P$  simulates the execution of $P'$. However, if the `MODANDJMP` instruction in $P'$ attempts to move to the right when $P$ is moving left (or vice versa) then $P$ will set `Marker[i]` to $1$ and  enter into a special "waiting mode". In this mode $P$ will wait until the next time in which `Marker[i]`$=1$ (at the next sweep) at which points $P$ zeroes `Marker[i]` and continues with the simulation. In the worst case this will take $2T(n)$ steps (if $P$ has to go all the way from one end to the other and back again.)
    
 3. We also modify $P$ to ensure it ends the computation after simulating exactly $T(n)$ steps of $P'$, adding "dummy steps" if $P'$ ends early.
 
 We see that $P$ simulates  the execution of $P'$ with an overhead of $O(T(n))$ steps of $P$ per one step of $P'$, hence completing the proof.
-:::
+```
+
 
 
 [obliviousnandtmthm](){.ref} implies [non-uniform-thm](){.ref}. Indeed, if $P$ is a $k$-line oblivious NAND-TM program computing $F$ in time $T(n)$ then for every $n$ we can obtain a NAND-CIRC program of $(k-1)\cdot T(n)$ lines by simply making $T(n)$ copies of $P$ (dropping the final `MODANDJMP` line).
