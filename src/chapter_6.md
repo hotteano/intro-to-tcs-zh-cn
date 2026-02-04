@@ -834,7 +834,7 @@ $$
 
 <!--图6.8-->
 ```admonish pic id="dfatoreginductivefig"
-![dfatoreginductivefig](./images/chapter6/dfatoreginductivefig.png)
+![dfatoreginductivefig](./images/chapter6/dfatoreginductionfig.png)
 
 {{pic}}{fig:dfatoreginductive} 若对于每个$v',w' \in [C]$，均有与$F_{v',w'}^{t}$相一致的正则表达式$R_{v',w'}^{t}$，则可以得到一个与$F_{v',w'}^{t+1}$相一致的正则表达式$R_{v',w'}^{t+1}$. 关键的观察结果在于，一个可能经过的状态均在$\{0,\ldots, t \}$中的，从$v$到$w$的路径，要么完全不通过$t$——这种情况被$R_{v,w}^{t}$所捕捉; 要么从$v$到$t$，然后回到$t$零或多次，最终从$t$到$w$——这种情况被$R_{v,t}^{t}(R_{t,t}^{t})^* R_{t,w}^t$所捕捉. 
 ```
