@@ -365,9 +365,9 @@ $$
 2. $H(x) = F(x) \wedge G(x)$. 
 3. $H(x) = NAND(F(x), G(x))$.  (NAND的真值表: 当且仅当输入不全为1时输出0)
 4. $H(x) = F(x^R)$, 其中$x^R$是$x$的反转: 对于$n=|x|$, 有$x^R = x_{n-1}x_{n-2} \cdots x_0$. 
-5. $H(x) = \begin{cases}1 & \text{存在 } x=uv \text{ 使得 } F(u)=G(v)=1 \ 0 & \text{否则} \end{cases}$
-6. $H(x) = \begin{cases}1 & \text{存在 } x=uu \text{ 使得 } F(u)=G(u)=1 \ 0 & \text{否则} \end{cases}$
-7. $H(x) = \begin{cases}1 & \text{存在 } x=uu^R \text{ 使得 } F(u)=G(u)=1 \ 0 & \text{否则} \end{cases}$
+5. $H(x) = \begin{cases}1 & \text{存在 } x=uv \text{ 使得 } F(u)=G(v)=1 \\ 0 & \text{否则} \end{cases}$
+6. $H(x) = \begin{cases}1 & \text{存在 } x=uu \text{ 使得 } F(u)=G(u)=1 \\ 0 & \text{否则} \end{cases}$
+7. $H(x) = \begin{cases}1 & \text{存在 } x=uu^R \text{ 使得 } F(u)=G(u)=1 \\ 0 & \text{否则} \end{cases}$
 ```
 
 ```admonish question title=""
