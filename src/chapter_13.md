@@ -1,7 +1,3 @@
-```admonish warning 
-**本章施工中**
-```
-
 # 运行时间建模 { #chapmodelruntime }
 
 ## 学习目标
@@ -969,76 +965,76 @@ $\mathbf{P}$, $\mathbf{EXP}$, 和 $\mathbf{P_{/poly}}$ 之间的关系.
 
 
 
-## 习题
+## 13.7 习题
 
 ```admonish quote title=""
-{{proc}}{definitionofP}[Equivalence of different definitions of $\mathbf{P}$ and $\mathbf{EXP}$.]
+{{proc}}{definitionofP}[$\mathbf{P}$ 和 $\mathbf{EXP}$ 不同定义之间的等价性.]
 
-Prove that the classes $\mathbf{P}$ and $\mathbf{EXP}$ defined in [PandEXPdef](){.ref} are equal to $\cup_{c\in \{1,2,3,\ldots \}} TIME(n^c)$ and $\cup_{c\in \{1,2,3,\ldots \}} TIME(2^{n^c})$ respectively.
-(If $S_1,S_2,S_3,\ldots$ is a collection of sets then the set $S = \cup_{c\in \{1,2,3,\ldots \}} S_c$ is the set of all elements $e$ such that there exists some $c\in \{ 1,2,3,\ldots \}$ where $e\in S_c$.)
+证明在 {{ref:def:PandEXP}} 中定义的复杂性类 $\mathbf{P}$ 和 $\mathbf{EXP}$ 分别等价于 $\cup_{c\in \{1,2,3,\ldots \}} TIME(n^c)$ 和 $\cup_{c\in \{1,2,3,\ldots \}} TIME(2^{n^c})$. 
+(如果 $S_1,S_2,S_3,\ldots$ 是一个集合的集族, 那么集合 $S = \cup_{c\in \{1,2,3,\ldots \}} S_c$ 是所有满足存在某个 $c\in \{ 1,2,3,\ldots \}$, 且 $e\in S_c$ 的元素 $e$ 的集合.)
 ```
 
 ```admonish quote title=""
-{{proc}}{robsutrepresex}[Robustness to representation]
+{{proc}}{robsutrepresex}[表示的鲁棒性]
 
-[polyRAMTM-thm](){.ref} shows that the classes $\mathbf{P}$ and $\mathbf{EXP}$ are _robust_ with respect to variations in the choice of the computational model.
-This exercise shows that these classes are also robust with respect to our choice of the representation of the input.
+{{ref:thm:polyRAMTM}} 表明类 $\mathbf{P}$ 和 $\mathbf{EXP}$ 对于计算模型的选择具有_鲁棒性_.
+本练习表明这些类对于我们输入表示的选择也具有鲁棒性.
 
-Specifically, let $F$ be a function mapping graphs to $\{0,1\}$, and let $F', F'':\{0,1\}^* \rightarrow \{0,1\}$ be the functions defined as follows. For every $x\in \{0,1\}^*$:
+具体来说, 令 $F$ 为一个将图映射到 $\{0,1\}$ 的函数, 并令 $F', F'':\{0,1\}^* \rightarrow \{0,1\}$ 为定义如下的函数. 对于每个 $x\in \{0,1\}^*$:
 
-* $F'(x)=1$ iff $x$ represents a graph $G$ via the adjacency matrix representation such that $F(G)=1$.
+* $F'(x)=1$ 当且仅当 $x$ 通过邻接矩阵表示法表示一个图 $G$, 且 $F(G)=1$.
 
-* $F''(x)=1$ iff $x$ represents a graph $G$ via the adjacency list representation such that $F(G)=1$.
+* $F''(x)=1$ 当且仅当 $x$ 通过邻接表表示法表示一个图 $G$, 且 $F(G)=1$.
 
-Prove that $F' \in \mathbf{P}$ iff $F'' \in \mathbf{P}$.
+证明 $F' \in \mathbf{P}$ 当且仅当 $F'' \in \mathbf{P}$.
 
 
-More generally, for every function $F:\{0,1\}^* \rightarrow \{0,1\}$, the answer to the question of whether $F\in \mathbf{P}$ (or whether $F\in \mathbf{EXP}$) is unchanged by switching representations, as long as transforming one representation to the other can be done in polynomial time (which essentially holds for all reasonable representations).
+更一般地, 对于每个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$, 关于 $F\in \mathbf{P}$ (或 $F\in \mathbf{EXP}$) 的问题的答案在切换表示后保持不变, 只要一种表示转换为另一种表示可以在多项式时间内完成 (这基本上对所有合理的表示都成立).
 ```
 
 
 ```admonish quote title=""
-{{proc}}{boolex}[Boolean functions]
+{{proc}}{boolex}[布尔函数]
 
-For every function $F:\{0,1\}^* \rightarrow \{0,1\}^*$, define $Bool(F)$ to be the function mapping $\{0,1\}^*$ to $\{0,1\}$ such that on input a (string representation of a) triple $(x,i,\sigma)$ with $x\in \{0,1\}^*$, $i \in \N$ and $\sigma \in \{0,1\}$,
+对于每个函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$, 定义 $Bool(F)$ 为一个将 $\{0,1\}^*$ 映射到 $\{0,1\}$ 的函数, 使得对于输入三元组 $(x,i,\sigma)$ (的字符串表示), 其中 $x\in \{0,1\}^*$, $i \in \N$ 且 $\sigma \in \{0,1\}$, 有
 
 $$
 Bool(F)(x,i,\sigma) = \begin{cases} F(x)_i & \sigma =0, i<|F(x)| \\
-									1      & \sigma = 1,i<|F(x)| \\
-								 0   & \text{otherwise} \end{cases}
+									1      & \sigma = 1,i<|F(x)| \\
+								 0   & \text{otherwise} \end{cases}
 $$
-where $F(x)_i$ is the $i$-th bit of the string $F(x)$.
+其中 $F(x)_i$ 是字符串 $F(x)$ 的第 $i$ 位.
 
-Prove that for every $F:\{0,1\}^* \rightarrow \{0,1\}^*$, $Bool(F) \in \mathbf{P}$ if and only if there is a Turing Machine $M$ and a polynomial $p:\N \rightarrow \N$ such  that for every $x\in \{0,1\}^*$, on input $x$, $M$ halts within $\leq p(|x|)$ steps and outputs $F(x)$.
+证明对于每个 $F:\{0,1\}^* \rightarrow \{0,1\}^*$, $Bool(F) \in \mathbf{P}$ 当且仅当存在一个图灵机 $M$ 和一个多项式 $p:\N \rightarrow \N$, 使得对于每个 $x\in \{0,1\}^*$, 在输入 $x$ 上, $M$ 在 $\leq p(|x|)$ 步内停机并输出 $F(x)$.
 ```
 
 ```admonish quote title=""
-{{proc}}{poly-time-comp-ex}[Composition of polynomial time]
+{{proc}}{poly-time-comp-ex}[多项式时间的复合]
 
-Say that a (possibly non-Boolean) function $F:\{0,1\}^* \rightarrow \{0,1\}^*$ is _computable in polynomial time_, if there is a Turing Machine $M$ and a polynomial $p:\N \rightarrow \N$ such  that for every $x\in \{0,1\}^*$, on input $x$, $M$ halts within $\leq p(|x|)$ steps and outputs $F(x)$.
-Prove that for every pair of functions  $F,G:\{0,1\}^* \rightarrow \{0,1\}^*$ computable in polynomial time, their _composition_ $F\circ G$, which is the function $H$ s.t. $H(x)=F(G(x))$, is also computable in polynomial time.
-```
-
-
-
-```admonish quote title=""
-{{proc}}{exp-time-comp-ex}[Non-composition of exponential time]
-
-Say that a (possibly non-Boolean) function $F:\{0,1\}^* \rightarrow \{0,1\}^*$ is _computable in exponential  time_, if there is a Turing Machine $M$ and a polynomial $p:\N \rightarrow \N$ such  that for every $x\in \{0,1\}^*$, on input $x$, $M$ halts within $\leq 2^{p(|x|)}$ steps and outputs $F(x)$.
-Prove that there is some $F,G:\{0,1\}^* \rightarrow \{0,1\}^*$ s.t. both $F$ and $G$ are computable in exponential time, but $F\circ G$ is not computable in exponential time.
+如果存在一个图灵机 $M$ 和一个多项式 $p:\N \rightarrow \N$, 使得对于每个 $x\in \{0,1\}^*$, 在输入 $x$ 上, $M$ 在 $\leq p(|x|)$ 步内停机并输出 $F(x)$, 则称 (可能非布尔的) 函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 是_多项式时间可计算的_.
+证明对于每一对多项式时间可计算的函数 $F,G:\{0,1\}^* \rightarrow \{0,1\}^*$, 它们的_复合_ $F\circ G$ (即满足 $H(x)=F(G(x))$ 的函数 $H$) 也是多项式时间可计算的.
 ```
 
 
 ```admonish quote title=""
-{{proc}}{oblivious-ex}[Oblivious Turing Machines]
+{{proc}}{exp-time-comp-ex}[指数时间的非复合性]
 
-We say that a Turing machine $M$ is _oblivious_ if there is some function $T:\N\times \N \rightarrow \Z$ such that for every input $x$ of length $n$, and $t\in \N$ it holds that:
+如果存在一个图灵机 $M$ 和一个多项式 $p:\N \rightarrow \N$, 使得对于每个 $x\in \{0,1\}^*$, 在输入 $x$ 上, $M$ 在 $\leq 2^{p(|x|)}$ 步内停机并输出 $F(x)$, 则称 (可能非布尔的) 函数 $F:\{0,1\}^* \rightarrow \{0,1\}^*$ 是_指数时间可计算的_.
+证明存在某些 $F,G:\{0,1\}^* \rightarrow \{0,1\}^*$, 使得 $F$ 和 $G$ 都是指数时间可计算的, 但 $F\circ G$ 不是指数时间可计算的.
+```
 
-* If $M$ takes more than $t$ steps to halt on the input $x$, then in the $t$-th step $M$'s head will be in the position $T(n,t)$. (Note that this position depends only on the _length_ of $x$ and not its contents.)
 
-* If $M$ halts before the $t$-th step then $T(n,t) = -1$.
+```admonish quote title=""
+{{proc}}{oblivious-ex}[非感知的图灵机]
 
-Prove that if $F\in \mathbf{P}$ then there exists an _oblivious_ Turing machine $M$ that computes $F$ in polynomial time. See footnote for hint.^[_Hint:_ This is the Turing machine analog of [obliviousnandtmthm](){.ref}. We replace one step of the original TM $M'$ computing $F$ with a "sweep" of the obliviouss TM $M$ in which it goes $T$ steps to the right and then $T$ steps to the left.]
+我们称图灵机 $M$ 是 *非感知的*, 如果存在某个函数 $T:\N\times \N \rightarrow \Z$ 使得对于每个长度为 $n$ 的输入 $x$ 和 $t\in \N$ 满足:
+
+* 如果 $M$ 在输入 $x$ 上停机所需的步数超过 $t$, 那么在第 $t$ 步 $M$ 的读写头将位于位置 $T(n,t)$. (注意该位置仅取决于 $x$ 的_长度_而不取决于其内容.)
+
+* 如果 $M$ 在第 $t$ 步之前停机, 则 $T(n,t) = -1$.
+
+证明如果 $F\in \mathbf{P}$, 那么存在一个 *非感知的* 图灵机 $M$ 在多项式时间内计算 $F$. 见脚注提示.
+{{footnote: _提示:_ 这是 {{ref:thm:obliviousnandtm}} 的图灵机类比. 我们将计算 $F$ 的原始 TM $M'$ 的一步替换为 非感知 TM $M$ 的一次 "扫描", 在扫描中它向右移动 $T$ 步, 然后向左移动 $T$ 步. }}
 ```
 
 
@@ -1046,39 +1042,38 @@ Prove that if $F\in \mathbf{P}$ then there exists an _oblivious_ Turing machine 
 ```admonish quote title=""
 {{proc}}{graphedgeex}
 
-Let $EDGE:\{0,1\}^* \rightarrow \{0,1\}$ be the function such that on input a string representing a triple $(L,i,j)$, where $L$ is the adjacency list representation of an $n$ vertex graph $G$, and $i$ and $j$ are numbers in $[n]$, $EDGE(L,i,j)=1$ if the edge $\{i,j \}$ is present in the graph. $EDGE$ outputs $0$ on all other inputs.
+令 $EDGE:\{0,1\}^* \rightarrow \{0,1\}$ 为这样一个函数: 对于表示三元组 $(L,i,j)$ 的输入字符串, 其中 $L$ 是 $n$ 个顶点图 $G$ 的邻接表表示, 且 $i$ 和 $j$ 是 $[n]$ 中的数字, 如果图中存在边 $\{i,j \}$ 则 $EDGE(L,i,j)=1$. $EDGE$ 在所有其他输入上输出 $0$.
 
-1. Prove that $EDGE \in \mathbf{P}$.
+1. 证明 $EDGE \in \mathbf{P}$.
 
 
-2. Let $PLANARMATRIX:\{0,1\}^* \rightarrow \{0,1\}$ be the function that on input an adjacency matrix $A$ outputs $1$ if and only if the graph represented by $A$ is _planar_ (that is, can be drawn on the plane without edges crossing one another). For this question, you can use without proof the fact that $PLANARMATRIX \in \mathbf{P}$. Prove that $PLANARLIST \in \mathbf{P}$ where $PLANARLIST:\{0,1\}^* \rightarrow \{0,1\}$ is the function that on input an adjacency list $L$ outputs $1$ if and only if $L$ represents a planar graph.
+2. 令 $PLANARMATRIX:\{0,1\}^* \rightarrow \{0,1\}$ 为这样一个函数: 当输入为邻接矩阵 $A$ 时, 当且仅当 $A$ 表示的图是_平面图_ (即可以画在平面上且边互不交叉) 时输出 $1$. 对于这个问题, 你可以直接使用 $PLANARMATRIX \in \mathbf{P}$ 这一事实而无需证明. 证明 $PLANARLIST \in \mathbf{P}$, 其中 $PLANARLIST:\{0,1\}^* \rightarrow \{0,1\}$ 是这样一个函数: 当输入为邻接表 $L$ 时, 当且仅当 $L$ 表示一个平面图时输出 $1$.
 ```
 
 
 ```admonish quote title=""
-{{proc}}{evalnandcircuit}[Evaluate NAND circuits]
+{{proc}}{evalnandcircuit}[评估 NAND 电路]
 
-Let $NANDEVAL:\{0,1\}^* \rightarrow \{0,1\}$ be the function such that for every string representing a pair $(Q,x)$ where $Q$ is an $n$-input $1$-output
-NAND-CIRC (not NAND-TM!) program  and $x\in \{0,1\}^n$, $NANDEVAL(Q,x)=Q(x)$.  On all other inputs $NANDEVAL$ outputs $0$.
+令 $NANDEVAL:\{0,1\}^* \rightarrow \{0,1\}$ 为这样一个函数: 对于每个表示二元组 $(Q,x)$ 的字符串, 其中 $Q$ 是一个 $n$ 输入 $1$ 输出的 NAND-CIRC (不是 NAND-TM!) 程序, 且 $x\in \{0,1\}^n$, 有 $NANDEVAL(Q,x)=Q(x)$. 在所有其他输入上 $NANDEVAL$ 输出 $0$.
 
-Prove that $NANDEVAL \in \mathbf{P}$.
+证明 $NANDEVAL \in \mathbf{P}$.
 ```
 
 
 ```admonish quote title=""
-{{proc}}{hardfunc}[Find hard function]
+{{proc}}{hardfunc}[寻找困难函数]
 
-Let $NANDHARD:\{0,1\}^* \rightarrow \{0,1\}$ be the function such that on input a string representing a  pair $(f,s)$ where
+令 $NANDHARD:\{0,1\}^* \rightarrow \{0,1\}$ 为这样一个函数: 对于表示二元组 $(f,s)$ 的输入字符串, 其中
 
-* $f \in \{0,1\}^{2^n}$ for some $n\in \mathbb{N}$
+* $f \in \{0,1\}^{2^n}$ 对于某个 $n\in \mathbb{N}$
 * $s\in \mathbb{N}$
 
-$NANDHARD(f,s)=1$ if there is no NAND-CIRC program $Q$ of at most $s$ lines that computes the function $F:\{0,1\}^n \rightarrow \{0,1\}$ whose truth table is the string $f$.
-That is, $NANDHARD(f,s)=1$ if for every NAND-CIRC program $Q$ of at most $s$ lines, there exists some $x\in \{0,1\}^{n}$ such that $Q(x) \neq f_x$ where $f_x$ denote the $x$-the coordinate of $f$, using the binary representation to identify $\{0,1\}^n$ with the numbers $\{0,\ldots,2^n -1 \}$.
+$NANDHARD(f,s)=1$ 如果不存在至多 $s$ 行的 NAND-CIRC 程序 $Q$ 能计算真值表为字符串 $f$ 的函数 $F:\{0,1\}^n \rightarrow \{0,1\}$.
+也就是说, $NANDHARD(f,s)=1$ 如果对于每个至多 $s$ 行的 NAND-CIRC 程序 $Q$, 都存在某个 $x\in \{0,1\}^{n}$ 使得 $Q(x) \neq f_x$, 其中 $f_x$ 表示 $f$ 的第 $x$ 个坐标, 这里使用二进制表示将 $\{0,1\}^n$ 与数字 $\{0,\ldots,2^n -1 \}$ 对应起来.
 
-1. Prove that $NANDHARD \in \mathbf{EXP}$.
+1. 证明 $NANDHARD \in \mathbf{EXP}$.
 
-2. (Challenge) Prove that there is an algorithm $FINDHARD$ such that if $n$ is sufficiently large, then $FINDHARD(1^n)$ runs in time $2^{2^{O(n)}}$ and outputs a string $f \in \{0,1\}^{2^n}$ that is the truth table of a function that is not contained in  $SIZE(2^n/(1000n))$. (In other words, if $f$ is the string output by $FINDHARD(1^n)$ then if we let $F:\{0,1\}^n \rightarrow \{0,1\}$ be the function such that $F(x)$ outputs the $x$-th coordinate of $f$, then $F\not\in SIZE(2^n/(1000n))$.^[__Hint:__ Use Item 1, the existence of functions requiring exponentially hard NAND programs, and the fact that there are only finitely many functions mapping $\{0,1\}^n$ to $\{0,1\}$.]
+2. (挑战) 证明存在一个算法 $FINDHARD$, 使得如果 $n$ 足够大, 则 $FINDHARD(1^n)$ 在时间 $2^{2^{O(n)}}$ 内运行并输出一个字符串 $f \in \{0,1\}^{2^n}$, 该字符串是一个不包含在 $SIZE(2^n/(1000n))$ 中的函数的真值表. (换句话说, 如果 $f$ 是 $FINDHARD(1^n)$ 输出的字符串, 那么如果我们令 $F:\{0,1\}^n \rightarrow \{0,1\}$ 为使得 $F(x)$ 输出 $f$ 的第 $x$ 个坐标的函数, 则 $F\not\in SIZE(2^n/(1000n))$.{{footnote: _提示:_ 使用第 1 项, 需要指数级困难 NAND 程序的函数的存在性, 以及映射 $\{0,1\}^n$ 到 $\{0,1\}$ 的函数只有有限多个这一事实.}}
 ```
 
 
@@ -1086,38 +1081,29 @@ That is, $NANDHARD(f,s)=1$ if for every NAND-CIRC program $Q$ of at most $s$ lin
 ```admonish quote title=""
 {{proc}}{scheduleprogex}
 
-Suppose that you are in charge of scheduling courses  in computer science in University X. In University X, computer science students wake up late, and have to work on their startups in the afternoon, and take long weekends with their investors. So you only have two possible slots: you can schedule a course either Monday-Wednesday 11am-1pm or Tuesday-Thursday 11am-1pm.
+假设你负责 X 大学的计算机科学课程调度. 在 X 大学, 计算机科学系的学生起得很晚, 下午必须去忙他们的创业公司, 并且还要和投资人一起度过长周末. 所以你只有两个可能的时间段: 你可以将课程安排在周一-周三的上午 11 点到下午 1 点, 或者周二-周四的上午 11 点到下午 1 点.
 
 
-Let $SCHEDULE:\{0,1\}^* \rightarrow \{0,1\}$ be the function that takes as input a list of courses $L$ and a list of _conflicts_ $C$ (i.e., list of pairs of courses that cannot share the same time slot) and outputs  $1$ if and only if there is a "conflict free" scheduling of the courses in $L$, where no pair in $C$ is scheduled in the same time slot.
+令 $SCHEDULE:\{0,1\}^* \rightarrow \{0,1\}$ 为一个函数, 它接受一个课程列表 $L$ 和一个_冲突_列表 $C$ (即不能共享同一时间段的课程对列表) 作为输入, 当且仅当 $L$ 中的课程存在一个 "无冲突" 的调度方案 (即 $C$ 中没有一对课程被安排在同一时间段) 时输出 $1$.
 
-More precisely, the list $L$ is a list of strings $(c_0,\ldots,c_{n-1})$ and the list $C$ is a list of pairs of the form $(c_i,c_j)$. $SCHEDULE(L,C)=1$ if and only if there exists a partition of $c_0,\ldots,c_{n-1}$ into two parts so that there is no pair $(c_i,c_j) \in C$ such that both $c_i$ and $c_j$ are in the same part.
+更准确地说, 列表 $L$ 是一个字符串列表 $(c_0,\ldots,c_{n-1})$, 列表 $C$ 是一个形式为 $(c_i,c_j)$ 的配对列表. $SCHEDULE(L,C)=1$ 当且仅当存在 $c_0,\ldots,c_{n-1}$ 的一个划分为两部分, 使得不存在 $(c_i,c_j) \in C$ 满足 $c_i$ 和 $c_j$ 都在同一部分中.
 
-Prove that $SCHEDULE \in \mathbf{P}$.  As usual, you do not have to provide the full code to show that this is the case, and can describe operations as a high level, as well as appeal to any data structures or other results mentioned in the book or in lecture. Note that to show that a function $F$ is in $\mathbf{P}$ you need to both __(1)__ present an algorithm $A$ that computes $F$ in polynomial time, __(2)__ _prove_ that $A$ does indeed run in polynomial time, and does indeed compute the correct answer.
+证明 $SCHEDULE \in \mathbf{P}$. 像往常一样, 你不需要提供完整的代码来证明这一点, 可以高层次地描述操作, 也可以引用本书或讲座中提到的任何数据结构或其他结果. 注意, 要证明一个函数 $F$ 在 $\mathbf{P}$ 中, 你需要同时 __(1)__ 给出一个在多项式时间内计算 $F$ 的算法 $A$, __(2)__ _证明_ $A$ 确实在多项式时间内运行, 并且确实计算出正确的答案.
 
-Try to think whether or not your algorithm extends to the case where there are _three_ possible time slots.
+试着思考你的算法是否可以扩展到有*三个*可能时间段的情况.
+
 ```
 
 
-## Bibliographical notes {#bibnotesrunningtime }
+## 13.8 参考文献 {#bibnotesrunningtime }
 
-Because we are interested in the _maximum_ number of steps for inputs of a given length, running-time as we defined it is often known as _worst case complexity_. The _minimum_ number of steps (or "best case" complexity) to compute a function on length $n$ inputs is typically not a meaningful quantity since essentially every natural problem will have some trivially easy instances.
-However, the _average case complexity_ (i.e., complexity on a "typical" or "random" input) is an interesting concept which we'll return to when we discuss _cryptography_.
-That said, worst-case complexity is the most standard and basic of the complexity measures, and will be our focus in most of this book.
+因为我们对给定长度输入的 *最大* 步数感兴趣, 我们定义的运行时间通常被称为 *最坏情况复杂度*. 计算长度为 $n$ 的输入上的函数的 *最小* 步数 (或 "最好情况" 复杂度) 通常不是一个有意义的量, 因为本质上每个自然问题都会有一些极其简单的实例.
+然而, *平均情况复杂度* (即 "典型" 或 "随机" 输入上的复杂度) 是一个有趣的概念, 我们将在讨论 *密码学* 时回到这个话题.
+话虽如此, 最坏情况复杂度是复杂度度量中最标准和最基本的, 并且将是我们本书大部分内容的重点.
 
+单带图灵机的一些下界在 [(Maass, 1985)](https://scholar.google.com/scholar?hl=en&q=Maass+Combinatorial+lower+bound+arguments+for+deterministic+and+nondeterministic+Turing+machines) 中给出.
 
+为了定义 $\lambda$ 演算中的效率, 人们需要对归约步骤的应用顺序保持谨慎, 这对计算效率可能很重要, 例如参见 [这篇论文](https://lmcs.episciences.org/1627).
 
-
-Some lower bounds for single-tape Turing machines are given in [@maass1985combinatorial].
-
-For defining efficiency in the  $\lambda$ calculus, one needs to be careful about the order of application of the reduction steps, which can matter for computational efficiency, see for example [this paper](https://lmcs.episciences.org/1627).
-
-
-
-The notation $\mathbf{P_{/poly}}$ is used for historical reasons.
-It was introduced by Karp and Lipton, who considered this class as corresponding to functions that can be computed by polynomial-time Turing machines that are given for any input length $n$ an _advice string_ of length polynomial in $n$.
-
-
-
-
-
+符号 $\mathbf{P_{/poly}}$ 的使用是出于历史原因.
+它是由 Karp 和 Lipton 引入的, 他们认为这个类对应于可以由多项式时间图灵机计算的函数, 这些图灵机对于任何输入长度 $n$ 都被赋予一个长度为 $n$ 的多项式的 *建议串*.
