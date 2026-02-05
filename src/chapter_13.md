@@ -835,7 +835,7 @@ $$
 ```admonish bigidea
 {{idec}}{ide:unrollloop}
 
-通过 "循环展开", 我们可以将一个需要 $T(n)$ 步来计算 $F$ 的算法转换为一个使用 $poly(T(n))$ 个门来计算 $F$ 在 $\{0,1\}^n$ 上结果的电路.
+通过 "循环展开", 我们可以将一个需要 $T(n)$ 步来计算 $F$ 的算法转换为一个使用 $poly(T(n))$ 个门来计算 $F$ 在 $\{0,1\}^n$ 上的限制的电路.
 ```
 
 ```admonish pause title="暂停一下"
@@ -845,7 +845,7 @@ $$
 ```admonish question title=""
 {{exec}}{exe:characterizationofp}[$\mathbf{P}$ 的另一刻画]
 
-证明对于任意 $F:\{0,1\}^* \rightarrow \{0,1\}$, $F\in \mathbf{P}$ 当且仅当存在一个多项式时间图灵机 $M$, 使得对于任意 $n\in \N$, $M(1^n)$ 输出一个 $n$ 输入电路 $C_n$ 的描述, 该电路计算在限制 $F_{\upharpoonright n}$ 下 $F$ 输入 $\{0,1\}^n$ 的结果.
+证明对于任意 $F:\{0,1\}^* \rightarrow \{0,1\}$, $F\in \mathbf{P}$ 当且仅当存在一个多项式时间图灵机 $M$, 使得对于任意 $n\in \N$, $M(1^n)$ 输出一个 $n$ 输入电路 $C_n$ 的描述, 该电路计算 $F$ 在输入 $\{0,1\}^n$ 上的限制 $F_{\upharpoonright n}$.
 ```
 
 ```admonish solution collapsible=true title="对{{ref:exe:characterizationofp}} 的解答"
@@ -858,125 +858,115 @@ $$
 
 由于我们可以在多项式时间内计算布尔电路在输入上的结果, 因此 $M'$ 在多项式时间内运行并对每个输入 $x$ 计算 $F(x)$.
 
-对于 "仅当" 的方向, 如果 $M'$ 是一个在多项式时间内计算 $F$ 的图灵机, 那么 (应用图灵机和 NAND-TM 的等价性以及 [obliviousnandtmthm](){.ref}) 同样存在一个茫然 NAND-TM 程序 $P$, 它在时间 $p(n)$ 内计算 $F$, 其中 $p$ 为某个多项式.
+对于 "仅当" 的方向, 如果 $M'$ 是一个在多项式时间内计算 $F$ 的图灵机, 那么 (应用图灵机和 NAND-TM 的等价性以及 {{ref:thm:obliviousnandtm}}) 同样存在一个非感知的 NAND-TM 程序 $P$, 它在时间 $p(n)$ 内计算 $F$, 其中 $p$ 为某个多项式.
 我们现在可以定义 $M$ 为这样一个图灵机: 在输入 $1^n$ 上, 它输出通过将 $P$ 的 "循环展开" $p(n)$ 次迭代而获得的 NAND 电路.
 结果 NAND 电路计算 $F_{\upharpoonright n}$ 并且具有 $O(p(n))$ 个门.
 它也可以被转换为具有 $O(p(n))$ 个 AND/OR/NOT 门的布尔电路.
+```
 
-We start with the "if" direction.
-Suppose that there is a polynomial-time Turing machine $M$ that on input $1^n$ outputs a circuit $C_n$ that computes $F_{\upharpoonright n}$. Then the following is a polynomial-time Turing machine $M'$ to compute $F$. On input $x\in \{0,1\}^*$, $M'$ will:
+```admonish question title=""
+{{exec}}{exe:adviceppoly}[$\mathbf{P_{/poly}}$ 的刻画]
 
-1. Let $n=|x|$ and compute $C_n = M(1^n)$.
+令 $F:\{0,1\}^* \rightarrow \{0,1\}$.
+那么 $F\in\mathbf{P_{/poly}}$ 当且仅当存在一个多项式 $p:\N \rightarrow \N$, 一个多项式时间图灵机 $M$ 和一个字符串序列 $\{ a_n \}_{n\in \N}$, 满足对于任意 $n\in \N$:
 
-2. Return the evaluation of $C_n$ on $x$.
+* $|a_n| \leq p(n)$
+* 对于任意 $x\in \{0,1\}^n$, $M(a_n,x)=F(x)$.
+```
 
-Since we can evaluate a Boolean circuit on an input in polynomial time, $M'$ runs in polynomial time and computes $F(x)$ on every input $x$.
+```admonish solution collapsible=true title="对{{ref:exe:adviceppoly}} 的解答"
+我们只概述证明.
+对于 "仅当" 方向, 如果 $F\in \mathbf{P_{/poly}}$, 那么我们可以简单地使用对应电路 $C_n$ 的描述作为 $a_n$, 并使用在多项式时间内计算一个电路在其输入上的结果的程序作为 $M$.
 
-For the "only if" direction, if $M'$ is a Turing machine that computes $F$ in polynomial-time, then (applying the equivalence of Turing machines and NAND-TM as well as [obliviousnandtmthm](){.ref}) there is also an oblivious NAND-TM program $P$ that computes $F$ in  time $p(n)$ for some polynomial $p$.
-We can now define $M$ to be the Turing machine that on input $1^n$ outputs the NAND circuit obtained by "unrolling the loop" of $P$ for $p(n)$ iterations.
-The resulting NAND circuit computes $F_{\upharpoonright n}$ and  has $O(p(n))$ gates.
-It can also be transformed to a Boolean circuit with $O(p(n))$ AND/OR/NOT gates.
+对于 "当" 方向, 我们可以使用与 {{ref:thm:non-uniform}} 相同的 "循环展开" 技术来证明: 如果 $P$ 是一个多项式时间 NAND-TM 程序, 那么对于任意 $n\in \N$, 映射 $x \mapsto P(a_n,x)$ 可以由多项式大小的 NAND-CIRC 程序 $Q_n$ 计算.
 ```
 
 
-::: {.solvedexercise title="$\mathbf{P_{/poly}}$ characterization by advice" #adviceppoly}
-Let $F:\{0,1\}^* \rightarrow \{0,1\}$. Then $F\in\mathbf{P_{/poly}}$ if and only if there exists a polynomial $p:\N \rightarrow \N$, a polynomial-time Turing machine  $M$ and a sequence $\{ a_n \}_{n\in \N}$ of strings, such that for every $n\in \N$:
+### 13.6.3 一致性算法可以模拟非一致性算法吗?
 
-* $|a_n| \leq p(n)$  \
-* For every $x\in \{0,1\}^n$, $M(a_n,x)=F(x)$.
-:::
+{{ref:thm:non-uniform}} 向我们展示了每个属于 $TIME(T(n))$ 的函数都属于 $SIZE(poly(T(n)))$.
+有人可能会问是否存在一个反向的关系.
+假设有一个 $F$, 满足对于每个 $n$, 其 $F_{\upharpoonright n}$ 都有一个 "短的" NAND-CIRC 程序.
+我们能说对于某些 "小的" $T$ 它一定在 $TIME(T(n))$ 中吗?
+答案是坚决的 **不**.
+不仅 $\mathbf{P_{/poly}}$ 不包含在 $\mathbf{P}$ 中, 事实上, $\mathbf{P_{/poly}}$ 中存在一些函数 *无法计算*.
 
-::: {.solution data-ref="adviceppoly"}
-We only sketch the proof.
-For the "only if" direction, if $F\in \mathbf{P_{/poly}}$ then we can use for $a_n$  simply the description of the corresponding circuit $C_n$ and for $M$ the program that computes in polynomial time the evaluation of a circuit on its input. 
+```admonish quote title=""
+{{thmc}}{thm:Ppolyuncomputable}[$\mathbf{P_{/poly}}$ 包含不可计算函数] 
+ 
+存在一个 *不可计算* 函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 满足 $F \in \mathbf{P_{/poly}}$.
+```
 
-For the "if" direction, we can use the same "unrolling the loop" technique of [non-uniform-thm](){.ref} to show that if $P$ is a polynomial-time NAND-TM program, then for every $n\in \N$, the map $x \mapsto P(a_n,x)$ can be computed by a polynomial-size NAND-CIRC program $Q_n$.
-:::
+```admonish proof collapsible=true, title = "对{{ref:thm:Ppolyuncomputable}} 的证明思路"
+因为 $\mathbf{P_{/poly}}$ 对应于非一致性计算, 若对于每个 $n\in \N$, 限制 $F_{\upharpoonright n}$ 在输入长度 $n$ 上有一个小的电路/程序, 尽管对于不同的 $n$ 这个电路/程序可能完全不同, 我们就说函数 $F$ 属于 $\mathbf{P_{/poly}}$.
+特别的, 如果对于所有相同长度的输入 $x$ 和 $x'$, 函数 $F$ 都满足 $F(x)=F(x')$, 那么这意味着 $F_{\upharpoonright n}$ 要么是常函数 $0$ 要么是常函数 $1$.
+因为常函数有一个 (非常!) 小的电路, 这样的函数 $F$ 总是属于 $\mathbf{P_{/poly}}$ (事实上属于一个更小的类).
+然而通过规约停机问题, 我们可以得到一个具有上述性质但不可计算的函数.
+```
 
+```admonish proof collapsible=true, title = "对{{ref:thm:Ppolyuncomputable}} 的证明"
+考虑如下定义的 "一元停机函数" $UH:\{0,1\}^* \rightarrow \{0,1\}$.
+我们令 $S:\N \rightarrow \{0,1\}^*$ 为这样一个函数: 接受输入 $n\in \N$, 输出对应于数字 $n$ 的二进制表示但不包含最高位 1 的字符串.
+注意 $S$ 是一个 *满射*.
+对于所有 $x\in \{0,1\}^*$, 我们定义 $UH(x)=HALTONZERO(S(|x|))$.
+即, 如果 $n$ 为 $x$ 的长度, 那么 $UH(x)=1$ 当且仅当字符串 $S(n)$ 编码了一个在输入 $0$ 上停机的 NAND-TM 程序.
 
+$UH$ 是不可计算的, 因为如果 $UH$ 可被计算, 那么我们就可以通过将程序 $P$ 转化为数字 $n$, 满足 $P = S(n)$, 并运行 $UH(1^n)$ (换言之, $UH$ 在长为 $n$ 的全 $1$ 串上的结果) 来计算 $HALTONZERO$ 的结果.
+另一方面, 对于所有 $n$, 对于所有输入 $x$, $UH_n(x)$ 总是为 $0$ 或总是为 $1$, 因此这个程序可以被一个常数行的 NAND-CIRC 程序计算.
+```
 
+这里的问题显然是 *一致性*.
+对于一个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$, 如果 $F$ 属于 $TIME(T(n))$, 那么我们有 *单一* 的算法可以对于每个 $n$ 计算 $F_{\upharpoonright n}$.
+另一方面, 对于每个 $n$, $F_{\upharpoonright n}$ 可能都在 $SIZE(T(n))$ 中, 但对每个输入长度使用完全不同的算法.
+因此, 我们通常不将 $\mathbf{P_{/poly}}$ 用作 _高效_ 计算的模型, 而是用来建模 _低效计算_.
+例如, 在密码学中, 人们通常将一个加密方案是安全的定义为: 破解长度为 $n$ 的密钥需要超过多项式数量的 NAND 行.
+由于 $\mathbf{P} \subseteq \mathbf{P_{/poly}}$, 这特别排除了用于破解的多项式时间算法, 但在密码学中使用非一致性模型还有技术上的原因.
+它也允许用非渐进术语来谈论安全性, 例如方案具有 "$128$ 位安全性".
 
-### Can uniform algorithms  simulate non-uniform ones?
+虽然这有时可能是一个真正的问题, 但在许多自然的背景下, 一致性和非一致性计算之间的差异似乎并不那么重要.
+特别的, 在我们之前讨论的所有未知是否在 $\mathbf{P}$ 中的问题示例中: 最长路径, 3SAT, 因数分解等, 这些问题也都不知道是否在 $\mathbf{P_{/poly}}$ 中.
+因此, 对于 "自然的" 函数, 如果你假装 $TIME(T(n))$ 大致等同于 $SIZE(T(n))$, 你正确的概率通常比错误的要大.
 
-[non-uniform-thm](){.ref} shows that every function in $TIME(T(n))$ is in $SIZE(poly(T(n)))$.
-One can ask if there is an inverse relation.
-Suppose that $F$ is such that $F_{\upharpoonright n}$ has a "short" NAND-CIRC program for every $n$.
-Can we say that it must be in $TIME(T(n))$ for some "small" $T$?
-The answer is an emphatic __no__.
-Not only is $\mathbf{P_{/poly}}$ not contained in $\mathbf{P}$, in fact $\mathbf{P_{/poly}}$ contains functions that are _uncomputable_!
+```admonish pic id="PEXPPpolyrelationsfig"
+![PEXPPpolyrelationsfig](./images/chapter13/PEXPPpolyrelations.png) 
 
-
-> ### {.theorem title="$\mathbf{P_{/poly}}$ contains uncomputable functions" #Ppolyuncomputable}
-There exists an _uncomputable_ function $F:\{0,1\}^* \rightarrow \{0,1\}$ such that $F \in \mathbf{P_{/poly}}$.
-
-
-> ### {.proofidea data-ref="Ppolyuncomputable"}
-Since $\mathbf{P_{/poly}}$ corresponds to non-uniform computation, a function $F$ is in $\mathbf{P_{/poly}}$ if for every $n\in \N$, the restriction $F_{\upharpoonright n}$ to inputs of length $n$ has a small circuit/program, even if the circuits for different values of $n$ are completely different from one another. In particular, if $F$ has the property that for every equal-length inputs $x$ and $x'$, $F(x)=F(x')$ then this means that $F_{\upharpoonright n}$ is either the constant function zero or the constant function one for every $n\in \N$.
-Since the constant function has a (very!) small circuit, such a function $F$ will always be in $\mathbf{P_{/poly}}$ (indeed even in smaller classes).
-Yet by a reduction from the Halting problem, we can obtain a function with this property that is uncomputable.
-
-::: {.proof data-ref="Ppolyuncomputable"}
-Consider the following "unary halting function" $UH:\{0,1\}^* \rightarrow \{0,1\}$ defined as follows.
-We let $S:\N \rightarrow \{0,1\}^*$ be the function that on input $n\in \N$, outputs the string that corresponds to the binary representation of the number $n$ without the most significant $1$ digit.
-Note that $S$ is _onto_.
-For every $x\in \{0,1\}^*$, we define $UH(x)=HALTONZERO(S(|x|))$.
-That is, if $n$ is the length of $x$, then $UH(x)=1$ if and only if the string $S(n)$ encodes a NAND-TM program that halts on the input $0$.
-
-
-$UH$ is uncomputable, since otherwise we could compute $HALTONZERO$ by transforming the input program $P$ into the integer $n$ such that $P=S(n)$ and then running $UH(1^n)$ (i.e., $UH$ on the string of $n$ ones).
-On the other hand, for every $n$, $UH_n(x)$ is either equal to $0$ for all inputs $x$ or equal to $1$ on all inputs $x$, and hence can be computed by a NAND-CIRC program of a _constant_ number of lines.
-:::
-
-
-The issue here is of course _uniformity_.
-For a function $F:\{0,1\}^* \rightarrow \{0,1\}$, if $F$ is in $TIME(T(n))$ then we have a _single_ algorithm that can compute $F_{\upharpoonright n}$ for every $n$.
-On the other hand,  $F_{\upharpoonright n}$ might be in  $SIZE(T(n))$ for every $n$ using a completely different algorithm for every input length.
-For this reason we typically use $\mathbf{P_{/poly}}$ not as a model of _efficient_ computation but rather as a way to model _inefficient computation_.
-For example, in cryptography people often define an encryption scheme to be secure if breaking it for a key of length $n$ requires more than a polynomial number of NAND lines.
-Since $\mathbf{P} \subseteq \mathbf{P_{/poly}}$, this in particular precludes a polynomial time algorithm for doing so, but there are technical reasons why working in a non-uniform model makes more sense in cryptography.
-It also allows to talk about security in non-asymptotic terms such as a scheme having "$128$ bits of security".
-
-While it can sometimes be a real issue, in many natural settings the difference between uniform and non-uniform computation does not seem so important.
-In particular, in all the examples of problems not known to be in $\mathbf{P}$ we discussed before: longest path, 3SAT, factoring, etc., these problems are also not known to be in $\mathbf{P_{/poly}}$ either.
-Thus, for "natural" functions, if you pretend that $TIME(T(n))$  is roughly the same as $SIZE(T(n))$, you will be right more often than wrong.
+{{pic}}{fig:PEXPPpolyrelations} 
+$\mathbf{P}$, $\mathbf{EXP}$, 和 $\mathbf{P_{/poly}}$ 之间的关系.
+已知的是 $\mathbf{P} \subseteq \mathbf{EXP}$, $\mathbf{P} \subseteq \mathbf{P_{/poly}}$ 且 $\mathbf{P_{/poly}}$ 包含不可计算函数 (特别的, 这些函数不属于 $\mathbf{EXP}$).
+目前仍未知 $\mathbf{EXP} \subseteq \mathbf{P_{/poly}}$ 是否成立, 虽然大部分人相信 $\mathbf{EXP} \not\subseteq \mathbf{P_{/poly}}$.
+```
 
 
-![Relations between $\mathbf{P}$, $\mathbf{EXP}$, and $\mathbf{P_{/poly}}$. It is known that $\mathbf{P} \subseteq \mathbf{EXP}$, $\mathbf{P} \subseteq \mathbf{P_{/poly}}$ and that $\mathbf{P_{/poly}}$ contains uncomputable functions (which in particular are outside of $\mathbf{EXP}$). It is not known whether or not $\mathbf{EXP} \subseteq \mathbf{P_{/poly}}$ though it is believed that $\mathbf{EXP} \not\subseteq \mathbf{P_{/poly}}$.](../figure/PEXPPpolyrelations.png){#PEXPPpolyrelationsfig}
+### 13.6.4 一致性与非一致性计算: 总结
+
+总而言之, 我们目前描述的两种计算模型是:
 
 
-
-### Uniform vs. Non-uniform computation: A recap
-
-To summarize, the two models of computation we have described so far are:
+* **一致性模型 (Uniform models):** _图灵机_, _NAND-TM 程序_,  _RAM 机器_, _NAND-RAM 程序_, _C/JavaScript/Python_ 等. 这些模型包含循环和无界内存, 因此单个程序可以计算具有无界输入长度的函数. 
 
 
-* **Uniform models:** _Turing machines_, _NAND-TM programs_,  _RAM machines_, _NAND-RAM programs_, _C/JavaScript/Python_, etc.  These models include loops and unbounded memory  hence a single program can compute a function with unbounded input length. 
+* **非一致性模型 (Non-uniform models):** _布尔电路_ 或 _直线程序_  没有循环, 只能计算有限函数. 执行它们的时间恰好是它们包含的行数或门的数量. 
 
+对于一个函数 $F:\{0,1\}^* \rightarrow \{0,1\}$ 和某个良好的时间界限 $T:\N \rightarrow \N$, 我们知道:
 
-* **Non-uniform models:** _Boolean Circuits_ or _straightline programs_  have no loops and can only compute finite functions. The time to  execute them is exactly the number of lines or gates they contain. 
+* 如果 $F$ 在时间 $T(n)$ 内是一致可计算的, 那么存在一系列电路 $C_1,C_2,\ldots$, 其中 $C_n$ 具有 $poly(T(n))$ 个门并且对每个 $n$ 计算 $F_{\upharpoonright n}$ (即, $F$ 对 $\{0,1\}^n$ 的限制).
 
-For a function $F:\{0,1\}^* \rightarrow \{0,1\}$ and some nice time bound $T:\N \rightarrow \N$, we know that:
+* 反之不一定成立 - 存在函数 $F:\{0,1\}^n \rightarrow \{0,1\}$ 的例子, 使得 $F_{\upharpoonright n}$ 甚至可以由常数大小的电路计算, 但 $F$ 是不可计算的.
 
-* If $F$ is uniformly computable in time $T(n)$ then there is a sequence of circuits $C_1,C_2,\ldots$ where $C_n$ has $poly(T(n))$ gates and computes $F_{\upharpoonright n}$ (i.e., restriction of $F$ to $\{0,1\}^n$) for every $n$.
+这意味着非一致性复杂度对于建立函数的 _困难性_ 比建立其 _容易性_ 更有用.
 
-* The reverse direction is not necessarily true - there are examples of functions $F:\{0,1\}^n \rightarrow \{0,1\}$ such that $F_{\upharpoonright n}$ can be computed by even a constant size circuit but  $F$ is uncomputable.
+```admonish hint title="本章回顾"
+* 我们可以使用 NAND-TM 程序定义函数的时间复杂度, 与可计算性的概念类似, 这似乎捕捉了函数的固有复杂度.
 
-This means that non-uniform complexity is more useful to establish _hardness_ of a function than its _easiness_.
+* 有许多自然问题具有多项式时间算法, 也有其他我们很想解决的自然问题, 但其已知最好的算法是指数级的.
 
+* 多项式时间的定义, 以及由此产生的类 $\mathbf{P}$, 对模型的选择具有鲁棒性, 无论是图灵机, NAND-TM, NAND-RAM, 现代编程语言, 还是许多其他模型.
 
+* 时间层级定理表明, 有 _一些_ 问题可以在指数时间内解决, 但不能在多项式时间内解决. 然而, 我们不知道本章节中描述的自然示例是否属于这种情况.
 
+* 通过 "循环展开", 我们可以证明每个在时间 $T(n)$ 内可计算的函数都可以由一系列 NAND-CIRC 程序 (每个输入长度一个) 计算, 每个程序的大小至多为 $poly(T(n))$.
+```
 
-::: { .recap }
-* We can define the time complexity of a function using NAND-TM programs, and similarly to the notion of computability, this appears to capture the inherent complexity of the function.
-
-* There are many natural problems that have polynomial-time algorithms, and other natural problems that we'd love to solve, but for which the best known algorithms are exponential.
-
-* The definition of polynomial time, and hence the class $\mathbf{P}$, is robust to the choice of model, whether it is Turing machines, NAND-TM, NAND-RAM, modern programming languages, and many other models.
-
-* The time hierarchy theorem shows that there are _some_ problems that can be solved in exponential, but not in polynomial time. However, we do not know if that is the case for the natural examples that we described in this lecture.
-
-* By "unrolling the loop" we can show that every function computable in time $T(n)$ can be computed by a sequence of NAND-CIRC programs (one for every input length) each of size at most $poly(T(n))$.
-:::
 
 
 ## 习题
