@@ -177,7 +177,7 @@ match  := ""|match match|(match)
 ```admonish question
 {{exec}}{exe:reversedstringcfg}[回文的上下文无关文法]
 
-令$PAL:{0,1,;}^* \rightarrow \{0,1\}$为在[练习6.4](./chapter_6.mdl#exe:palindromenotreg)中定义的函数, 其中当且仅当$w$具有形式$u;u^R$时, $PAL(w)=1$. 
+令$PAL:{0,1,;}^* \rightarrow \{0,1\}$为在[练习6.4](./chapter_6.md#exe:palindromenotreg)中定义的函数, 其中当且仅当$w$具有形式$u;u^R$时, $PAL(w)=1$. 
 那么$PAL$可以由一个上下文无关文法计算. 
 ```
 
