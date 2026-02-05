@@ -753,7 +753,7 @@ Y[0] = NAND(temp_3,temp_4)
 
 ```admonish proof collapsible=true title="{{ref:thm:obliviousnandtm}} 的证明思路"
 我们可以通过让一个 NAND-TM 程序 $P$ 扫描它的数组来把任意 $P'$ 翻译成非感知的程序 $P$.
-换言之, $P$ 中的索引 `i` 将始终从 $0$ 一路移动到 $T(n) - 1$ 并不断重复.
+换言之, $P$ 中的索引 `i` 将始终在 $0$ 和 $T(n) - 1$ 之间反复移动.
 于是我们便可以用至多 $T(n)$ 的开销来模拟程序 $P'$: 如果 $P'$ 想要在一个向右的扫描中向左移动, 则我们可以简单的等待至多 $2T(n)$ 步直到下一次在向左移动的过程中回到原位置. 
 ```
 
@@ -762,7 +762,7 @@ Y[0] = NAND(temp_3,temp_4)
 
 {{pic}}{fig:obliviousnandtm} 
 通过添加两个特殊数组 `Atstart` 和 `Atend` 来分别标记 $0$ 和 $T-1$ 两个位置, 我们得已用一个*非感知*的 NAND-TM 程序 $P$ 来模拟一个 $T(n)$ 时间的 NAND-TM 程序 $P'$.
-程序 $P$ 会简单的从右到左反复扫描它的数组.
+程序 $P$ 会简单的从左到右再从右到左反复扫描它的数组.
 如果原来的程序 $P'$ 想要向一个相反的方向移动 `i`, 那么我们会等待 $O(T)$ 步直到我们到达了相同的位置, 因此 $P$ 在 $O(T(n)^2)$ 时间运行.
 ```
 
@@ -774,76 +774,95 @@ Y[0] = NAND(temp_3,temp_4)
 1. 在输入 $x$ 上, $P$ 会计算 $T=T(|x|)$ 并创建数组 `Atstart` 和 `Atend` 满足 `Atstart[`$0$`]`$=1$ 且对于 $i>0$, `Atstart[`$i$`]`$=0$ 和 `Atend[`$T-1$`]`$=1$ 且对于 $i \neq T-1$, `Atend[`i`]`$=0$.
 因为 $T$ 是一个好函数, 所以我们可以做到这一点.
 注意因为这步计算并不依赖于 $x$ 而只依赖于其长度, 因此这是非感知的.
-1. On input $x$, $P$ will compute $T=T(|x|)$ and set up arrays `Atstart` and `Atend` satisfying 
- `Atstart[`$0$`]`$=1$ and `Atstart[`$i$`]`$=0$ for $i>0$ and `Atend[`$T-1$`]`$=1$ and `Atend[`i`]`$=0$ for all $i \neq T-1$.  We can do this because $T$ is a nice function. Note that since this computation does not depend on $x$ but only on its length, it is oblivious. 
 
 2. $P$ 还会有一个初始化为全 $0$ 的特殊数组 `Marker`.
 
 3. 当 `Atstart[i]`$=1$ 时, $P$ 的索引变量会会将其移动方向改为向右, 当 `Atend[i]`$=1$ 时, 会改为向左.
 
-4. 
+4. 程序 $P$ 会模拟程序 $P'$ 的指令执行.
+不过当遇到指令 `MODANDJMP` 时, 且此时 $P'$ 在向左移动时尝试向右移动 (反之亦然), 那么 $P$ 会将 `Marker[i]` 设置为 $1$ 并进入一个特殊的 "等待模式".
+在这个模式下, $P$ 将会一直等待直到 `Marker[i]`$=1$ 再次成立, 且此时 $P$ 会将 `Marker[i]` 设为 $0$ 并继续模拟的过程.
+在最坏的情况下, 这将会消耗 $2T(n)$ 步 (如果 $P$ 需要从一头移动到另一头并从另一头移动回来.)
 
+5. 我们同样会在 $P'$ 更早结束的情况下通过添加 "虚拟步" 来保证 $P$ 在恰好模拟了 $P'$ 的 $T(n)$ 步之后结束计算.
 
-2. The program $P$  simulates the execution of $P'$. However, if the `MODANDJMP` instruction in $P'$ attempts to move to the right when $P$ is moving left (or vice versa) then $P$ will set `Marker[i]` to $1$ and  enter into a special "waiting mode". In this mode $P$ will wait until the next time in which `Marker[i]`$=1$ (at the next sweep) at which points $P$ zeroes `Marker[i]` and continues with the simulation. In the worst case this will take $2T(n)$ steps (if $P$ has to go all the way from one end to the other and back again.)
-   
-3. We also modify $P$ to ensure it ends the computation after simulating exactly $T(n)$ steps of $P'$, adding "dummy steps" if $P'$ ends early.
+我们可以看到 $P$ 以 $O(T(n))$ 每步的开销模拟 $P'$ 的执行, 因此我们完成了证明.
+```
 
-We see that $P$ simulates  the execution of $P'$ with an overhead of $O(T(n))$ steps of $P$ per one step of $P'$, hence completing the proof.
+{{ref:thm:obliviousnandtm}} 能导出 {{ref:thm:non-uniform}}.
+事实上, 如果 $P$ 是一个 $k$ 行的非感知的在 $T(n)$ 时间内计算 $F$ 的 NAND-TM 程序, 那么对于每个 $n$, 只需要简单的做 $T(n)$ 次复制黏贴 (删去 `MODANDJMP` 指令), 我们都可以得到一个 $(k-1)\cdot T(n)$ NAND-CIRC 程序.
+在第 $j$ 个副本中, 我们将所有形为 `Foo[i]` 的引用替换为 `foo_`$i_j$, 其中 $i_j$ 是 `i` 在第 $j$ 次迭代中的值.
+
+### 13.6.2 "循环展开": 从图灵机到电路的转换算法  { #unrollloopsec  }
+
+{{ref:thm:non-uniform}} 的证明是 *算法的*, 即这个证明给出了一个多项式时间的算法能够在给出一个图灵机 $M$, 参数 $T$ 和 $n$ 的前提下生成一个有 $O(T^2)$ 个门的电路, 且这个电路在任意输入 $x\in \{0,1\}^n$ 上运行的结果都与 $M$ 一致 (只要 $M$ 在这些输入上的运行步数少于 $T$.) 
+我们将在下面的定理中记录这一事实, 因为这之后会对我们很有用.
+
+```admonish pic id="unrollloopfig"
+![unrollloopfig](./images/chapter13/unrollloop_alg.png) 
+
+{{pic}}{fig:unrollloop} 函数 $UNROLL$ 以图灵机 $M$, 输入长度参数 $n$ 和时间界限 $T$ 为输入, 输出一个 $O(T^2)$ 大小的 NAND 电路, 该电路在 $M$ 于至多 $T$ 步内停机的所有输入 $x\in \{0,1\}^n$ 上与 $M$ 一致. 
 ```
 
 
+```admonish quote title=""
+{{thmc}}{thm:nand-compiler}[编译图灵机到电路的编译器]
 
-[obliviousnandtmthm](){.ref} implies [non-uniform-thm](){.ref}. Indeed, if $P$ is a $k$-line oblivious NAND-TM program computing $F$ in time $T(n)$ then for every $n$ we can obtain a NAND-CIRC program of $(k-1)\cdot T(n)$ lines by simply making $T(n)$ copies of $P$ (dropping the final `MODANDJMP` line).
-In the $j$-th copy we replace all references of the form `Foo[i]`  to `foo_`$i_j$ where $i_j$ is the value of `i` in the $j$-th iteration.
-
-### "Unrolling the loop": algorithmic transformation of Turing Machines to circuits  { #unrollloopsec  }
-
-The proof of [non-uniform-thm](){.ref} is _algorithmic_, in the sense that the proof yields a polynomial-time algorithm that given a Turing machine $M$ and parameters $T$ and $n$, produces a circuit  of $O(T^2)$ gates that agrees with $M$ on all inputs $x\in \{0,1\}^n$ (as long as $M$ runs for less than $T$ steps these inputs.)
-We record this fact in the following theorem, since it will be useful for us later on:
-
-![The function $UNROLL$ takes as input a Turing machine $M$, an input length parameter $n$, a step budget parameter $T$, and outputs a circuit $C$ of size $poly(T)$ that takes $n$ bits of inputs and outputs $M(x)$ if $M$ halts on $x$ within at most $T$ steps.](../figure/unrollloop_alg.png){#unrollloopfig .margin }
-
-::: {.theorem title="Turing-machine to circuit compiler" #nand-compiler}
-There is algorithm $UNROLL$ such that for every Turing machine $M$ and numbers $n,T$, 
-$UNROLL(M,1^T,1^n)$ runs for $poly(|M|,T,n)$ steps and outputs a NAND circuit $C$ with  $n$ inputs, $O(T^2)$ gates, and one output, such that 
+存在一个算法 $UNROLL$ 满足对于任意图灵机 $M$ 和参数 $n$, $T$, $UNROLL(M,1^T,1^n)$ 在至多 $poly(|M|,T,n)$ 步内运行, 且输出一个 NAND 电路 $C$. 该电路接受长度为 $n$ 的输入, 有 $O(T^2)$ 个门, 只有一个输出, 并且满足:
 $$
-C(x) = \begin{cases}y & M \text{ halts in $\leq T$ steps and outputs $y$} \\ 0 & \text{otherwise} \end{cases}\;.
+C(x) = \begin{cases}y & M \text{ 在 $T$ 步内停机且输出 $y$ } \\ 0 & \text{否则} \end{cases}\;.
 $$
-:::
+```
 
+```admonish proof collapsible=true title="{{ref:thm:nand-compiler}} 的证明"
+我们将只概述证明, 因为它可以通过直接将 {{ref:thm:non-uniform}} 的证明转化为算法, 并结合 NAND-TM 程序对图灵机的模拟得到 (另见 {{ref:fig:unrolldescription}}).
+具体来说, $UNROLL$ 将执行以下操作:
 
+1. 将图灵机 $M$ 翻译为等价的 NAND-TM 程序 $P$.
 
-::: {.proof #proofofnandcompiler data-ref="nand-compiler"}
-We only sketch the proof  since it follows by directly translating the proof of [non-uniform-thm](){.ref} into an algorithm together with the simulation of Turing machines by NAND-TM programs (see also [unrolldescriptionfig](){.ref}).
-Specifically, $UNROLL$ does the following:
+2. 将 NAND-TM 程序 $P$ 翻译为等价的非感知的程序 $P'$ (按照 {{ref:thm:obliviousnandtm}} 的证明).
+程序 $P'$ 需要 $T' = O(T^2)$ 步来模拟 $P$ 程序的 $T$ 步.
 
-1. Transform the Turing machine $M$ into an equivalent NAND-TM program $P$. 
+3. 通过获得对应于 $P'$ 的 $T'$ 次迭代执行的 NAND-CIRC 程序 (或等价的具有 $O(T^2)$ 个门的 NAND 电路) 来展开 $P'$ 的循环.
+```
 
-2. Transform the NAND-TM program $P$ into an equivalent oblivious program $P'$ following the proof of [obliviousnandtmthm](){.ref}. The program $P'$ takes $T' = O(T^2)$ steps to simulate $T$ steps of $P$.
+```admonish pic id="unrolldescriptionfig"
+![unrolldescriptionfig](./images/chapter13/unrolldescription.png)
 
-3. "Unroll the loop" of $P'$ by obtaining a NAND-CIRC program of $O(T')$ lines (or equivalently a NAND circuit with $O(T^2)$ gates)  corresponding to the execution of $T'$ iterations of $P'$.
-:::
+{{pic}}{fig:unrolldescription} 我们可以将图灵机 $M$, 输入长度参数 $n$ 和时间界限 $T$ 转换为一个 $O(T^2)$ 大小的 NAND 电路, 该电路在 $M$ 于至多 $T$ 步内停机的所有输入 $x\in \{0,1\}^n$ 上与 $M$ 一致. 该转换首先利用图灵机和 NAND-TM 程序 $P$ 的等价性, 然后通过 {{ref:thm:obliviousnandtm}} 将 $P$ 转换为等价的 *非感知的* NAND-TM 程序 $P'$, 接着 "展开" $P'$ 的循环 $O(T^2)$ 次迭代以获得一个与 $P'$ 在长度为 $n$ 的输入上一致的 $O(T^2)$ 行 NAND-CIRC 程序, 最后将此程序翻译为等价的电路.
+```
 
+```admonish bigidea
+{{idec}}{ide:unrollloop}
 
-![We can transform a Turing machine $M$, input length parameter $n$, and time bound $T$ into an $O(T^2)$-sized NAND circuit that agrees with $M$ on all inputs $x\in \{0,1\}^n$ on which $M$ halts in at most $T$ steps. The transformation is obtained by first using the equivalence of Turing machines and NAND-TM programs $P$, then turning $P$ into an equivalent _oblivious_ NAND-TM program $P'$ via [obliviousnandtmthm](){.ref}, then "unrolling" $O(T^2)$ iterations of the loop of $P'$ to obtain an $O(T^2)$ line  NAND-CIRC program  that agrees with $P'$ on length $n$ inputs, and finally translating this program into an equivalent circuit.](../figure/unrolldescription.png){#unrolldescriptionfig }
+通过 "循环展开", 我们可以将一个需要 $T(n)$ 步来计算 $F$ 的算法转换为一个使用 $poly(T(n))$ 个门来计算 $F$ 在 $\{0,1\}^n$ 上结果的电路.
+```
 
-::: { .bigidea #unrollloop}
-By "unrolling the loop" we can transform an algorithm that takes $T(n)$ steps to compute $F$ into a circuit that uses $poly(T(n))$ gates to compute the restriction of $F$ to $\{0,1\}^n$.
-:::
+```admonish pause title="暂停一下"
+回顾 {{ref:fig:unrolldescription}} 中描述的转换, 以及解决以下两个练习, 是更适应非一致性复杂度, 特别是 $\mathbf{P_{/poly}}$ 及其与 $\mathbf{P}$ 关系的绝佳方式.
+```
 
+```admonish question title=""
+{{exec}}{exe:characterizationofp}[$\mathbf{P}$ 的另一刻画]
 
+证明对于任意 $F:\{0,1\}^* \rightarrow \{0,1\}$, $F\in \mathbf{P}$ 当且仅当存在一个多项式时间图灵机 $M$, 使得对于任意 $n\in \N$, $M(1^n)$ 输出一个 $n$ 输入电路 $C_n$ 的描述, 该电路计算在限制 $F_{\upharpoonright n}$ 下 $F$ 输入 $\{0,1\}^n$ 的结果.
+```
 
+```admonish solution collapsible=true title="对{{ref:exe:characterizationofp}} 的解答"
+我们从 "当" 的方向开始.
+假设存在一个多项式时间图灵机 $M$, 它在输入 $1^n$ 上输出计算 $F_{\upharpoonright n}$ 的电路 $C_n$. 那么以下是计算 $F$ 的多项式时间图灵机 $M'$. 对于输入 $x\in \{0,1\}^*$, $M'$ 将:
 
-::: { .pause }
-Reviewing the transformations described in [unrolldescriptionfig](){.ref}, as well as solving the following two exercises is a great way to get more comfort with non-uniform complexity and in particular with $\mathbf{P_{/poly}}$ and its relation to $\mathbf{P}$.
-:::
+1. 令 $n=|x|$ 并计算 $C_n = M(1^n)$.
 
+2. 返回 $C_n$ 在 $x$ 上的执行结果.
 
-::: {.solvedexercise title="Alternative characterization of $\mathbf{P}$" #characterizationofp}
-Prove that for every $F:\{0,1\}^* \rightarrow \{0,1\}$, $F\in \mathbf{P}$ if and only if there is a polynomial-time Turing machine $M$ such that  for every $n\in \N$, $M(1^n)$ outputs a description of an $n$ input circuit $C_n$ that computes the restriction $F_{\upharpoonright n}$ of $F$ to inputs in $\{0,1\}^n$.
-:::
+由于我们可以在多项式时间内计算布尔电路在输入上的结果, 因此 $M'$ 在多项式时间内运行并对每个输入 $x$ 计算 $F(x)$.
 
-::: {.solution data-ref="characterizationofp"}
+对于 "仅当" 的方向, 如果 $M'$ 是一个在多项式时间内计算 $F$ 的图灵机, 那么 (应用图灵机和 NAND-TM 的等价性以及 [obliviousnandtmthm](){.ref}) 同样存在一个茫然 NAND-TM 程序 $P$, 它在时间 $p(n)$ 内计算 $F$, 其中 $p$ 为某个多项式.
+我们现在可以定义 $M$ 为这样一个图灵机: 在输入 $1^n$ 上, 它输出通过将 $P$ 的 "循环展开" $p(n)$ 次迭代而获得的 NAND 电路.
+结果 NAND 电路计算 $F_{\upharpoonright n}$ 并且具有 $O(p(n))$ 个门.
+它也可以被转换为具有 $O(p(n))$ 个 AND/OR/NOT 门的布尔电路.
+
 We start with the "if" direction.
 Suppose that there is a polynomial-time Turing machine $M$ that on input $1^n$ outputs a circuit $C_n$ that computes $F_{\upharpoonright n}$. Then the following is a polynomial-time Turing machine $M'$ to compute $F$. On input $x\in \{0,1\}^*$, $M'$ will:
 
@@ -857,7 +876,7 @@ For the "only if" direction, if $M'$ is a Turing machine that computes $F$ in po
 We can now define $M$ to be the Turing machine that on input $1^n$ outputs the NAND circuit obtained by "unrolling the loop" of $P$ for $p(n)$ iterations.
 The resulting NAND circuit computes $F_{\upharpoonright n}$ and  has $O(p(n))$ gates.
 It can also be transformed to a Boolean circuit with $O(p(n))$ AND/OR/NOT gates.
-:::
+```
 
 
 ::: {.solvedexercise title="$\mathbf{P_{/poly}}$ characterization by advice" #adviceppoly}
