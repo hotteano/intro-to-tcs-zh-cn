@@ -92,5 +92,6 @@ proc = {name = "习题", emph = "**"}
 remc = {name = "备注", emph = "**"}
 idec = {name = "重要提示", emph = "**"}
 exac = {name = "样例", emph = "**"}
+exam = {name = "示例", emph = "**"}
 pic = {name = "图", emph = "**"}
 wip = {name = "未完成引用", emph = "**"}
