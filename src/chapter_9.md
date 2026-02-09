@@ -365,7 +365,7 @@ def T(f,x):
 
 如果我们现在设置`(f,x) = CantSolveMe(T)`, 那么`T(f,x)=False`, 但`f(x)`实际上却停机了. 这当然不是这个特定`T`独有的问题: 对于每个程序`T`, 如果我们运行`(f,x) = CantSolveMe(T)`, 我们都会得到一个输入, 在该输入上`T`对$\HALT$给出了错误的答案. 
 
-## 9.4 归约
+## 9.4 归约 {#reductionsuncompsec }
 
 停机问题被证明是不可计算性的关键, 因为{{ref:thm:halt-thm}}已被用来证明大量有趣函数的不可计算性. 我们将在本章和练习中看到几个这样的结果示例, 但还有更多此类结果(见{{ref:fig:haltreductions}}). 
 

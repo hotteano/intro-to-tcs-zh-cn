@@ -18,7 +18,7 @@
 - [第12章：高效计算：非正式导论](chapter_12.md)
 - [第13章：运行时间建模](chapter_13.md)
 - [第14章：多项式时间规约](chapter_14.md)
-- [第15章：NP问题、NP完全性与库克-莱文定理](chapter_15.md)
+- [第15章：NP问题、NP完全性与Cook-Levin定理](chapter_15.md)
 - [第16章：若P=NP将会如何？](chapter_16.md)
 - [第17章：空间受限计算](chapter_17.md)
 - [第18章：概率论基础](chapter_18.md)

@@ -15,7 +15,7 @@
 \endfor:\textbf{endfor}
 \proc:\textbf{procedure } \mathsf{#1}
 \endproc:\textbf{endproc}
-\return:\textbf{ return } #1
+\return:\textbf{return } #1
 \else:\textbf{else}
 \input:\textbf{输入：}
 \output:\textbf{输出：}
