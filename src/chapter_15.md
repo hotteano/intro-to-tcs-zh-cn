@@ -185,3 +185,41 @@ Cook-Levin 定理（定理15.6）可以被重新表述为说 $3\mathit{SAT}$ 是
 
 
 正如我们在练习15.2中看到的，$\mathbf{P} \subseteq \mathbf{NP}$。计算机科学中最著名的猜想是这一包含关系是严格的。也就是说，人们广泛猜想 $\mathbf{P} \neq \mathbf{NP}$。反驳 $\mathbf{P} \neq \mathbf{NP}$ 猜想的一种方法是给出哪怕一个 $\mathbf{NP}$-完全问题的多项式时间算法，例如 3SAT、最大割，或者在人类各个活动领域中被研究过的其他数千个问题中的一个。这些问题的特点是，虽然有如此多的人研究过它们，但迄今为止没有发现任何一个的多项式时间算法，这支持了确实 $\mathbf{P} \neq \mathbf{NP}$ 的猜想。事实上，对于这些问题中的许多（包括我们上面提到的所有问题），我们甚至不知道是否存在 $2^{o(n)}$ 时间算法！然而，令计算机科学家沮丧的是，我们还未能证明 $\mathbf{P}\neq\mathbf{NP}$，甚至不能排除 3SAT 存在 $O(n)$ 时间算法的可能性。解决 $\mathbf{P}$ 是否等于 $\mathbf{NP}$ 的问题被称为 $\mathbf{P}$ vs $\mathbf{NP}$ 问题。解决这个问题将获得百万美元的奖金，有人为此写了畅销书，每年都有新论文声称证明了 $\mathbf{P}=\mathbf{NP}$ 或 $\mathbf{P}\neq\mathbf{NP}$，但遗憾的是，它们都在仔细审查下被推翻。
+
+
+```admonish pic id = 'pnpscenariofig'
+![overview](./images/chapter15/PNPscenarios.png)
+
+{{pic}}{fig:pnpscenario} 如果 $\mathbf{P}\neq \mathbf{NP}$（左）和 $\mathbf{P}=\mathbf{NP}$（右）时的世界。在前一种情况下，$\mathbf{NP}$-完全问题集与 $\mathbf{P}$ 不相交，而且 Ladner 定理表明存在既不属于 $\mathbf{P}$ 也不是 $\mathbf{NP}$-完全的问题。（这类问题的自然候选例子出奇地少，一些突出的例子包括整数分解、格中最短向量和寻找纳什均衡等问题的判定变体。）在后一种情况 $\mathbf{P}=\mathbf{NP}$ 下，$\mathbf{NP}$-完全性的概念失去了意义，因为本质上 $\mathbf{P}$ 中的所有函数（除了平凡的常数零和常数一函数）都是 $\mathbf{NP}$-完全的。
+```
+
+计算的奥秘之一是人们观察到了自然问题计算复杂性中的某种经验性"零一律"或"二分性"，即许多自然问题要么属于 $\mathbf{P}$（通常在 $\mathit{TIME}(O(n))$ 或 $\mathit{TIME}(O(n^2))$ 中），要么是 $\mathbf{NP}$ 困难的。这与这样一个事实有关：对于大多数自然问题，已知的最佳算法要么是指数时间的，要么是多项式时间的，没有太多例子表明最佳运行时间是某种奇怪的中间复杂性，如 $2^{2^{\sqrt{\log n}}}$。然而，人们相信存在属于 $\mathbf{NP}$ 但既不属于 $\mathbf{P}$ 也不是 $\mathbf{NP}$-完全的问题，而且一个被称为"Ladner 定理"的结果表明，如果 $\mathbf{P} \neq \mathbf{NP}$，那么事实确实如此（另见练习15.1和{{ref:fig:pnpscenario}}）。
+
+```admonish pic id = 'pnpmapfig'
+![overview](./images/chapter15/PNPmap.png)
+
+{{pic}}{fig:pnpmap} 指数时间问题（猜想）状态的大致示意图。颜色越深表示运行时间越长，中间的圆圈代表 $\mathbf{P}$ 中的问题。$\mathbf{NP}$ 是 $\mathbf{P}$ 的（猜想为真的）超类，而 $\mathbf{NP}$-完全问题（或简写为 $\mathbf{NPC}$）是 $\mathbf{NP}$ 中"最难"的问题，在这个意义上，解决其中一个问题就意味着能解决 $\mathbf{NP}$ 中的所有其他问题。人们猜想所有 $\mathbf{NP}$-完全问题至少需要 $\exp(n^\epsilon)$ 时间来解决，其中 $\epsilon>0$ 是某个常数，而且许多问题需要 $\exp(\Omega(n))$ 时间。积和式（permanent）被认为不属于 $\mathbf{NP}$，尽管它是 $\mathbf{NP}$-困难的，这意味着它的多项式时间算法将蕴含 $\mathbf{P}=\mathbf{NP}$。
+```
+### 15.2.2 Cook-Levin定理：证明概览
+
+我们现在将证明 Cook-Levin 定理，这是从 3SAT 到许多伟大领域中数千个问题的巨大归约网络的基础。一些已被证明是 $\mathbf{NP}$-完全的问题包括：最小能量蛋白质折叠、最小表面积泡沫构型、地图着色、最优纳什均衡、量子态纠缠、基因组的最小超序列、最小码字问题、格中的最短向量、最小亏格纽结、正丢番图方程、整数规划，以及很多很多其他问题。所有这些问题的最坏情况复杂性（至多相差多项式因子）与 3SAT 等价，并且通过 Cook-Levin 定理，与 $\mathbf{NP}$ 中的所有问题等价。
+
+为了证明定理15.6，我们需要证明对于每个 $F\in \mathbf{NP}$，都有 $F \leq_p 3\mathit{SAT}$。我们将分三个阶段来完成。我们定义两个中间问题：$\mathit{NANDSAT}$ 和 $3\mathit{NAND}$。我们很快将展示这两个问题的定义，但定理15.6将由以下三个结果组合得出：
+
+1. $\mathit{NANDSAT}$ 是 $\mathbf{NP}$ 困难的（引理15.8）。
+
+2. $\mathit{NANDSAT} \leq_p 3\mathit{NAND}$（引理15.9）。
+
+3. $3\mathit{NAND} \leq_p 3\mathit{SAT}$（引理15.10）。
+
+根据归约的传递性，对于每个 $F \in \mathbf{NP}$，我们有
+
+$$ F \leq_p \mathit{NANDSAT} \leq_p 3\mathit{NAND} \leq_p 3\mathit{SAT} $$
+
+从而确立了定理15.6。
+
+我们将逐一证明这三个结果——引理15.8、引理15.9和引理15.10，并在证明过程中提供所需的定义。
+
+
+## 15.3 $\mathit{NANDSAT}$，以及它为什么是$\mathbf{NP}$-困难的
+
