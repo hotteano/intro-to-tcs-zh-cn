@@ -123,6 +123,7 @@ $\mathbf{NP}$ 的定义是本书中最重要的定义之一,值得花时间仔�
 
 ```admonish quote title=""
 {{exec}}{exe:Verifying}[验证不比解决更难]
+
 证明$\mathbf{P} \subseteq \mathbf{NP}$
 ```
 
