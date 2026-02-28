@@ -87,10 +87,10 @@ $3\mathit{SAT}$ 属于 $\mathbf{NP}$,因为对于每个含有 $\ell$ 个变量�
 我们可以用一个长度为 $k$ 的字符串 $w$ 来表示对 $k$ 个变量的赋值。{{ref:alg:3SATverifier}}可以检查给定的 $w$ 是否满足公式 $\varphi$：
 
 算法 {{ref:alg:3SATverifier}} 需要 $O(m)$ 时间枚举所项,当且仅当 $w$ 满足所项时返回 $1$。
+```
 
 ```admonish quote title=""
 {{algc}}{alg:3SATverifier}[$3\mathit{SAT}$ 的验证器]
-
 $$
 \begin{aligned}
 &\textbf{输入: }\text{含有 $k$ 个变量和 $m$ 项的 3CNF 公式 $\varphi$,字符串 $w \in \{0,1\}^k$}\\
@@ -104,8 +104,6 @@ $$
 &\textbf{return } 1\\
 \end{aligned}
 $$
-```
-
 ```
 
 以下是属于 $\mathbf{NP}$ 的更多问题的例子。对于其中的每一个问题,我们仅简要说明见证是如何表示的以及为什么它是可以高效验证的,但详细展开这些内容可以成为让你更熟悉定义 15.1 的好方法：
