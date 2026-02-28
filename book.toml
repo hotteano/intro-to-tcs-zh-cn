@@ -22,8 +22,8 @@ level = 0
 [output.html.playground]
 editable = false
 
-[preprocessor.mermaid]
-command = "mdbook-mermaid"
+# [preprocessor.mermaid]
+# command = "mdbook-mermaid"
 
 [preprocessor.katex]
 after = ["links"]
